@@ -1,0 +1,140 @@
+# Merge, Rebase, Squash
+Im letzten Abschnitt hast du einfaches Arbeiten 
+mit Branches gelernt und wie man sie mit Hilfe eines *Merge* 
+zusammengeführt. Das wollen wir uns jetzt genauer ansehen.
+Offen geblieben sind aber folgende Fragen:
+
+* Was passiert mit alten Branches?
+* Was mache ich mit zu vielen Commits?
+* Wie sieht die Alternative zu *Merge* aus?
+
+## Verschiedene Merges
+In der Praxis treten^[Bei mir] meist zwei Fälle auf, da ich 
+in der Regel alleine entwickle:
+
+* Während ich am Entwicklungs-Branch arbeite, 
+  passiert auf dem Auslieferungsbranch nichts.
+* Ich entwickle an einem völlig anderen Feature,
+  das den Auslieferungsbranch gar nicht betrifft.
+  Weil das oft aus Zeitgründen länger dauert, kann
+  es im Auslieferungsbranch Änderungen geben, die im
+  Entwicklungsbranch nicht interessieren.
+
+### Fast-Forward 
+Ohne Änderung im Auslieferungsbranch wird der der 
+Entwicklungsbranch einfach (schnell davor) vor den 
+letzten Commit des Auslieferungsbranchs gesetzt. 
+In dieser Situation wird im Diagramm der Branch nicht 
+einmal als visuelle Abzweigung dargestellt:
+
+![](bilder/bash/fast_forward.png){width=16cm}
+
+Erkennbar sind die grünen Rechtecke, die
+die Enden der Branches kennzeichnen.
+Im Bild links sind die Branches getrennt, 
+im Bild rechts sind beide Branch-Enden nach 
+dem Merge an der gleichen Stelle.  
+Wie du siehst, hat sich beim Merge die 
+Anzahl Commits nicht verändert.
+
+### Drei-Wege Merge
+Wenn sich der Auslieferungsbranch parallel
+zum Entwicklungsbranch weiterentwickelt,
+sieht die Sitation ganz anders aus!
+
+![](bilder/bash/drei_wege.png)
+
+Du siehst, dass sich der *main*-Branch 
+zu *Schritt 7* weiterentwickelt hat. Beim 
+Merge entsteht ein neuer Commit, der 
+die Spitze beider Branches darstellt.
+Du erkennst auch, dass im Diagramm 
+die grünen Spitzen der Branches nicht
+am gleichen Commit sitzen!
+
+Durch `git log --oneline --decorate --graph` 
+(merken als „git log dog“) wird diese Sitation
+auch passend dargestellt:
+
+```bash
+*   70c1b21 (HEAD -> main) Merge branch 'entwicklung' into main
+|\  
+| * 4a6e3a5 (entwicklung) Schritt 6
+| * edaeaff Schritt 5
+| * 508019b Schritt 4
+* | 2ff4a45 Schritt 7
+|/  
+* 29d2bd4 Schritt 3
+* 964ee6f Schritt 2
+* 66dcd4f Schritt 1
+```
+
+## Alte Branches
+Die Commits eines Branches stellen eine Dokumentation 
+des Projektverlaufes dar, die für das Verständnis der
+erfolgten Änderungen eventuell notwendig sind. 
+Zu viele Branches und Commits erschweren auf der anderen 
+Seite den Überblick. 
+
+Es geht also darum, alte Branches zu löschen, 
+die *wichtigen* Commits aber zu behalten. 
+Für den schulischen ist das aber weniger relevant.
+
+Um einen lokalen Branch zu löschen, gibt es 
+folgenden Befehl:
+
+```bash
+git branch -d <name>
+```
+
+Er scheitert aber, wenn \git den Branch noch nicht 
+als abgeschlossen betrachtet.
+
+Probieren wir das beim letzten Szenario aus. 
+Sieh dir die Abbildung oben nich einmal an und
+dann lösche den Branche
+
+```bash
+git branch -d entwicklung 
+```
+
+Du siehst eine minimale Änderung
+
+```bash
+*   70c1b21 (HEAD -> main) Merge branch 'entwicklung' into main
+|\  
+| * 4a6e3a5 Schritt 6   <<< hier fehlt (entwicklung)
+| * edaeaff Schritt 5
+| * 508019b Schritt 4
+* | 2ff4a45 Schritt 7
+|/  
+* 29d2bd4 Schritt 3
+* 964ee6f Schritt 2
+* 66dcd4f Schritt 1
+```
+Das *Etikett* vom Entwicklungsbranch wurde gelöscht,
+die Commits bleiben aber in exakt der gleichen 
+Anordnung erhalten! Der Branch ist nicht mehr über seinen 
+Namen zugänglich, die History ist aber weiterhin vorhanden.
+
+
+## Rebase
+
+Neben dem *Merge* trifft man auch oft auf den *Rebase* um
+Branches zusammenzuführen. Er funktioniert allerdings 
+deutlich anders und ist wegen seiner vielfältigen 
+Möglichkeiten (z.B. Reihenfolge der Commits ändern, ...)
+ein Werkzeug für fortgeschrittene Benutzer. Mit seiner 
+Hilfe können auch mehrere Commits zusammengefasst werden, 
+um die Branches zu verkürzen. Gerade bei der Zusammenarbeit 
+im Team kann das aber sehr problematisch werden, wenn 
+man nicht genau weiß, was man macht. Das liegt daran, dass
+sich die Hashwerte von Commits ändern können und wenn 
+sich ein anderer Mitarbeiter den früheren Stand kopiert hat,
+dann kann das zu großem Chaos führen.
+
+https://www.youtube.com/watch?v=CtyLg10aHN0
+https://www.youtube.com/watch?v=1TNK-OkaelI
+
+![](bilder/bash/rebase_nach_branch_delete.png)
+

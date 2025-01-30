@@ -1,0 +1,8 @@
+# TODOs
+
+
+
+## Scripten für Team-Szenario
+
+* origin.sh
+* susi_und_max.sh

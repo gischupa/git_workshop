@@ -1,0 +1,41 @@
+project:
+  type: book
+
+book:
+  title: "Git Workshop"
+  author: "Wolfgang Höfer"
+  date: "10.4.2025"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - references.qmd
+  
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+    code-annotations: true
+    keep-tex: true
+  PrettyPDF-pdf:
+    lang: "de"
+    keep-tex: true
+    filters:
+      - include-code-files
+    include-in-header: 
+      text: |
+        \usepackage{my_quarto_tools}
+        \newcommand{\git}{\textit{git}\xspace}
+        \newcommand{\gitserver}{\textit{git}-Server\xspace}
+        \newcommand{\gitservers}{\textit{git}-Servers\xspace}
+        \newcommand{\strg}[1]{strg + #1\xspace}
+        \newcommand{\alt}[1]{alt + #1\xspace}
+        \newcommand{\datei}[1]{\textit{#1}\xspace}
+        \newcommand{\branch}[1]{\textit{#1}\xspace}
+        \newcommand{\work}{\textit{Workingdir}\xspace}
+
+

@@ -1,0 +1,395 @@
+# Arbeiten im Team
+## Überblick
+Bei der Arbeit im Team ändert sich beim 
+lokalen Arbeiten zunächst wenig. Die
+Schritte *branch, add, commit, ...* 
+funktionieren wie auch bisher. Neu sind 
+allerdings die Schritte
+
+* Initiales Holen des Repos auf den eigenen Rechner (=clone)
+* Regelmäßiges Abrufen des aktuellen Standes (=pull)
+* Veröffentlichen des eigenen Standes (push)
+
+Hierbei sind einige Spielregeln zu beachten, damit es nicht
+zu Problemen kommt. Diese Regeln werden meist als Workflow
+oder im Speziellen auch als Gitflow bezeichnet. Es gibt hier 
+zwar gewisse -- aber keinesfalls verbindliche -- Standards.
+Jede Firma stellt hier ihre eigenen, fest vorgeschriebenenen
+Abläufe auf, an die sie die Mitarbeiter zu halten haben.
+
+### Gemeinsamkeiten
+Auch diese Gemeinsamkeiten müssen nicht in jeder Firma 
+oder jedem Projekt umgesetzt werden!
+
+**Verantwortung**  
+Im Projekt gibt es einen \branch{main}, der aber durch 
+entsprechende Maßnahmen für *einfache* Mitarbeiter 
+schreibgeschützt ist. Änderungen dürfen nur nach 
+gründlichen Tests und Code-Reviews in diesen Zweig 
+aufgenommen werden. In der Regel gilt hier auch ein 
+*Mehr-Augen-Prinzip* oder noch weiter gestaffelte 
+Zuständigkeitshierarchien.  
+
+**Arbeitsbranch**  
+Je nach Größe des Projekt-Teams gibt es einen oder mehrere
+\branch{development}-Branches. Die Mitarbeiter holen sich 
+diesen Zweig und lassen von ihm ihre eigenen Arbeitszweige
+(Feature-Branches, Bugfix-Branches) ausgehen. Ist ihre 
+Arbeit dort beendet, muss der Code getestet werden und dann 
+erst erfolgt der Merge in den \branch{development}-Branch.
+
+### Details
+Da jetzt mehr Personen Änderungen zu unvorhersehbaren Zeitpunkten Änderungen am Code vornehmen, muss jeder
+Mitarbeiter dafür sorgen, immer die aktuellste Version 
+vorliegen zu haben. Da er seine Entwicklung aber in seinem 
+eigenen \branch{Feature}-Branch vorantreibt, müssen 
+diese Änderungen dort aber erst ankommen -- dies geschieht
+durch Merges in die andere Richtung!
+
+**Beispiel**  
+
+Aus Platzgründen zeichne ich das Branch-Diagramm hier
+waagrecht. Der \branch{feature}-Branch ist auch noch 
+nicht so weit fortgeschritten, als dass ein Merge auf den 
+\branch{development}-Branch erfolgt wäre.
+
+{{< include bilder/tikz/workflow1.tikz >}}
+
+Da noch keine wirklichen Fortschitte erzielt worden sind, 
+dürfte der \branch{development}-Branch auch noch nicht 
+wieder auf den Server veröffentlicht worden sein (=push).
+
+### Pull und fetch
+
+Die Grundidee von *holen* und *veröffentlichen* ist 
+relativ einfach und eventuell muss man den Schülern 
+auch nicht mehr erzählen. Da aber Code von anderen 
+Entwicklern auf deinen Rechner kommt, solltest du 
+diesen eventuell nicht ungesehen in deine Entwicklung
+aufnehmen. `git pull` macht aber genau das.  
+Willst du an dieser Stelle sicher gehen, so machst
+du zuerst `git fetch` und siehst dir die Änderungen 
+zuerst an -- siehe weiter unten. Im Anschluss kannst du
+sie dann mit `git merge` übernehmen.
+
+## Hands on
+In den nachfolgenden Abschnitten wird oft das Wort
+*origin* auftreten. Wir sehen uns lieber gleich an, 
+was es damit auf sich hat. Für die einzelnen Schritte 
+gibt es Scripts in den Kursmaterialien!
+
+### origin 
+**Origin.sh**  
+```{.bash include="src/origin.sh"}
+```
+Das Script `origin.sh` erstellt dir
+
+* Ein Repository *entfernt*, das einen Server darstellt
+* Ein Repository *lokal*, das deinen Rechner darstellt, 
+  indem es eine Kopie von *entfernt* erstellt (=clone).
+
+Öffne eine \git-Bash in einem Spielordner und führe das 
+Script `origin.sh` aus. Die Ausgabe wird bei dir minimal 
+abweichen.
+
+```bash
+Leeres Git-Repository in /tmp/labor1/entfernt.git/ initialisiert
+Klone nach 'lokal' …
+warning: Sie scheinen ein leeres Repository geklont zu haben.
+Fertig.
+Auf Branch main
+
+Noch keine Commits
+
+nichts zu committen (erstellen/kopieren Sie Dateien und benutzen
+Sie "git add" zum Versionieren)
+```
+
+Durch 
+
+```bash 
+git remote -v 
+```
+
+siehst du, woher das Repository stammt. Bei dir ist natürlich
+ein anderer Pfad zu sehen!
+
+```bash
+origin	/tmp/labor1/entfernt.git (fetch)
+origin	/tmp/labor1/entfernt.git (push)
+```
+
+Wenn also in den folgenden Ausgaben und Befehlen *origin* 
+erscheint, dann ist dieser Pfad gemeint. *Pfad* kann allerdings
+auch eine Netzwerkverbindung zu einem Server sein -- das ist 
+sogar der Normalfall.
+
+Mit \branch{origin/main} ist immer der Branch im entfernten Repository
+gemeint, \branch{main} alleine bezieht sich auf den Branch im *Klon*.
+
+
+### Zeiger
+Der nachfolgende Setup erstellt 
+
+* einen Ordner
+* im Ordner ein vollwertiges Repository (--bare)
+* einen *Klon* des Repositories mit dem Namen *susi*
+* einen *Klon* des Repositories mit dem Namen *max*
+
+Öffen in einem geeigneten Ordner ein \git-Bash und 
+führe das Script `susi_und_max.sh` aus (`./susi_und_max.sh`).
+
+Beachte, dass aus in dem Script im oberen Teil etwas Overhead
+nötig ist, damit die Benutzer nicht mit einem leeren Repository
+konfrontiert werden -- dort fehlt nämlich dann ein Branch!
+
+```{.bash include="src/susi_und_max.sh"}
+```
+
+Öffne ein zweites Fenster im gleichen Ordner und entscheide 
+dich, welches für *Susi* und welches für *Max* stehen soll.
+Wechsle jeweils in das Repository (`cd susi` und `cd max`).
+
+Lasse dir in beiden Repositories den Status ausgeben
+
+```bash
+git status
+```
+
+Es sollte jeweils erscheinen
+
+```bash
+Auf Branch main
+Ihr Branch ist auf demselben Stand wie 'origin/main'.
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+```
+
+Im Prinzip hat Susi jetzt eine identische Kopie des 
+Repositories erstellt. Allerdings ist der \branch{main}-Branch 
+jetzt *Susis* \branch{main}-Branch in *diesem* Repository.
+Die Statusmeldung sagt dir, beide Branches *main* (Susis)
+und *origin/main* (der im Original Repo) sind gleich.  
+
+Nachfolgend die Bezeichnungen *Original* und *SUSI* bzw. *MAX* 
+für die Repositories.
+
+Susi erstellt in *SUSI* eine Datei und einen Commit:
+
+```bash
+echo "Hallo Welt" >> datei.txt 
+git add datei.txt 
+git commit -m "Begrüßung"
+```
+
+und betrachtet den Status erneut:
+
+```bash
+Auf Branch main
+Ihr Branch ist 1 Commit vor 'origin/main'.
+  (benutzen Sie "git push", um lokale Commits zu publizieren)
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+```
+
+Der \git-Ordner führt also Buch über die Beziehung zwischen 
+den Repositories und sagt ihr, dass *SUSI* einen 
+Commit weiter vorne ist, als das *Original*.  
+Das macht \git, indem es *Pointer* auf Commits
+setzt (also quasi eine Datei im `.git`-Ordner führt, 
+wo der aktuelle Hash enthalten ist.)
+
+```bash
+...
+├── config
+├── description
+├── HEAD           #<1>
+├── hooks
+│   ├── applypatch-msg.sample
+...
+├── packed-refs #<3>
+└── refs
+    ├── heads
+    │   └── main
+    ├── remotes
+    │   └── origin
+    │       └── HEAD  #<2>
+    └── tags
+```
+1. Enthält den Hash vom letzten Commit im Klon
+2. Enthält den Hash vom letzten Commit im Original
+3. Siehe nachfolgender Text
+
+Ein `git log --oneline` zeigt dir:
+
+```bash
+78db34e (HEAD -> main) Begrüßung
+d46681d (origin/main, origin/HEAD) Init
+```
+
+Und ein Blick in die beiden Dateien liefert die Hashes --
+zumindest fast, denn \git hat hier schon wieder optimiert
+und den Hash vom *origin/master* in die Datei *packed-refs* 
+umgelagert. 
+
+Das *Original* weiß von diesem Commit noch nichts -- die Repositories 
+haben ja auch noch nicht miteinander kommuniziert! Wenn Max in seinem
+Repository *MAX* nachsieht kann er Susis Datei nicht sehen und 
+daran würde auch ein `git pull` nichts ändern.
+
+Susi führt nun einen Push aus:
+
+```bash
+git push origin main 
+```
+*Git* kommentiert das:
+
+```bash
+Objekte aufzählen: 4, fertig.
+Zähle Objekte: 100% (4/4), fertig.
+Delta-Kompression verwendet bis zu 6 Threads.
+Komprimiere Objekte: 100% (2/2), fertig.
+Schreibe Objekte: 100% (3/3), 292 Bytes | 292.00 KiB/s, fertig.
+Gesamt 3 (Delta 0), Wiederverwendet 0 (Delta 0), Pack wiederverwendet 0
+To /tmp/labor2/entfernt
+   d46681d..78db34e  main -> main
+``` 
+
+und jetzt liefert der Status:
+
+```bash
+Auf Branch main
+Ihr Branch ist auf demselben Stand wie 'origin/main'.
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+```
+
+Die Zeiger in `.git` wurden also auf den gleichen Hash gesetzt.
+
+**Wechseln wir zu Max**  
+
+Max hat noch sein ursprüngliches Repository und möchte auf 
+Änderungen am Server prüfen.
+
+```bash
+git fetch 
+```
+
+Als Ausgabe bekommt er
+```bash
+remote: Objekte aufzählen: 4, fertig.
+remote: Zähle Objekte: 100% (4/4), fertig.
+remote: Komprimiere Objekte: 100% (2/2), fertig.
+remote: Gesamt 3 (Delta 0), Wiederverwendet 0 (Delta 0), Pack wiederverwendet 0
+Entpacke Objekte: 100% (3/3), 272 Bytes | 272.00 KiB/s, fertig.
+Von /tmp/labor2/entfernt
+   d46681d..78db34e  main       -> origin/main
+```
+
+Sein Status sagt ihm
+
+```bash
+Auf Branch main
+Ihr Branch ist 1 Commit hinter 'origin/main', und kann vorgespult werden.
+  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+
+nichts zu committen, Arbeitsverzeichnis unverändert
+```
+
+Mit *vorspulen* ist ein Merge gemeint. Max will aber wissen *was* 
+sich geändert hat.
+
+```bash
+git log origin main
+```
+
+Max sieht den Commit, der noch nicht in seinen Branch integriert ist.
+
+```bash
+commit 78db34e3176c4b78d4b027eac06aa4dda5c50cdb (origin/main, origin/HEAD)
+Author: wolfgang <susi@t-online.de>
+Date:   Wed Jan 29 12:39:38 2025 +0100
+
+    Begrüßung
+
+commit d46681db23c9e2b3f5379a951c026e3d673fe3e0 (HEAD -> main)
+Author: wolfgang <lehrer@t-online.de>
+Date:   Wed Jan 29 12:34:48 2025 +0100
+
+    Init
+```
+
+Schön sieht man das auch mit 
+
+```bash
+git show-ref
+```
+
+Der lokale \branch{main} befindet sich noch bei d46681, der 
+entfernte \branch{origin main} hingegen bei 78db34.  
+Durch folgenden Befehl sieht Max die Differenz der Versionen:
+
+```bash
+git show 78db34
+```
+
+Geht es einfach nur um den gesamten Inhalt:
+
+```bash
+git show 78db34e3:datei.txt
+```
+
+Max erkennt, dass es problemlose Änderungen sind und übernimmt
+sie in seinen Branch:
+
+```bash
+git merge
+```
+Die Hashes ziegen, was passiert:
+
+```bash
+Aktualisiere d46681d..78db34e
+Fast-forward
+ datei.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 datei.txt
+```
+
+Hätte Max größeres Vertrauen, so würde er sich diese Recherche 
+sparen und einfach ein `git pull` ausführen. Im Prinzip ist
+dieser Befehl die direkte Nacheinanderausführung von `fetch` 
+und `merge`.
+
+### Einige Fragen
+
+**Muss ich das 'origin main' immer angeben?**  
+Generell kannst du auch `origin/main` schreiben. 
+Wenn du ein Repository geclont hast, dann genügt auch
+`git push` oder `git pull` ohne diese Angabe weil es eine
+eindeutige Verbindung lokal-remote gibt (=upstream).
+
+Soll das auch bei anderen Branchse als bei \branch{main}
+funktionieren, so muss der Branch einmalig mit folgendem
+Befehl ins Repository^[Die Angabe von *origin* ist nötig, weil auch mehrere verschiedene
+Repositories denkbar sind!] übertragen werden:
+
+```bash
+git push -u origin <branchname>
+```
+
+
+
+**Ist es egal, in welchem Branch ich fetch/pull/push ausführe?**  
+Nein. Befindest du dich auf dem \branch{feature_a}-Branch und 
+führst `git push origin feature_b` aus, so wird der lokale 
+\branch{feature_b}-Branch auf den entfernten \branch{feature_b}-Branch
+gepusht.
+
+Befindest du dich auf dem \branch{feature_a}-Branch und 
+führst `git pull origin main` aus, dann werden die Inhalte 
+vom entfernten \branch{main}-Branch in deinen *aktuellen* 
+Branch gemerged! Hier musst du aufpassen!
+
+**Wie hängen lokale und remote Branches zusammen?**  
+Zunächst sind Branches lokal und werden beim `push` 
+auch nicht auf den Server übertragen.

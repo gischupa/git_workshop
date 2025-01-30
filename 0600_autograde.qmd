@@ -1,0 +1,91 @@
+# Autograding
+
+Der Workflow für das Autograding von Schülerlösungen unterscheidet sich deutlich von der 
+normalen Arbeit mit git/gitea, weil man den *kreativen Wissenstransfer* doch möglichst
+vermeiden möchte.  
+Beim Autograding geht es im Prinzip darum, dass die Schüler ihre Aufgaben / Prüfungen
+auf eine Art und Weise schreiben, dass sie mit automatisierten Test überprüft werden
+können. Hierbei können sichtbare Tests  (der Schüler sieht sofort, 
+ob seine Lösung passt) und versteckte Tests verwendet werden.  
+Technisch gesehen führt der Schüler einen Commit aus, der die Überprüfung triggert.
+Es ist auch möglich, dass sich der Lehrer die Schülerlösungen holt und dann erst
+testet. 
+
+## Vorarbeiten
+* Die Schüler müssen im System sein.
+* Erstellen eines Teams
+* Schüler dem Team zuordnen
+* Ein Repository für Hausaufgaben oder spezielle Prüfungen erstellen
+  und die benötigten Materialien hinein kopieren.
+
+Das Script aus den Kursmaterialien führt dann für alle Teammitglieder nachfolgende Schritte aus
+* Das Repository für den Schüler *forken*, d.h. eine vollwertige Kopie
+  erstellen
+* Die Berechtigungen so setzen, dass kein Schüler den Fork eines Mitschülers sehen kann
+
+
+## Workflow Schüler
+Das hängt nun von der genauen Aubeitsweise ab. Im Prinzip muss der Schüler 
+die Aufgabenstellung in der Aufgabendatei erledigen, die im Original-Repository
+erstellt wurde. Nach dem Erstellen der Lösung wird die Arbeit committet und 
+auf den Server gepusht. Dort greifen dann die nachfolgende Automatismen.
+
+Da das gleiche Repo (Hausaufgaben) über einen längeren Zeitraum genutzt 
+werden soll, muss der Schüler regelmäßig die Änderungen im Origina-Repo
+in seinen Fork übertragen. Der Lehrer har dafür zu sorgen (Anleitung, ...)
+dass es Dateien gibt (Namenskonvention), die der Schüler nicht anfasst. 
+Auf diese Weise werden Merge-Konflikte vermieden, wenn Original-Repo und 
+Fork zusammengeführt werden.
+
+```bash
+git pull 
+
+
+## Ablauf
+
+* Schüler einrichten
+* CI/CD System einrichten - hier wird auf jenkins verweisen? Geht auch otter-grader?
+* Vorlagen für verschiedene Aufgaben erstellen ?????
+* Anleitung durch README.md
+
+
+## Beginn des Kurses
+
+* Der Lehrer erstellt ein Repo
+* Die Schüler forken das über die GUI
+* Die Schüler Clonen ihr eigenes Repo
+```
+git clone https://gitea.example.com/student1/haupt-repository.git
+```
+* Jeden Tag wird das Repo gepullt
+```
+cd haupt-repository
+git pull origin main
+```
+* Die Hausaufgaben werden committed und gepusht
+```bash
+git add . --all
+git commit -m "erledigt"
+```
+* Der Lehrer sammelt die Arbeien ein
+```bash
+#!/bin/bash
+
+STUDENT_REPOS=("https://gitea.example.com/student1/hausaufgaben.git" "https://gitea.example.com/student2/hausaufgaben.git")
+LOCAL_DIR="student_submissions"
+
+mkdir -p $LOCAL_DIR
+cd $LOCAL_DIR
+
+for REPO in "${STUDENT_REPOS[@]}"; do
+  REPO_NAME=$(basename $REPO .git)
+  if [ -d "$REPO_NAME" ]; then
+    cd $REPO_NAME
+    git pull origin main
+    cd ..
+  else
+    git clone $REPO
+  fi
+done
+```
+

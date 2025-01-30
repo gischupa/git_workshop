@@ -1,0 +1,62 @@
+## Fehlerbehebung
+Ein Versionsverwaltungsprogramm hat unter anderem 
+die Aufgabe, ein Projekt in gewissem Umfang revisionssicher
+zu protokollieren. Aus diesem Grund müssen bestimmte 
+*Fehler* in der History erhalten bleiben.  
+Bei anderen Fehlern ist es aber wichtig, dass sie 
+schnell und einfach rückgängig gemacht werden können.
+
+Relativ unproblematisch sind *Reparaturen* bei lokaler
+Arbeit, bevor ein Commit erfolgt ist:
+
+* Neue, fehlerhafte Dateien kann man einfach löschen.
+* Bereits versionierte Dateien mit Fehlern können
+  durch `git restore <dateiname>` wieder mit 
+  der Version aus dem Stage überschrieben werden^[Es 
+  gibt auch noch den Befehl `git restore <dateiname> --staged`,
+  der das \work unangetastet lässt und nur die Version
+  aus dem Stage löscht.]
+
+\samplestart
+Vorher habe ich geschrieben, dass bei einem Commit die Dateien
+aus dem Stage in die Projekthistorie übertragen und aus 
+dem Stage entfernt werden. Das stimmt so nicht ganz.  
+
+In Wirklichkeit zeigt `git status` diese Dateien nur nicht 
+mehr an, was auf einen leeren Stage schließen lassen würde. 
+\sampleend
+
+Wäre der Stage wirklich leer, so könnte nachfolgende 
+Reparatur nicht funktionieren -- was sie aber tut:
+
+```bash
+echo "text" > datei.txt 
+git add datei.txt     # danach im Stage 
+git commit -m "gesichert"
+
+git status   # Stage anscheinend leer 
+
+echo "falscher Text" >> datei.txt   #  Fehler 
+git restore datei.txt              # repariert
+```
+
+\samplestart
+**Hinweis**  
+Im Netz findet man oft die Variante mit 
+`checkout`, die früher üblich war. `restore`
+wurde eingeführt um eindeutigere Befehle zu schaffen.
+\sampleend
+
+
+Mit dem `restore`-Befehl kann man auch eine
+Datei aus einem beliebigen Commit restaurieren:
+
+```bash
+git restore --source=<HASH> <datei>
+```
+
+Die Fehlerbehebung kann auch das Löschen ganzer 
+Entwicklungs- oder Testzweige bedeutet, was später
+noch besprochen wird.
+
+

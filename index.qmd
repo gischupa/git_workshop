@@ -1,0 +1,25 @@
+# Vorbemerkung
+Ein Betrieb von \git direkt auf Windows ist nicht sinnvoll.
+Es wird also ein System wie MacOS oder Linux vorausgesetzt.
+
+Dieses Handout ist in folgende Sinnabschnitte unterteilt  
+
+* Ein minimaler \git-Server
+* Grundlagen der Arbeit mit \git
+* Installation eines vollwertigen Gitea-Servers
+
+# Ein minimaler \git-Server
+{{< include 0100_benutzer.qmd >}}
+{{< include 0150_basis.qmd >}}
+{{< include 0170_ersteSchritte.qmd >}}
+{{< include 0210_bash1.qmd >}}
+{{< include 0215_fehler.qmd >}}
+{{< include 0220_bash2.qmd >}}
+{{< include 0300_rebase.qmd >}}
+{{< include 0350_team.qmd >}}
+{{< include 0500_gitea.qmd >}}
+{{< include 0510_docker.qmd >}}
+{{< include 0520_giteadocker.qmd >}}
+{{< include 0530_gitea_actions.qmd >}}
+{{< include 0550_client.qmd >}}
+{{< include 0600_autograde.qmd >}}

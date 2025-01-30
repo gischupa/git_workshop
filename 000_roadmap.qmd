@@ -1,0 +1,53 @@
+# Roadmap
+
+## Installation
+
+### Lokal
+* Installation VB
+* Deb-Distro ... wahrscheinlich Ubuntu
+* Installation in VB - kleine Installation
+* Installation Docker nötig?
+* Wie verwalten wir die Schüler?
+
+### Remote
+* Docker als Perspektive mit Demo von linuxserver.io
+* 
+
+## Schülerverwaltung (draft)
+
+Was können wir den Benutzern zumuten?
+
+* Wäre ein VW-Docker Container eine Option?
+* SCP einer Schülerliste + Anschluss-Script?
+  Problem ist hier die "Verwaltung" der Klassen und User.
+  Ein ncurses-script könnte da hilfreich sein, nach ssh-login
+* Geht das evtl auch über einen "Zwergen"_Web-server, der
+  aus dem Terminal gestartet wird?
+* Git-Server für jede Klasse mit Docker sinnvoll?
+
+* Sollen die Schüler einen personalisierten Login 
+  haben oder als User1-20 laufen?
+* Sollen sich die Schüler anmelden dürfen oder nur
+  PK für git?
+
+
+
+Vorteile Docker
+
+Nachteile Docker  
+
+* die einzelnen Instanzen können nicht alle Port 22 verwenden!
+  den 22er brauchen wir wohl für den HOST 
+* Als Demo ginge Docker schon
+* Man könnte Demo-Images für Docker  
+
+
+
+## Notizen
+
+ssh evtl NICHT als root, sondern als normaler User,
+dann muss aber sudo eingerichtet werden. das geht schon
+wieder TIEF ins Wissen ...
+
+
+

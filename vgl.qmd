@@ -1,0 +1,493 @@
+# Hands on
+Nachfolgend werden exemplarisch Schritte beschrieben, die mit einem
+lokalen Repository üblich sind. Zwischendurch kommen auch *unübliche* 
+Befehle zum Einsatz, um interne Abläufe von \git zu erklären.  
+Da um die Grundabläufe mit \git geht und das Erstellen eines Programms 
+zu viel Zeit erfordert, soll ein anderer Typ von Projekt durchexerziert
+werden, das Erstellen eines kleinen Buches aus Kurzgeschichten.
+Die Geschichten wurden von einer KI generiert um den Arbeitsaufwand 
+zu minimieren. Sie liegen auch nicht in der endgültigen Form vor, da 
+ja ein *Arbeitsablauf* simuliert werden soll.
+
+## Labor
+Die Einzelteile der Geschichte befinden sich in einem \git-Repository
+und müssen zunächst geclont werden. Es handelt sich hierbei um 
+ein öffentlichen Repository, auf das auch ohne Benutzerkennung
+zugegriffen werden darf -- aber eben nur lesen. Aus diesem Grund
+wird zum Clonen auch *https* und nicht *ssh* verwendet.
+Öffne die \git-Bash und gib ein:
+
+
+```bash
+mkdir fortbildung
+cd fortbildung
+git clone https://TODO # Ziel: vorlage.git 
+```
+
+\samplestart
+Um der Erklärungen besser folgen zu können, wäre es sinnvoll,
+wenn bei jedem Teilnehmer exkt die gleichen Hashwerte wie hier 
+in der Anleitung entstehen würden. Das setzt aber voraus, dass
+die Arbeitsschritte absolut identische nachvollzogen werden --
+bis zum letzten Leerzeichen und Zeilenumbruch. Das geht, ist aber
+eine Herausforderung. Dies gilt insbesondere, weil Windows einen
+anderen Typ von Zeilenumbruch verwendet. Es wäre schön, wenn es 
+klappen würde (wenn nicht, ist es aber auch keine Katastrophe!).
+\sampleend
+
+## Konfigurieren von git
+**Aktuelle Einstellungen ansehen**  
+```bash
+IN:  git config --list
+OUT: user.email=
+     user.name=
+     ...
+```
+
+**Einstellungen anpassen**  
+```bash
+# eigene Phantasiedaten verwenden
+git config --global user.name "Susi Sandmann" 
+git config --global user.email=susi@sandmann.de
+```
+
+**Erstellen eines Repositories**  
+*Eingabe*  
+```bash
+cd 
+cd fortbildung
+git init buch 
+cd buch 
+```
+
+*Ausgabe*  
+```bash
+Hinweis: Als Name für den initialen Branch wurde 'master' benutzt.
+...
+Hinweis: 	git branch -m <Name> 
+```
+
+Aus Gründen der politischen Korrektheit ändern wir den Namen des Hauptzweigs
+```bash
+git branch -m main
+```
+
+**Erste Datei anlegen**  
+
+Statt eine Datei anzulegen kopierst du die Datei `story1.md` in den Ordner `buch`.
+Sie enthält (strategisch) nur einen Teil der Geschichte! Das Kopieren kann auch 
+gerne mit der Maus im Explorer stattfinden. Wer allerdings nicht ständig
+zwischen Tastatur und Maus wechseln möchte, der kann auch folgenden
+Befehl verwenden:
+
+*Eingabe*  
+```bash
+# aktueller Ort ist ~/fortbildung/buch
+cp ../../story1.md  . 
+git status
+```
+
+*Ausgabe*  
+```bash
+Auf Branch main # <1>
+
+Noch keine Commits
+
+Unversionierte Dateien:
+  (benutzen Sie "git add <Datei>...", um die Änderungen zum Commit vorzumerken)
+	story1.md # <2>
+
+nichts zum Commit vorgemerkt, aber es gibt unversionierte Dateien
+(benutzen Sie "git add" zum Versionieren) # <3>
+```
+1. Geänderter Name ist ok.
+2. Diese Datei ist betroffen, hier kann eine längere Liste stehen.
+3. Empfohlener Befehl `git add story1.md` 
+
+
+**Übertragen in den Stage**  
+
+*Eingabe*  
+```bash
+git add story1.md
+git status
+```
+
+*Ausgabe*  
+```bash
+Auf Branch main
+
+Noch keine Commits
+
+Zum Commit vorgemerkte Änderungen: # <1>
+  (benutzen Sie "git rm --cached <Datei>..." zum Entfernen aus der Staging-Area)
+	neue Datei:     story1.md # <2>
+```
+1. Die Datei liegt auf dem Stage, bereit zum Commit
+2. Nur diese eine Datei.
+
+Der Hinweis `git rm --cached <Datei>` bewirkt nicht das Löschen der Datei
+aus dem Arbeitsverzeichnis, sondern aus dem Stage!
+
+### Exkurs
+Werfen wir einen Blick hinter die Kulissen von git.
+
+Der aktuelle Stand des Repositories wird u.a. in der Datei `.git/index` gespeichert.
+Mit dem Befehl `git ls-files --staged` wird der Inhalt dieser Binärdatei angezeigt.
+
+Aktuell enthält sie die Zeile
+
+TODO: Hash ermitteln
+
+```bash
+100644 9c818e739ca95f73b832d3ea62d351094cffdca2 0	story1.md
+```
+Sie besteht aus Dateityp, Hash, Status und Dateiname.  
+Wir die Datei nun mit `git rm --cached story1.md` aus dem Stage entfernt,
+so ist die Datei `.git/index` leer.
+
+Falls du das probiert hast, die Datei bitte wieder in den Stage aufnehmen!
+
+### Labor
+
+Der erste Teil von `story1.md` ist nun in die Versionierung aufgenommen,
+es wurde aber noch kein protokollierter Punkt in der Projektgeschichte (=commit)
+erstellt.
+
+Du schreibst an deiner Geschichte weiter und damit ändert sich der 
+Stand zwischen Arbeitsverzeichnis und Stage. Wir machen das, indem 
+wir in den Vorlagenordner springen und durch den nachfolgenden Befehl 
+die vorbereitete neue Version von `story1.md` *aktivieren* und 
+in den Buchordner kopieren (alte Datei überschreiben). Du darfst
+dich von der Bildschirmmeldung nicht irritieren lassen - das ist ok so.
+
+*Eingabe*  
+```bash
+git checkout HASH   TODO
+```
+
+Im Ordner `buch` dann den Befehl von oben wiederholen:
+
+```bash
+# aktueller Ort ist ~/fortbildung/buch
+cp ../../story1.md  . 
+git status
+```
+
+*Ausgabe*  
+
+```bash
+Auf Branch main
+
+Noch keine Commits
+
+Zum Commit vorgemerkte Änderungen:
+  (benutzen Sie "git rm --cached <Datei>..." zum Entfernen aus der Staging-Area)
+	neue Datei:     story1.md # <1>
+
+Änderungen, die nicht zum Commit vorgemerkt sind:
+  (benutzen Sie "git add <Datei>...", um die Änderungen zum Commit vorzumerken)
+  (benutzen Sie "git restore <Datei>...", um die Änderungen im Arbeitsverzeichnis zu verwerfen)
+	geändert:       story1.md # <2>
+```
+1. Die alte Version der Datei ist zum Commit vorgemerkt
+2. Die neuere Version ist noch nicht im Stage!
+
+Wieder werden mögliche Befehle angegeben, die in diesem Zustand sinnvoll sein können!
+
+\samplestart
+**Hinweis**  
+Wenn man versucht, die Datei mit `git rm --cached story1.md` aus dem Stage zu löschen,
+so bekommt man eine Fehlermeldung, da Datenverlust bei der neuen Version droht!
+```
+error: die folgende Datei hat zum Commit vorgemerkte Änderungen unterschiedlich
+zu der Datei und HEAD:
+    story1.md
+(benutzen Sie -f, um die Löschung zu erzwingen)
+```
+
+Bei `git restore story1.md` gibt es keine solche Warnung! Die Datei verbleibt dabei
+auch im Stage unverändert erhalten.
+\sampleend
+
+Nun kann erstmalig eine Differenz zwischen Versionen
+der Datei erkannt werden:
+
+```bash
+git diff story1.md
+```
+
+### Analyse der Differenz
+
+TODO: Neu aufbauen
+```bash
+diff --git a/story1.py b/snake.py # <1>
+index 9c818e7..3126a18 100644          # <2>
+--- a/snake.py                      # <3>
++++ b/snake.py
+@@ -1,2 +1,4 @@   # <4>
+ #!/bin/python3   # <5>
+ #Projektbeginn
++class Main():    # <6>
++    pass:
+```
+1. Welche Dateien werden verglichen? `a/` und `b/` sind nur Kennzeichner der Dateien.
+   `a/` ist die ältere und `b/` die neuere Datei.
+2. Bei 9c818e7 und 3126a18 handelt es sich um die Hash-Ids der beiden Dateien, die
+   verglichen werden (dazu unten mehr).
+3. Soll erneut klarstellen `---` ist alt, `+++` ist neu.
+4. Die Zeile heißt *Hunk Header*. Er beginnt und endet mit `@@` 
+5. In diesen Zeilen gab es keine Änderungen
+6. Das muss zu `a/` hinzugefügt werden, um `b/` zu erhalten
+
+Leider ist das Format vom *Hunk Header* etwas kryptisch!
+Er gibt immer an, in welcher Zeile der Vergleich beginnt 
+und wie viele Zeilen betroffen sind (vorher und nachher).
+Bei `@@ -3,12 +3,14 @@` beginnt der relevante Bereich ab Zeile 3
+und in der Ursprünglichen Version lagen 12 Zeilen vor, in der neuen
+Version sind es jetzt 14. Die Änderungen im Detail folgen 
+in den nächsten Zeileen.
+
+### Hands on
+Nun wird die Datei wieder zum Stage hinzugefügt und dann commitet:
+
+*Eingabe*  
+```bash
+git add story1.md
+git commit -m 'Guter Ansatz'
+```
+
+TODO:  Hash aktualisieren
+
+*Ausgabe*  
+```bash
+[main (Root-Commit) 5229c6b] Guter Ansatz
+ 1 file changed, 4 insertions(+)
+ create mode 100644 srory1.md
+```
+
+### Ein Blick in git
+
+Mit folgenden Befehlen kann man die Inhalte der einzelnen Dateien betrachten:
+
+```bash
+git ls-files hash1
+git ls-files -s hash2
+```
+
+
+### Labor 
+
+Dieser Arbeitszyklus von `add, status, diff, commit` stellt 
+den Kern der Arbeit mit \git dar, wenn man alleine arbeitet.
+Allerdings gibt es noch weitere, sehr wichtige Techniken, 
+die auch bei der Arbeit im Team eine große Rolle spielen werden.
+
+Du hat nun `story1.md` so weit fertig gestellt und möchtest an
+anderen Kurzgeschichten arbeiten. Aus diesem Grund beschließt du,
+dass fertige Geschichten an einer anderen *Stelle* aufgeboben 
+werden, als *Work in Progress*.  
+
+In der Softwareentwicklung sprechen wir hier von fertigen 
+Produkten, die an den Kunden ausgeliefert werden und von 
+Experimenten, Features, Bugfixes, ... , die parallel entwickelt
+werden müssen, *ohne* das aktuell lauffähige Programm zu beeinträchtigen.
+
+Du beschließt also, einen *Entwicklungszweig* zu erstellen:
+
+
+```bash 
+git switch -c entwicklung_story_2
+```
+
+Git teilt dir mit, dass du dich nun in diesem *Zweig* (=Branch) 
+befindest. Du siehst hier immer noch deine aktuelle Story 1!
+
+Nun beginnst du mit Story 2, indem du sie aus 
+dem Vorlagenordner kopierst. Vorher musst du dort 
+aber an die passende Stelle *springen* -- 
+mittlerweile sollte auch klar sein, 
+was ich in diesem Repository gemacht habe. 
+Die einzelnen Stationen des Buch-Projekts sind als einzelne Commits angelegt, die wir jetzt nacheinander anspringen.
+
+Für den Beginn von Story 2 benötigst du
+
+```bash 
+git checkout 44aedd0 
+```
+
+Nun kannst du `story2.md` in den Arbeitsordner 
+kopieren
+
+
+```bash
+# aktueller Ort ist ~/fortbildung/buch
+cp ../../story2.md  . 
+git status
+```
+
+Du bist mit deinem bisherigen Werk ganz zufrieden,
+hast aber zwei Ideen, wie man du weiter machen könntest.
+Aus diesem Grund erstellst du einen Commit:
+
+```bash
+git add story2.md 
+git commit -m "Story 2 begonnen"
+```
+
+Nun legst du für jede Idee einen Branch an:
+
+```bash
+git switch -c story2_idee_1
+git switch entwicklung_story_2
+git switch -c story2_idee_2
+```
+
+Nun nicht den Überblick verlieren!
+Im den Branch `story2_idee_1` wir nun an der 
+Idee `story2.md` weiter gearbeitet. Bei uns bedeutet
+das, im Vorlagenordner zum Commit aa4d842 zu springen:
+
+```bash
+# im Vorlagenordner!
+git checkout aa4d842 
+```
+
+Im Arbeitsordner den richtigen Zweig wählen:
+
+```bash 
+git switch story2_idee_1
+git branch    # nur als Kontrolle
+```
+
+Kopieren von `story2.md`:
+
+```bash
+# aktueller Ort ist ~/fortbildung/buch
+cp ../../story2.md  . 
+git status
+```
+
+Diesen Stand sichern wir wieder ab:
+
+```bash
+git add story2.md
+git commit -m "Inhalt nach Idee1 fortgeführt"
+```
+
+Da du aber noch nicht sicher bist, ob diese Version verwenden willst, oder doch die von deiner zweiten Idee, arbeitest du diese auch noch etwas aus:
+
+Im Vorlagenordner
+
+```bash
+git checkout 745f475
+```
+
+Im Arbeitsordner
+
+```bash
+git switch story2_idee_2
+git branch    # nur als Kontrolle
+```
+
+Kopieren von `story2.md`:
+
+```bash
+# aktueller Ort ist ~/fortbildung/buch
+cp ../../story2.md  . 
+git status
+```
+
+Auch das ist nun eine neue, Version. Hier hast du aber eine 
+kleine Passage entnommen und eine andere ergänzt.  
+Wieder sicherst du das ab:
+
+```bash 
+git add story2.md
+git commit -m "Inhalt nach Idee2 fortgeführt"
+```
+
+Nun hast du das *Problem*, dass du drei Versionen hast:
+
+1. Version 1 im Entwicklungszweig. Sie ist die Stufe vor
+   der Neubearbeitung.
+2. Version 2 im Branch für Idee 1
+3. Version 3 im Branch für Idee 2
+
+Du bist unentschieden und siehst dir die 3 Versionen 
+noch einmal in Ruhe an.
+
+```bash
+git switch story2_idee_1        # in Ruhe durchlesen
+git switch story2_idee_2        # in Ruhe durchlesen 
+git switch entwicklung_story_2  # in Ruhe durchlesen
+```
+
+Jetzt fällt dir ein *grober Rechtschreibfehler* im Entwicklungszweig
+auf, den du sofort korrigierst. Bei uns ist es das Wort *weiße*,
+das sich anstelle von "weise" in den Text geschummelt hat.
+
+Im Commit 1789ff0 des Vorlagenordners ist das korrigiert -- also wieder 
+
+* Wechsel in den Vorlagenordner 
+* Passenden Commit auschecken
+* Datei `story2.md` in den Arbeitsordner kopieren
+
+
+Natürlich machst du wieder einen Commit daraus:
+
+```bash
+git add story2
+git commit -m "typo 'weiße' korrigiert"
+```
+
+Nun weicht also auch die Basisversion noch von den 
+Branch-Versionen ab ... Chaos!
+
+Du musst dich nun entscheiden, mit welcher Version
+du dein Projekt fortführen willst. In Wirklichkeit 
+werden diese Branches natürlich deutlich länger sein, 
+das Prinzip bleibt aber gleich!
+
+Du entscheidest dich, dass du Idee 1 weiter verwenden 
+willst und möchtest sie in den Entwicklungszweig 
+übernehmen. In diesem Zweig solltest du aktuell 
+gerade sein, überprüfst das aber:
+
+```bash
+git branch
+# falls nötig
+git switch entwicklung_story_2
+```
+
+Nun führst du die Zweige zusammen:
+
+```bash
+git merge story2_idee_1
+```
+
+Nun siehst du eine fette Fehlermeldung, weil die Versionen 
+nicht mehr zusammenpassen! \git fordert Handarbeit an.
+Ohne den ausgebesserten Rechtschreibfehler hätte das 
+automatisch funktioniert (Fast Forward Merge), aber so
+eben nicht. Gerade für Anfänger ist das eine unheimliche 
+Situation, in der man anscheinend viel kaputt machen 
+kann ... kann man ja auch. Es ist aber halb so tragisch!
+
+Wirf einen Blick in die Datei `story2.md`. Du erkennst
+sofort die Stelle, an der Änderungen erfolgt sind:
+
+
+
+
+Du musst dich jetzt entscheiden, welche Änderungen in der 
+Datei überleben dürfen und welche nicht. Das erledigst du
+durch händisches Löschen der unerwünschten Passagen.
+
+Dann speicherst du die Datei und machst einen 
+neuen Commit:
+
+```bash
+git add story2.md
+git commit -m "merge von Idee 1 erledigt"
+```

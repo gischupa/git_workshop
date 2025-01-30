@@ -1,0 +1,157 @@
+## Zu klärende Fragen
+Ein einfacher \git-Server ist lediglich ein Server mit 
+einer rudimentären Installation von \git und einer 
+Erreichbarkeit über das Netz. Da gerade diese Erreichbarkeit
+bei Windows ein Problem darstellt, handelt es sich
+im Regelfall um einen Linux-Server. Als solcher besitzt 
+er üblicherweise kein grafisches Benutzerinterface (GUI).
+
+Je nach Szenario müssen auf dem Server Benutzer angelegt 
+und verwaltet werden. Das kann ziemlich aufwändig sein 
+und ist bei größeren Benutzerzahlen ohne Scripting kaum
+machbar. Es gibt Hilfsmittel in Form von Weboberflächen,
+die hier aber nicht weiter thematisiert werden.
+
+Für einen reinen \gitserver genügt allerdings bereits ein 
+einziger Bunutzer -- z.B. \git.
+
+
+**Zweck des Servers**  
+Geht es nur um \git oder sollen noch Wordpress, VPN-Server, ... 
+dazu kommen. Für jedes Szenario wird die endgültige Konfiguration anders
+aussehen ...
+
+**Wer nutzt den Server**  
+Müssen auch andere Lehrkräfte (administrativen) Zugriff 
+auf den Server besitzen? Werden Gruppen benötigt?
+
+**Rolle der Benutzer**  
+Sollen die Benutzer nur für die Verwendung von \git angelegt und
+konfiguriert werden, oder sollen sie *vollwertige* 
+Benutzer sein, die den Server auch in anderen Szenarien
+sinnvoll nutzen dürfen?
+
+**Benennung der Benutzer**  
+Sollen die Schüler mit Zugangsdaten versehen werden, 
+die ihren Namen widerspiegeln -- Probleme siehe unten --
+oder sollen Zugänge im Sinne von `user1` bis `user20`
+verwendet werden?
+
+Bei Verwendung von richtigen Namen entstehen folgende Probleme:
+
+* Sonderzeichen in den richtigen Namen erschweren das automatische 
+  Erstellen von Benutzernamen.
+* Verschiedene Namen können den gleichen Login ergeben.
+* Behandlung von Schülern mit gleichen Namen in 
+  gleichen / verschiedenen Klassen
+
+Die Variante mit `user1` bis `user20` ist unpersönlich, leichter 
+einzurichten, erschwert dem Lehrer aber eventuell eine Zuordnung 
+zum echten Schüler.
+
+Hierfür gibt es keine perfekte Lösung.
+
+
+## Nur git 
+
+Wenn ein Schüler nur \git verwenden soll, dann braucht 
+er kein vollwertiges Benutzerkonto, an dem er sich
+auch für andere Arbeiten anmelden kann. Für die Verwendung 
+von \git genügt es bereits, wenn man einen Benutzer mit Namen 
+\git (als Beispiel) erstellt. Nachfolgend sind dann diese 
+Schritte nötig:
+
+* Dem Benutzer \git wird eine *echte* Anmeldung unmöglich gemacht.
+* Schüler erstellen sich SSH-Schlüssel-Paare
+* Sie schicken ihren Public-Key per Mail an den Lehrer
+* Der Lehrer fügt den Schlüssel in die Datei
+   `/home/git/.ssh/authorized_keys` ein.
+
+### Detaillierte Anleitung
+**Benutzer anlegen**  
+```bash
+useradd -m git
+passwd git  # Das Kennwort wird 2x unsichtbar abgefragt.
+```
+
+**Anmeldung deaktivieren**
+```bash
+nano /etc/passwd 
+```
+Den Benutzer \git  suchen und am Ende der Zeile aus `/bin/sh`
+den Eintrag `/bin/false` machen. Nun mit der Tastenkombination
+\strg{o} und `\strg{x} die Änderung abspeichern.
+
+**Erstellen eines Schlüsselpaars**  
+Unter Linux / MacOS einfach eingeben:
+```bash
+ssh-keygen -t rsa -b 4096 -C "schueler@example.com"
+```
+Als Dateiname *schule* vergeben und die Fragen nach einer PassPhrase
+beide Male mit der Enter-Taste übergehen.
+
+Unter Windows geht das ab Windows 10 mit dem gleichen Befehl 
+aus der *cmd.exe* oder *powershell*. 
+Frühere Versionen müssen PuTTYgen verwenden -- Anleitung z.B.
+über KI. Bei der Vorbereitung des Workshops hat sich 
+das Erstellen des Schlüsselpaares hier allerdings als ziemlich 
+problematisch erwiesen. Mit Standardnamen im Standardordner ging
+es problemlos, bei Angabe eines anderen Namens wurde es kompliziert.
+
+TODO: Überarbeiten Key unter WIndows.
+
+**Zuschicken der Datei `schule.pub` per Mail**  
+Sollte klar sein. Durch die Wahl von *schule* wird das Schlüsselpaar 
+auch nicht im versteckten Ordner `.ssh` angelegt, sondern sichtbar 
+direkt unter `c:\user\BENUTZER`.
+
+TODO: Das klappt noch nicht
+
+**Kopieren des Schlüssels**  
+Der Schlüssel muss aus der eMail in die Datei 
+`/home/git/.ssh/authorized_keys` eingetragen werden.
+
+TODO: Klappt das über \strg{c}
+
+Die Schüler sollten nun kennwortfrei mit \git arbeiten können.  
+Beim Einsatz einer Weboberfläche (später im Script) müssen die
+Schüler diesen Schlüssel selbst dort im System registrieren. 
+
+\samplestart
+**Hintergrund**  
+Nach der Anmeldung über ssh wird über die Einstellungen im 
+Benutzerkonto entschieden, welche Art von Terminal der Benutzer
+erhält. Üblich ist die \verb+bash, sh, csh, ...+. Wird hier 
+ein \textit{ungültiges} Terminal eingetragen, so ist eine Anmeldung
+auf diese Weise nicht mehr möglich. Für \git  spielt diese
+allerdings keine Rolle, da hierfür das Terminal nicht gestartet 
+werden muss. Da trotzdem eine Art von Anmeldung für den Zugriff auf
+\git  erfolgen muss, wird das Public-Key-Verfahren verwendet.
+
+Hier muss entschieden werden, wer für die Schlüssel zuständig
+ist. 
+\sampleend
+
+**Varianten**  
+
+* Der Lehrer erstellt Schlüsselpaare für die Schüler, die sie auf
+    den verwendeten Geräten (Schule, Zuhause) hinterlegen und die 
+    vom Lehrer auf dem Server freigeschaltet werden. Dies kann
+    zu Problemen führen, falls Schüler bereits aus anderen Gründen 
+    mit ssh arbeiten und bereits Schlüssel besitzen^[Auch das
+    kann im Prinzip konfiguriert werden, stellt aber höhere 
+    Anforderungen an den Benutzer]. 
+
+* Der Schüler erstellt selbst das Schlüsselpaar oder bringt
+  sein eigenes mit (ausdrücklich NICHT empfohlen, da der Private-Key 
+  dann auf einem Schulrechner liegt!). Er muss dann eigenständig seinen 
+  Public-Key auf dem Server hinterlegen.
+  Das ist auch problematische, weil der Schüler zunächst das Kennwort 
+  für den Benutzer \git besitzen muss. 
+  Nach dem Hinterlegen des Schlüssels ist es dann die Aufgabe des Lehrers, 
+  den Account zu sperren.
+
+* Der Schüler erstellt für die Schule und zuhause unabhängige Schlüsselpaare.
+  In diesem Fall müssen beide Schlüssel auf dem Server als gültig eingetragen 
+  werden. 
+

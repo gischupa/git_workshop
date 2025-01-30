@@ -1,0 +1,188 @@
+# Docker
+
+Docker ist eine besonders effiziente Art der Virtualisierung. Es ist
+möglich, auf einem physikalischen Server viele virtuelle Server zu erstellen, diese miteinander kommunizieren und daten austauschen zu lassen und sie auch über das Internet zugänglich zu machen. Es ist also kein
+Problem, mehrere eigenständige Datenbankserver parallel zu betreiben
+und damit Übungssystem für Schüler bereit zu stellen. Wie groß
+der Server dimensioniert sein muss, hängt dann wieder von den 
+speziellen Anforderungen ab (mit 6 Cores und 16 GB RAM geht schon einiges, 
+aber sicher nicht alles!)
+
+## Idee
+
+Nachdem Docker auf dem Server installiert ist (s.u.), kann man sich
+einfach ein Betriebssystem-Image aus dem Netz herunterladen und als
+Container starten. Natürlich ist es eine Vertrauensfrage, welche
+Images man verwendet. Es gibt allerdings *offizielle* Images von 
+Firmen und Organisationen, denen man vertrauen kann:
+
+```bash
+docker search gitlab
+
+NAME                             DESCRIPTION    STARS     OFFICIAL
+alpinelinux/gitlab               Alpine...      11        
+okteto/gitlab                                   3         
+gitlab/gitlab-runner             GitLab ...     960       
+vulhub/gitlab                                   1         
+gitlab/gitlab-ce                 GitLab...      4310      
+gitlab/gitlab-runner-helper                     50        
+gitlab/gitlab-ee                 GitLab ...     549   
+```
+
+In dieser gekürzten Ausgabe ist also anscheinend kein *offizielles* Image dabei.
+`gitlab/gitlab-ce` ist aber trotzdem offiziell. Dafür recherchiert man kurz auf 
+[dockerhub](https://dockerhub.com) und dort ist [gitlab](https://hub.docker.com/r/gitlab/gitlab-ce)
+verlinkt, wo die Informationen stehen.
+
+Wir werden übrigens nicht *gitlab* sondern *gitea* verwenden!
+
+Von einem Image kann man dann beliebig viele Instanzen erzeugen, die auch fast ohne 
+Zeitverlust startbar sind. Der längste Teil ist der Download des Image.
+
+**Hintergrund**  
+Images sind in Schichten konstruiert, die nacheinander heruntergeladen werden.
+Diese Schichtenstruktur ist wichtig, wenn man eigene Images erstellen möchte.
+Der Erstellungsprozess macht nämlich immer auf der Schicht weiter, ab der Änderungen
+am Image vorgenommen wurden (weitere Software, Dateiänderungen, ...). Auf diese 
+Weise wird viel weniger Zeit benötigt, als bei einer komplett neuen Erstellung!
+
+## Installation
+
+Die Befehle befinden sich auch bei den Kursmaterialien!
+
+TODO - Docker install Script
+
+```bash
+sudo -i
+apt update
+apt install apt-transport-https curl -y 
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg  \ 
+     | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+echo "deb [arch=$(dpkg --print-architecture) \ 
+      signed-by=/etc/apt/keyrings/docker.gpg] \ 
+      https://download.docker.com/linux/ubuntu \ 
+      $(. /etc/os-release && echo "$VERSION_CODENAME") \ 
+      stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt update
+
+apt install docker-ce docker-ce-cli \ 
+    containerd.io docker-buildx-plugin \ 
+    docker-compose-plugin -y
+
+
+compose_url="https://github.com/docker/compose/releases/download"
+curl -L  $compose_url/1.28.5/docker-compose-`uname \ 
+     -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+chmod +x /usr/local/bin/docker-compose
+```
+
+Aktuell läuft Docker jetzt als Benutzer *root* (=Administrator),
+was man im professionellen Firmenumfeld lieber vermeidet. Es gibt 
+Anleitung, wie man das ändert -- ich selbst verwende es aber auch so.
+
+Teste die Installation durch folgende Befehle:
+
+```bash
+docker --version
+docker-compose --version
+```
+
+## Kurzeinführung
+Es gibt sehr viele verschiedene Szenarien, wie Docker verwendet werden kann und entsprechend
+sind auch die Befehle zahlreich und unterschiedlich kompliziert.
+
+Nachfolgend ein kleines *Work-along*, wo einige Befehle verwendet und erklärt werden.
+Tipp einfach mal folgenden Befehl:
+
+```bash
+docker run -d -p 8090:80 --name it-tools corentinth/it-tools
+```
+
+Die Ausgabe (außer die Hashes) sollte dann so aussehen:
+```bash
+Unable to find image 'corentinth/it-tools:latest' locally
+latest: Pulling from corentinth/it-tools
+43c4264eed91: Pull complete 
+45a30f47e80f: Pull complete 
+4c64d3291c88: Pull complete 
+9dc0279166b1: Pull complete 
+d3b17590914c: Pull complete 
+50d6cfdb81c6: Pull complete 
+6592d833752c: Pull complete 
+f4cab7bcfad1: Pull complete 
+65e7766bfa53: Pull complete 
+c5f5268086b8: Pull complete 
+Digest: sha256:8b8128748339583ca951af03dfe02a9a4d7363f61a216226fc28030731a5a61f
+Status: Downloaded newer image for corentinth/it-tools:latest
+bd072e349cab6408a3b5f2d7040d586a9149107d68031089f846d0526c028f45
+```
+
+Sieht nicht spktakulär aus, bis man `http://SERVERADRESSE:8090` aufruft.
+Du hast hier einen kompletten Server voll mit digitalem Spielzeug erstellt - in no time!
+
+Natürlich kannst du den Container einfach weiter laufen lassen -- wir wollen uns aber einige Dinge
+ansehen:
+
+|Befehl|Wirkung|
+|------|-------|
+|docker run|versucht einen Container zu erstellen|
+|-d| im Hintergrund|
+|-p 8090:80|Von außen 8090, im Container eigentlich Port 80|
+|--name|sehen wir gleich|
+|corentinth/it-tools|Name des Images|
+
+Es gibt nun zwei Stellen (oberflächlich) mit Informationen zu diesem Server.
+
+```bash
+docker image ls
+```
+
+Zeigt uns das heruntergeladene Image:
+
+```bash
+REPOSITORY             TAG       IMAGE ID       CREATED        SIZE
+corentinth/it-tools    latest    bb7ba9626731   2 months ago   56.2MB
+```
+
+Mit nachfolgendem Befehl überprüft man den Status des Containers:
+
+```bash
+docker ps 
+```
+
+Ausgabe (gekürzt)
+```bash
+CONTAINER ID   IMAGE                 COMMAND                  gekürzt ... NAMES 
+bd072e349cab   corentinth/it-tools   "/docker-entrypoint.…"   gekürzt ... it-tools
+```
+
+**Weitere Befehle**  
+|Befehl|Wirkung|
+|------|-------|
+|docker stop it-tools| Container stoppen|
+|docker stop bd072e349cab| geht auch|
+|docker start it-tools|Container starten|
+|docker start bd072e349cab| geht auch|
+|docker rm it-tools|Container entfernen -- Image bleibt!|
+|docker rmi "corentinth/it-tools"|Entfernt auch das Image|
+
+Damit ein Container gelöscht werden kann, muss er beendet sein,
+damit ein Image gelöscht werden kann, muss der Container gelöscht sein.
+
+## Detaillierter
+
+Für komplexere Szenarien wird der *docker run* Befehl aber etwas unübersichtlich.
+Man kann nun in zwei Stufen die Komplexität erhöhen:
+
+* Anlegen einer Datei *Dockerfile*, in der die Parameter für *docker run* stehen
+* Verwenden von *docker-compose* mit einer zusätzlichen Datei *docker-compose.yml*
+  um z.B. mehrere Server im Verbund zu managen. Dieses Verfahren werden wir bei
+  der abschließenden, vollständigen Installation von Gitea verwenden.
+
+Da sowohl Syntax als auch Varianten von beiden Stufen für eine schnelle
+Behandlung zu komplex sind, verweise ich auf entsprechende Tutorial auf youtube
+oder eines der vielen Bücher zum Thema -- z.B. von Michale Kofler. 

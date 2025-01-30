@@ -1,0 +1,9 @@
+.quarto/
+*aux
+*log
+index.tex
+index.pdf
+
+/.quarto/
+szenarios/stories/story1_files/
+0200_bash1_files/

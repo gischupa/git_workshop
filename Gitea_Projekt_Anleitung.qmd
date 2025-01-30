@@ -1,0 +1,129 @@
+
+# Anleitung: Gitea-Projekt mit Schülern einrichten
+
+Diese Anleitung beschreibt die Schritte, um ein Gitea-Projekt 
+mit Schülern zu erstellen und die Zusammenarbeit über Git zu ermöglichen.
+
+## Variante 1 -- API
+
+Mit dem/der API können viele Vorgänge einfach automatisiert werden. 
+Der Kurzüberblick über die nötigen Schritte sieht aus, wie folgt:
+
+* Anlegen einer Organisation (z.B. Schule, einmalig)
+* Erstellen eines Teams (=Klasse, Arbeitsgruppe, ...)
+* Anlegen der Schüler (kann auch schon früher erfolgt sein)
+* Zuordnen der Schüler zur Arbeitsgruppe.
+* Anlegen eines Repositories
+* Einstellen der Team-Berechtigungen
+* Fein-Tuning
+
+Wegen der vielfältigen Varianten ist es nicht sinnvoll, diese ganzen Schritte
+in ein einziges Script zu packen. Organisatorisch müssen auch nicht alle Schritte
+durchlaufen werden, wenn z.B. die Schüler bereits früher angelegt worden sind.
+Es empfiehlt sich generell *Klassen-Teams* als Organisationsstruktur anzulegen,
+um weitere Teams aus einer überschaubareren Anzahl von Schülern erstellen zu können.
+
+
+
+
+
+
+
+## Benutzerverwaltung
+
+### Benutzerkonten 
+#### Erstellen
+- Manuell über die Gitea-Weboberfläche:
+    - Melden Sie sich als Administrator an.
+    - Gehen Sie zu `Admin Panel -- Users -- Create New Account`.
+    - Füllen Sie die Felder aus und speichern Sie den Benutzer.
+- Alternativ: Per Script und API (Python oder Bash)
+
+#### Berechtigungen
+Erstellen Sie ein Team -- das entspricht einer Gruppe, der gezielt Berechtigungen erteilt werden können.
+
+TODO: Welche Berechtigungen müssen erteilt werden.
+
+## Projekt erstellen
+
+### Neues Repository anlegen
+- Gehen Sie zu `Dashboard -- Create New Repository`.
+- Geben Sie den Namen des Repositories und die gewünschten Einstellungen ein:
+    - Repository-Typ (öffentlich oder privat).
+    - Optional: Erstellen Sie eine README-Datei und wählen Sie eine `.gitignore`-Datei aus.
+
+### Repository konfigurieren
+- Überprüfen Sie die Repository-Zugriffsrechte:
+    - Öffentlich: Jeder kann darauf zugreifen.
+    - Privat: Nur Benutzer mit entsprechenden Berechtigungen können darauf zugreifen.
+    - Stellen Sie sicher, dass die Branch-Protection aktiviert ist, falls gewünscht.
+
+## Zusammenarbeit ermöglichen
+
+### Repository-Zugriffsrechte
+- Geben Sie den Schülern Zugriff auf das Repository:
+    - Gehen Sie zum `Repository -- Settings -- Collaborators`.
+    - Fügen Sie die Benutzer oder Gruppen hinzu.
+
+### Pull Requests aktivieren
+- Aktivieren Sie Pull Requests, um den Schülern zu ermöglichen, Änderungen vorzuschlagen:
+    1. Gehen Sie zu `Repository Settings -- Pull Requests` und stellen Sie sicher, dass diese aktiviert sind.
+
+### Issues und Milestones
+- Verwenden Sie Gitea-Issues und Milestones, um Aufgaben zu verwalten und Fortschritte zu verfolgen:
+    1. Gehen Sie zum `Repository -- Issues -- New Issue`.
+    2. Weisen Sie Aufgaben den Schülern zu.
+
+### Webhooks (optional)
+- Falls gewünscht, können Sie Webhooks für Automatisierungen wie Continuous Integration (CI) einrichten.
+
+
+## 5. Git-Konfiguration für Schüler
+
+### 5.1. Git installieren
+- Stellen Sie sicher, dass die Schüler Git auf ihren Maschinen installiert haben:
+    - [Git installieren](https://git-scm.com/book/de/v2/Erste-Schritte-Git-installieren)
+
+### 5.2. SSH-Schlüssel einrichten
+- Erklären Sie den Schülern, wie sie einen SSH-Schlüssel generieren und in ihrem Gitea-Profil hinterlegen:
+    - Erstellen eines SSH-Schlüssels: `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`
+    - Fügen Sie den öffentlichen Schlüssel zu Gitea unter "Settings" → "SSH Keys" hinzu.
+
+### 5.3. Repository klonen
+- Zeigen Sie den Schülern, wie sie das Repository lokal klonen:
+
+```bash
+git clone git@192.168.3.195:username/repository.git
+```
+
+
+## Regeln für die Zusammenarbeit
+
+### Arbeitsweise erklären
+- Definieren Sie eine Branch-Strategie:
+    - Hauptbranch: `main` oder `master`.
+    - Feature-Branches für spezifische Aufgaben.
+    - Arbeiten Sie mit Pull Requests für die Code-Überprüfung.
+
+### Konfliktmanagement
+- Erklären Sie, wie man mit Merge-Konflikten umgeht:
+    - Verwenden Sie `git pull` und `git merge`, um Konflikte zu lösen.
+
+### Gemeinsames Review-Prozess einführen
+- Verwenden Sie Pull Requests für Code-Reviews:
+    1. Der Schüler erstellt einen Pull Request.
+    2. Der Lehrer überprüft und gibt Feedback.
+    3. Der Pull Request wird in den Hauptbranch gemerged.
+
+---
+
+## Feedback und Fortschritt
+
+### Reviews und Feedback geben
+- Verwenden Sie Pull Requests, um Feedback zu geben und Verbesserungen vorzuschlagen.
+
+### Fortschritt tracken
+- Verfolgen Sie den Fortschritt des Projekts über Gitea-Issues und Milestones:
+    1. Erstellen Sie neue Issues für Aufgaben.
+    2. Weisen Sie Issues den Schülern zu.
+    3. Verfolgen Sie den Fortschritt über Milestones.

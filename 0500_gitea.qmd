@@ -1,0 +1,444 @@
+# gitea
+
+Die Installation von *gitea* ist relativ einfach und kann über 
+kopieren und Einfügen erledigt werden. In den Kursmaterialien 
+befinden sich die Scripte 
+
+* `setup_gitea.sh` - führt die Basisinstallation durch
+* `selfreg.sh`     - Selbstregistrierung ein/aus
+* `tune.sh`        - Feineinstellungen direkt nach der Installation
+
+
+## Setup-Script
+In den folgenden Abschnitten sind die relevanten Passagen der Scripte dokumentiert. Die Befehle müssen nicht per Hand eingegeben werden. Das dient lediglich der Dokumentation. Die Scripte `setup_gitea.sh` 
+und `tune.sh` müssen als `root` bzw. über `sudo` ausgeführt werden.
+
+**setup_gitea.sh**  
+```bash
+
+# Port 3000 muss für das Webinterface offen sein
+ufw allow 3000/tcp
+
+# Evtl. direkt auf der Seite https://dl.gitea.com/gitea die aktuelle
+# Version checken  und hier anpassen.
+wget -O gitea https://dl.gitea.com/gitea/1.22.6/gitea-1.22.6-linux-amd64
+
+chmod +x gitea  # ausführbar machen
+
+# Benutzer git ohne Anmeldeerlaubnis
+adduser \
+   --system \
+   --shell /bin/bash \
+   --gecos 'Git Version Control' \
+   --group \
+   --disabled-password \
+   --home /home/git \
+   git
+
+# nötige Verzeichnisse erstellen
+mkdir -p /var/lib/gitea/{custom,data,log}
+chown -R git:git /var/lib/gitea/
+chmod -R 750 /var/lib/gitea/
+mkdir /etc/gitea
+chown root:git /etc/gitea
+chmod 770 /etc/gitea
+
+# Programm an richtigen Ort verschieben
+mv gitea /usr/local/bin/gitea
+
+# Autostart einrichten 
+
+# Im richtigen Script minimiert!!!!!
+cat << EOF > /etc/systemd/system/gitea.service
+ 
+[Unit]
+Description=Gitea (Git with a cup of tea)
+After=network.target
+###
+# Don't forget to add the database service dependencies
+###
+#
+#Wants=mysql.service
+#After=mysql.service
+#
+#Wants=mariadb.service
+#After=mariadb.service
+#
+#Wants=postgresql.service
+#After=postgresql.service
+#
+#Wants=memcached.service
+#After=memcached.service
+#
+#Wants=redis.service
+#After=redis.service
+#
+###
+# If using socket activation for main http/s
+###
+#
+#After=gitea.main.socket
+#Requires=gitea.main.socket
+#
+###
+# (You can also provide gitea an http fallback and/or ssh socket too)
+#
+# An example of /etc/systemd/system/gitea.main.socket
+###
+##
+## [Unit]
+## Description=Gitea Web Socket
+## PartOf=gitea.service
+##
+## [Socket]
+## Service=gitea.service
+## ListenStream=<some_port>
+## NoDelay=true
+##
+## [Install]
+## WantedBy=sockets.target
+##
+###
+
+[Service]
+# Uncomment the next line if you have repos with lots of files and get a HTTP 500 error because of that
+# LimitNOFILE=524288:524288
+RestartSec=2s
+Type=simple
+User=git
+Group=git
+WorkingDirectory=/var/lib/gitea/
+# If using Unix socket: tells systemd to create the /run/gitea folder, which will contain the gitea.sock file
+# (manually creating /run/gitea doesn't work, because it would not persist across reboots)
+#RuntimeDirectory=gitea
+ExecStart=/usr/local/bin/gitea web --config /etc/gitea/app.ini
+Restart=always
+Environment=USER=git HOME=/home/git GITEA_WORK_DIR=/var/lib/gitea
+# If you install Git to directory prefix other than default PATH (which happens
+# for example if you install other versions of Git side-to-side with
+# distribution version), uncomment below line and add that prefix to PATH
+# Don't forget to place git-lfs binary on the PATH below if you want to enable
+# Git LFS support
+#Environment=PATH=/path/to/git/bin:/bin:/sbin:/usr/bin:/usr/sbin
+# If you want to bind Gitea to a port below 1024, uncomment
+# the two values below, or use socket activation to pass Gitea its ports as above
+###
+#CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+#AmbientCapabilities=CAP_NET_BIND_SERVICE
+###
+# In some cases, when using CapabilityBoundingSet and AmbientCapabilities option, you may want to
+# set the following value to false to allow capabilities to be applied on gitea process. The following
+# value if set to true sandboxes gitea service and prevent any processes from running with privileges
+# in the host user namespace.
+###
+#PrivateUsers=false
+###
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Autostart aktivieren
+sudo systemctl enable gitea
+
+# Gitea einmalig per Hand starten
+sudo systemctl start gitea
+
+echo Einrichten über Web  `http://<ip-adresse>:3000`  
+echo SQLITE als Datenbank einstellen
+echo **WICHTIG:** Administrator einrichten!
+```
+
+## Nacharbeiten
+
+Im Nachgang sollten einige Schreibberechtigungen
+entzogen werden, damit nur noch `root` Änderungen vornehmen
+darf:
+
+```bash
+chmod 750 /etc/gitea
+chmod 640 /etc/gitea/app.ini
+```
+
+Dieses Script deaktiviert Anmeldungen über OpenID
+und setzt neue Sicherheitsschlüssel.
+
+**tune.sh**  
+```bash
+# OpenID deaktivieren
+INI="/etc/gitea/app.ini"
+KEY1="ENABLE_OPENID_SIGNIN = "
+KEY2="ENABLE_OPENID_SIGNUP = "
+sed -i "s/${KEY1}true/${KEY1}false/g" $INI 
+sed -i "s/${KEY2}true/${KEY2}false/g" $INI 
+
+# Sicherheit
+
+for KEY in INTERNAL_TOKEN SECRET_KEY JWT_SECRET LFS_JWT_SECRET
+do 
+  VAL=$(gitea generate secret ${KEY})
+  sed -i "s/^$KEY[[:space:]]*=.*/$KEY = $VAL/" $INI
+done
+
+systemctl restart gitea
+```
+
+In der Datei `/etc/gitea/app.ini` kann das wieder 
+rückgängig gemacht werden, indem der Abschnitt `[openid]`
+so abgeändert wird:
+
+```bash
+[openid]
+ENABLE_OPENID_SIGNIN = true
+ENABLE_OPENID_SIGNUP = true
+```
+
+**Selbstregistrierung an/aus** 
+
+Standardmäßig können sich die Benutzer selbst auf Gitea registrieren.
+Das vereinfacht die Arbeit für den Lehrer enorm, ist aber bei einer
+öffentlich zugänglichen Instanz problematisch. Es ist also sinnvoll,
+diese Einstellung nach dem erfassen der Benutzer zu deaktivieren (kann
+kederzeit wieder aktiviert werden).  
+Dazu muss in der Datei `/etc/gitea/app.ini` die folgende Zeile 
+im Abschnitt `[service]` angepasst werden:
+
+```bash
+ORIGINAL:  DISABLE_REGISTRATION = false
+ANGEPASST: DISABLE_REGISTRATION = true
+```
+
+Dies kann über `nano /etc/gitea/app.ini` gemacht werden 
+(Speichern: `strg + o`, Beenden `strg + x` ).
+
+Danach muss Gitea neu gestartet werden:
+
+```bash
+systemctl restart gitea
+```
+
+Das Setup-Script des Kurses kopiert das Script `selfreg.sh` nach `/usr/local/bin`, so dass die Registrierung einfach aktiviert und deaktiviert werden kann:
+
+```bash
+selfreg.sh on
+selfreg.sh off
+```
+
+## SSH
+
+Für den Client muss der ssh-Zugriff möglich sein (clone, push, pull).
+Es kommt hier der normalen ssh-Server auf Port 22 zum Einsatz^[Gitea
+würde über einen eigenen ssh-Server verfügen, den man in einigen
+speziellen Fällen verwenden könnte.].
+
+Für den kennwortlosen ssh-Zugriff für clone, push, pull wird ein
+ein ausreichend langer ssh-Schlüssel benötigt. Die üblichen 2048 Bit 
+genügen hier nicht! Dieser *Deploy-Key* wird später dann über die graphische Benutzeroberfläche in *Gitea* eingefügt (s.u.).
+
+**Schlüssel erzeugen**  
+```bash
+IN:  ssh-keygen -t rsa -b 4096
+OUT: Generating public/private rsa key pair.
+     Enter file in which to save the key 
+     (/home/linuxadmin/.ssh/id_rsa):
+IN:  gitea_rsa
+OUT: Enter passphrase (empty for no passphrase): ... leer lassen Enter
+OUT: Enter same passphrase again: ... leer lassen Enter
+OUT: Your identification has been saved in gitea_rsa
+     Your public key has been saved in gitea_rsa.pub
+     The key fingerprint is:
+     SHA256:ty5F............Q0 linuxadmin@gitserver
+     The key's randomart image is:
+     +---[RSA 4096]----+
+     |      . ..       |
+     |.      o  .      |
+     | E. . o  o o     |
+     |..*. o o+ O .    |
+     | =... *+SB.o     |
+     | ..  o =O.o.     |
+     |..     =.=.      |
+     |++ .    *+       |
+     |+ =.    .=+      |
+     +----[SHA256]-----+
+```
+
+Der Inhalt von `gitea_rsa.pub` kann durch folgenden Befehl
+im Terminal angezeigt werden:
+
+```bash
+cat ~/.ssh/gitea_rsa.pub
+```
+
+Die mehrzeilige Ausgabe in einem Stück in die Oberfläche 
+von Gitea kopieren:  
+
+![](bilder/inst/key1.png)
+![](bilder/inst/key2.png)
+![](bilder/inst/key3.png)
+
+Damit ist die Grundkonfiguration beendet. Es sollte nun noch 
+eingestellt werden, welche Anmelde- und Registrierungsvarianten
+erlaubt sind, um nicht plötzlich fremde Personen in seiner
+Gitea-Instanz zu haben. 
+
+
+
+## HTTPS
+Aktuell ist die Instanz nur über `http` und Ip-Adresse 
+zugänglich. Es ist möglich, Gitea auch für `HTTPS` zu konfigurieren.
+Hierfür gibt es verschiedenen Lösungen, von denen aber eigentlich
+nur der Einsatz eines Reverse-Proxy mit einem entsprechenden 
+Domain-Name sinnvoll ist. Eine derartige Konfiguration würde 
+den Rahmen dieses Workshops aber sprengen! Zur Erinnerung: Es ging um 
+eine möglichst einfache Installation eines funktionsfähigen Systems.
+
+## API
+Oft ist es effizienter, wenn Dinge über Kommandozeile erledigt werden.
+Wenn z.B. 50 Benutzerkonten erstellt und mit Passwort abgesichert werden sollen,
+weil die Selbstregistrierung nicht gewünscht ist. In diese Fall verwendet
+man die API von Gitea. Dies kann von jedem Rechner aus erfolgen, auf Gitea zugreifen
+kann. Dafür braucht es aber noch zwei Anpassungen an der `/etc/gitea/app.ini`:
+
+1. Ergänzen Sie am Ende der Datei:
+
+```bash
+[api]
+ENABLE_ADMIN = true
+```
+2. Erweitern Sie den Abschnitt `security` falls Sie die 
+   Accounts mit sehr einfachen Kennwörtern vorbelegen wollen:
+
+```bash
+[security]
+... bisheriger Inhalt ...
+PASSWORD_COMPLEXITY = off
+MIN_PASSWORD_LENGTH = 6
+```
+
+Melden Sie sich als Administrator in Gitea an und rufen Sie das Menu *Einstellungen* des Benutzers auf.
+Unter *Anwendungen* können *Admin-Token* erzeugt werden, die einen kennwortlosen Zugriff auf das 
+System erlauben. Stellen Sie im aufklappbaren Detail-Abschnitt ein, welche Berechtigungen erforderlich sind:
+
+* Admin - Lesen und Schreiben
+* Organisation
+* Repository
+* User
+
+Kopieren Sie die lange Zahl (=Token) dann weg -- sie wird nur einmal angezeigt!
+
+Auf der Konsole (Linux / MacOS) kann dann z.B. folgender Befehl abgeschickt werden,
+der die Benutzerin Susi anlegt:
+
+```bash
+curl -X POST "http://<ip-adresse>:3000/api/v1/admin/users" \
+-H "Authorization: token <kopiertes Token>" \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "susi",
+  "email": "susi@sandmann.com",
+  "password": "lalelu",
+  "send_notify": false,
+  "must_change_password": true
+}'
+```
+
+Verfeinert wird dieser Befehl in ein Script verpackt -- z.B. `gitea_user_anlegen.sh`,
+das man mit einer Namensdatei als Parameter aufrufen kann, in der folgende Spalten auftreten:
+
+```bash
+# login,kennwort,email  <- Diese Zeile entfernen
+susi,lalelu,susi@sandmann.de
+max,foobla,max@mustermann.de
+...
+```
+
+### Sinnvolle Szenarien
+
+#### Organisationen
+Hier bin ich mir nicht sicher, ob das kein Overkill ist. Eine Arbeit über Teams 
+erscheint mir bei der Größe unserer Szenarien deutlich geeigneter. Das Problem 
+ist nämlich, dass man über die API einen Benutzer nur löschen kann, wenn er in keiner
+Organistation mehr ist! 
+
+Es könnte sinnvoll sein, wenn sich die einzelnen Kollegen als *Organisationen*
+sehen. Dann müssen Schüler aber mehrfach ins System eingetragen werden und das
+bereits bei den eMail-Adressen Probleme.
+
+Sinnvoller erscheint eine Namenskonvention beim Erstellen von Teams!
+
+**Organisation erstellen**
+```bash
+token=1234
+name=G10a
+curl -X POST "http://192.168.3.195:3000/api/v1/admin/organizations" \
+-H "Authorization: token ${token}" \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "${name}",
+  "full_name": "${name}",
+  "description": "Organisation für die Schüler der Klasse ${name}",
+  "visibility": "private"
+}'
+```
+
+**Benutzer hinzufügen**
+
+```bash
+token=1234
+name=G10a
+user=susi
+curl -X PUT "http://192.168.3.195:3000/api/v1/orgs/${name}$/members/${user}" \
+-H "Authorization: token ${token}"
+```
+
+**User löschen**  
+
+```bash
+token=1234
+user="susi"
+# In welchen Organistaionen ist der User
+curl -X GET "http://192.168.3.195:3000/api/v1/users/${user}/orgs" \
+    -H "Authorization: token ${token}"
+
+# Einzeln austragen, sonst ist er nicht löschbar
+orga=organization1
+curl -X DELETE "http://192.168.3.195:3000/api/v1/orgs/${orga}/members/${user}" \
+-H "Authorization: token ${token}"
+
+# Benutzer löschen 
+curl -X DELETE "http://192.168.3.195:3000/api/v1/admin/users/${user}" \
+-H "Authorization: token ${token}"
+```
+
+### Teams
+
+Auch ein Team erfordert eine Organisation -- hier würde ich einfach die Schule anlegen.
+
+**Team erstellen**  
+
+```bash
+schule="GGP"
+token=1234
+team=G10a
+curl -X POST "http://192.168.3.195:3000/api/v1/orgs/${schule}/teams" \
+-H "Authorization: token ${token}" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "${team}",
+  "description": "Team für das erste Projekt",
+  "permission": "write"
+}'
+```
+
+**Benutzer hinzufügen**
+
+```bash
+schule=GGP
+token=1234
+team=G10a
+user=susi
+curl -X PUT "http://192.168.3.195:3000/api/v1/orgs/${schule}/teams/${team}/members/${user}" \
+-H "Authorization: token YOUR_ADMIN_TOKEN"
+```
+
+TODO: GPT shgt Team_id statt Team_name!

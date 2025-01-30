@@ -1,0 +1,25 @@
+# Clients
+
+Generell gilt natürlich, dass im Informatikunterricht ein 
+Tablet (oder Handy) kein geeignetes Werkzeug ist. Wir sprechen
+im Folgenden also von Laptops oder Desktops und diese können
+mit Windows, MacOS, Linux oder ChromeOS ausgestattet sein.
+Für jedes dieser Systeme gibt es viele verschiedene Git-Clients.
+Die Kommandozeile (Terminal, Bash, Git-Bash, ...) ohne grafische 
+Benutzeroberfläche ist gerade bei Anfängern nicht besonders beliebt, 
+aber gerade im Umfeld von Servern sehr verbreitet.
+Entwickler, die mir den IDEs von JetBrains, VS-Code, o.ä. arbeiten, 
+verwenden oft die dort eingebauten Git-Clients. Leider sind diese
+Entwicklungsumgebungen dür den Einsatz im Unterricht ein Overkill.
+Bei einer kleineren IDE kann ein graphischer Git-Client diese 
+Lücke schließen.  
+Probleme gibt es allerdings traditionell bei der heimischen 
+Installation der entsprechenden Software (GitKraken, ...).
+Mit Hilfe von *portable* Versionen kann das aber deutlich
+vereinfacht werden. Diese Software-Variante wird nicht installiert, 
+sondern lediglich entpackt. Der entstehende Ordner kann sogar 
+auf einen USB-Stick ausgelagert werden. Damit sind auch die Rechner
+der Eltern problemlos benutzbar.
+
+[Portable Git](https://git-scm.com/downloads/win)
+

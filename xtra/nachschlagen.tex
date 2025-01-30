@@ -1,0 +1,70 @@
+\documentclass[oneside]{scrreprt}
+\usepackage{arbeitsblatt}
+
+\title{Wichtige Befehle}
+
+
+\begin{document}
+\verb+git ls-files+ \\
+Listet alle Dateien auf, die im Stage liegen. \\
+Das schließt auch Dateien ein, die bereits committet sind. \\ 
+Durch \verb+git rm --cached <datei>+ wird sie aus dem Stage entfernt.\\
+Liefert Infos der Art\\
+\verb+    100644 78981922613b2afb6025042ff6bd878ac1994e85 0	a.txt+
+~\\ 
+ 
+\verb+git rm --cached <datei>+\\
+Löscht die Datei aus dem Stage. Sinnvoll, wenn die Datei in
+zukünftigen Commits nicht mehr auftauchen soll. Sie muss dafür 
+in die \verb+.gitignore+ aufgenommen werden.
+~\\
+
+\verb+git reset+\\
+Entfernt eine Datei aus dem Stage, als wäre kein \verb+.add+ erfolgt. Ist quasi „einen Schritt zurück“.
+Änderungen nach dem \verb+.add+, die an anderen Dateien erfolgt sind, bleiben erhalten!
+~\\
+
+\verb+git reset --hard+\\
+Dateien nach dem letzten \verb+.add+ bleiben unangetastet, 
+der Inhalt des Stage wird verworfen.
+~\\
+
+\verb+git cat-file -t <hash>+\\
+Typ des Objekts wird geliefert (tree, blob, commit)
+~\\
+
+\verb+git cat-file -p <hash>+\\
+Liefert den Inhalt des Objekts. Bei \emph{blob} ist es der Inhalt, bei \emph{tree} sind die Dateien im Tree.
+Bei einem Commit erhält man die Message, Parent, ... und auch den Hash des trees! 
+
+
+
+\section*{Kernbefehle}
+
+\verb+git restore <datei>+\\
+Holt die Version aus dem Stage und überschreibt die 
+Version im Workindir.
+~\\
+
+\verb+git restore <datei> --staged+\\
+Wenn im Workingdir und im Stage verschiedene Versionen
+existieren, wird die aus dem Stage einfach gelöscht.\\
+
+Existiert aktuell keine Version mehr im Workingdir, 
+so wird die Datei im Stage nicht gelöscht, sondern nur
+ins Workingdir verschoben.
+~\\
+
+
+\verb+git restore --source=<HASH> <datei>+\\
+Der Befehl holt eine Datei aus einem bestimmten Commit.
+Früher war das\\
+ \texttt{git checkout <HASH> -\,- <datei>}\\
+ Man kann hier auch noch andere Quellen angeben!
+
+
+\section*{Werkzeuge}
+
+\verb+git show <HASH>:datei.txt+\\
+Zeigt den Inhalt zum damaligen Zeitpunkt an.
+\end{document}
