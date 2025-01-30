@@ -360,35 +360,95 @@ sparen und einfach ein `git pull` ausführen. Im Prinzip ist
 dieser Befehl die direkte Nacheinanderausführung von `fetch` 
 und `merge`.
 
+
+
 ### Einige Fragen
 
-**Muss ich das 'origin main' immer angeben?**  
-Generell kannst du auch `origin/main` schreiben. 
-Wenn du ein Repository geclont hast, dann genügt auch
-`git push` oder `git pull` ohne diese Angabe weil es eine
-eindeutige Verbindung lokal-remote gibt (=upstream).
-
-Soll das auch bei anderen Branchse als bei \branch{main}
-funktionieren, so muss der Branch einmalig mit folgendem
-Befehl ins Repository^[Die Angabe von *origin* ist nötig, weil auch mehrere verschiedene
-Repositories denkbar sind!] übertragen werden:
+**Wie starte ich from Scratch**  
+Es geht hier nicht um den Schlüsseltausch, sondern nur das
+Handling der Repositories.
 
 ```bash
-git push -u origin <branchname>
+# auf dem Server 
+git init --bare musterrepo
+git branch -m main 
+```
+
+```bash
+# auf dem Client
+# Besndere Schritte NUR auf dem ersten Client
+git clone gituser@server:port/pfad/zu/repo.git 
+git switch -c main 
+echo "Welcome" > Readme.txt 
+git add Readme.txt 
+git commit -m "initial"
+git push -u origin main 
+```
+
+Jeder weitere Benutzer clont nun ein funktionsfähiges Repostory.
+
+**Muss ich das 'origin main' immer angeben?**  
+
+Auch wenn der Branch \branch{main} besonders klingt, 
+ist er doch ein ganz normaler Branch. Seine Besonderheit  
+ist lediglich, dass er durch das Clonen auch gleichzeitig 
+als *upstream-branch* definiert wurde -- dehalb funktioniert
+statt `git pull origin main` auch die kurze Version `git pull`
+(analog für *push*).
+
+Wenn du einen neuen Branch anlegst und einen commit 
+pushen willst:
+
+```bash
+git switch -c probe 
+echo "test" > probedatei.txt 
+git add probedate.txt 
+git commit -m "Datei ergänzt"
+git push 
+```
+
+dann gibt es eine Fehlermeldung
+
+```bash
+Schwerwiegend: 
+Der aktuelle Branch probe hat keinen Upstream-Branch.
+Um den aktuellen Branch zu versenden und den Remote-Branch
+als Upstream-Branch zu setzen, benutzen Sie
+
+    git push --set-upstream origin probe
+
+Damit das automatisch für Branches ohne Upstream-Tracking passiert,
+siehe 'push.autoSetupRemote' in 'git help config'.
+```
+
+Willst du den Branch pushen, dann musst du obigen Befehl verwenden
+oder kürzer
+
+```bash
+git push -u origin probe 
+```
+
+Theoretisch geht es auch, von einem *nicht upstream* Branch 
+direkt auf einen Upstreambranch zu pushen -- das läuft aber 
+am lokalen Branch vorbei, dem dann ein Commit fehlt:
+
+```bash
+git push origin probe:main 
 ```
 
 
-
 **Ist es egal, in welchem Branch ich fetch/pull/push ausführe?**  
-Nein. Befindest du dich auf dem \branch{feature_a}-Branch und 
-führst `git push origin feature_b` aus, so wird der lokale 
-\branch{feature_b}-Branch auf den entfernten \branch{feature_b}-Branch
-gepusht.
+Jein.  
+Beim Pushen kann nicht viel schief gehen. Upstream-Branches laufen 
+automatisch und wenn sie nicht als upstream konfiguriert sind, 
+dann geht der Push (standardmäßig) nicht.  
 
-Befindest du dich auf dem \branch{feature_a}-Branch und 
-führst `git pull origin main` aus, dann werden die Inhalte 
-vom entfernten \branch{main}-Branch in deinen *aktuellen* 
-Branch gemerged! Hier musst du aufpassen!
+Beim Pull sieht es anders aus. Du kannst jeden Remote-Branch 
+in jeden lokalen Branch *pullen* -- also *mergen*. Ist 
+der aktuelle Branch als Upstream konfiguriert, holt sich ein
+kurzes `git pull` die richtigen Daten. Ein `git pull <branch>` 
+holt aber genau das, was du angegeben hast! Das ist eine 
+Fehlerquelle!
 
 **Wie hängen lokale und remote Branches zusammen?**  
 Zunächst sind Branches lokal und werden beim `push` 
