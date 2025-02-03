@@ -12,9 +12,9 @@ beschäftigst.
 ## Installation von Git
 
 Bei der Installation von \git werden automatisch 
-Client und Server installiert. Du wirst hier aber 
-nur den Client (=\git-Bash) verwenden.  
-Dabei handelt es sich um eine extrem abgespeckte 
+Client und Server installiert. Du wirst in diesem Workshop aber 
+nur den Client (=\git-Bash evtl. \git-GUI) verwenden.  
+Bei der \git-Bash handelt es sich um eine extrem abgespeckte 
 Linux-Umgebung, so dass wir auch die Grundbefehle im 
 Terminal besprechen müssen.
 
@@ -22,8 +22,9 @@ Lade von [gitforwindows.org](https://gitforwindows.org) die
 Installationsdatei herunter, beginne aber noch nicht mit der 
 Installation!
 
-Lade von [notepad-plus-plus.org](https://notepad-plus-plus.org/downloads/) den Editor *notepad++* herunter und installiere das 
-Programm. Du wirst bei der Installation von Git nach diesem
+Lade von [notepad-plus-plus.org](https://notepad-plus-plus.org/downloads/) 
+den Editor *notepad++* herunter und installiere das 
+Programm. Du wirst bei der Installation von \git nach diesem
 Programm gefragt!
 
 Starte nun die Installation von \git durch Doppelklick auf die 
@@ -34,8 +35,9 @@ TODO: Bilder
 
 ## Bash Grundlagen
 
-Du kannst die \git-Bash aus dem Explorer heraus im 
-gewünschten Ordner (z.B. Projektordner) öffnen.
+Du kannst die \git-Bash aus dem Explorer heraus über die 
+rechte Maustaste im gewünschten Ordner (z.B. Projektordner) 
+öffnen.
 
 Jeder Befehl in der \git-Bash wird nach Drücken der 
 \key{Enter}-Taste ausgeführt.

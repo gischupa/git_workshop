@@ -1,16 +1,17 @@
 # Erster Überblick
 
-Eine Einführung in die Arbeit \git ist etwas 
+Eine Einführung in die Arbeit mit \git und Installation der 
+entsprechenden Server-Software ist etwas 
 schwierig, weil auf einen Schlag so viele neue 
 Konzepte zu verarbeiten sind.
 
-Wir beginnen mit einem Überblick und gehen dann 
-immer mehr in die Feinheiten.
+Bevor wir diese beiden Themen angehen, kann ein kleiner 
+Überblick hilfreich sein.
 
 ## Lokal -- Remote
 Du kannst ganz alleine auf deinem Rechner mit \git arbeiten
-und hast dann ein eigenes Repository -- und zwar ein 
-lokales Repository. 
+und hast dann deinen Arbeitsordner mit Unterstütung 
+von \git (eigenes, lokales Repository). 
 
 Sind an einem Projekt mehr Leute beteiligt, dann 
 wird im Normalfall auf einem Server ein zentrales
@@ -20,19 +21,20 @@ Rechner holt (clont).
 
 Der Unterschied beim Arbeiten in den beiden Varianten ist,
 dass die Änderungen der lokalen Repositories immer 
-wieder ins zentrale Repository müssen (push) und  
-dass sich die anderen Mitarbeiter diese Änderungen 
-auch alle holen müssen (pull).
+wieder mit dem zentralen Repository abgeglichen werden 
+müssen (push) und dass sich die anderen Mitarbeiter 
+diese Änderungen auch alle holen müssen (pull).
 
 Natürlich kann es dabei passieren, dass verschiedene
 Mitarbeiter die gleiche Datei verändern und dann müssen 
-die entstehenden Konflikte *irgendwie* behoben werden.
+die entstehenden Konflikte *irgendwie* behoben werden --
+Hier hilft \git.
 
-In diesen wenigen Zeile stecken unwahrscheinlich viele 
-Techniken, die wir im Rahmen dieses Workshops auf keinen 
-Fall alle besprechen können.
+In diesen wenigen Zeilen stecken sehr viele 
+technische Details, die wir im Rahmen dieses 
+Workshops auf keinen Fall alle besprechen können.
 
-## Idealer Ablauf
+## Idealer Projektablauf
 Beschränken wir uns zuerst auf den lokalen Fall 
 und eine ideale Welt.  
 In diesem Fall würdest du keine Fehler machen, 
@@ -54,18 +56,18 @@ Wahrscheinlich musst du ab und zu Dinge
 ausprobieren und willst dafür deinen 
 funktionierenden Code nicht gefährden.  
 In diesem Fall erstellst du einen 
-parallelen Zweig (branch), in dem 
+Entwicklungszweig (branch), in dem 
 du in Ruhe arbeiten kannst. Wenn 
 du mit deinem Ergebnis zufrieden bist,
 dann übernimmst du deine Entwicklung --
-wenn nicht, dann löschst du sie.
+wenn nicht, dann löschst du sie wieder.
 
 Man muss hier aber gleich sagen, dass
 das eine extreme Vereinfachung der 
 Realität darstellt. Mit Branches gibt 
 es viele Varianten, die zu besprechen wären.
 
-## Remote
+## Im Team 
 Werfen wir noch einen kurzen Blick auf 
 die Entwicklung im Team.  
 Die Wahrscheinlichkeit für das Auftreten 
@@ -74,9 +76,9 @@ größer und da ist es sehr hilfreich, dass
 \git uns unterstützt. Im Prinzip werden
 bei der Konfliktlösung -- sofern nicht 
 automatisch möglich -- beide (alle) Varianten
-in die betroffene Datei geschrieben werden. 
+in die betroffene Datei geschrieben. 
 Dabei wird jeweils die Herkunft angegeben 
 und der Zuständige für Konfliktlösung 
 kann löschen oder übernehmen, was er für 
-richtig hält.
+richtig hält -- auch das ist grob vereinfacht!
 

@@ -14,9 +14,9 @@ manche Dinge sehr schnell!
 
 Öffne die \git-Bash in dem Ordner, in dem du 
 arbeiten willst. Das geht über die rechte 
-Maustaste im Explorer (Dateimanager).  
-Sollte dir die Schrift im Fenter zu klein sein,
-kannst du sie mit \strg{+} vergrößern.
+Maustaste im Explorer (Dateimanager)^[Sollte dir 
+die Schrift im Fenter zu klein sein,
+kannst du sie mit \strg{+} vergrößern.].
 
 **Aktuelle Einstellungen ansehen**  
 ```bash
@@ -35,6 +35,8 @@ user.name=
 git config --global user.name "Susi Sandmann" 
 git config --global user.email=susi@sandmann.de
 ```
+
+TODO: "=" oben checken!
 
 ## Erste Schritt
 
