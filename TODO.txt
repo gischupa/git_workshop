@@ -1,8 +1,18 @@
 # TODOs
 
+# Vorwort ausformulieren
+
+# Einfacher Git-Server
+* Schlüsselmanagement unter Windows geht noch nicht!
+* Bild "interfaces" ist falsch
+
+# Installation git 
+Screenshots erstellen
 
 
 ## Scripten für Team-Szenario
 
 * origin.sh
 * susi_und_max.sh
+
+# Installation Oracle

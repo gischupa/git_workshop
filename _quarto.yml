@@ -29,12 +29,16 @@ format:
     include-in-header: 
       text: |
         \usepackage{my_quarto_tools}
+        \newcommand{\cmd}[1]{\texttt{#1}\xspace}
+        \newcommand{\script}[1]{\texttt{#1}\xspace}
+        \newcommand{\key}[1]{\texttt{#1}\xspace}
         \newcommand{\git}{\textit{git}\xspace}
         \newcommand{\gitserver}{\textit{git}-Server\xspace}
         \newcommand{\gitservers}{\textit{git}-Servers\xspace}
         \newcommand{\strg}[1]{strg + #1\xspace}
         \newcommand{\alt}[1]{alt + #1\xspace}
         \newcommand{\datei}[1]{\textit{#1}\xspace}
+        \newcommand{\ordner}[1]{\textit{#1}\xspace}
         \newcommand{\branch}[1]{\textit{#1}\xspace}
         \newcommand{\work}{\textit{Workingdir}\xspace}
 

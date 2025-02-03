@@ -254,12 +254,15 @@
                {\endlist}
 \makeatother
 \usepackage{my_quarto_tools}
+\newcommand{\cmd}[1]{\texttt{#1}\xspace}
+\newcommand{\script}[1]{\texttt{#1}\xspace}
 \newcommand{\git}{\textit{git}\xspace}
 \newcommand{\gitserver}{\textit{git}-Server\xspace}
 \newcommand{\gitservers}{\textit{git}-Servers\xspace}
 \newcommand{\strg}[1]{strg + #1\xspace}
 \newcommand{\alt}[1]{alt + #1\xspace}
 \newcommand{\datei}[1]{\textit{#1}\xspace}
+\newcommand{\ordner}[1]{\textit{#1}\xspace}
 \newcommand{\branch}[1]{\textit{#1}\xspace}
 \newcommand{\work}{\textit{Workingdir}\xspace}
 \KOMAoption{captions}{tableheading}
@@ -317,7 +320,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, boxrule=0pt, breakable, frame hidden, colback={codebgcolor}, enhanced]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, boxrule=0pt, colback={codebgcolor}, frame hidden, breakable, enhanced]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -366,7 +369,10 @@
 
 \bookmarksetup{startatroot}
 
-\chapter{Vorbemerkung}\label{vorbemerkung}
+\chapter*{Vorbemerkung}\label{vorbemerkung}
+\addcontentsline{toc}{chapter}{Vorbemerkung}
+
+\markboth{Vorbemerkung}{Vorbemerkung}
 
 Ein Betrieb von \git direkt auf Windows ist nicht sinnvoll. Es wird also
 ein System wie MacOS oder Linux vorausgesetzt.
@@ -385,403 +391,12 @@ Dieses Handout ist in folgende Sinnabschnitte unterteilt
 
 \bookmarksetup{startatroot}
 
-\chapter{\texorpdfstring{Ein minimaler
-\git-Server}{Ein minimaler -Server}}\label{ein-minimaler--server}
-
-\section{Zu klärende Fragen}\label{zu-kluxe4rende-fragen}
-
-Ein einfacher \git-Server ist lediglich ein Server mit einer
-rudimentären Installation von \git und einer Erreichbarkeit über das
-Netz. Da gerade diese Erreichbarkeit bei Windows ein Problem darstellt,
-handelt es sich im Regelfall um einen Linux-Server. Als solcher besitzt
-er üblicherweise kein grafisches Benutzerinterface (GUI).
-
-Je nach Szenario müssen auf dem Server Benutzer angelegt und verwaltet
-werden. Das kann ziemlich aufwändig sein und ist bei größeren
-Benutzerzahlen ohne Scripting kaum machbar. Es gibt Hilfsmittel in Form
-von Weboberflächen, die hier aber nicht weiter thematisiert werden.
-
-Für einen reinen \gitserver genügt allerdings bereits ein einziger
-Bunutzer -- z.B. \git.
-
-\textbf{Zweck des Servers}\\
-Geht es nur um \git oder sollen noch Wordpress, VPN-Server, \ldots{}
-dazu kommen. Für jedes Szenario wird die endgültige Konfiguration anders
-aussehen \ldots{}
-
-\textbf{Wer nutzt den Server}\\
-Müssen auch andere Lehrkräfte (administrativen) Zugriff auf den Server
-besitzen? Werden Gruppen benötigt?
-
-\textbf{Rolle der Benutzer}\\
-Sollen die Benutzer nur für die Verwendung von \git angelegt und
-konfiguriert werden, oder sollen sie \emph{vollwertige} Benutzer sein,
-die den Server auch in anderen Szenarien sinnvoll nutzen dürfen?
-
-\textbf{Benennung der Benutzer}\\
-Sollen die Schüler mit Zugangsdaten versehen werden, die ihren Namen
-widerspiegeln -- Probleme siehe unten -- oder sollen Zugänge im Sinne
-von \texttt{user1} bis \texttt{user20} verwendet werden?
-
-Bei Verwendung von richtigen Namen entstehen folgende Probleme:
-
-\begin{itemize}
-\tightlist
-\item
-  Sonderzeichen in den richtigen Namen erschweren das automatische
-  Erstellen von Benutzernamen.
-\item
-  Verschiedene Namen können den gleichen Login ergeben.
-\item
-  Behandlung von Schülern mit gleichen Namen in gleichen / verschiedenen
-  Klassen
-\end{itemize}
-
-Die Variante mit \texttt{user1} bis \texttt{user20} ist unpersönlich,
-leichter einzurichten, erschwert dem Lehrer aber eventuell eine
-Zuordnung zum echten Schüler.
-
-Hierfür gibt es keine perfekte Lösung.
-
-\section{Nur git}\label{nur-git}
-
-Wenn ein Schüler nur \git verwenden soll, dann braucht er kein
-vollwertiges Benutzerkonto, an dem er sich auch für andere Arbeiten
-anmelden kann. Für die Verwendung von \git genügt es bereits, wenn man
-einen Benutzer mit Namen \git (als Beispiel) erstellt. Nachfolgend sind
-dann diese Schritte nötig:
-
-\begin{itemize}
-\tightlist
-\item
-  Dem Benutzer \git wird eine \emph{echte} Anmeldung unmöglich gemacht.
-\item
-  Schüler erstellen sich SSH-Schlüssel-Paare
-\item
-  Sie schicken ihren Public-Key per Mail an den Lehrer
-\item
-  Der Lehrer fügt den Schlüssel in die Datei
-  \texttt{/home/git/.ssh/authorized\_keys} ein.
-\end{itemize}
-
-\subsection{Detaillierte Anleitung}\label{detaillierte-anleitung}
-
-\textbf{Benutzer anlegen}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{useradd} \AttributeTok{{-}m}\NormalTok{ git}
-\FunctionTok{passwd}\NormalTok{ git  }\CommentTok{\# Das Kennwort wird 2x unsichtbar abgefragt.}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Anmeldung deaktivieren}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{nano}\NormalTok{ /etc/passwd }
-\end{Highlighting}
-\end{Shaded}
-
-Den Benutzer \git  suchen und am Ende der Zeile aus \texttt{/bin/sh} den
-Eintrag \texttt{/bin/false} machen. Nun mit der Tastenkombination
-\strg{o} und `\strg{x} die Änderung abspeichern.
-
-\textbf{Erstellen eines Schlüsselpaars}\\
-Unter Linux / MacOS einfach eingeben:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096 }\AttributeTok{{-}C} \StringTok{"schueler@example.com"}
-\end{Highlighting}
-\end{Shaded}
-
-Als Dateiname \emph{schule} vergeben und die Fragen nach einer
-PassPhrase beide Male mit der Enter-Taste übergehen.
-
-Unter Windows geht das ab Windows 10 mit dem gleichen Befehl aus der
-\emph{cmd.exe} oder \emph{powershell}. Frühere Versionen müssen PuTTYgen
-verwenden -- Anleitung z.B. über KI. Bei der Vorbereitung des Workshops
-hat sich das Erstellen des Schlüsselpaares hier allerdings als ziemlich
-problematisch erwiesen. Mit Standardnamen im Standardordner ging es
-problemlos, bei Angabe eines anderen Namens wurde es kompliziert.
-
-TODO: Überarbeiten Key unter WIndows.
-
-\textbf{Zuschicken der Datei \texttt{schule.pub} per Mail}\\
-Sollte klar sein. Durch die Wahl von \emph{schule} wird das
-Schlüsselpaar auch nicht im versteckten Ordner \texttt{.ssh} angelegt,
-sondern sichtbar direkt unter
-\texttt{c:\textbackslash{}user\textbackslash{}BENUTZER}.
-
-TODO: Das klappt noch nicht
-
-\textbf{Kopieren des Schlüssels}\\
-Der Schlüssel muss aus der eMail in die Datei
-\texttt{/home/git/.ssh/authorized\_keys} eingetragen werden.
-
-TODO: Klappt das über \strg{c}
-
-Die Schüler sollten nun kennwortfrei mit \git arbeiten können.\\
-Beim Einsatz einer Weboberfläche (später im Script) müssen die Schüler
-diesen Schlüssel selbst dort im System registrieren.
-
-\samplestart
-
-\textbf{Hintergrund}\\
-Nach der Anmeldung über ssh wird über die Einstellungen im Benutzerkonto
-entschieden, welche Art von Terminal der Benutzer erhält. Üblich ist die
-\verb+bash, sh, csh, ...+. Wird hier ein \textit{ungültiges} Terminal
-eingetragen, so ist eine Anmeldung auf diese Weise nicht mehr möglich.
-Für \git  spielt diese allerdings keine Rolle, da hierfür das Terminal
-nicht gestartet werden muss. Da trotzdem eine Art von Anmeldung für den
-Zugriff auf \git  erfolgen muss, wird das Public-Key-Verfahren
-verwendet.
-
-Hier muss entschieden werden, wer für die Schlüssel zuständig ist.
-\sampleend
-
-\textbf{Varianten}
-
-\begin{itemize}
-\item
-  Der Lehrer erstellt Schlüsselpaare für die Schüler, die sie auf den
-  verwendeten Geräten (Schule, Zuhause) hinterlegen und die vom Lehrer
-  auf dem Server freigeschaltet werden. Dies kann zu Problemen führen,
-  falls Schüler bereits aus anderen Gründen mit ssh arbeiten und bereits
-  Schlüssel besitzen\footnote{Auch das kann im Prinzip konfiguriert
-    werden, stellt aber höhere Anforderungen an den Benutzer}.
-\item
-  Der Schüler erstellt selbst das Schlüsselpaar oder bringt sein eigenes
-  mit (ausdrücklich NICHT empfohlen, da der Private-Key dann auf einem
-  Schulrechner liegt!). Er muss dann eigenständig seinen Public-Key auf
-  dem Server hinterlegen. Das ist auch problematische, weil der Schüler
-  zunächst das Kennwort für den Benutzer \git besitzen muss. Nach dem
-  Hinterlegen des Schlüssels ist es dann die Aufgabe des Lehrers, den
-  Account zu sperren.
-\item
-  Der Schüler erstellt für die Schule und zuhause unabhängige
-  Schlüsselpaare. In diesem Fall müssen beide Schlüssel auf dem Server
-  als gültig eingetragen werden.
-\end{itemize}
-
-\section{Vorbereitung des Systems}\label{vorbereitung-des-systems}
-
-Nachfolgend wird die Installation eines funktionsfähigen \gitservers
-beschrieben. Bevor man sich an die Installation auf einem Server im
-Internet macht, ist etwas \emph{Training} in einer virtuellen Umgebung
-ganz sinnvoll. Nach Installation und Konfiguration eines Übungsservers
-in VirtualBox sind die Schritte isdentisch. Die Anleitung zur
-Installation von VirtualBox und dem entsprechenden Gastsystems
-\emph{Ubuntu-24.04} befindet sich am Ende des Handouts. Gegebenenfalls
-also zuerst dort fortfahren und dann erst hierher zurückkehren.
-
-\section{Grundkonfiguration}\label{grundkonfiguration}
-
-Alle erforderlichen Konfigurationsschritte erfolgen über ssh im Terminal
-auf dem Server. In der virtuellen Maschine kann dies zwar auch direkt
-aus VirtualBox heraus erfolgen, zum \emph{üben} ist es aber auch hier
-sinnvoll, sich mit ssh auf die VM zu verbinden.
-
-\subsection{SSH-Verbindung}\label{ssh-verbindung}
-
-\textbf{Windows}\\
-Seit einiger Zeit kann auch Windows auch ohne Zusatzsoftware
-SSH-Verbindungen aufbauen. Allerdings unterliegt die \texttt{cmd.exe}
-einigen Einschränkungen (z.B. kopieren von Textinhalten), die bei der
-Verbindung mit Putty besser gelöst sind. Putty kann \href{TODO}{HIER}
-als einzelne Datei heruntergeladen werden. Starten Sie dafür die
-Commandozeile \texttt{cmd.exe} und geben Sie folgenden Befehl ein
-(Benutzer und IP-Adresse müssen bekannt sein, ebenso das Kennwort):
-
-TODO: Unterschied cmd und putty
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ssh}\NormalTok{ benutzer@ip{-}adresse }
-\end{Highlighting}
-\end{Shaded}
-
-Es erscheint eine Sicherheitsabfrage, die mit \texttt{yes} und
-\texttt{enter} bestätigt werden muss:
-
-TODO: Als Bild einbinden
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{The}\NormalTok{ authenticity of host }\StringTok{\textquotesingle{}try.example.com (38.243.220.195)\textquotesingle{}}\NormalTok{ can}\StringTok{\textquotesingle{}t be established.}
-\StringTok{ED25519 key fingerprint is SHA256:DSeSsfXDL2PkSlLYCt64krg9xa2vNr3og5SBJzZ/WNk.}
-\StringTok{This key is not known by any other names.}
-\StringTok{Are you sure you want to continue connecting (yes/no/[fingerprint])?}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hintergrund}\\
-Der Rechner merkt sich den Fingerabruck des Servers, zu dem die
-Verbindung aufgebaut wurde. Sollte später ein anderer Server diese
-IP-Adresse übernehmen (z.B. Man in the middle), so stimmt der
-Fingerabdruck nicht und es gibt eine Warnung. \sampleend
-
-\textbf{Apple und Linux}\\
-Auch hier erfolgt der Verbindungsaufbau in gleicher Weise direkt aus dem
-Terminal.
-
-Die Eingabe des Kennworts kann je nach Installationsvariante auch ohne
-sichtbare Zeichen erfolgen!
-
-Eine ssh-Verbindung kann auf verschieden Weise wieder abgebaut werden:
-
-\begin{itemize}
-\item
-  brutal, geht aber: Fenster schließen
-\item
-  \texttt{exit()}
-\item
-  \texttt{logout}
-\item
-  \strg{d}
-\end{itemize}
-
-\subsection{Software installieren}\label{software-installieren}
-
-Bei \emph{Ubuntu-24.04} ist in der Standard-Installation die
-Versionsverwaltung \git bereits vorinstalliert und auch der ssh-Server
-sollte bereits funktionieren. Bei gemieteten Installationen muss das
-nicht so sein, ssh sollte aber funktionieren. Für die Verbindung mit ssh
-benötigt man die IP-Adresse. Von einem Mietserver kennt man die Adresse
-im Regelfall, in VirtualBox muss man sie erst im Terminal ermitteln, da
-sie vom DHCP-Server zugewiesen wird.
-
-\samplestart
-
-\textbf{Hinweis}\\
-Falls man \git im Klassenzimmer betreibt (was nicht besonders sinnvoll
-ist) und eine gewisse \emph{Konstanz} in den Unterrichtsverlauf bringen
-möchte, dann sollte der Systemadministrator diese virtuellen Maschine in
-den DHCP-Server eintragen, damit sie immer die gleiche IP-Adresse
-bekommt! \sampleend
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{ip}\NormalTok{ addr show}
-\end{Highlighting}
-\end{Shaded}
-
-Je nach Anbieter des Systems kann die Bildschirmausgabe etwas anders
-aussehen!
-
-\begin{figure}[H]
-
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/interfaces.png}}
-
-}
-
-\caption{Interfaces}
-
-\end{figure}%
-
-Der veraltete Befehl \texttt{ifconfig} kann jederzeit nachinstalliert
-werden durch
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{sudo} \AttributeTok{{-}i}           \CommentTok{\# Admin werden}
-\ExtensionTok{apt{-}get}\NormalTok{ update    }\CommentTok{\# Software{-}DB aktualisieren {-} dauert!}
-\ExtensionTok{apt{-}get}\NormalTok{ install net{-}tools  }\CommentTok{\# mit y oder J bestätigen}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hinweis}\\
-Zum Installieren von Software gibt es auf Linux verschiedene Programme:
-\texttt{apt,\ apt-get,\ aptitude,\ snap,\ flatpak,\ appimages,\ ...}.
-Eine detaillierte Beschreibung ginge hier zu weit. In diesem Workshop
-wird nur mit \texttt{apt,\ apt-get} und \texttt{aptitude} gearbeitet.
-Diese drei Programme verwenden die gleiche Datenbank für verfügbare
-Software und sind somit weitgehend identisch. \texttt{Aptitude} verfügt
-über eine -- für mich -- schönere Suchfunktion. Aus diesem Grund
-installieren wir es hier gleich nach. \sampleend
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{apt{-}get}\NormalTok{ install aptitude }\AttributeTok{{-}y}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Check auf installiertes git}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git} \AttributeTok{{-}{-}version}
-\end{Highlighting}
-\end{Shaded}
-
-Falls eine Fehlermeldung erscheint, muss \git noch installiert werden:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{apt}\NormalTok{ update }
-\ExtensionTok{apt}\NormalTok{ get install git }\AttributeTok{{-}y}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Firewall}\label{firewall}
-
-Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
-Den Status erfragt man mit \texttt{ufw\ status}. Hierbei steht
-\texttt{ufw} für \emph{uncomplicated firewall}. Bei Änderungen an der
-Firewall immer Vorsicht walten lassen! Man kann sich aussperren!
-
-\textbf{Ablauf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{IN:}\NormalTok{   ufw status}
-\ExtensionTok{OUT:}\NormalTok{  Status: inactive}
-
-\ExtensionTok{IN:}\NormalTok{   ufw allow ssh }
-\ExtensionTok{OUT:}\NormalTok{  Rules updated}
-      \ExtensionTok{Rules}\NormalTok{ updated }\ErrorTok{(}\ExtensionTok{v6}\KeywordTok{)}
-
-\ExtensionTok{IN:}\NormalTok{   ufw enable}
-\ExtensionTok{OUT:}\NormalTok{  Command may disrupt existing ssh connections. }
-      \ExtensionTok{Proceed}\NormalTok{ with operation }\ErrorTok{(}\ExtensionTok{y}\KeywordTok{|}\ExtensionTok{n}\KeywordTok{)}\ExtensionTok{?}
-\ExtensionTok{IN:}\NormalTok{   y}
-\ExtensionTok{OUT:}\NormalTok{  Firewall is active and enabled on system startup}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Ordner für Repository}\label{ordner-fuxfcr-repository}
-
-Wo man diesen im Verzeichnisbaum von Linux anlegt, ist im Prinzip
-unwichtig -- es gibt aber bessere und schlechtere Orte. Der Home-Ordner
-ist keine gute Idee -- besser ist z.B. der Ordner \texttt{/srv}. Dort
-erstellen wir auch gleich ein Demo-Repository:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{cd}\NormalTok{ /srv }
-\FunctionTok{mkdir}\NormalTok{ repositories}
-\FunctionTok{chown}\NormalTok{ git:git repositories }
-\BuiltInTok{cd}\NormalTok{ repositories}
-\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ demo.git}
-\end{Highlighting}
-\end{Shaded}
-
-Mit diesem Repository werden wir aber erst später arbeiten. Zunächst
-bleiben wir auf dem lokalen Rechner, um die Grundzüge zu lernen.
-
-\bookmarksetup{startatroot}
-
 \chapter{Erster Überblick}\label{erster-uxfcberblick}
 
 Eine Einführung in die Arbeit \git ist etwas schwierig, weil auf einen
 Schlag so viele neue Konzepte zu verarbeiten sind.
 
-Wie beginnen mit einem Überblick und gehen dann immer mehr in die
+Wir beginnen mit einem Überblick und gehen dann immer mehr in die
 Feinheiten.
 
 \section{Lokal -- Remote}\label{lokal-remote}
@@ -850,6 +465,45 @@ automatisch möglich -- beide (alle) Varianten in die betroffene Datei
 geschrieben werden. Dabei wird jeweils die Herkunft angegeben und der
 Zuständige für Konfliktlösung kann löschen oder übernehmen, was er für
 richtig hält.
+
+\bookmarksetup{startatroot}
+
+\chapter{Vorbereitung des lokalen
+Rechners}\label{vorbereitung-des-lokalen-rechners}
+
+\section{Vorüberlegung}\label{voruxfcberlegung}
+
+Um mit \git arbeiten zu können, brauchst du eine geeignete
+Client-Software auf deinem Computer\footnote{Diese Aussage ist nur
+  bedingt richtig, weil für manche Szenarien auch eine reine
+  Online-Plattform genügt.}\\
+Viele Entwicklungsumgebungen bringen ihren individuellen \git-Client
+mit, was eine pauschale Behandlung erschwert.
+
+Du solltest zuerst die typischen Abläufe direkt mit \git einüben, bevor
+du dich mit grafischen Systemen beschäftigst.
+
+\section{Installation von Git}\label{installation-von-git}
+
+Bei der Installation von \git werden automatisch Client und Server
+installiert. Du wirst hier aber nur den Client (=\git-Bash) verwenden.\\
+Dabei handelt es sich um eine extrem abgespeckte Linux-Umgebung, so dass
+wir auch die Grundbefehle im Terminal besprechen müssen.
+
+Lade von \href{https://gitforwindows.org}{gitforwindows.org} die
+Installationsdatei herunter, beginne aber noch nicht mit der
+Installation!
+
+Lade von
+\href{https://notepad-plus-plus.org/downloads/}{notepad-plus-plus.org}
+den Editor \emph{notepad++} herunter und installiere das Programm. Du
+wirst bei der Installation von Git nach diesem Programm gefragt!
+
+Starte nun die Installation von \git durch Doppelklick auf die
+Installationsdatei. Die nachfolgenden Bilder zeigen den Ablauf in der
+Version vom Februar 2025.
+
+TODO: Bilder
 
 \bookmarksetup{startatroot}
 
@@ -1565,7 +1219,7 @@ folgenden Befehl verwenden:
 
 Wechsle in das Fortbildungsfenster
 
-\phantomsection\label{annotated-cell-47}%
+\phantomsection\label{annotated-cell-35}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -1598,7 +1252,7 @@ Empfohlener Befehl \texttt{git\ add\ story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-48}%
+\phantomsection\label{annotated-cell-36}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -1651,7 +1305,7 @@ foglende Schritte:
   Status checken: \texttt{git\ status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-49}%
+\phantomsection\label{annotated-cell-37}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -1716,7 +1370,7 @@ erkennen:
 
 TODO: Neu aufbauen
 
-\phantomsection\label{annotated-cell-52}%
+\phantomsection\label{annotated-cell-40}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -2381,11 +2035,162 @@ https://www.youtube.com/watch?v=1TNK-OkaelI
 
 \pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/rebase_nach_branch_delete.png}}
 
+Bei einem Rebase wird der entsprechende Branch \emph{verpflanzt} -- d.h.
+gewissermaßen \emph{ausgerupft} und an anderer Stelle wieder
+\emph{angedockt}.\\
+Bei diesem Vorgang werden die Hashwerte aller Commits im Branch
+geändert.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{*}\NormalTok{ 10f8d8d }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ arbeit}\KeywordTok{)} \ExtensionTok{Neuer}\NormalTok{ Inhalt 10}
+\ExtensionTok{*}\NormalTok{ e0ae3ce Neuer Inhalt 9}
+\ExtensionTok{*}\NormalTok{ 1eac6f3 Neuer Inhalt 8}
+\ExtensionTok{*}\NormalTok{ fa76537 Neuer Inhalt 7}
+\ExtensionTok{*}\NormalTok{ da22859 Neuer Inhalt 6}
+\ExtensionTok{*}\NormalTok{ 7903aaf Neuer Inhalt 5}
+\ExtensionTok{*}\NormalTok{ 33428f1 Neuer Inhalt 4}
+\ExtensionTok{*}\NormalTok{ 80db22a Neuer Inhalt 3}
+\ExtensionTok{*}\NormalTok{ 4a642a8 Neuer Inhalt 2}
+\ExtensionTok{*}\NormalTok{ a3645f3 Neuer Inhalt 1}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 2c58be7 }\ErrorTok{(}\ExtensionTok{main}\KeywordTok{)} \ExtensionTok{Zwischenstopp}
+\KeywordTok{|}\ExtensionTok{/}  
+\ExtensionTok{*}\NormalTok{ 7fea00c Start}
+\end{Highlighting}
+\end{Shaded}
+
+Du siehst einen Branch \branch{arbeit} mit mehreren Commits und einen
+neuen Commit im \branch{main}-Branch.
+
+Wenn du nun vom Branch \branch{arbeit} einen Rebase auf den Branch
+\branch{main} ausführst:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ switch arbeit }
+\FunctionTok{git}\NormalTok{ rebase main }
+\end{Highlighting}
+\end{Shaded}
+
+dann sieht das Ergebnis so aus:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{*}\NormalTok{ 1cad272 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ arbeit}\KeywordTok{)} \ExtensionTok{Neuer}\NormalTok{ Inhalt 10}
+\ExtensionTok{*}\NormalTok{ 130c5b0 Neuer Inhalt 9}
+\ExtensionTok{*}\NormalTok{ 5b84ab1 Neuer Inhalt 8}
+\ExtensionTok{*}\NormalTok{ 56d74ea Neuer Inhalt 7}
+\ExtensionTok{*}\NormalTok{ 9255c1d Neuer Inhalt 6}
+\ExtensionTok{*}\NormalTok{ 412fa37 Neuer Inhalt 5}
+\ExtensionTok{*}\NormalTok{ cb91e55 Neuer Inhalt 4}
+\ExtensionTok{*}\NormalTok{ 3ab37b7 Neuer Inhalt 3}
+\ExtensionTok{*}\NormalTok{ dc4b1b0 Neuer Inhalt 2}
+\ExtensionTok{*}\NormalTok{ 9591035 Neuer Inhalt 1}
+\ExtensionTok{*}\NormalTok{ 2c58be7 }\ErrorTok{(}\ExtensionTok{main}\KeywordTok{)} \ExtensionTok{Zwischenstopp}
+\ExtensionTok{*}\NormalTok{ 7fea00c Start}
+\end{Highlighting}
+\end{Shaded}
+
+Die Verzeigung ist verschwunden und der Branch \branch{arbeit} hängt mit
+seinen Commits und neuen Hashwerten\\
+am Commit mit dem Hash 2c58be7 aus dem Branch \branch{main}.
+
+Auch wenn es nicht so wirkt: Der Branch \branch{arbeit} ist immer noch
+vorhanden! Das kannst du auch einfach testen, indem du auf den
+\branch{main}-Branch wechselst und dort einen neuen Commit erstellst:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ switch main }
+\BuiltInTok{echo} \StringTok{"kontrolle"} \OperatorTok{\textgreater{}}\NormalTok{ kontrolle.txt }
+\FunctionTok{git}\NormalTok{ add kontrolle.txt }
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Kontrolle"}
+\end{Highlighting}
+\end{Shaded}
+
+Das Log zeigt dann
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{*}\NormalTok{ 3508cce }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{kkkddd}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ f4ba9f7 }\ErrorTok{(}\ExtensionTok{arbeit}\KeywordTok{)} \ExtensionTok{kkk}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 1cad272 Neuer Inhalt 10}
+\ExtensionTok{....}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ dc4b1b0 Neuer Inhalt 2}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 9591035 Neuer Inhalt 1}
+\KeywordTok{|}\ExtensionTok{/}  
+\ExtensionTok{*}\NormalTok{ 2c58be7 Zwischenstopp}
+\ExtensionTok{*}\NormalTok{ 7fea00c Start}
+\end{Highlighting}
+\end{Shaded}
+
+Die Branches laufen also wieder auseinander. Möchte man den Branch
+\branch{arbeit} loswerden, dann würdest du hier eher den Rebase von
+\branch{main} auf \branch{arbeit} ausführen. \git versucht dann, den
+\branch{main}-Branch hinter den Branch \branch{arbeit} zu hängen. Aus
+dieser Situation heraus kannst du dann auch den Branch \branch{arbeit}
+löschen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}d}\NormalTok{ arbeit }
+\end{Highlighting}
+\end{Shaded}
+
 \bookmarksetup{startatroot}
 
 \chapter{Arbeiten im Team}\label{arbeiten-im-team}
 
-\section{Überblick}\label{uxfcberblick}
+\section{Herausforderungen}\label{herausforderungen}
+
+Das Arbeiten im Team stellt dich vor zwei Probleme
+
+\begin{itemize}
+\tightlist
+\item
+  Welche Server-Infrastruktur sollst du verwenden?
+\item
+  Was ändert sich am Workflow in \git 
+\end{itemize}
+
+Beide Punkte sollen nachfolgend besprochen werden, wobei es zwangsläufig
+Überschneidungen geben wird.
+
+\subsection{Infrastruktur}\label{infrastruktur}
+
+Im Kern ist es egal ob wir vom Setup im Klassenzimmer oder im Internet
+sprechen -- sobald ein Netzwerk beteiligt ist, sind höchstens
+Sicherheitsaspekte ein Thema, die Basistechnik bleibt gleich.
+
+Für eine servbasierende Teamarbeit gibt es folgende Varianten
+
+\begin{itemize}
+\item
+  einfacher \git-Server\\
+  Die Installation ist einfach, die Grundkonfiguration auch. Der Zugriff
+  erfolgt über ssh. Soll das ohne Kennwort funktionieren, so müssen
+  Schlüssel erzeugt und auf den Server eingepflegt werden. Sspäter führt
+  um die Schlüssel aber kein Weg herum.
+\item
+  \git-Server mit kennwortlosem Zgriff über http.\\
+  Funktioniert, ist aber keinesfalls für den Live-Einsatz über einen
+  längeren Zeitraum im Internet zu empfehlen. Die entsprechenden
+  Docker-Files befinden sich in den Materialien. (Basis:
+  \href{https://github.com/ynohat/git-http-backend}{ynohat} )
+\item
+  Ein \git-Server mit \emph{Gitea}\\
+  Gui-basiertes System mit vielen Optionen und weniger komplex als
+  \emph{GitLab}
+\item
+  Ein \git-Server mit \emph{GitLab}
+\end{itemize}
+
+Bei allen Varianten ist im Prinzip eine direkte Installation auf den
+Server (nicht empfohlen) oder der Einsatz von Docker (sinnvoll) möglich.
+Die Anleitungen für die einzelnen Varianten befinden sich weiter hinten
+im Script.
+
+\subsection{Überblick}\label{uxfcberblick}
 
 Bei der Arbeit im Team ändert sich beim lokalen Arbeiten zunächst wenig.
 Die Schritte \emph{branch, add, commit, \ldots{}} funktionieren wie auch
@@ -2403,12 +2208,12 @@ bisher. Neu sind allerdings die Schritte
 
 Hierbei sind einige Spielregeln zu beachten, damit es nicht zu Problemen
 kommt. Diese Regeln werden meist als Workflow oder im Speziellen auch
-als Gitflow bezeichnet. Es gibt hier zwar gewisse -- aber keinesfalls
+als GitFlow bezeichnet. Es gibt hier zwar gewisse -- aber keinesfalls
 verbindliche -- Standards. Jede Firma stellt hier ihre eigenen, fest
 vorgeschriebenenen Abläufe auf, an die sie die Mitarbeiter zu halten
 haben.
 
-\subsection{Gemeinsamkeiten}\label{gemeinsamkeiten}
+\subsubsection{Gemeinsamkeiten}\label{gemeinsamkeiten}
 
 Auch diese Gemeinsamkeiten müssen nicht in jeder Firma oder jedem
 Projekt umgesetzt werden!
@@ -2429,7 +2234,7 @@ Bugfix-Branches) ausgehen. Ist ihre Arbeit dort beendet, muss der Code
 getestet werden und dann erst erfolgt der Merge in den
 \branch{development}-Branch.
 
-\subsection{Details}\label{details}
+\subsubsection{Details}\label{details}
 
 Da jetzt mehr Personen Änderungen zu unvorhersehbaren Zeitpunkten
 Änderungen am Code vornehmen, muss jeder Mitarbeiter dafür sorgen, immer
@@ -2446,7 +2251,7 @@ dass ein Merge auf den \branch{development}-Branch erfolgt wäre.
 
 
 
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.8]
 
 \draw(0,0) rectangle ++(16,6);
 
@@ -2459,7 +2264,7 @@ dass ein Merge auf den \branch{development}-Branch erfolgt wäre.
 (2,0) circle (0.5) node [  ]   { m4  }   ++ 
 (2,0) circle (0.5) node [  ]   { m5  }   ++ 
 (2,0) circle (0.5) node [  ]   { m6  } ; 
-\draw(14,1) node[scale=1.5]{main};
+\draw(14,1) node[scale=1.2]{main};
 \end{scope}
 
 
@@ -2470,7 +2275,7 @@ dass ein Merge auf den \branch{development}-Branch erfolgt wäre.
 (2,0) circle (0.5) node [  ]   { d2  }   ++
 (2,0) circle (0.5) node [  ]   { d3  }   ++ 
 (2,0) circle (0.5) node [  ]   { d4  }  ;
-\draw(11,1) node[scale=1.5]{development};
+\draw(11,1) node[scale=1.2]{development};
 \end{scope}
 
 
@@ -2487,7 +2292,7 @@ dass ein Merge auf den \branch{development}-Branch erfolgt wäre.
 (2,0) circle (0.5) node [  ]   { f2  }   ++
 (2,0) circle (0.5) node [  ]   { f3  }   ++ 
 (2,0) circle (0.5) node [  ]   { f4  }  ;
-\draw(10,1) node[scale=1.5]{feature};
+\draw(10,1) node[scale=1.2]{feature};
 \end{scope}
 
 \draw(4.4,3.28) -- ++ (48:1.85);
@@ -2497,21 +2302,20 @@ dass ein Merge auf den \branch{development}-Branch erfolgt wäre.
 
 \end{tikzpicture}
 
-Da noch keine wirklichen Fortschitte erzielt worden sind, dürfte der
+Da noch keine wirklichen Fortschritte erzielt worden sind, dürfte der
 \branch{development}-Branch auch noch nicht wieder auf den Server
 veröffentlicht worden sein (=push).
 
-\subsection{Pull und fetch}\label{pull-und-fetch}
+\subsubsection{Pull und fetch}\label{pull-und-fetch}
 
 Die Grundidee von \emph{holen} und \emph{veröffentlichen} ist relativ
 einfach und eventuell muss man den Schülern auch nicht mehr erzählen. Da
 aber Code von anderen Entwicklern auf deinen Rechner kommt, solltest du
 diesen eventuell nicht ungesehen in deine Entwicklung aufnehmen.
-\texttt{git\ pull} macht aber genau das.\\
+\cmd{git pull} macht aber genau das.\\
 Willst du an dieser Stelle sicher gehen, so machst du zuerst
-\texttt{git\ fetch} und siehst dir die Änderungen zuerst an -- siehe
-weiter unten. Im Anschluss kannst du sie dann mit \texttt{git\ merge}
-übernehmen.
+\cmd{git fetch} und siehst dir die Änderungen zuerst an -- siehe weiter
+unten. Im Anschluss kannst du sie dann mit \cmd{git merge} übernehmen.
 
 \section{Hands on}\label{hands-on-1}
 
@@ -2520,6 +2324,8 @@ auftreten. Wir sehen uns lieber gleich an, was es damit auf sich hat.
 Für die einzelnen Schritte gibt es Scripts in den Kursmaterialien!
 
 \subsection{origin}\label{origin}
+
+\textbf{Origin.sh}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2553,7 +2359,7 @@ Für die einzelnen Schritte gibt es Scripts in den Kursmaterialien!
 \end{Highlighting}
 \end{Shaded}
 
-Das Script \texttt{origin.sh} erstellt dir
+Das Script \script{origin.sh} erstellt dir
 
 \begin{itemize}
 \tightlist
@@ -2565,7 +2371,7 @@ Das Script \texttt{origin.sh} erstellt dir
 \end{itemize}
 
 Öffne eine \git-Bash in einem Spielordner und führe das Script
-\texttt{origin.sh} aus. Die Ausgabe wird bei dir minimal abweichen.
+\script{origin.sh} aus. Die Ausgabe wird bei dir minimal abweichen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2606,73 +2412,91 @@ auch eine Netzwerkverbindung zu einem Server sein -- das ist sogar der
 Normalfall.
 
 Mit \branch{origin/main} ist immer der Branch im entfernten Repository
-gemeint, \branch{main} alleine bezieht sich auf den Branch im
-\emph{Klon}.
+gemeint, \branch{main} alleine bezieht sich auf den Branch in deiner
+lokalen Kopie.
 
-Der nachfolgende Setup erstellt * einen Ordner * im Ordner ein
-vollwertiges Repository (--bare) * einen \emph{Klon} des Repositories
-mit dem Namen \emph{susi} * einen \emph{Klon} des Repositories mit dem
-Namen \emph{max}
+\subsection{Zeiger}\label{zeiger}
 
-Du solltest wieder zwei
+Der nachfolgende Setup erstellt
+
+\begin{itemize}
+\tightlist
+\item
+  einen Ordner
+\item
+  im Ordner ein vollwertiges Repository (--bare)
+\item
+  eine lokale Kopie des Repositories mit dem Namen \emph{susi}
+\item
+  eine lokale Kopie des Repositories mit dem Namen \emph{max}
+\end{itemize}
+
+Öffen in einem geeigneten Ordner ein \git-Bash und führe das Script
+\script{susi\_und\_max.sh} aus (\script{}./susi\_und\_max.sh\}).
+
+Beachte, dass aus in dem Script im oberen Teil etwas Overhead nötig ist,
+damit die Benutzer nicht mit einem leeren Repository konfrontiert werden
+-- dort fehlt dann nämlich ein Branch!
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ minirepo.git}
+\CommentTok{\#!/bin/bash}
+
+\CommentTok{\# Putzen}
+\ControlFlowTok{if} \BuiltInTok{[} \OtherTok{{-}d}\NormalTok{ labor2 }\BuiltInTok{]}
+\ControlFlowTok{then} 
+  \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ labor2}
+\ControlFlowTok{fi} 
+
+\CommentTok{\# Anlegen}
+\FunctionTok{mkdir}\NormalTok{ labor2}
+\BuiltInTok{cd}\NormalTok{ labor2}
+
+\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ entfernt.git}
+\BuiltInTok{cd}\NormalTok{ entfernt.git}
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
+\BuiltInTok{cd}\NormalTok{ ..}
 
 \VariableTok{ARBEIT}\OperatorTok{=}\VariableTok{$PWD}  \CommentTok{\# aktuellen Pfad merken }
 \VariableTok{SUSI}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/susi  }\CommentTok{\# Abkürzungen für den Überblick  }
 \VariableTok{MAX}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/max}
 
-\FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/minirepo susi }
-\FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/minirepo max   }
+\CommentTok{\# Overhead}
+\FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/entfernt vorbereitung}
+\BuiltInTok{cd}\NormalTok{ vorbereitung}
+\BuiltInTok{echo} \StringTok{"Hi"} \OperatorTok{\textgreater{}}\NormalTok{ README.md}
+\FunctionTok{git}\NormalTok{ add README.md}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Init"}
+\FunctionTok{git}\NormalTok{ push }\AttributeTok{{-}u}\NormalTok{ origin main}
+\BuiltInTok{cd}\NormalTok{ ..}
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ vorbereitung}
 
+\FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/entfernt susi }
+\FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/entfernt max   }
 
-\BuiltInTok{cd} \VariableTok{$SUSI} 
-\BuiltInTok{echo} \StringTok{"Hallo"} \OperatorTok{\textgreater{}}\NormalTok{ datei.txt }
-\FunctionTok{git}\NormalTok{ add datei.txt }
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Hallo geschrieben"}
+\CommentTok{\#}
+\CommentTok{\#cd $SUSI }
+\CommentTok{\#echo "Hallo" \textgreater{} datei.txt }
+\CommentTok{\#git add datei.txt }
+\CommentTok{\#git commit {-}m "Hallo geschrieben"}
 
-\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main }
+\CommentTok{\#git branch {-}m main }
 \end{Highlighting}
 \end{Shaded}
 
-Ein \texttt{git\ status} liefert dir
+Öffne ein zweites Fenster im gleichen Ordner und entscheide dich,
+welches für \emph{Susi} und welches für \emph{Max} stehen soll. Wechsle
+jeweils in das Repository (\cmd{cd susi} und \cmd{cd max}).
+
+Lasse dir in beiden Repositories den Status ausgeben
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{Auf}\NormalTok{ Branch main}
-\ExtensionTok{nichts}\NormalTok{ zu committen, Arbeitsverzeichnis unverändert}
-\end{Highlighting}
-\end{Shaded}
-
-Da du ein Repository auch ohne Netz direkt auf deinem Computer clonen
-kannst, machen wir das jetzt mal. Du musst nun den Pfad zu deinem
-Repository auf der Festplatte wissen musst. Ich habe es hier etwas
-einfacher, weil ich \texttt{/tmp/minirepo} verwendet habe. Bei dir wird
-es
-\texttt{C:\textbackslash{}users\textbackslash{}susi\textbackslash{}....}
-sein, wenn du Windows verwendest.
-
-Den nachfolgenden Befehl solltest du von einer Stelle aus starten, wo
-dieses Repository \emph{nicht} liegt!
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ clone /tmp/minirepo }
-\end{Highlighting}
-\end{Shaded}
-
-Nun hast du eine Kopie von deinem Repository. Durch
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{cd}\NormalTok{ minirepo }
 \FunctionTok{git}\NormalTok{ status}
 \end{Highlighting}
 \end{Shaded}
 
-bekommst du folgende Meldung:
+Es sollte jeweils erscheinen
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2683,27 +2507,26 @@ bekommst du folgende Meldung:
 \end{Highlighting}
 \end{Shaded}
 
-Im Prinzip hast du jetzt eine identische Kopie des Ordners erstellt.
-Allerdings ist der \branch{main}-Branch jetzt \emph{dein}
-\branch{main}-Branch in \emph{diesem} Repository. Die Stautusmeldung
-sagt dir, beide Branches \emph{main} (deiner) und \emph{origin/main}
-(der im anderen Repo) sind gleich.
+Im Prinzip hat Susi jetzt eine identische Kopie des Repositories
+erstellt. Allerdings ist der \branch{main}-Branch jetzt \emph{Susis}
+\branch{main}-Branch in \emph{diesem} Repository. Die Statusmeldung sagt
+dir, beide Branches \emph{main} (Susis) und \emph{origin/main} (der im
+Original Repo) sind gleich.
 
-Jetzt wäre wieder ein guter Zeitpunkt für zwei Fenster! Ich verwende
-nachfolgend die Bezeichnungen \emph{Original} und \emph{Klon} für die
-Repositories.
+Nachfolgend stehen die Bezeichnungen \emph{Original} und \emph{SUSI}
+bzw. \emph{MAX} für die entsprechenden Repositories.
 
-Erstelle nun im \emph{Klon} einen weiteren Commit:
+Susi erstellt in \emph{SUSI} eine Datei und einen Commit:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\BuiltInTok{echo} \StringTok{" Welt"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt }
+\BuiltInTok{echo} \StringTok{"Hallo Welt"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt }
 \FunctionTok{git}\NormalTok{ add datei.txt }
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Welt vergessen ...."}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Begrüßung"}
 \end{Highlighting}
 \end{Shaded}
 
-und betrachte den Status erneut:
+und betrachtet den Status erneut:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2716,13 +2539,13 @@ und betrachte den Status erneut:
 \end{Shaded}
 
 Der \git-Ordner führt also Buch über die Beziehung zwischen den
-Repositories und sagt dir, dass dein \emph{Klon} einen Commit weiter
-vorne ist, als das \emph{Original}.\\
+Repositories und sagt ihr, dass \emph{SUSI} einen Commit weiter vorne
+ist, als das \emph{Original}.\\
 Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
-eine Datei im \texttt{.git}-Ordner führt, wo der aktuelle Hash enthalten
+eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-89}%
+\phantomsection\label{annotated-cell-81}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -2746,19 +2569,19 @@ ist.)
 \begin{description}
 \tightlist
 \item[\circled{1}]
-Enthält den Hash vom letzten Commit im Klon
+Enthält den Hash vom letzten Commit in der lokalen Kopie
 \item[\circled{2}]
 Enthält den Hash vom letzten Commit im Original
 \item[\circled{3}]
 Siehe nachfolgender Text
 \end{description}
 
-Ein \texttt{git\ log\ -\/-oneline} zeigt dir:
+Ein \cmd{git log --oneline} zeigt dir:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{4fbd7aa} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Welt}\NormalTok{ vergessen ....}
-\ExtensionTok{67d41e2} \ErrorTok{(}\ExtensionTok{origin/main,}\NormalTok{ origin/HEAD}\KeywordTok{)} \ExtensionTok{Hallo}\NormalTok{ geschrieben}
+\ExtensionTok{78db34e} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Begrüßung}
+\ExtensionTok{d46681d} \ErrorTok{(}\ExtensionTok{origin/main,}\NormalTok{ origin/HEAD}\KeywordTok{)} \ExtensionTok{Init}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2766,24 +2589,653 @@ Und ein Blick in die beiden Dateien liefert die Hashes -- zumindest
 fast, denn \git hat hier schon wieder optimiert und den Hash vom
 \emph{origin/master} in die Datei \emph{packed-refs} umgelagert.
 
-Wenn du dir den Status im \emph{Original} ansiehst, kannst du noch keine
-Veränderung erkennen -- die Repositories haben ja auch noch nicht
-miteinander kommuniziert!
+Das \emph{Original} weiß von diesem Commit noch nichts -- die
+Repositories haben ja auch noch nicht miteinander kommuniziert! Wenn Max
+in seinem Repository \emph{MAX} nachsieht kann er Susis Datei nicht
+sehen und daran würde auch ein \cmd{git pull} nichts ändern.
+
+Susi führt nun einen Push aus:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ push origin main }
+\end{Highlighting}
+\end{Shaded}
+
+\emph{Git} kommentiert das:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Objekte}\NormalTok{ aufzählen: 4, fertig.}
+\ExtensionTok{Zähle}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{4/4}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ fertig.}
+\ExtensionTok{Delta{-}Kompression}\NormalTok{ verwendet bis zu 6 Threads.}
+\ExtensionTok{Komprimiere}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{2/2}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ fertig.}
+\ExtensionTok{Schreibe}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{3/3}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ 292 Bytes }\KeywordTok{|} \ExtensionTok{292.00}\NormalTok{ KiB/s, fertig.}
+\ExtensionTok{Gesamt}\NormalTok{ 3 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Wiederverwendet 0 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Pack wiederverwendet 0}
+\ExtensionTok{To}\NormalTok{ /tmp/labor2/entfernt}
+   \ExtensionTok{d46681d..78db34e}\NormalTok{  main }\AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}
+\end{Highlighting}
+\end{Shaded}
+
+und jetzt liefert der Status:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{Auf}\NormalTok{ Branch main}
+\ExtensionTok{Ihr}\NormalTok{ Branch ist auf demselben Stand wie }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{.}
+
 \ExtensionTok{nichts}\NormalTok{ zu committen, Arbeitsverzeichnis unverändert}
 \end{Highlighting}
 \end{Shaded}
 
-Wenn du nun vom \emph{Klon} einen \emph{Push} ausführst:
+Die Zeiger in \ordner{.git} wurden also auf den gleichen Hash gesetzt.
+
+\textbf{Wechseln wir zu Max}
+
+Max hat noch sein ursprüngliches Repository und möchte auf Änderungen am
+Server prüfen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ push origin master }
+\FunctionTok{git}\NormalTok{ fetch }
 \end{Highlighting}
 \end{Shaded}
+
+Als Ausgabe bekommt er
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{remote:}\NormalTok{ Objekte aufzählen: 4, fertig.}
+\ExtensionTok{remote:}\NormalTok{ Zähle Objekte: 100\% }\ErrorTok{(}\ExtensionTok{4/4}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ fertig.}
+\ExtensionTok{remote:}\NormalTok{ Komprimiere Objekte: 100\% }\ErrorTok{(}\ExtensionTok{2/2}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ fertig.}
+\ExtensionTok{remote:}\NormalTok{ Gesamt 3 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Wiederverwendet 0 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Pack wiederverwendet 0}
+\ExtensionTok{Entpacke}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{3/3}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ 272 Bytes }\KeywordTok{|} \ExtensionTok{272.00}\NormalTok{ KiB/s, fertig.}
+\ExtensionTok{Von}\NormalTok{ /tmp/labor2/entfernt}
+   \ExtensionTok{d46681d..78db34e}\NormalTok{  main       }\AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ origin/main}
+\end{Highlighting}
+\end{Shaded}
+
+Sein Status sagt ihm
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Auf}\NormalTok{ Branch main}
+\ExtensionTok{Ihr}\NormalTok{ Branch ist 1 Commit hinter }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{, und kann vorgespult werden.}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git pull"}\NormalTok{, um Ihren lokalen Branch zu aktualisieren}\KeywordTok{)}
+
+\ExtensionTok{nichts}\NormalTok{ zu committen, Arbeitsverzeichnis unverändert}
+\end{Highlighting}
+\end{Shaded}
+
+Mit \emph{vorspulen} ist ein Merge gemeint. Max will aber wissen
+\emph{was} sich geändert hat.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ log origin main}
+\end{Highlighting}
+\end{Shaded}
+
+Max sieht den Commit, der noch nicht in seinen Branch integriert ist.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{commit}\NormalTok{ 78db34e3176c4b78d4b027eac06aa4dda5c50cdb }\ErrorTok{(}\ExtensionTok{origin/main,}\NormalTok{ origin/HEAD}\KeywordTok{)}
+\ExtensionTok{Author:}\NormalTok{ wolfgang }\OperatorTok{\textless{}}\NormalTok{susi@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Date:}\NormalTok{   Wed Jan 29 12:39:38 2025 +0100}
+
+    \ExtensionTok{Begrüßung}
+
+\ExtensionTok{commit}\NormalTok{ d46681db23c9e2b3f5379a951c026e3d673fe3e0 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)}
+\ExtensionTok{Author:}\NormalTok{ wolfgang }\OperatorTok{\textless{}}\NormalTok{lehrer@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Date:}\NormalTok{   Wed Jan 29 12:34:48 2025 +0100}
+
+    \ExtensionTok{Init}
+\end{Highlighting}
+\end{Shaded}
+
+Schön sieht man das auch mit
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ show{-}ref}
+\end{Highlighting}
+\end{Shaded}
+
+Der lokale \branch{main} befindet sich noch bei d46681, der entfernte
+\branch{origin main} hingegen bei 78db34.\\
+Durch folgenden Befehl sieht Max die Differenz der Versionen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ show 78db34}
+\end{Highlighting}
+\end{Shaded}
+
+Geht es einfach nur um den gesamten Inhalt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ show 78db34e3:datei.txt}
+\end{Highlighting}
+\end{Shaded}
+
+Max erkennt, dass es problemlose Änderungen sind und übernimmt sie in
+seinen Branch:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ merge}
+\end{Highlighting}
+\end{Shaded}
+
+Die Hashes ziegen, was passiert:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Aktualisiere}\NormalTok{ d46681d..78db34e}
+\ExtensionTok{Fast{-}forward}
+ \ExtensionTok{datei.txt} \KeywordTok{|} \ExtensionTok{1}\NormalTok{ +}
+ \ExtensionTok{1}\NormalTok{ file changed, 1 insertion}\ErrorTok{(}\ExtensionTok{+}\KeywordTok{)}
+ \ExtensionTok{create}\NormalTok{ mode 100644 datei.txt}
+\end{Highlighting}
+\end{Shaded}
+
+Hätte Max größeres Vertrauen, so würde er sich diese Recherche sparen
+und einfach ein \cmd{git pull} ausführen. Im Prinzip ist dieser Befehl
+die direkte Nacheinanderausführung von \cmd{fetch} und \cmd{merge}.
+
+\subsection{Einige Fragen}\label{einige-fragen}
+
+\textbf{Wie starte ich from Scratch}\\
+Es geht hier nicht um den Schlüsseltausch, sondern nur das Handling der
+Repositories.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# auf dem Server }
+\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ musterrepo}
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# auf dem Client}
+\CommentTok{\# Besndere Schritte NUR auf dem ersten Client}
+\FunctionTok{git}\NormalTok{ clone gituser@server:port/pfad/zu/repo.git }
+\FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ main }
+\BuiltInTok{echo} \StringTok{"Welcome"} \OperatorTok{\textgreater{}}\NormalTok{ Readme.txt }
+\FunctionTok{git}\NormalTok{ add Readme.txt }
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"initial"}
+\FunctionTok{git}\NormalTok{ push }\AttributeTok{{-}u}\NormalTok{ origin main }
+\end{Highlighting}
+\end{Shaded}
+
+Jeder weitere Benutzer clont nun ein funktionsfähiges Repostory.
+
+\textbf{Muss ich das `origin main' immer angeben?}
+
+Auch wenn der Branch \branch{main} besonders klingt, ist er doch ein
+ganz normaler Branch. Seine Besonderheit\\
+ist lediglich, dass er durch das Clonen auch gleichzeitig als
+\emph{upstream-branch} definiert wurde -- dehalb funktioniert statt
+\cmd{git pull origin main} auch die kurze Version \cmd{git pull} (analog
+für \cmd{git push}).
+
+Wenn du einen neuen Branch anlegst und einen commit pushen willst:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ probe }
+\BuiltInTok{echo} \StringTok{"test"} \OperatorTok{\textgreater{}}\NormalTok{ probedatei.txt }
+\FunctionTok{git}\NormalTok{ add probedate.txt }
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Datei ergänzt"}
+\FunctionTok{git}\NormalTok{ push }
+\end{Highlighting}
+\end{Shaded}
+
+dann gibt es eine Fehlermeldung
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Schwerwiegend:} 
+\ExtensionTok{Der}\NormalTok{ aktuelle Branch probe hat keinen Upstream{-}Branch.}
+\ExtensionTok{Um}\NormalTok{ den aktuellen Branch zu versenden und den Remote{-}Branch}
+\ExtensionTok{als}\NormalTok{ Upstream{-}Branch zu setzen, benutzen Sie}
+
+    \FunctionTok{git}\NormalTok{ push }\AttributeTok{{-}{-}set{-}upstream}\NormalTok{ origin probe}
+
+\ExtensionTok{Damit}\NormalTok{ das automatisch für Branches ohne Upstream{-}Tracking passiert,}
+\ExtensionTok{siehe} \StringTok{\textquotesingle{}push.autoSetupRemote\textquotesingle{}}\NormalTok{ in }\StringTok{\textquotesingle{}git help config\textquotesingle{}}\NormalTok{.}
+\end{Highlighting}
+\end{Shaded}
+
+Willst du den Branch pushen, dann musst du obigen Befehl verwenden oder
+kürzer
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ push }\AttributeTok{{-}u}\NormalTok{ origin probe }
+\end{Highlighting}
+\end{Shaded}
+
+Theoretisch geht es auch, von einem \emph{nicht upstream} Branch direkt
+auf einen Upstreambranch zu pushen -- das läuft aber am lokalen Branch
+vorbei, dem dann ein Commit fehlt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ push origin probe:main }
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Ist es egal, in welchem Branch ich fetch/pull/push ausführe?}\\
+Jein.\\
+Beim Pushen kann nicht viel schief gehen. Upstream-Branches laufen
+automatisch und wenn sie nicht als upstream konfiguriert sind, dann geht
+der Push (standardmäßig) nicht.
+
+Beim Pull sieht es anders aus. Du kannst jeden Remote-Branch in jeden
+lokalen Branch \emph{pullen} -- also \emph{mergen}. Ist der aktuelle
+Branch als Upstream konfiguriert, holt sich ein kurzes \cmd{git pull}
+die richtigen Daten. Ein \cmd{git pull <branch>} holt aber genau das,
+was du angegeben hast! Das ist eine Fehlerquelle!
+
+\textbf{Wie hängen lokale und remote Branches zusammen?}\\
+Zunächst sind Branches lokal und werden beim \cmd{git push} auch nicht
+auf den Server übertragen.
+
+\bookmarksetup{startatroot}
+
+\chapter{\texorpdfstring{Ein minimaler
+\git-Server}{Ein minimaler -Server}}\label{ein-minimaler--server}
+
+\section{Zu klärende Fragen}\label{zu-kluxe4rende-fragen}
+
+Ein einfacher \git-Server ist lediglich ein Server mit einer
+rudimentären Installation von \git und einer Erreichbarkeit über das
+Netz. Da gerade diese Erreichbarkeit bei Windows ein Problem darstellt,
+handelt es sich im Regelfall um einen Linux-Server. Als solcher besitzt
+er üblicherweise kein grafisches Benutzerinterface (GUI).
+
+Je nach Szenario müssen auf dem Server Benutzer angelegt und verwaltet
+werden. Das kann ziemlich aufwändig sein und ist bei größeren
+Benutzerzahlen ohne Scripting kaum machbar. Es gibt Hilfsmittel in Form
+von Weboberflächen, die hier aber nicht weiter thematisiert werden.
+
+Für einen reinen \gitserver genügt allerdings bereits ein einziger
+Bunutzer -- z.B. \git.
+
+\textbf{Zweck des Servers}\\
+Geht es nur um \git oder sollen noch Wordpress, VPN-Server, \ldots{}
+dazu kommen. Für jedes Szenario wird die endgültige Konfiguration anders
+aussehen \ldots{}
+
+\textbf{Wer nutzt den Server}\\
+Müssen auch andere Lehrkräfte (administrativen) Zugriff auf den Server
+besitzen? Werden Gruppen benötigt?
+
+\textbf{Rolle der Benutzer}\\
+Sollen die Benutzer nur für die Verwendung von \git angelegt und
+konfiguriert werden, oder sollen sie \emph{vollwertige} Benutzer sein,
+die den Server auch in anderen Szenarien sinnvoll nutzen dürfen?
+
+\textbf{Benennung der Benutzer}\\
+Sollen die Schüler mit Zugangsdaten versehen werden, die ihren Namen
+widerspiegeln -- Probleme siehe unten -- oder sollen Zugänge im Sinne
+von \texttt{user1} bis \texttt{user20} verwendet werden?
+
+Bei Verwendung von richtigen Namen entstehen folgende Probleme:
+
+\begin{itemize}
+\tightlist
+\item
+  Sonderzeichen in den richtigen Namen erschweren das automatische
+  Erstellen von Benutzernamen.
+\item
+  Verschiedene Namen können den gleichen Login ergeben.
+\item
+  Behandlung von Schülern mit gleichen Namen in gleichen / verschiedenen
+  Klassen
+\end{itemize}
+
+Die Variante mit \texttt{user1} bis \texttt{user20} ist unpersönlich,
+leichter einzurichten, erschwert dem Lehrer aber eventuell eine
+Zuordnung zum echten Schüler.
+
+Hierfür gibt es keine perfekte Lösung.
+
+\section{Nur git}\label{nur-git}
+
+Wenn ein Schüler nur \git verwenden soll, dann braucht er kein
+vollwertiges Benutzerkonto, an dem er sich auch für andere Arbeiten
+anmelden kann. Für die Verwendung von \git genügt es bereits, wenn man
+einen Benutzer mit Namen \git (als Beispiel) erstellt. Nachfolgend sind
+dann diese Schritte nötig:
+
+\begin{itemize}
+\tightlist
+\item
+  Dem Benutzer \git wird eine \emph{echte} Anmeldung unmöglich gemacht.
+\item
+  Schüler erstellen sich SSH-Schlüssel-Paare
+\item
+  Sie schicken ihren Public-Key per Mail an den Lehrer
+\item
+  Der Lehrer fügt den Schlüssel in die Datei
+  \texttt{/home/git/.ssh/authorized\_keys} ein.
+\end{itemize}
+
+\subsection{Detaillierte Anleitung}\label{detaillierte-anleitung}
+
+\textbf{Benutzer anlegen}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{useradd} \AttributeTok{{-}m}\NormalTok{ git}
+\FunctionTok{passwd}\NormalTok{ git  }\CommentTok{\# Das Kennwort wird 2x unsichtbar abgefragt.}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Anmeldung deaktivieren}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{nano}\NormalTok{ /etc/passwd }
+\end{Highlighting}
+\end{Shaded}
+
+Den Benutzer \git  suchen und am Ende der Zeile aus \texttt{/bin/sh} den
+Eintrag \texttt{/bin/false} machen. Nun mit der Tastenkombination
+\strg{o} und `\strg{x} die Änderung abspeichern.
+
+\textbf{Erstellen eines Schlüsselpaars}\\
+Unter Linux / MacOS einfach eingeben:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096 }\AttributeTok{{-}C} \StringTok{"schueler@example.com"}
+\end{Highlighting}
+\end{Shaded}
+
+Als Dateiname \emph{schule} vergeben und die Fragen nach einer
+PassPhrase beide Male mit der Enter-Taste übergehen.
+
+Unter Windows geht das ab Windows 10 mit dem gleichen Befehl aus der
+\emph{cmd.exe} oder \emph{powershell}. Frühere Versionen müssen PuTTYgen
+verwenden -- Anleitung z.B. über KI. Bei der Vorbereitung des Workshops
+hat sich das Erstellen des Schlüsselpaares hier allerdings als ziemlich
+problematisch erwiesen. Mit Standardnamen im Standardordner ging es
+problemlos, bei Angabe eines anderen Namens wurde es kompliziert.
+
+TODO: Überarbeiten Key unter WIndows.
+
+\textbf{Zuschicken der Datei \texttt{schule.pub} per Mail}\\
+Sollte klar sein. Durch die Wahl von \emph{schule} wird das
+Schlüsselpaar auch nicht im versteckten Ordner \texttt{.ssh} angelegt,
+sondern sichtbar direkt unter
+\texttt{c:\textbackslash{}user\textbackslash{}BENUTZER}.
+
+TODO: Das klappt noch nicht
+
+\textbf{Kopieren des Schlüssels}\\
+Der Schlüssel muss aus der eMail in die Datei
+\texttt{/home/git/.ssh/authorized\_keys} eingetragen werden.
+
+TODO: Klappt das über \strg{c}
+
+Die Schüler sollten nun kennwortfrei mit \git arbeiten können.\\
+Beim Einsatz einer Weboberfläche (später im Script) müssen die Schüler
+diesen Schlüssel selbst dort im System registrieren.
+
+\samplestart
+
+\textbf{Hintergrund}\\
+Nach der Anmeldung über ssh wird über die Einstellungen im Benutzerkonto
+entschieden, welche Art von Terminal der Benutzer erhält. Üblich ist die
+\verb+bash, sh, csh, ...+. Wird hier ein \textit{ungültiges} Terminal
+eingetragen, so ist eine Anmeldung auf diese Weise nicht mehr möglich.
+Für \git  spielt diese allerdings keine Rolle, da hierfür das Terminal
+nicht gestartet werden muss. Da trotzdem eine Art von Anmeldung für den
+Zugriff auf \git  erfolgen muss, wird das Public-Key-Verfahren
+verwendet.
+
+Hier muss entschieden werden, wer für die Schlüssel zuständig ist.
+\sampleend
+
+\textbf{Varianten}
+
+\begin{itemize}
+\item
+  Der Lehrer erstellt Schlüsselpaare für die Schüler, die sie auf den
+  verwendeten Geräten (Schule, Zuhause) hinterlegen und die vom Lehrer
+  auf dem Server freigeschaltet werden. Dies kann zu Problemen führen,
+  falls Schüler bereits aus anderen Gründen mit ssh arbeiten und bereits
+  Schlüssel besitzen\footnote{Auch das kann im Prinzip konfiguriert
+    werden, stellt aber höhere Anforderungen an den Benutzer}.
+\item
+  Der Schüler erstellt selbst das Schlüsselpaar oder bringt sein eigenes
+  mit (ausdrücklich NICHT empfohlen, da der Private-Key dann auf einem
+  Schulrechner liegt!). Er muss dann eigenständig seinen Public-Key auf
+  dem Server hinterlegen. Das ist auch problematische, weil der Schüler
+  zunächst das Kennwort für den Benutzer \git besitzen muss. Nach dem
+  Hinterlegen des Schlüssels ist es dann die Aufgabe des Lehrers, den
+  Account zu sperren.
+\item
+  Der Schüler erstellt für die Schule und zuhause unabhängige
+  Schlüsselpaare. In diesem Fall müssen beide Schlüssel auf dem Server
+  als gültig eingetragen werden.
+\end{itemize}
+
+\section{Vorbereitung des Systems}\label{vorbereitung-des-systems}
+
+Nachfolgend wird die Installation eines funktionsfähigen \gitservers
+beschrieben. Bevor man sich an die Installation auf einem Server im
+Internet macht, ist etwas \emph{Training} in einer virtuellen Umgebung
+ganz sinnvoll. Nach Installation und Konfiguration eines Übungsservers
+in VirtualBox sind die Schritte isdentisch. Die Anleitung zur
+Installation von VirtualBox und dem entsprechenden Gastsystems
+\emph{Ubuntu-24.04} befindet sich am Ende des Handouts. Gegebenenfalls
+also zuerst dort fortfahren und dann erst hierher zurückkehren.
+
+\section{Grundkonfiguration}\label{grundkonfiguration}
+
+Alle erforderlichen Konfigurationsschritte erfolgen über ssh im Terminal
+auf dem Server. In der virtuellen Maschine kann dies zwar auch direkt
+aus VirtualBox heraus erfolgen, zum \emph{üben} ist es aber auch hier
+sinnvoll, sich mit ssh auf die VM zu verbinden.
+
+\subsection{SSH-Verbindung}\label{ssh-verbindung}
+
+\textbf{Windows}\\
+Seit einiger Zeit kann auch Windows auch ohne Zusatzsoftware
+SSH-Verbindungen aufbauen. Allerdings unterliegt die \texttt{cmd.exe}
+einigen Einschränkungen (z.B. kopieren von Textinhalten), die bei der
+Verbindung mit Putty besser gelöst sind. Putty kann \href{TODO}{HIER}
+als einzelne Datei heruntergeladen werden. Starten Sie dafür die
+Commandozeile \texttt{cmd.exe} und geben Sie folgenden Befehl ein
+(Benutzer und IP-Adresse müssen bekannt sein, ebenso das Kennwort):
+
+TODO: Unterschied cmd und putty
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh}\NormalTok{ benutzer@ip{-}adresse }
+\end{Highlighting}
+\end{Shaded}
+
+Es erscheint eine Sicherheitsabfrage, die mit \texttt{yes} und
+\texttt{enter} bestätigt werden muss:
+
+TODO: Als Bild einbinden
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{The}\NormalTok{ authenticity of host }\StringTok{\textquotesingle{}try.example.com (38.243.220.195)\textquotesingle{}}\NormalTok{ can}\StringTok{\textquotesingle{}t be established.}
+\StringTok{ED25519 key fingerprint is SHA256:DSeSsfXDL2PkSlLYCt64krg9xa2vNr3og5SBJzZ/WNk.}
+\StringTok{This key is not known by any other names.}
+\StringTok{Are you sure you want to continue connecting (yes/no/[fingerprint])?}
+\end{Highlighting}
+\end{Shaded}
+
+\samplestart
+
+\textbf{Hintergrund}\\
+Der Rechner merkt sich den Fingerabruck des Servers, zu dem die
+Verbindung aufgebaut wurde. Sollte später ein anderer Server diese
+IP-Adresse übernehmen (z.B. Man in the middle), so stimmt der
+Fingerabdruck nicht und es gibt eine Warnung. \sampleend
+
+\textbf{Apple und Linux}\\
+Auch hier erfolgt der Verbindungsaufbau in gleicher Weise direkt aus dem
+Terminal.
+
+Die Eingabe des Kennworts kann je nach Installationsvariante auch ohne
+sichtbare Zeichen erfolgen!
+
+Eine ssh-Verbindung kann auf verschieden Weise wieder abgebaut werden:
+
+\begin{itemize}
+\item
+  brutal, geht aber: Fenster schließen
+\item
+  \texttt{exit()}
+\item
+  \texttt{logout}
+\item
+  \strg{d}
+\end{itemize}
+
+\subsection{Software installieren}\label{software-installieren}
+
+Bei \emph{Ubuntu-24.04} ist in der Standard-Installation die
+Versionsverwaltung \git bereits vorinstalliert und auch der ssh-Server
+sollte bereits funktionieren. Bei gemieteten Installationen muss das
+nicht so sein, ssh sollte aber funktionieren. Für die Verbindung mit ssh
+benötigt man die IP-Adresse. Von einem Mietserver kennt man die Adresse
+im Regelfall, in VirtualBox muss man sie erst im Terminal ermitteln, da
+sie vom DHCP-Server zugewiesen wird.
+
+\samplestart
+
+\textbf{Hinweis}\\
+Falls man \git im Klassenzimmer betreibt (was nicht besonders sinnvoll
+ist) und eine gewisse \emph{Konstanz} in den Unterrichtsverlauf bringen
+möchte, dann sollte der Systemadministrator diese virtuellen Maschine in
+den DHCP-Server eintragen, damit sie immer die gleiche IP-Adresse
+bekommt! \sampleend
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{ip}\NormalTok{ addr show}
+\end{Highlighting}
+\end{Shaded}
+
+Je nach Anbieter des Systems kann die Bildschirmausgabe etwas anders
+aussehen!
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/interfaces.png}}
+
+}
+
+\caption{Interfaces}
+
+\end{figure}%
+
+Der veraltete Befehl \texttt{ifconfig} kann jederzeit nachinstalliert
+werden durch
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo} \AttributeTok{{-}i}           \CommentTok{\# Admin werden}
+\ExtensionTok{apt{-}get}\NormalTok{ update    }\CommentTok{\# Software{-}DB aktualisieren {-} dauert!}
+\ExtensionTok{apt{-}get}\NormalTok{ install net{-}tools  }\CommentTok{\# mit y oder J bestätigen}
+\end{Highlighting}
+\end{Shaded}
+
+\samplestart
+
+\textbf{Hinweis}\\
+Zum Installieren von Software gibt es auf Linux verschiedene Programme:
+\texttt{apt,\ apt-get,\ aptitude,\ snap,\ flatpak,\ appimages,\ ...}.
+Eine detaillierte Beschreibung ginge hier zu weit. In diesem Workshop
+wird nur mit \texttt{apt,\ apt-get} und \texttt{aptitude} gearbeitet.
+Diese drei Programme verwenden die gleiche Datenbank für verfügbare
+Software und sind somit weitgehend identisch. \texttt{Aptitude} verfügt
+über eine -- für mich -- schönere Suchfunktion. Aus diesem Grund
+installieren wir es hier gleich nach. \sampleend
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt{-}get}\NormalTok{ install aptitude }\AttributeTok{{-}y}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Check auf installiertes git}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git} \AttributeTok{{-}{-}version}
+\end{Highlighting}
+\end{Shaded}
+
+Falls eine Fehlermeldung erscheint, muss \git noch installiert werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt}\NormalTok{ update }
+\ExtensionTok{apt}\NormalTok{ get install git }\AttributeTok{{-}y}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Firewall}\label{firewall}
+
+Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
+Den Status erfragt man mit \texttt{ufw\ status}. Hierbei steht
+\texttt{ufw} für \emph{uncomplicated firewall}. Bei Änderungen an der
+Firewall immer Vorsicht walten lassen! Man kann sich aussperren!
+
+\textbf{Ablauf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{IN:}\NormalTok{   ufw status}
+\ExtensionTok{OUT:}\NormalTok{  Status: inactive}
+
+\ExtensionTok{IN:}\NormalTok{   ufw allow ssh }
+\ExtensionTok{OUT:}\NormalTok{  Rules updated}
+      \ExtensionTok{Rules}\NormalTok{ updated }\ErrorTok{(}\ExtensionTok{v6}\KeywordTok{)}
+
+\ExtensionTok{IN:}\NormalTok{   ufw enable}
+\ExtensionTok{OUT:}\NormalTok{  Command may disrupt existing ssh connections. }
+      \ExtensionTok{Proceed}\NormalTok{ with operation }\ErrorTok{(}\ExtensionTok{y}\KeywordTok{|}\ExtensionTok{n}\KeywordTok{)}\ExtensionTok{?}
+\ExtensionTok{IN:}\NormalTok{   y}
+\ExtensionTok{OUT:}\NormalTok{  Firewall is active and enabled on system startup}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Ordner für Repository}\label{ordner-fuxfcr-repository}
+
+Wo man diesen im Verzeichnisbaum von Linux anlegt, ist im Prinzip
+unwichtig -- es gibt aber bessere und schlechtere Orte. Der Home-Ordner
+ist keine gute Idee -- besser ist z.B. der Ordner \texttt{/srv}. Dort
+erstellen wir auch gleich ein Demo-Repository:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ /srv }
+\FunctionTok{mkdir}\NormalTok{ repositories}
+\FunctionTok{chown}\NormalTok{ git:git repositories }
+\BuiltInTok{cd}\NormalTok{ repositories}
+\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ demo.git}
+\end{Highlighting}
+\end{Shaded}
+
+Mit diesem Repository werden wir aber erst später arbeiten. Zunächst
+bleiben wir auf dem lokalen Rechner, um die Grundzüge zu lernen.
 
 \bookmarksetup{startatroot}
 
@@ -3604,7 +4056,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-120}%
+\phantomsection\label{annotated-cell-141}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -3664,7 +4116,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-122}%
+\phantomsection\label{annotated-cell-143}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -3698,7 +4150,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-123}%
+\phantomsection\label{annotated-cell-144}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -3770,7 +4222,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-125}%
+\phantomsection\label{annotated-cell-146}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}

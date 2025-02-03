@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  git-nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    container_name: git-nginx-container
+    ports:
+      - "8080:80"     # HTTP Port
+      #- "9418:9418" # Git Port
+    volumes:
+      - ./repo:/git
+      - ./repositories:/var/www/git/repositories    # Bindet das lokale Verzeichnis für Repositories
+      - ./nginx.conf:/etc/nginx/nginx.conf  # Bindet die nginx.conf (falls sie lokal existiert)
+
+

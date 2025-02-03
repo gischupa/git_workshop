@@ -1,5 +1,44 @@
 # Arbeiten im Team
-## Überblick
+## Herausforderungen
+Das Arbeiten im Team stellt dich vor zwei Probleme
+
+* Welche Server-Infrastruktur sollst du verwenden?
+* Was ändert sich am Workflow in \git 
+
+Beide Punkte sollen nachfolgend besprochen werden, 
+wobei es zwangsläufig Überschneidungen geben wird.
+
+### Infrastruktur
+Im Kern ist es egal ob wir vom Setup im Klassenzimmer
+oder im Internet sprechen -- sobald ein Netzwerk beteiligt ist, 
+sind höchstens Sicherheitsaspekte ein Thema, die Basistechnik 
+bleibt gleich.
+
+Für eine servbasierende Teamarbeit gibt es folgende Varianten
+
+* einfacher \git-Server  
+  Die Installation ist einfach, die Grundkonfiguration auch.
+  Der Zugriff erfolgt über ssh. Soll das ohne Kennwort funktionieren, so müssen Schlüssel erzeugt und auf den Server eingepflegt werden. Sspäter führt um die Schlüssel aber kein Weg herum.
+
+* \git-Server mit kennwortlosem Zgriff über http.  
+  Funktioniert, ist aber keinesfalls für den Live-Einsatz 
+  über einen längeren Zeitraum im Internet zu empfehlen.
+  Die entsprechenden Docker-Files befinden sich in den 
+  Materialien.
+  (Basis: [ynohat](https://github.com/ynohat/git-http-backend) )
+
+* Ein \git-Server mit *Gitea*  
+  Gui-basiertes System mit vielen Optionen und weniger komplex als 
+  *GitLab* 
+
+* Ein \git-Server mit *GitLab* 
+
+Bei allen Varianten ist im Prinzip eine direkte Installation 
+auf den Server (nicht empfohlen) oder der Einsatz von Docker
+(sinnvoll) möglich. Die Anleitungen für die einzelnen Varianten 
+befinden sich weiter hinten im Script.
+
+### Überblick
 Bei der Arbeit im Team ändert sich beim 
 lokalen Arbeiten zunächst wenig. Die
 Schritte *branch, add, commit, ...* 
@@ -12,12 +51,12 @@ allerdings die Schritte
 
 Hierbei sind einige Spielregeln zu beachten, damit es nicht
 zu Problemen kommt. Diese Regeln werden meist als Workflow
-oder im Speziellen auch als Gitflow bezeichnet. Es gibt hier 
+oder im Speziellen auch als GitFlow bezeichnet. Es gibt hier 
 zwar gewisse -- aber keinesfalls verbindliche -- Standards.
 Jede Firma stellt hier ihre eigenen, fest vorgeschriebenenen
 Abläufe auf, an die sie die Mitarbeiter zu halten haben.
 
-### Gemeinsamkeiten
+#### Gemeinsamkeiten
 Auch diese Gemeinsamkeiten müssen nicht in jeder Firma 
 oder jedem Projekt umgesetzt werden!
 
@@ -38,7 +77,7 @@ diesen Zweig und lassen von ihm ihre eigenen Arbeitszweige
 Arbeit dort beendet, muss der Code getestet werden und dann 
 erst erfolgt der Merge in den \branch{development}-Branch.
 
-### Details
+#### Details
 Da jetzt mehr Personen Änderungen zu unvorhersehbaren Zeitpunkten Änderungen am Code vornehmen, muss jeder
 Mitarbeiter dafür sorgen, immer die aktuellste Version 
 vorliegen zu haben. Da er seine Entwicklung aber in seinem 
@@ -55,22 +94,22 @@ nicht so weit fortgeschritten, als dass ein Merge auf den
 
 {{< include bilder/tikz/workflow1.tikz >}}
 
-Da noch keine wirklichen Fortschitte erzielt worden sind, 
+Da noch keine wirklichen Fortschritte erzielt worden sind, 
 dürfte der \branch{development}-Branch auch noch nicht 
 wieder auf den Server veröffentlicht worden sein (=push).
 
-### Pull und fetch
+#### Pull und fetch
 
 Die Grundidee von *holen* und *veröffentlichen* ist 
 relativ einfach und eventuell muss man den Schülern 
 auch nicht mehr erzählen. Da aber Code von anderen 
 Entwicklern auf deinen Rechner kommt, solltest du 
 diesen eventuell nicht ungesehen in deine Entwicklung
-aufnehmen. `git pull` macht aber genau das.  
+aufnehmen. \cmd{git pull} macht aber genau das.  
 Willst du an dieser Stelle sicher gehen, so machst
-du zuerst `git fetch` und siehst dir die Änderungen 
+du zuerst \cmd{git fetch} und siehst dir die Änderungen 
 zuerst an -- siehe weiter unten. Im Anschluss kannst du
-sie dann mit `git merge` übernehmen.
+sie dann mit \cmd{git merge} übernehmen.
 
 ## Hands on
 In den nachfolgenden Abschnitten wird oft das Wort
@@ -82,14 +121,14 @@ gibt es Scripts in den Kursmaterialien!
 **Origin.sh**  
 ```{.bash include="src/origin.sh"}
 ```
-Das Script `origin.sh` erstellt dir
+Das Script \script{origin.sh} erstellt dir
 
 * Ein Repository *entfernt*, das einen Server darstellt
 * Ein Repository *lokal*, das deinen Rechner darstellt, 
   indem es eine Kopie von *entfernt* erstellt (=clone).
 
 Öffne eine \git-Bash in einem Spielordner und führe das 
-Script `origin.sh` aus. Die Ausgabe wird bei dir minimal 
+Script \script{origin.sh} aus. Die Ausgabe wird bei dir minimal 
 abweichen.
 
 ```bash
@@ -125,7 +164,7 @@ auch eine Netzwerkverbindung zu einem Server sein -- das ist
 sogar der Normalfall.
 
 Mit \branch{origin/main} ist immer der Branch im entfernten Repository
-gemeint, \branch{main} alleine bezieht sich auf den Branch im *Klon*.
+gemeint, \branch{main} alleine bezieht sich auf den Branch in deiner lokalen Kopie.
 
 
 ### Zeiger
@@ -133,22 +172,22 @@ Der nachfolgende Setup erstellt
 
 * einen Ordner
 * im Ordner ein vollwertiges Repository (--bare)
-* einen *Klon* des Repositories mit dem Namen *susi*
-* einen *Klon* des Repositories mit dem Namen *max*
+* eine lokale Kopie des Repositories mit dem Namen *susi*
+* eine lokale Kopie des Repositories mit dem Namen *max*
 
 Öffen in einem geeigneten Ordner ein \git-Bash und 
-führe das Script `susi_und_max.sh` aus (`./susi_und_max.sh`).
+führe das Script \script{susi\_und\_max.sh} aus (\script{}./susi\_und\_max.sh}).
 
 Beachte, dass aus in dem Script im oberen Teil etwas Overhead
 nötig ist, damit die Benutzer nicht mit einem leeren Repository
-konfrontiert werden -- dort fehlt nämlich dann ein Branch!
+konfrontiert werden -- dort fehlt dann nämlich ein Branch!
 
 ```{.bash include="src/susi_und_max.sh"}
 ```
 
 Öffne ein zweites Fenster im gleichen Ordner und entscheide 
 dich, welches für *Susi* und welches für *Max* stehen soll.
-Wechsle jeweils in das Repository (`cd susi` und `cd max`).
+Wechsle jeweils in das Repository (\cmd{cd susi} und \cmd{cd max}).
 
 Lasse dir in beiden Repositories den Status ausgeben
 
@@ -171,8 +210,7 @@ jetzt *Susis* \branch{main}-Branch in *diesem* Repository.
 Die Statusmeldung sagt dir, beide Branches *main* (Susis)
 und *origin/main* (der im Original Repo) sind gleich.  
 
-Nachfolgend die Bezeichnungen *Original* und *SUSI* bzw. *MAX* 
-für die Repositories.
+Nachfolgend stehen die Bezeichnungen *Original* und *SUSI* bzw. *MAX* für die entsprechenden Repositories.
 
 Susi erstellt in *SUSI* eine Datei und einen Commit:
 
@@ -196,7 +234,7 @@ Der \git-Ordner führt also Buch über die Beziehung zwischen
 den Repositories und sagt ihr, dass *SUSI* einen 
 Commit weiter vorne ist, als das *Original*.  
 Das macht \git, indem es *Pointer* auf Commits
-setzt (also quasi eine Datei im `.git`-Ordner führt, 
+setzt (also quasi eine Datei im \ordner{.git}-Ordner führt, 
 wo der aktuelle Hash enthalten ist.)
 
 ```bash
@@ -216,11 +254,11 @@ wo der aktuelle Hash enthalten ist.)
     │       └── HEAD  #<2>
     └── tags
 ```
-1. Enthält den Hash vom letzten Commit im Klon
+1. Enthält den Hash vom letzten Commit in der lokalen Kopie
 2. Enthält den Hash vom letzten Commit im Original
 3. Siehe nachfolgender Text
 
-Ein `git log --oneline` zeigt dir:
+Ein \cmd{git log --oneline} zeigt dir:
 
 ```bash
 78db34e (HEAD -> main) Begrüßung
@@ -235,7 +273,7 @@ umgelagert.
 Das *Original* weiß von diesem Commit noch nichts -- die Repositories 
 haben ja auch noch nicht miteinander kommuniziert! Wenn Max in seinem
 Repository *MAX* nachsieht kann er Susis Datei nicht sehen und 
-daran würde auch ein `git pull` nichts ändern.
+daran würde auch ein \cmd{git pull} nichts ändern.
 
 Susi führt nun einen Push aus:
 
@@ -264,7 +302,7 @@ Ihr Branch ist auf demselben Stand wie 'origin/main'.
 nichts zu committen, Arbeitsverzeichnis unverändert
 ```
 
-Die Zeiger in `.git` wurden also auf den gleichen Hash gesetzt.
+Die Zeiger in \ordner{.git} wurden also auf den gleichen Hash gesetzt.
 
 **Wechseln wir zu Max**  
 
@@ -356,9 +394,9 @@ Fast-forward
 ```
 
 Hätte Max größeres Vertrauen, so würde er sich diese Recherche 
-sparen und einfach ein `git pull` ausführen. Im Prinzip ist
-dieser Befehl die direkte Nacheinanderausführung von `fetch` 
-und `merge`.
+sparen und einfach ein \cmd{git pull} ausführen. Im Prinzip ist
+dieser Befehl die direkte Nacheinanderausführung von \cmd{fetch} 
+und \cmd{merge}.
 
 
 
@@ -393,8 +431,8 @@ Auch wenn der Branch \branch{main} besonders klingt,
 ist er doch ein ganz normaler Branch. Seine Besonderheit  
 ist lediglich, dass er durch das Clonen auch gleichzeitig 
 als *upstream-branch* definiert wurde -- dehalb funktioniert
-statt `git pull origin main` auch die kurze Version `git pull`
-(analog für *push*).
+statt \cmd{git pull origin main} auch die kurze Version \cmd{git pull}
+(analog für \cmd{git push}).
 
 Wenn du einen neuen Branch anlegst und einen commit 
 pushen willst:
@@ -446,10 +484,10 @@ dann geht der Push (standardmäßig) nicht.
 Beim Pull sieht es anders aus. Du kannst jeden Remote-Branch 
 in jeden lokalen Branch *pullen* -- also *mergen*. Ist 
 der aktuelle Branch als Upstream konfiguriert, holt sich ein
-kurzes `git pull` die richtigen Daten. Ein `git pull <branch>` 
+kurzes \cmd{git pull} die richtigen Daten. Ein \cmd{git pull <branch>} 
 holt aber genau das, was du angegeben hast! Das ist eine 
 Fehlerquelle!
 
 **Wie hängen lokale und remote Branches zusammen?**  
-Zunächst sind Branches lokal und werden beim `push` 
+Zunächst sind Branches lokal und werden beim \cmd{git push} 
 auch nicht auf den Server übertragen.

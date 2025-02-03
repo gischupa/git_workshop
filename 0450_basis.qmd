@@ -1,0 +1,167 @@
+## Vorbereitung des Systems
+
+Nachfolgend wird die Installation eines funktionsfähigen \gitservers
+beschrieben. Bevor man sich an die Installation auf einem Server
+im Internet macht, ist etwas *Training* in einer virtuellen Umgebung
+ganz sinnvoll. Nach Installation und Konfiguration eines Übungsservers 
+in VirtualBox sind die Schritte isdentisch. 
+Die Anleitung zur Installation von VirtualBox 
+und dem entsprechenden Gastsystems *Ubuntu-24.04* befindet sich am Ende 
+des Handouts. Gegebenenfalls also zuerst dort fortfahren und dann erst 
+hierher zurückkehren.
+
+## Grundkonfiguration
+Alle erforderlichen Konfigurationsschritte erfolgen über ssh im Terminal auf dem Server.
+In der virtuellen Maschine kann dies zwar auch direkt aus VirtualBox heraus erfolgen, 
+zum *üben* ist es aber auch hier sinnvoll, sich mit ssh auf die VM zu verbinden.
+
+### SSH-Verbindung
+**Windows**  
+Seit einiger Zeit kann auch Windows auch ohne Zusatzsoftware SSH-Verbindungen 
+aufbauen. Allerdings unterliegt die `cmd.exe` einigen Einschränkungen
+(z.B. kopieren von Textinhalten), die bei der Verbindung mit Putty besser gelöst
+sind. Putty kann [HIER](TODO) als einzelne Datei heruntergeladen werden.
+Starten Sie dafür die Commandozeile `cmd.exe` und geben Sie folgenden
+Befehl ein (Benutzer und IP-Adresse müssen bekannt sein, ebenso das Kennwort):
+
+TODO: Unterschied cmd und putty
+
+```bash
+ssh benutzer@ip-adresse 
+```
+
+Es erscheint eine Sicherheitsabfrage, die mit `yes` und `enter` bestätigt werden muss:
+
+TODO: Als Bild einbinden
+
+```bash
+The authenticity of host 'try.example.com (38.243.220.195)' can't be established.
+ED25519 key fingerprint is SHA256:DSeSsfXDL2PkSlLYCt64krg9xa2vNr3og5SBJzZ/WNk.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+```
+
+\samplestart
+**Hintergrund**  
+Der Rechner merkt sich den Fingerabruck des Servers, zu dem die Verbindung
+aufgebaut wurde. Sollte später ein anderer Server diese IP-Adresse übernehmen
+(z.B. Man in the middle), so stimmt der Fingerabdruck nicht und es gibt eine
+Warnung.
+\sampleend
+
+**Apple und Linux**  
+Auch hier erfolgt der Verbindungsaufbau in gleicher Weise direkt aus dem Terminal.
+
+Die Eingabe des Kennworts kann je nach Installationsvariante auch ohne 
+sichtbare Zeichen erfolgen!
+
+Eine ssh-Verbindung kann auf verschieden Weise wieder abgebaut werden:
+
+* brutal, geht aber: Fenster schließen
+* `exit()` 
+* `logout`
+* \strg{d}
+
+
+### Software installieren
+Bei *Ubuntu-24.04* ist in der Standard-Installation die Versionsverwaltung \git
+bereits vorinstalliert und auch der ssh-Server sollte bereits funktionieren.
+Bei gemieteten Installationen muss das nicht so sein, ssh sollte aber funktionieren.
+Für die Verbindung mit ssh benötigt man die IP-Adresse. Von einem Mietserver kennt man
+die Adresse im Regelfall, in VirtualBox muss man sie erst im Terminal ermitteln, da sie 
+vom DHCP-Server zugewiesen wird.
+
+\samplestart
+**Hinweis**  
+Falls man \git im Klassenzimmer betreibt (was nicht besonders sinnvoll ist)
+und eine gewisse *Konstanz* in den Unterrichtsverlauf bringen möchte, 
+dann sollte der Systemadministrator diese virtuellen Maschine 
+in den DHCP-Server eintragen, damit sie immer die gleiche IP-Adresse
+bekommt!
+\sampleend
+
+```bash
+ip addr show
+```
+
+Je nach Anbieter des Systems kann die Bildschirmausgabe etwas anders aussehen!
+
+![Interfaces](bilder/inst/interfaces.png)
+
+Der veraltete Befehl `ifconfig` kann jederzeit nachinstalliert werden durch
+
+```bash
+sudo -i           # Admin werden
+apt-get update    # Software-DB aktualisieren - dauert!
+apt-get install net-tools  # mit y oder J bestätigen
+```
+
+\samplestart
+**Hinweis**  
+Zum Installieren von Software gibt es auf Linux verschiedene
+Programme: `apt, apt-get, aptitude, snap, flatpak, appimages, ...`.
+Eine detaillierte Beschreibung ginge hier zu weit. In diesem
+Workshop wird nur mit `apt, apt-get` und `aptitude` gearbeitet.
+Diese drei Programme verwenden die gleiche Datenbank für 
+verfügbare Software und sind somit weitgehend identisch. `Aptitude`
+verfügt über eine -- für mich -- schönere Suchfunktion. Aus diesem Grund 
+installieren wir es hier gleich nach. 
+\sampleend
+
+```bash
+apt-get install aptitude -y
+```
+
+**Check auf installiertes git**  
+```bash
+git --version
+```
+
+Falls eine Fehlermeldung erscheint, muss \git noch installiert werden:
+
+```bash
+apt update 
+apt get install git -y
+```
+
+
+
+### Firewall
+Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
+Den Status erfragt man mit `ufw status`. Hierbei steht `ufw` für *uncomplicated firewall*.
+Bei Änderungen an der Firewall immer Vorsicht walten lassen! Man kann sich aussperren!
+
+**Ablauf**  
+
+```bash
+IN:   ufw status
+OUT:  Status: inactive
+
+IN:   ufw allow ssh 
+OUT:  Rules updated
+      Rules updated (v6)
+
+IN:   ufw enable
+OUT:  Command may disrupt existing ssh connections. 
+      Proceed with operation (y|n)?
+IN:   y
+OUT:  Firewall is active and enabled on system startup
+```
+
+### Ordner für Repository
+Wo man diesen im Verzeichnisbaum von Linux anlegt, ist im Prinzip
+unwichtig -- es gibt aber bessere und schlechtere Orte. Der Home-Ordner
+ist keine gute Idee -- besser ist z.B. der Ordner `/srv`. Dort erstellen
+wir auch gleich ein Demo-Repository:
+
+```bash
+cd /srv 
+mkdir repositories
+chown git:git repositories 
+cd repositories
+git init --bare demo.git
+```
+
+Mit diesem Repository werden wir aber erst später arbeiten. Zunächst 
+bleiben wir auf dem lokalen Rechner, um die Grundzüge zu lernen.
+

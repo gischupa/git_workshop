@@ -4,7 +4,7 @@ Eine Einführung in die Arbeit \git ist etwas
 schwierig, weil auf einen Schlag so viele neue 
 Konzepte zu verarbeiten sind.
 
-Wie beginnen mit einem Überblick und gehen dann 
+Wir beginnen mit einem Überblick und gehen dann 
 immer mehr in die Feinheiten.
 
 ## Lokal -- Remote

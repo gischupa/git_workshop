@@ -1,4 +1,4 @@
-﻿\begin{tikzpicture}
+﻿\begin{tikzpicture}[scale=0.8]
 
 \draw(0,0) rectangle ++(16,6);
 
@@ -11,7 +11,7 @@
 (2,0) circle (0.5) node [  ]   { m4  }   ++ 
 (2,0) circle (0.5) node [  ]   { m5  }   ++ 
 (2,0) circle (0.5) node [  ]   { m6  } ; 
-\draw(14,1) node[scale=1.5]{main};
+\draw(14,1) node[scale=1.2]{main};
 \end{scope}
 
 
@@ -22,7 +22,7 @@
 (2,0) circle (0.5) node [  ]   { d2  }   ++
 (2,0) circle (0.5) node [  ]   { d3  }   ++ 
 (2,0) circle (0.5) node [  ]   { d4  }  ;
-\draw(11,1) node[scale=1.5]{development};
+\draw(11,1) node[scale=1.2]{development};
 \end{scope}
 
 
@@ -39,7 +39,7 @@
 (2,0) circle (0.5) node [  ]   { f2  }   ++
 (2,0) circle (0.5) node [  ]   { f3  }   ++ 
 (2,0) circle (0.5) node [  ]   { f4  }  ;
-\draw(10,1) node[scale=1.5]{feature};
+\draw(10,1) node[scale=1.2]{feature};
 \end{scope}
 
 \draw(4.4,3.28) -- ++ (48:1.85);

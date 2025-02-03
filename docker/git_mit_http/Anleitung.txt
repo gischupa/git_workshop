@@ -1,0 +1,23 @@
+# Anleitung
+
+Aus diesem Ordner hereaus den Container starten
+
+    docker-compose up -d
+
+Der Ordner mit den Repositories (=benanntes Volume)
+wird unter dem Namen *repo* (nicht verändern) 
+angelegt, gehört aktuell aber *root*.
+
+    sudo -s
+    chmod 777 repo
+
+Nun kann im Ordner ein erstes Repostiroy erstellt werden:
+
+    git init --bare projekt.git
+
+Damit kennwortloses pushen möglich wird, muss im 
+neuen Repository noch ausgeführt werden:
+
+    cd projekt.git
+    git config http.receivepack true
+

@@ -138,3 +138,94 @@ https://www.youtube.com/watch?v=1TNK-OkaelI
 
 ![](bilder/bash/rebase_nach_branch_delete.png)
 
+Bei einem Rebase wird der entsprechende Branch 
+*verpflanzt* -- d.h. gewissermaßen *ausgerupft* 
+und an anderer Stelle wieder *angedockt*.  
+Bei diesem Vorgang werden die Hashwerte aller 
+Commits im Branch geändert.
+
+```bash
+* 10f8d8d (HEAD -> arbeit) Neuer Inhalt 10
+* e0ae3ce Neuer Inhalt 9
+* 1eac6f3 Neuer Inhalt 8
+* fa76537 Neuer Inhalt 7
+* da22859 Neuer Inhalt 6
+* 7903aaf Neuer Inhalt 5
+* 33428f1 Neuer Inhalt 4
+* 80db22a Neuer Inhalt 3
+* 4a642a8 Neuer Inhalt 2
+* a3645f3 Neuer Inhalt 1
+| * 2c58be7 (main) Zwischenstopp
+|/  
+* 7fea00c Start
+```
+Du siehst einen Branch \branch{arbeit} mit mehreren Commits
+und einen neuen Commit im \branch{main}-Branch.
+
+Wenn du nun vom Branch \branch{arbeit} einen Rebase 
+auf den Branch \branch{main} ausführst:
+
+```bash
+git switch arbeit 
+git rebase main 
+```
+
+dann sieht das Ergebnis so aus:
+
+```bash
+* 1cad272 (HEAD -> arbeit) Neuer Inhalt 10
+* 130c5b0 Neuer Inhalt 9
+* 5b84ab1 Neuer Inhalt 8
+* 56d74ea Neuer Inhalt 7
+* 9255c1d Neuer Inhalt 6
+* 412fa37 Neuer Inhalt 5
+* cb91e55 Neuer Inhalt 4
+* 3ab37b7 Neuer Inhalt 3
+* dc4b1b0 Neuer Inhalt 2
+* 9591035 Neuer Inhalt 1
+* 2c58be7 (main) Zwischenstopp
+* 7fea00c Start
+```
+
+Die Verzeigung ist verschwunden und der Branch \branch{arbeit}
+hängt mit seinen Commits und neuen Hashwerten  
+am Commit mit dem Hash 2c58be7 aus dem Branch \branch{main}.
+
+Auch wenn es nicht so wirkt: Der Branch \branch{arbeit} 
+ist immer noch vorhanden! Das kannst du auch einfach
+testen, indem du auf den \branch{main}-Branch wechselst
+und dort einen neuen Commit erstellst:
+
+```bash
+git switch main 
+echo "kontrolle" > kontrolle.txt 
+git add kontrolle.txt 
+git commit -m "Kontrolle"
+```
+
+Das Log zeigt dann
+
+```bash
+* 3508cce (HEAD -> main) kkkddd
+| * f4ba9f7 (arbeit) kkk
+| * 1cad272 Neuer Inhalt 10
+....
+| * dc4b1b0 Neuer Inhalt 2
+| * 9591035 Neuer Inhalt 1
+|/  
+* 2c58be7 Zwischenstopp
+* 7fea00c Start
+```
+
+Die Branches laufen also wieder auseinander.
+Möchte man den Branch \branch{arbeit} loswerden,
+dann würdest du hier eher den Rebase von \branch{main}
+auf \branch{arbeit} ausführen. \git versucht dann, 
+den \branch{main}-Branch hinter den Branch \branch{arbeit}
+zu hängen. Aus dieser Situation heraus kannst du dann 
+auch den Branch \branch{arbeit} löschen:
+
+```bash
+git branch -d arbeit 
+```
+

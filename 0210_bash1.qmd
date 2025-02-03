@@ -1,18 +1,7 @@
 # Hands On I
-
-Du sollst in diesem *Hands on* die absolut einfachste 
-Variante der Arbeit mit \git kennenlernen. Davor 
-kommen allerdings einige kleine Hürden in Form der
-Konfiguration eines lokalen Repositories und 
-auch von \git als solches.
-
-Du wirst hier -- wie im Großteil des Workshops
--- mit dem Terminal arbeiten, wen es um die 
-*Bedienung* von \git geht. Wenn du Inhalte in 
-Dateien einfügen sollst, kannst du natürlich 
-einen Editor deiner Wahl verwenden. Ich gebe 
-aber auch immer die Terminal-Variante an, 
-einfach weil es praktischer ist.
+Bevor du mit den Grundlagen der Bedienung von \git 
+beginnen kannst, musst du einige Konfigurationsschritte
+ausführen.
 
 \samplestart
 **TIPP**  
@@ -55,18 +44,17 @@ Lege nun einen Arbeitsordner für dieses *Hands on* an:
 git init projekt 
 cd projekt 
 ```
-Du erstellst nun eine erste Datei in diesem Ordner
-und gibst ihr den Namen \datei{datei1.txt}.  
+Erstelle eine erste Datei mit dem Namen \datei{datei1.txt}.  
 Wenn du das nicht über die \git-Bash machen willst, 
 dann achte darauf, dass du eine reine Textdatei 
 erstellst -- also nicht mit Word o.ä. sondern mit 
 einem reinen Editor wie *notepad*, *notepad++* 
 oder einer Entwicklungsumgebung.  
 
-Schneller geht das aber mit \git-Bash.
+Schneller geht das aber mit \git-Bash^[Das Zeichen `>` überschreibt alle Inhalte einer Datei, `>>` hängt die Daten hinten an.].
 
 ```bash
-echo "Version 1" >> datei1.txt 
+echo "Version 1" > datei1.txt 
 ```
 
 Diese Datei nimmst du dann in die Versionsverwaltung
@@ -92,7 +80,8 @@ Generell gilt: „Lieber mehr Commits, als zu wenige!“
 Ein Commit ist ein Projektstand, an den du 
 zurückkehren kannst, wenn etwas grob missglückt ist.
 Vergeht zu viel Zeit (=viel Code) zwischen zwei 
-Commits, so entstehen größere Verluste.  
+Commits, so entstehen eventuell größere Verluste bei einem
+Rücksprung zum alten Stand.  
 Später im Workshop lernst du auch, wie du 
 Commits nachträglich zusammenfassen kannst (=squash) 
 um deine Entwicklungsschritte übersichtlich zu halten.
@@ -107,13 +96,11 @@ git commit -m "Erläuterung"
 ```
 
 Du kannst gleichzeitig auch mehrere Dateien
-in die Versionierung aufnehmen und als 
-Projektstand festschreiben
+in die Versionierung aufnehmen.
 
 ```bash
 # Aktuell passiert nichts - du hast ja nichts geändert!
 git add . --all 
-git commit -m "Erläuterung"
 ```
 
 \samplestart
@@ -129,13 +116,14 @@ In machen Projekte solltest du von *--all*
 Abstand nehmen. Vielleicht gibt es Dateien, die 
 du absichtlich *nicht* in der Versionierung haben 
 willst. Das ist oft bei Dateien mit Kennwörtern 
-der Fall.
+der Fall. Wenn du sie in eine Datei \datei{.gitignore}
+einträgst, werden sie automatisch ignoriert.
 \sampleend
 
 Mit diesen Befehlen ist bereits ein einfacher 
 lokaler Entwicklungsprozess abbildbar. Allerdings
-gibt es noch viele weitere Feinheiten und Varianten
-um eventuelle Fehler zu beheben.
+gibt es noch viele weitere Feinheiten und Varianten,
+zum Beispiel um eventuelle Fehler zu beheben.
 
 ## Ein genauerer Blick
 

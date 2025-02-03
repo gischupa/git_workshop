@@ -1,0 +1,68 @@
+# Lokaler Rechner
+## Vorüberlegung
+Um mit \git arbeiten zu können, brauchst du eine 
+geeignete Client-Software auf deinem Computer^[Diese Aussage
+ist nur bedingt richtig, weil für manche Szenarien auch eine
+reine Online-Plattform genügt.]. Viele Entwicklungsumgebungen bringen ihren individuellen \git-Client mit, was eine pauschale Behandlung erschwert. 
+
+Du solltest zuerst die typischen Abläufe direkt mit 
+\git einüben, bevor du dich mit grafischen Systemen 
+beschäftigst. 
+
+## Installation von Git
+
+Bei der Installation von \git werden automatisch 
+Client und Server installiert. Du wirst hier aber 
+nur den Client (=\git-Bash) verwenden.  
+Dabei handelt es sich um eine extrem abgespeckte 
+Linux-Umgebung, so dass wir auch die Grundbefehle im 
+Terminal besprechen müssen.
+
+Lade von [gitforwindows.org](https://gitforwindows.org) die
+Installationsdatei herunter, beginne aber noch nicht mit der 
+Installation!
+
+Lade von [notepad-plus-plus.org](https://notepad-plus-plus.org/downloads/) den Editor *notepad++* herunter und installiere das 
+Programm. Du wirst bei der Installation von Git nach diesem
+Programm gefragt!
+
+Starte nun die Installation von \git durch Doppelklick auf die 
+Installationsdatei. Die nachfolgenden Bilder zeigen den Ablauf
+in der Version vom Februar 2025.
+
+TODO: Bilder
+
+## Bash Grundlagen
+
+Du kannst die \git-Bash aus dem Explorer heraus im 
+gewünschten Ordner (z.B. Projektordner) öffnen.
+
+Jeder Befehl in der \git-Bash wird nach Drücken der 
+\key{Enter}-Taste ausgeführt.
+
+**Wichtige Befehle**  
+
+|Befehl|Kurzerklärung|
+|------|-------------|
+|`ls -la`| Auflisten aller Dateien im Ordner|
+|`cd`|Wechsel in den Home-Ordner|
+|`cd <ordner>`|Wechsel in *Ordner*|
+|`cd ..`|Wechsel eine Ebene nach oben|
+|`echo <Text>`|Ausgabe von Text|
+|`> <datei>`|Ausgabe in Datei (s.u.)|
+|`mkdir <ordner>`|Ordner erstellen|
+|`rm -rf <ordner>`|Ordner ohne Rückfrage löschen|
+|`cat <datei>`|Inhalt der Datei komplett ausgeben|
+|`less <datei>`|Langsame Ausgabe, Ende mit `q`|
+
+
+Für viele Beispiele sollst du schnell eine Datei
+mit minimalem Inhalt erstellen, da es ja nur 
+um Beispiele geht. Das kannst du im Prinzip 
+mit dem Editor von Windows aus machen, 
+schneller ist aber 
+
+```bash
+echo "Probetext" > demodatei.txt 
+```
+
