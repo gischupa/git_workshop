@@ -319,7 +319,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[enhanced, sharp corners, boxrule=0pt, colback={codebgcolor}, breakable, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, enhanced, colback={codebgcolor}, breakable, boxrule=0pt, frame hidden]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -479,15 +479,18 @@ Client-Software auf deinem Computer\footnote{Diese Aussage ist nur
   Online-Plattform genügt.}. Viele Entwicklungsumgebungen bringen ihren
 individuellen \git-Client mit, was eine pauschale Behandlung erschwert.
 
-Du solltest zuerst die typischen Abläufe direkt mit \git einüben, bevor
-du dich mit grafischen Systemen beschäftigst.
+Du Für das Grundversändnis ist es sinnvoll, zuerst mit dem reinen
+\git-Client im Terminal zu arbeiten. Später spricht allerdings nichts
+dagegen, auch mit grafischen Systemen zu arbeiten.
 
 \section{Installation von Git}\label{installation-von-git}
 
-Bei der Installation von \git werden automatisch Client und Server
-installiert. Du wirst hier aber nur den Client (=\git-Bash) verwenden.\\
-Dabei handelt es sich um eine extrem abgespeckte Linux-Umgebung, so dass
-wir auch die Grundbefehle im Terminal besprechen müssen.
+Bei der Installation von \git werden auf jedem Betriebssystem
+automatisch Client und Server installiert. Bei Linux und MacOS
+verwendest du dann das Terminal, auf Windows heißt das Programm
+\git-Bash.\\
+Es handelt es sich dabei um eine extrem abgespeckte Linux-Umgebung, so
+dass wir in jedem Fall die Grundbefehle im Terminal besprechen müssen.
 
 Lade von \href{https://gitforwindows.org}{gitforwindows.org} die
 Installationsdatei herunter, beginne aber noch nicht mit der
@@ -496,7 +499,7 @@ Installation!
 Lade von
 \href{https://notepad-plus-plus.org/downloads/}{notepad-plus-plus.org}
 den Editor \emph{notepad++} herunter und installiere das Programm. Du
-wirst bei der Installation von Git nach diesem Programm gefragt!
+wirst bei der Installation von \git nach diesem Programm gefragt!
 
 Starte nun die Installation von \git durch Doppelklick auf die
 Installationsdatei. Die nachfolgenden Bilder zeigen den Ablauf in der
@@ -506,8 +509,8 @@ TODO: Bilder
 
 \section{Bash Grundlagen}\label{bash-grundlagen}
 
-Du kannst die \git-Bash aus dem Explorer heraus im gewünschten Ordner
-(z.B. Projektordner) öffnen.
+Du kannst die \git-Bash aus dem Explorer heraus über die rechte
+Maustaste im gewünschten Ordner (z.B. Projektordner) öffnen.
 
 Jeder Befehl in der \git-Bash wird nach Drücken der \key{Enter}-Taste
 ausgeführt.
@@ -540,7 +543,7 @@ mit \texttt{q} \\
 
 Für viele Beispiele sollst du schnell eine Datei mit minimalem Inhalt
 erstellen, da es ja nur um Beispiele geht. Das kannst du im Prinzip mit
-dem Editor von Windows aus machen, schneller ist aber
+dem Editor von Windows aus machen, schneller ist aber im Terminal
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -564,9 +567,9 @@ Befehle blättern -- damit gehen manche Dinge sehr schnell! \sampleend
 \section{Konfigurieren von git}\label{konfigurieren-von-git}
 
 Öffne die \git-Bash in dem Ordner, in dem du arbeiten willst. Das geht
-über die rechte Maustaste im Explorer (Dateimanager).\\
-Sollte dir die Schrift im Fenter zu klein sein, kannst du sie mit
-\strg{+} vergrößern.
+über die rechte Maustaste im Explorer (Dateimanager)\footnote{Sollte dir
+  die Schrift im Fenter zu klein sein, kannst du sie mit \strg{+}
+  vergrößern.}.
 
 \textbf{Aktuelle Einstellungen ansehen}
 
@@ -591,6 +594,8 @@ Sollte dir die Schrift im Fenter zu klein sein, kannst du sie mit
 \FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.email=susi@sandmann.de}
 \end{Highlighting}
 \end{Shaded}
+
+TODO: ``='' oben checken!
 
 \section{Erste Schritt}\label{erste-schritt}
 

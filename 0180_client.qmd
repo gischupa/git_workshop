@@ -5,17 +5,18 @@ geeignete Client-Software auf deinem Computer^[Diese Aussage
 ist nur bedingt richtig, weil für manche Szenarien auch eine
 reine Online-Plattform genügt.]. Viele Entwicklungsumgebungen bringen ihren individuellen \git-Client mit, was eine pauschale Behandlung erschwert. 
 
-Du solltest zuerst die typischen Abläufe direkt mit 
-\git einüben, bevor du dich mit grafischen Systemen 
-beschäftigst. 
+Du Für das Grundversändnis ist es sinnvoll, zuerst mit dem 
+reinen \git-Client im Terminal zu arbeiten. Später spricht
+allerdings nichts dagegen, auch mit grafischen Systemen 
+zu arbeiten.
 
 ## Installation von Git
 
-Bei der Installation von \git werden automatisch 
-Client und Server installiert. Du wirst in diesem Workshop aber 
-nur den Client (=\git-Bash evtl. \git-GUI) verwenden.  
-Bei der \git-Bash handelt es sich um eine extrem abgespeckte 
-Linux-Umgebung, so dass wir auch die Grundbefehle im 
+Bei der Installation von \git werden auf jedem Betriebssystem automatisch 
+Client und Server installiert. Bei Linux und MacOS verwendest du dann 
+das Terminal, auf Windows heißt das Programm \git-Bash.  
+Es handelt es sich dabei um eine extrem abgespeckte 
+Linux-Umgebung, so dass wir in jedem Fall die Grundbefehle im 
 Terminal besprechen müssen.
 
 Lade von [gitforwindows.org](https://gitforwindows.org) die
@@ -62,7 +63,7 @@ Für viele Beispiele sollst du schnell eine Datei
 mit minimalem Inhalt erstellen, da es ja nur 
 um Beispiele geht. Das kannst du im Prinzip 
 mit dem Editor von Windows aus machen, 
-schneller ist aber 
+schneller ist aber im Terminal 
 
 ```bash
 echo "Probetext" > demodatei.txt 

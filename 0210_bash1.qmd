@@ -32,11 +32,10 @@ user.name=
 **Einstellungen anpassen**  
 ```bash
 # eigene Phantasiedaten verwenden
-git config --global user.name "Susi Sandmann" 
-git config --global user.email=susi@sandmann.de
+git config --global user.name="Susi Sandmann" 
+git config --global user.email="susi@sandmann.de"
 ```
 
-TODO: "=" oben checken!
 
 ## Erste Schritt
 
@@ -46,7 +45,57 @@ Lege nun einen Arbeitsordner für dieses *Hands on* an:
 git init projekt 
 cd projekt 
 ```
-Erstelle eine erste Datei mit dem Namen \datei{datei1.txt}.  
+
+Alternativ kann man das auch mit mehreren Schritten erledigen:
+
+```bash
+mkdir projekt 
+cd projekt 
+git init 
+```
+
+Es erscheint eine Meldung, die je nach System etwas anders aussehen kann:
+
+```bash
+Hinweis: Als Name für den initialen Branch wurde 'master' benutzt. Dieser
+Hinweis: Standard-Branchname kann sich ändern. Um den Namen des initialen Branches
+Hinweis: zu konfigurieren, der in allen neuen Repositories verwendet werden soll und
+Hinweis: um diese Warnung zu unterdrücken, führen Sie aus:
+Hinweis: 
+Hinweis: 	git config --global init.defaultBranch <Name>
+Hinweis: 
+Hinweis: Häufig gewählte Namen statt 'master' sind 'main', 'trunk' und
+Hinweis: 'development'. Der gerade erstellte Branch kann mit diesem Befehl
+Hinweis: umbenannt werden:
+Hinweis: 
+Hinweis: 	git branch -m <Name>
+Leeres Git-Repository in /tmp/projekt/.git/ initialisiert
+```
+
+Es hat sich eingebürgert^[Bedingt durch gesellschaftspolitische Strömungen, die *Master* mit Sklaverei gleichsetzen, aber Eine Master-Arbeit hier nicht als Problem sehen.], den Arbeitszweig von *master* auf *main* umzubenennen:
+
+```bash
+git branch -m main 
+```
+
+Den Erfolg kann man schnell mit 
+
+```bash
+git status
+```
+
+Es sollte folgender Text (eventuell englisch) erscheinen:
+
+```bash
+Auf Branch main
+
+Noch keine Commits
+
+nichts zu committen (erstellen/kopieren Sie Dateien und benutzen
+Sie "git add" zum Versionieren)
+```
+
+Erstelle nun eine erste Datei mit dem Namen \datei{datei1.txt}.  
 Wenn du das nicht über die \git-Bash machen willst, 
 dann achte darauf, dass du eine reine Textdatei 
 erstellst -- also nicht mit Word o.ä. sondern mit 
