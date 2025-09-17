@@ -119,15 +119,17 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
 % Set default figure placement to htbp
-\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 % definitions for citeproc citations
@@ -319,7 +321,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, enhanced, colback={codebgcolor}, breakable, boxrule=0pt, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[colback={codebgcolor}, enhanced, breakable, sharp corners, boxrule=0pt, frame hidden]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -338,7 +340,7 @@
 \let\LanguageShortHands\languageshorthands
 \def\languageshorthands#1{}
 \ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
+  \usepackage[german]{selnolig} % disable illegal ligatures
 \fi
 \usepackage{bookmark}
 
@@ -590,12 +592,10 @@ Befehle blättern -- damit gehen manche Dinge sehr schnell! \sampleend
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# eigene Phantasiedaten verwenden}
-\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.name }\StringTok{"Susi Sandmann"} 
-\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.email=susi@sandmann.de}
+\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.name=}\StringTok{"Susi Sandmann"} 
+\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.email=}\StringTok{"susi@sandmann.de"}
 \end{Highlighting}
 \end{Shaded}
-
-TODO: ``='' oben checken!
 
 \section{Erste Schritt}\label{erste-schritt}
 
@@ -608,7 +608,70 @@ Lege nun einen Arbeitsordner für dieses \emph{Hands on} an:
 \end{Highlighting}
 \end{Shaded}
 
-Erstelle eine erste Datei mit dem Namen \datei{datei1.txt}.\\
+Alternativ kann man das auch mit mehreren Schritten erledigen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mkdir}\NormalTok{ projekt }
+\BuiltInTok{cd}\NormalTok{ projekt }
+\FunctionTok{git}\NormalTok{ init }
+\end{Highlighting}
+\end{Shaded}
+
+Es erscheint eine Meldung, die je nach System etwas anders aussehen
+kann:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Hinweis:}\NormalTok{ Als Name für den initialen Branch wurde }\StringTok{\textquotesingle{}master\textquotesingle{}}\NormalTok{ benutzt. Dieser}
+\ExtensionTok{Hinweis:}\NormalTok{ Standard{-}Branchname kann sich ändern. Um den Namen des initialen Branches}
+\ExtensionTok{Hinweis:}\NormalTok{ zu konfigurieren, der in allen neuen Repositories verwendet werden soll und}
+\ExtensionTok{Hinweis:}\NormalTok{ um diese Warnung zu unterdrücken, führen Sie aus:}
+\ExtensionTok{Hinweis:} 
+\ExtensionTok{Hinweis:}\NormalTok{    git config }\AttributeTok{{-}{-}global}\NormalTok{ init.defaultBranch }\OperatorTok{\textless{}}\NormalTok{Name}\OperatorTok{\textgreater{}}
+\ExtensionTok{Hinweis:} 
+\ExtensionTok{Hinweis:}\NormalTok{ Häufig gewählte Namen statt }\StringTok{\textquotesingle{}master\textquotesingle{}}\NormalTok{ sind }\StringTok{\textquotesingle{}main\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}trunk\textquotesingle{}}\NormalTok{ und}
+\ExtensionTok{Hinweis:} \StringTok{\textquotesingle{}development\textquotesingle{}}\NormalTok{. Der gerade erstellte Branch kann mit diesem Befehl}
+\ExtensionTok{Hinweis:}\NormalTok{ umbenannt werden:}
+\ExtensionTok{Hinweis:} 
+\ExtensionTok{Hinweis:}\NormalTok{    git branch }\AttributeTok{{-}m} \OperatorTok{\textless{}}\NormalTok{Name}\OperatorTok{\textgreater{}}
+\ExtensionTok{Leeres}\NormalTok{ Git{-}Repository in /tmp/projekt/.git/ initialisiert}
+\end{Highlighting}
+\end{Shaded}
+
+Es hat sich eingebürgert\footnote{Bedingt durch gesellschaftspolitische
+  Strömungen, die \emph{Master} mit Sklaverei gleichsetzen, aber Eine
+  Master-Arbeit hier nicht als Problem sehen.}, den Arbeitszweig von
+\emph{master} auf \emph{main} umzubenennen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main }
+\end{Highlighting}
+\end{Shaded}
+
+Den Erfolg kann man schnell mit
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ status}
+\end{Highlighting}
+\end{Shaded}
+
+Es sollte folgender Text (eventuell englisch) erscheinen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Auf}\NormalTok{ Branch main}
+
+\ExtensionTok{Noch}\NormalTok{ keine Commits}
+
+\ExtensionTok{nichts}\NormalTok{ zu committen }\ErrorTok{(}\ExtensionTok{erstellen/kopieren}\NormalTok{ Sie Dateien und benutzen}
+\ExtensionTok{Sie} \StringTok{"git add"}\NormalTok{ zum Versionieren}\KeywordTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Erstelle nun eine erste Datei mit dem Namen \datei{datei1.txt}.\\
 Wenn du das nicht über die \git-Bash machen willst, dann achte darauf,
 dass du eine reine Textdatei erstellst -- also nicht mit Word o.ä.
 sondern mit einem reinen Editor wie \emph{notepad}, \emph{notepad++}
@@ -683,11 +746,28 @@ Es ist auch völlig unproblematisch eine Datei zwischen zwei Commits
 mehrfach in der aktuellen Version mit \emph{add} für den Commit zu
 registrieren.
 
-In machen Projekte solltest du von \emph{--all} Abstand nehmen.
-Vielleicht gibt es Dateien, die du absichtlich \emph{nicht} in der
-Versionierung haben willst. Das ist oft bei Dateien mit Kennwörtern der
-Fall. Wenn du sie in eine Datei \datei{.gitignore} einträgst, werden sie
-automatisch ignoriert. \sampleend
+Es kann ab und zu passieren, dass du Änderungen an Dateien vornimmst,
+die zu verschiedenen Problemen gehören. Es wäre dann etwas
+unübersichtlich, wenn sich diese Dateien dann im gleichen Commit
+festgeschrieben werden. In einem Solchen Fall solltest du kein
+\texttt{-\/-all} verwenden, sondern genau die Dateinamen angeben.
+
+Zusätzlich kann es natürlich auch sein, dass du bestimmte Dateien
+überhaupt nicht in die Versionsverwaltung aufnehmen willst. Das ist zum
+Beispiel dann der Fall, falls sich Kennwörter und Zugangsdaten in eine
+Datei befinden. Um dennoch mit \texttt{-\/-all} arbeiten zu können,
+kannst du die Namen dieser Datei(en) in eine Datei mit dem Namen
+\texttt{.gitignore} eintragen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{*.log} 
+\ExtensionTok{*.tmp} 
+\ExtensionTok{zugangsdaten.txt}
+\end{Highlighting}
+\end{Shaded}
+
+\sampleend
 
 Mit diesen Befehlen ist bereits ein einfacher lokaler
 Entwicklungsprozess abbildbar. Allerdings gibt es noch viele weitere
@@ -1261,7 +1341,7 @@ folgenden Befehl verwenden:
 
 Wechsle in das Fortbildungsfenster
 
-\phantomsection\label{annotated-cell-36}%
+\phantomsection\label{annotated-cell-42}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -1294,7 +1374,7 @@ Empfohlener Befehl \texttt{git\ add\ story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-37}%
+\phantomsection\label{annotated-cell-43}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -1347,7 +1427,7 @@ foglende Schritte:
   Status checken: \texttt{git\ status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-38}%
+\phantomsection\label{annotated-cell-44}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -1412,7 +1492,7 @@ erkennen:
 
 TODO: Neu aufbauen
 
-\phantomsection\label{annotated-cell-41}%
+\phantomsection\label{annotated-cell-47}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -1896,7 +1976,7 @@ Das nachfolgende Diagramm zeigt den Ablauf der Operationen zwischen den
 beiden Zweigen (Idee 2 wurde ausgeblendet, weil du mit ihr bisher nichts
 mehr gemacht hast).
 
-\includegraphics[width=10cm,height=\textheight]{bilder/bash/buch_2.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/bash/buch_2.png}
 
 Gut - das war ein langer Weg mit vielen Abzweigungen. Es ist normal,
 diesen Abschnitt mehrfach lesen zu müssen!
@@ -1969,7 +2049,7 @@ einfach (schnell davor) vor den letzten Commit des Auslieferungsbranchs
 gesetzt. In dieser Situation wird im Diagramm der Branch nicht einmal
 als visuelle Abzweigung dargestellt:
 
-\includegraphics[width=16cm,height=\textheight]{bilder/bash/fast_forward.png}
+\includegraphics[width=16cm,height=\textheight,keepaspectratio]{bilder/bash/fast_forward.png}
 
 Erkennbar sind die grünen Rechtecke, die die Enden der Branches
 kennzeichnen. Im Bild links sind die Branches getrennt, im Bild rechts
@@ -1981,7 +2061,7 @@ Wie du siehst, hat sich beim Merge die Anzahl Commits nicht verändert.
 Wenn sich der Auslieferungsbranch parallel zum Entwicklungsbranch
 weiterentwickelt, sieht die Sitation ganz anders aus!
 
-\includegraphics{bilder/bash/drei_wege.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/drei_wege.png}}
 
 Du siehst, dass sich der \emph{main}-Branch zu \emph{Schritt 7}
 weiterentwickelt hat. Beim Merge entsteht ein neuer Commit, der die
@@ -2075,7 +2155,7 @@ hat, dann kann das zu großem Chaos führen.
 https://www.youtube.com/watch?v=CtyLg10aHN0
 https://www.youtube.com/watch?v=1TNK-OkaelI
 
-\includegraphics{bilder/bash/rebase_nach_branch_delete.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/rebase_nach_branch_delete.png}}
 
 Bei einem Rebase wird der entsprechende Branch \emph{verpflanzt} -- d.h.
 gewissermaßen \emph{ausgerupft} und an anderer Stelle wieder
@@ -2587,7 +2667,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-82}%
+\phantomsection\label{annotated-cell-88}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -3179,7 +3259,7 @@ aussehen!
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/interfaces.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/interfaces.png}}
 
 }
 
@@ -3587,9 +3667,9 @@ Terminal angezeigt werden:
 Die mehrzeilige Ausgabe in einem Stück in die Oberfläche von Gitea
 kopieren:
 
-\includegraphics{bilder/inst/key1.png}
-\includegraphics{bilder/inst/key2.png}
-\includegraphics{bilder/inst/key3.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/key1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/key2.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/key3.png}}
 
 Damit ist die Grundkonfiguration beendet. Es sollte nun noch eingestellt
 werden, welche Anmelde- und Registrierungsvarianten erlaubt sind, um
@@ -4098,7 +4178,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-142}%
+\phantomsection\label{annotated-cell-148}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -4158,7 +4238,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-144}%
+\phantomsection\label{annotated-cell-150}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -4192,7 +4272,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-145}%
+\phantomsection\label{annotated-cell-151}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -4264,7 +4344,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-147}%
+\phantomsection\label{annotated-cell-153}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}

@@ -163,18 +163,32 @@ Es ist auch völlig unproblematisch eine Datei
 zwischen zwei Commits mehrfach in der aktuellen 
 Version mit *add* für den Commit zu registrieren.  
 
-In machen Projekte solltest du von *--all* 
-Abstand nehmen. Vielleicht gibt es Dateien, die 
-du absichtlich *nicht* in der Versionierung haben 
-willst. Das ist oft bei Dateien mit Kennwörtern 
-der Fall. Wenn du sie in eine Datei \datei{.gitignore}
-einträgst, werden sie automatisch ignoriert.
+Es kann ab und zu passieren, dass du Änderungen 
+an Dateien vornimmst, die zu verschiedenen Problemen 
+gehören. Es wäre dann etwas unübersichtlich, wenn sich 
+diese Dateien dann im gleichen Commit festgeschrieben 
+werden. In einem Solchen Fall solltest du kein `--all` 
+verwenden, sondern genau die Dateinamen angeben.
+
+Zusätzlich kann es natürlich auch sein, dass du 
+bestimmte Dateien überhaupt nicht in die Versionsverwaltung
+aufnehmen willst. Das ist zum Beispiel dann der Fall, falls 
+sich Kennwörter und Zugangsdaten in eine Datei befinden.
+Um dennoch mit `--all` arbeiten zu können, kannst du 
+die Namen dieser Datei(en) in eine Datei mit 
+dem Namen `.gitignore` eintragen:
+
+```bash
+*.log 
+*.tmp 
+zugangsdaten.txt
+```
 \sampleend
 
 Mit diesen Befehlen ist bereits ein einfacher 
 lokaler Entwicklungsprozess abbildbar. Allerdings
 gibt es noch viele weitere Feinheiten und Varianten,
-zum Beispiel um eventuelle Fehler zu beheben.
+von denen wir noch etliche in diesem Workshop ansprechen werden.
 
 ## Ein genauerer Blick
 
@@ -185,7 +199,8 @@ Bereiche unterteilt:
 * Stage (auch Index oder Cache genannt)
 * Repository
 
-Leider werden die Begriffe nicht einheitlich verwendet 
+Leider werden die Begriffe in verschiedenen Quelle 
+nicht einheitlich verwendet 
 und haben in unterschiedlichem Kontext auch noch 
 abweichende Bedeutung -- das betrifft uns hier aber nicht.
 Sollte eine Möglichkeit zur Verwechslung existieren, weise
@@ -196,12 +211,14 @@ unterschiedlichen Versionen der Dateien in einem speziellen
 Ordner innerhalb des Projektordners verwaltet werden.
 Der Ordner trägt den Namen `.git` und wird vom System 
 ausgeblendet. Dieser Ordner bildet den *Stage* und 
-das *Repository*. Allerdings bedeutet *logisch* auch, 
-dass diese beiden Bereiche von \git verwaltet werden 
-und vom unbedarften Benutzer nicht einfach unterschieden
-werden können.
+das *Repository* gleichzeitig. 
+*Logisch* bedeutet in diesem Zusammenhang, dass diese beiden 
+Bereiche von \git verwaltet werden und vom unbedarften 
+Benutzer nicht einfach unterschieden werden können.
+In einem späteren Abschnitt werden wir einen genaueren 
+Blick in diesen Ordner werfen.
 
-Betrachten wir einen Entwicklungszyklus im Detail.
+Betrachten wir zunächst einen Entwicklungszyklus im Detail.
 
 Den aktuellen Stand des Projekts kannst du mit folgendem Befehl abfragen:
 
@@ -210,7 +227,7 @@ Den aktuellen Stand des Projekts kannst du mit folgendem Befehl abfragen:
 git status
 
 # Ausgabe (Zeilenumbrüche geändert)
-Auf Branch master
+Auf Branch main
 nichts zu committen, 
 Arbeitsverzeichnis unverändert
 ```
@@ -220,7 +237,7 @@ deines Arbeitsordners ohne Änderungen hast.
 
 Erstelle eine neue \datei{datei2.txt} und füge 
 die Zeile *Version 1* ein. In der Datei \datei{datei1.txt}
-kommt die Zeile *Version 3* dazu.
+kommt die Zeile *Version 3* dazu:
 
 ```bash
 # Eingabe (Lasse ich zukünftig weg)
@@ -229,7 +246,7 @@ echo "Version 1" >> datei2.txt
 git status 
 
 # Ausgabe
-Auf Branch master
+Auf Branch main
 Änderungen, die nicht zum Commit vorgemerkt sind:  
   (benutzen Sie "git add <Datei>...",  
    um die Änderungen zum Commit vorzumerken)
@@ -262,7 +279,7 @@ git add . --all
 git status 
 
 # Ausgabe  
-Auf Branch master
+Auf Branch main
 Zum Commit vorgemerkte Änderungen:
   (benutzen Sie "git restore --staged <Datei>..."  
    zum Entfernen aus der Staging-Area)  
@@ -271,9 +288,9 @@ Zum Commit vorgemerkte Änderungen:
 	neue Datei:     datei3.txt
 ```
 
-Diese Dateien sind zum Commit vorgemerkt, also zum festen 
-Eintrag in die Projekthistorie. Der Status zeigt aktuell 
-den *Stage* an.
+Diese Dateien sind nun zum Commit vorgemerkt, also zum festen 
+Eintrag in die Projekthistorie. Der Befehl `status` zeigt den 
+aktuellen Zustand des *Stage* an.
 
 Als Demonstration fügen wir beiden Dateien eine weitere 
 Zeile hinzu und fragen wieder den Staus ab:
@@ -284,13 +301,13 @@ echo "Weitere Zeile" >> datei2.txt
 git status 
 
 # Ausgabe ( ---- Anmerkung ----)
-Auf Branch master
+Auf Branch main
 Zum Commit vorgemerkte Änderungen:
   (benutzen Sie "git restore --staged <Datei>..."  
    zum Entfernen aus der Staging-Area)
 	
     geändert:       datei1.txt
-	neue Datei:     datei2.txt
+	  neue Datei:     datei2.txt
 
 --------------- Ende Stage ------------
 --------------- Anfang Workdir --------
@@ -320,7 +337,7 @@ das auch wieder nicht die ganze Wahrheit ist!
 \sampleend
 
 ### Etwas mehr Wahrheit
-Dieser Abschnitt ist nur ein Einblick für Interessierte.
+Dieser Abschnitt ist nur ein Einblick für Interessierte gedacht.
 Angenommen, du erstellst ein neues Repository 
 
 ```bash
@@ -374,6 +391,9 @@ git add index.html
 Stelle an:
 
 ```bash
+.
+.
+.
 ├── index            <<< neu 
 ├── info
 │   └── exclude
@@ -396,7 +416,7 @@ Den Hash aus dieser Ausgabe findet du oben in der Ordnerstruktur wieder.
 100644 ce1332fcf1795166c3c5cd0216b5e7dc2dce7998 0	homepage.htm
 ```
 
-Allerdings wird mit den ersten beiden Zeichen ein Ordner erstellt und 
+Allerdings wird mit den ersten beiden Zeichen (ce) ein Ordner erstellt und 
 in diesem Ordner eine Datei, deren Name aus den restlichen Zeichen besteht. 
 Zusätzlich findet man den Dateityp (100644), den Status (Das ist komplexer! 
 Hier 0) und den Dateinamen.
@@ -408,7 +428,7 @@ git hash-object homepage.htm
 
 Aber gehen wir einen Schritt weiter und committen die Datei:
 ```bash
-git commit -m "about.html added"
+git commit -m "homepage.html added"
 ```
 
 Nun sieht die Ordnerstruktur verändert aus -- die Hooks habe ich in der
@@ -430,7 +450,7 @@ Darstellung aus Platzgründen entfernt!
 │   ├── HEAD
 │   └── refs
 │       └── heads
-│           └── master
+│           └── main
 ├── objects
 │   ├── 3b  
 │   │   └── 028e4d0230fb8f3553f0f7579e68e6c4e27d3f
@@ -442,7 +462,7 @@ Darstellung aus Platzgründen entfernt!
 │   └── pack
 └── refs
     ├── heads
-    │   └── master
+    │   └── main
     └── tags
 ```
 
@@ -452,7 +472,7 @@ Mit `git log --oneline` erfährst du etwas über den erfolgten
 Commit -- zum Beispiel seinen Hash:
 
 ```bash
-commit 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f (HEAD -> master)
+commit 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f (HEAD -> main)
 Author: wolfgang <hoeferwolf@t-online.de>
 Date:   Sun Jan 26 20:20:10 2025 +0100
 
