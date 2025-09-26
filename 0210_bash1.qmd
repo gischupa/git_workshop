@@ -1,20 +1,25 @@
 # Hands On I
-Bevor du mit den Grundlagen der Bedienung von \git 
-beginnen kannst, musst du einige Konfigurationsschritte
-ausführen.
+Bevor wir beginnen, müssen einmalig einige Konfigurationen vorgenommen werden -- einige davon betreffen auch bereits den späteren Einsatz im 
+Netz, wo klar sein muss, welcher Benutzer Änderungen an den Dateien vorgenommen hat^[Wir sprechen hier NICHT von einer Absicherung gegen Dummheit oder Bosheit. Sobald Änderungen von papst@vatikan.va auftauchen, wäre ich skeptisch!].
 
 \samplestart
 **TIPP**  
-Im Terminal kannst du mit der *Pfeil hoch* Taste
-durch die letzten Befehle blättern -- damit gehen 
+Im Terminal kann mit der *Pfeil hoch* Taste
+durch die letzten Befehle geblättert werden -- damit gehen 
 manche Dinge sehr schnell!
+\sampleend
+
+\samplestart
+**Hinweis**  
+Ab dieser Stelle wechsle ich vom neutralen *man* 
+auf das kollegiale *Du*, weil manche Formulierungen
+sonst unnötig klobig werden!
 \sampleend
 
 ## Konfigurieren von git
 
-Öffne die \git-Bash in dem Ordner, in dem du 
-arbeiten willst. Das geht über die rechte 
-Maustaste im Explorer (Dateimanager)^[Sollte dir 
+Öffne die \git-Bash^[bzw. das Terminal deines Systems. Das setze ich in Zukunft stillschweigend voraus]. Da es sich um
+globale Einstellungen handelt, muss das nicht unbedingt im Projektordner sein!^[Sollte dir 
 die Schrift im Fenter zu klein sein,
 kannst du sie mit \strg{+} vergrößern.].
 
@@ -36,21 +41,20 @@ git config --global user.name="Susi Sandmann"
 git config --global user.email="susi@sandmann.de"
 ```
 
-
 ## Erste Schritt
 
 Lege nun einen Arbeitsordner für dieses *Hands on* an:
 
 ```bash
-git init projekt 
-cd projekt 
+git init hands_on_1 
+cd hands_on_1
 ```
 
 Alternativ kann man das auch mit mehreren Schritten erledigen:
 
 ```bash
-mkdir projekt 
-cd projekt 
+mkdir hands_on_1 
+cd hands_on_1 
 git init 
 ```
 
@@ -69,7 +73,7 @@ Hinweis: 'development'. Der gerade erstellte Branch kann mit diesem Befehl
 Hinweis: umbenannt werden:
 Hinweis: 
 Hinweis: 	git branch -m <Name>
-Leeres Git-Repository in /tmp/projekt/.git/ initialisiert
+Leeres Git-Repository in /tmp/hands_on_1/.git/ initialisiert
 ```
 
 Es hat sich eingebürgert^[Bedingt durch gesellschaftspolitische Strömungen, die *Master* mit Sklaverei gleichsetzen, aber Eine Master-Arbeit hier nicht als Problem sehen.], den Arbeitszweig von *master* auf *main* umzubenennen:
