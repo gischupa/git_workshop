@@ -1,13 +1,20 @@
 # Vorbemerkung{.unnumbered}
-Ein Betrieb von \git direkt auf Windows ist nicht sinnvoll.
-Es wird also ein System wie MacOS oder Linux vorausgesetzt.
+Spricht man von \git, dann können viele verschiedene Aspekte dieses 
+genialen Versionskontrollsystems gemeint sein. Genau diese Vielfalt
+macht aber einen stringenten Weg in einer Einführung etwas schwierig.
 
-Dieses Handout ist in folgende Sinnabschnitte unterteilt  
+Wir werden mit der Installation der Software beginnen und zunächst 
+lokal auf dem Computer die Grundlagen erarbeiten. Im Anschluss kümmern 
+wir und um Aspekte der kooperativen Arbeit in Netzwerken. Die 
+Installation eines eigenen \git-Server bildet dann den Abschluss 
+des ersten Teils.
 
-* Ein minimaler \git-Server
-* Grundlagen der Arbeit mit \git
-* Installation eines vollwertigen Gitea-Servers
+Im zweiten Teil soll es dann um den Praxiseinsatz im Umfeld von SDLC 
+und CI/CD gehen.
 
+Für den reinen Client-Aspekt ist die Verwendung von \git auf Windows problemlos, sobald es aber um Server geht, sind bessere Systeme wie Linux oder MacOS sinnvoller^[Ich habe bisher noch keinen Server im 
+Internet getroffen, auf dem MacOS als Sytem verwendet wird. Das kann 
+sich aber natürlich jederzeit ändern!]
 
 {{< include 0170_ersteSchritte.qmd >}}
 {{< include 0180_client.qmd >}}
