@@ -1,6 +1,10 @@
 # Hands On I
-Bevor wir beginnen, müssen einmalig einige Konfigurationen vorgenommen werden -- einige davon betreffen auch bereits den späteren Einsatz im 
-Netz, wo klar sein muss, welcher Benutzer Änderungen an den Dateien vorgenommen hat^[Wir sprechen hier NICHT von einer Absicherung gegen Dummheit oder Bosheit. Sobald Änderungen von papst@vatikan.va auftauchen, wäre ich skeptisch!].
+Bevor wir beginnen, müssen einmalig einige Konfigurationen vorgenommen 
+werden -- einige davon betreffen auch bereits den späteren Einsatz im 
+Netz, wo klar sein muss, welcher Benutzer Änderungen an den Dateien 
+vorgenommen hat^[Wir sprechen hier NICHT von einer Absicherung gegen 
+Dummheit oder Bosheit. Sobald Änderungen von papst@vatikan.va auftauchen, 
+wäre ich skeptisch!].
 
 \samplestart
 **TIPP**  
@@ -18,8 +22,10 @@ sonst unnötig klobig werden!
 
 ## Konfigurieren von git
 
-Öffne die \git-Bash^[bzw. das Terminal deines Systems. Das setze ich in Zukunft stillschweigend voraus]. Da es sich um
-globale Einstellungen handelt, muss das nicht unbedingt im Projektordner sein!^[Sollte dir 
+Öffne die \git-Bash^[bzw. das Terminal deines Systems. 
+Das setze ich in Zukunft stillschweigend voraus]. Da es sich um
+globale Einstellungen handelt, muss das nicht unbedingt im 
+Projektordner sein!^[Sollte dir 
 die Schrift im Fenter zu klein sein,
 kannst du sie mit \strg{+} vergrößern.].
 
@@ -76,7 +82,10 @@ Hinweis: 	git branch -m <Name>
 Leeres Git-Repository in /tmp/hands_on_1/.git/ initialisiert
 ```
 
-Es hat sich eingebürgert^[Bedingt durch gesellschaftspolitische Strömungen, die *Master* mit Sklaverei gleichsetzen, aber Eine Master-Arbeit hier nicht als Problem sehen.], den Arbeitszweig von *master* auf *main* umzubenennen:
+Es hat sich eingebürgert^[Bedingt durch gesellschaftspolitische 
+Strömungen, die *Master* mit Sklaverei gleichsetzen, aber Eine 
+Master-Arbeit hier nicht als Problem sehen.], den 
+Arbeitszweig von *master* auf *main* umzubenennen:
 
 ```bash
 git branch -m main 
@@ -99,6 +108,15 @@ nichts zu committen (erstellen/kopieren Sie Dateien und benutzen
 Sie "git add" zum Versionieren)
 ```
 
+\samplestart 
+**Hinweis**  
+Man kann \git auch so konfigurieren, dass der Branch eines 
+neu angelegten Repositories automatisch *main* genannt wird.
+```bash 
+git config --global init.defaultBranch main
+```
+\sampleend
+
 Erstelle nun eine erste Datei mit dem Namen \datei{datei1.txt}.  
 Wenn du das nicht über die \git-Bash machen willst, 
 dann achte darauf, dass du eine reine Textdatei 
@@ -106,7 +124,8 @@ erstellst -- also nicht mit Word o.ä. sondern mit
 einem reinen Editor wie *notepad*, *notepad++* 
 oder einer Entwicklungsumgebung.  
 
-Schneller geht das aber mit \git-Bash^[Das Zeichen `>` überschreibt alle Inhalte einer Datei, `>>` hängt die Daten hinten an.].
+Schneller geht das aber mit \git-Bash^[Das Zeichen `>` überschreibt 
+alle Inhalte einer Datei, `>>` hängt die Daten hinten an.].
 
 ```bash
 echo "Version 1" > datei1.txt 
@@ -119,19 +138,26 @@ auf
 git add datei1.txt 
 ``` 
 
-Im Anschluss erstellst du einen Commit um 
-den aktuellen Stand deines *Projekts* 
-festzuschreiben.
+und erstellst einen Commit
 
 ```bash
 git commit -m "Erste Datei erstellt"
 ```
 
-Diesen Zyklus aus *add* und *commit* führst 
-du immer wieder aus, sobald du an eine wichtige 
-Stelle im Projektverlauf kommst. 
-Generell gilt: „Lieber mehr Commits, als zu wenige!“  
+Durch die Kombination aus *add* und *commit* hast 
+du einen *Meilenstein* in der Projekthistorie erstellt.
+Damit kennst bereits einen typischen Ablauf von \git:
 
+Du sammelst Dateien mit *add*, in denen du Änderungen 
+vorgenommen hat und schreibst diese Änderungen mit 
+*commit* in die Projekthistorie. Wie oft, mit wie vielen
+Dateien in welchen Zeitabständen ... das ist ziemlich 
+alleine Deine Entscheidung.
+
+Generell gilt allerdings: „Lieber mehr Commits, als zu wenige!“  
+
+\samplestart
+**Hinweis**  
 Ein Commit ist ein Projektstand, an den du 
 zurückkehren kannst, wenn etwas grob missglückt ist.
 Vergeht zu viel Zeit (=viel Code) zwischen zwei 
@@ -140,8 +166,9 @@ Rücksprung zum alten Stand.
 Später im Workshop lernst du auch, wie du 
 Commits nachträglich zusammenfassen kannst (=squash) 
 um deine Entwicklungsschritte übersichtlich zu halten.
+\sampleend 
 
-Nun änderst du deine Datei ab, indem du eine 
+Ändere deine Datei nun ab, indem du eine 
 Zeile ergänzt:
 
 ```bash
@@ -150,16 +177,19 @@ git add datei1.txt
 git commit -m "Erläuterung"
 ```
 
-Du kannst gleichzeitig auch mehrere Dateien
-in die Versionierung aufnehmen.
+Die Historie besitzt nun zwei Punkte, an die du zurückgekehren
+könntest -- wie das geht, lernst du noch. 
+
+Natürlich ist das *adden* nicht auf eine einzige 
+Datei beschränkt. Liegen mehrere geänderte Dateien 
+vor, so müssen sie nicht einzeln hinzugefügt werden.
+Es gibt dafür einen *Sammelbefehl*, der den gesamten 
+Ordner mit allen Unterordnern hinzufügt:
 
 ```bash
-# Aktuell passiert nichts - du hast ja nichts geändert!
-git add . --all 
+git add . 
 ```
 
-\samplestart
-**TIPP**  
 Das *adden* ist generell unabhängig vom *commit*.
 Es ist sogar üblich, immer erst einige Dateien
 anzusammeln, bevor du einen Commit machst.  
@@ -187,43 +217,49 @@ dem Namen `.gitignore` eintragen:
 *.tmp 
 zugangsdaten.txt
 ```
-\sampleend
 
 Mit diesen Befehlen ist bereits ein einfacher 
 lokaler Entwicklungsprozess abbildbar. Allerdings
 gibt es noch viele weitere Feinheiten und Varianten,
 von denen wir noch etliche in diesem Workshop ansprechen werden.
 
-## Ein genauerer Blick
+\samplestart
+**Hinweis**  
+Es gibt sogar die Möglichkeit, dass man nur Teile 
+der Änderungen in einer Datei einen Commit und die restlichen
+Änderungen in einen anderen Commit übernimmt. Das sind aber sehr 
+spezielle Varianten, die uns hier nicht interessieren! 
+\sampleend
 
-Der Ordner eines Projekts wird von \git in drei *logische*
-Bereiche unterteilt:
+
+## Ein genauerer Blick auf Git
+
+Steht ein Ordner unter der Verwaltung von \git, so kann 
+man von drei *logischen* Bereiche sprechen:
 
 * Working-Directory (Arbeitsordner)
 * Stage (auch Index oder Cache genannt)
-* Repository
+* Repository^[Je nach Quelle und Kontext etwas inkonsistent verwendet]
 
-Leider werden die Begriffe in verschiedenen Quelle 
-nicht einheitlich verwendet 
-und haben in unterschiedlichem Kontext auch noch 
-abweichende Bedeutung -- das betrifft uns hier aber nicht.
-Sollte eine Möglichkeit zur Verwechslung existieren, weise
-ich dich ausdrücklich darauf hin.
-
-Mit der *logischen* Unterteilung ist gemeint, dass die
-unterschiedlichen Versionen der Dateien in einem speziellen
-Ordner innerhalb des Projektordners verwaltet werden.
-Der Ordner trägt den Namen `.git` und wird vom System 
-ausgeblendet. Dieser Ordner bildet den *Stage* und 
-das *Repository* gleichzeitig. 
+Das Working-Directory enthält die Dateien an denen gearbeitet 
+wird. Er entspricht auf den ersten Blick genau einem normalen 
+Ordner für die Projektentwicklung. Erst durch die Initialisierung 
+durch \git entsteht ein weiterer, versteckter Ordner mit dem Namen *.git*.
+Dieser Ordner bildet den *Stage* und das *Repository* gleichzeitig^[Hier sieht man den 
+inkonsistenten Gebrauch von „Repository“. Einerseits wird der gesamte Projektorder 
+als Repository bezeichnet, sobald er von \git verwaltet wird, andererseits
+befindet sich das eigentliche Repository im Ordner *.git*.]. 
 *Logisch* bedeutet in diesem Zusammenhang, dass diese beiden 
 Bereiche von \git verwaltet werden und vom unbedarften 
 Benutzer nicht einfach unterschieden werden können.
 In einem späteren Abschnitt werden wir einen genaueren 
 Blick in diesen Ordner werfen.
 
-Betrachten wir zunächst einen Entwicklungszyklus im Detail.
-
+Betrachten wir zunächst einen Entwicklungszyklus im Detail. Dabei 
+wirst du im Wesentlichen die gleichen Befehle wie vorher verwenden, 
+allerdings untersuchen wir einige Varianten, die für das Verständnis wichtig sind.
+Dafür arbeitest einfach im aktuellen Ordner weiter. Er sollte akutell 
+eine Datei und zwei Commits enthalten.
 Den aktuellen Stand des Projekts kannst du mit folgendem Befehl abfragen:
 
 ```bash
@@ -236,8 +272,8 @@ nichts zu committen,
 Arbeitsverzeichnis unverändert
 ```
 
-Das bedeutet, dass du aktuelle einen *sauberen* Zustand 
-deines Arbeitsordners ohne Änderungen hast.
+Das bedeutet, dass du aktuell einen *sauberen* Zustand 
+deines Arbeitsordners ohne Änderungen vorliegen hast.
 
 Erstelle eine neue \datei{datei2.txt} und füge 
 die Zeile *Version 1* ein. In der Datei \datei{datei1.txt}
@@ -279,7 +315,7 @@ Nun werden die aktuelle Stände *auf den Stage*/*in den Stage*
 übertragen:
 
 ```bash
-git add . --all 
+git add . 
 git status 
 
 # Ausgabe  
@@ -341,14 +377,13 @@ das auch wieder nicht die ganze Wahrheit ist!
 \sampleend
 
 ### Etwas mehr Wahrheit
-Dieser Abschnitt ist nur ein Einblick für Interessierte gedacht.
-Angenommen, du erstellst ein neues Repository 
+Dieser Abschnitt ist nur als Einblick für Interessierte gedacht!
+Dafür erstellst du ein neues Repository in einem anderen Ordner
 
 ```bash
+cd ..  # Eine Ebene höher, raus aus dem Arbeitsordner
 git init demo 
 cd demo
-
-echo "Etwas HTML" >> homepage.html
 ```
 
 Wenn du nun die Verzeichnisstruktur des Ordners *.git* 
@@ -382,17 +417,17 @@ genauer untersuchst, wirst du in etwa dies hier sehen:
     ├── heads
     └── tags
 ```
-\datei{homepage.htm}^[Der Name wurde gewählt um keine Verwechslung zwischen index.html 
-und dem Index von \git zu provozieren!] ist noch nicht versioniert, also stellt
-obige Ordnerstruktur ein leeres Repository dar. 
-Sobald du die Datei zum Commit vormerkst
+
+Lege im leeren \work eine Datei an^[Ich habe absichtlich nicht index.html verwendet,
+weil „index“ aktuell anders belegt ist.] 
 
 ```bash
-git add index.html 
+echo "Etwas HTML" >> homepage.html
+git add homepage.html 
 ```
 
-ändert sich im Ordner *.git* etwas. Ich gebe nur die relevante 
-Stelle an:
+Du siehst erste Änderungen im *.git*-Ordner.
+Ich gebe nur die relevante Stelle an -- die Hashes lauten bei dir anders!
 
 ```bash
 .
@@ -402,7 +437,7 @@ Stelle an:
 ├── info
 │   └── exclude
 ├── objects
-│   ├── ce          <<< neu, bei dir anders! 
+│   ├── ce          <<< neu, bei dir wahrscheinlich anders! 
 │   │   └── 1332fcf1795166c3c5cd0216b5e7dc2dce7998
 │   ├── info
 │   └── pack
