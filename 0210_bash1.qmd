@@ -201,18 +201,18 @@ Es kann ab und zu passieren, dass du Änderungen
 an Dateien vornimmst, die zu verschiedenen Problemen 
 gehören. Es wäre dann etwas unübersichtlich, wenn sich 
 diese Dateien dann im gleichen Commit festgeschrieben 
-werden. In einem Solchen Fall solltest du kein `--all` 
-verwenden, sondern genau die Dateinamen angeben.
+werden. In einem solchen Fall solltest du bei *add*
+genau die Dateinamen angeben.
 
 Zusätzlich kann es natürlich auch sein, dass du 
 bestimmte Dateien überhaupt nicht in die Versionsverwaltung
 aufnehmen willst. Das ist zum Beispiel dann der Fall, falls 
 sich Kennwörter und Zugangsdaten in eine Datei befinden.
-Um dennoch mit `--all` arbeiten zu können, kannst du 
-die Namen dieser Datei(en) in eine Datei mit 
-dem Namen `.gitignore` eintragen:
+Wenn du die Namen dieser Datei(en) in eine Datei mit 
+dem Namen `.gitignore` einträgst, werden sie beim *add* ignoriert.
 
 ```bash
+# Format der Datei
 *.log 
 *.tmp 
 zugangsdaten.txt
@@ -226,7 +226,7 @@ von denen wir noch etliche in diesem Workshop ansprechen werden.
 \samplestart
 **Hinweis**  
 Es gibt sogar die Möglichkeit, dass man nur Teile 
-der Änderungen in einer Datei einen Commit und die restlichen
+der Änderungen in einer Datei in einen Commit und die restlichen
 Änderungen in einen anderen Commit übernimmt. Das sind aber sehr 
 spezielle Varianten, die uns hier nicht interessieren! 
 \sampleend
@@ -257,10 +257,17 @@ Blick in diesen Ordner werfen.
 
 Betrachten wir zunächst einen Entwicklungszyklus im Detail. Dabei 
 wirst du im Wesentlichen die gleichen Befehle wie vorher verwenden, 
-allerdings untersuchen wir einige Varianten, die für das Verständnis wichtig sind.
+allerdings untersuchen wir einige Varianten, die für das Verständnis 
+wichtig sind.
 Dafür arbeitest einfach im aktuellen Ordner weiter. Er sollte akutell 
-eine Datei und zwei Commits enthalten.
-Den aktuellen Stand des Projekts kannst du mit folgendem Befehl abfragen:
+eine Datei und zwei Commits enthalten.  
+Das kannst du mit folgendem Befehl überprüfen:
+
+```bash
+git log
+```
+
+Ob noch Änderungen offen sind,zeigt dir:
 
 ```bash
 # Eingabe
@@ -311,6 +318,18 @@ Du siehst auch, dass \git die \datei{datei1.txt} bereits kennt
 (=geändert) und  dass \datei{datei2.txt} noch nicht in die  
 Versionsverwaltung aufgenommen wurde (=Unversioniert).
 
+\samplestart
+**Hinweis**  
+In Bezug auf *add* muss man zwei Dinge im Hinterkopf behalten.
+1. Die Abkürzung \cmd{git commit -a} führt zwar im Hintergrund 
+ein *add* aus, aber nur für bereits versionierte 
+Dateien -- \datei{datei2.txt} würde also ignoeriert.  
+2. Der Befehl \cmd{git add .} findet nur Dateien im aktuellen
+Ordner und den Unterordnern. Sollen auch Dateien in 
+übergeordneten oder *parallelen* Ordnern berücksichtigt 
+werden, so brauchst du \cmd{git add --all}.
+\sampleend
+
 Nun werden die aktuelle Stände *auf den Stage*/*in den Stage* 
 übertragen:
 
@@ -325,15 +344,15 @@ Zum Commit vorgemerkte Änderungen:
    zum Entfernen aus der Staging-Area)  
 
 	geändert:       datei1.txt
-	neue Datei:     datei3.txt
+	neue Datei:     datei2.txt
 ```
 
 Diese Dateien sind nun zum Commit vorgemerkt, also zum festen 
-Eintrag in die Projekthistorie. Der Befehl `status` zeigt den 
-aktuellen Zustand des *Stage* an.
+Eintrag in die Projekthistorie. Der Befehl \cmd{git status} 
+zeigt dir wieder den aktuellen Zustand des *Stage* an.
 
 Als Demonstration fügen wir beiden Dateien eine weitere 
-Zeile hinzu und fragen wieder den Staus ab:
+Zeile hinzu und fragen wieder den Status ab:
 
 ```bash
 echo "Weitere Zeile" >> datei1.txt  
@@ -366,7 +385,13 @@ Zum Commit vorgemerkte Änderungen:
 Beide Dateien liegen also in verschiedenen Versionen im Stage
 und im \work vor.  
 Ein Commit transferiert die Dateien aus dem Stage ins 
-Repository, also in die Projekthistorie.
+Repository, also in die Projekthistorie. Das führt dann zu folgender 
+Situation:
+
+```
+git commit -m "nur Stage"
+```
+TODO
 
 \samplestart
 **Hinweis**  
