@@ -391,7 +391,12 @@ Situation:
 ```
 git commit -m "nur Stage"
 ```
-TODO
+
+Ein \cmd{git status} zeigt dir, dass die oberen beiden Dateiversionen 
+aus dem Stage verschwunden sind (sind jetzt Teil des Commits) und die 
+aktuellen Änderungen nach wie vor im Arbeitsverzeichnis vorhanden 
+sind, weil für sie noch kein *add* stattgefunden hat.
+
 
 \samplestart
 **Hinweis**  
@@ -403,16 +408,46 @@ das auch wieder nicht die ganze Wahrheit ist!
 
 ### Etwas mehr Wahrheit
 Dieser Abschnitt ist nur als Einblick für Interessierte gedacht!
-Dafür erstellst du ein neues Repository in einem anderen Ordner
+
+Ganz am Anfang muss man wissen, dass es 4 Git-Objekte gibt:
+
+1. blob
+2. tree 
+3. commit 
+4. tag 
+
+**blob**  
+„Binary large Objects“ sind reine Dateiinhalte *ohne* Dateiname 
+oder Metadaten.
+
+**tree**  
+Ein Tree ist ein (namentliches) Abbild des Arbeitsverzeichnisses. 
+Er enthält aber nur die Namen, Typ und Hash der Dateien, Unterordner, 
+also der Blobs und trees, die an anderer Stelle gespeichert sind.
+Ein Tree ist klein, da er keine Dateiinhalte enthält.
+
+**commit**  
+Zeigt auf den Tree, der zum Zeitpunkt des Commits aktuell war.
+Er enthält noch weitere Metadaten.
+
+**tag**  
+Zusatznamen für ausgewählte Commits (Releases)
+
+
+**Sehen wir uns das genauer an**  
+
+Erstelle dir ein neues Repository in einem anderen Ordner
 
 ```bash
 cd ..  # Eine Ebene höher, raus aus dem Arbeitsordner
 git init demo 
 cd demo
+git branch -m main
 ```
 
 Wenn du nun die Verzeichnisstruktur des Ordners *.git* 
-genauer untersuchst, wirst du in etwa dies hier sehen:
+genauer untersuchst, wirst du in etwa dies hier sehen,
+weil noch keine Dateien im \work sind:
 
 ```bash
 .git/
@@ -443,8 +478,8 @@ genauer untersuchst, wirst du in etwa dies hier sehen:
     └── tags
 ```
 
-Lege im leeren \work eine Datei an^[Ich habe absichtlich nicht index.html verwendet,
-weil „index“ aktuell anders belegt ist.] 
+Lege nun im leeren \work eine Datei an^[Ich habe absichtlich 
+nicht index.html verwendet, weil „index“ aktuell anders belegt ist.] 
 
 ```bash
 echo "Etwas HTML" >> homepage.html
@@ -452,7 +487,8 @@ git add homepage.html
 ```
 
 Du siehst erste Änderungen im *.git*-Ordner.
-Ich gebe nur die relevante Stelle an -- die Hashes lauten bei dir anders!
+Ich gebe nur die relevante Stelle an -- der Hashe 
+lautet bei dir eventuell anders!
 
 ```bash
 .
@@ -462,7 +498,7 @@ Ich gebe nur die relevante Stelle an -- die Hashes lauten bei dir anders!
 ├── info
 │   └── exclude
 ├── objects
-│   ├── ce          <<< neu, bei dir wahrscheinlich anders! 
+│   ├── ce          <<< neu, bei dir evtl anders! 
 │   │   └── 1332fcf1795166c3c5cd0216b5e7dc2dce7998
 │   ├── info
 │   └── pack
@@ -474,7 +510,10 @@ direkt lesen. Das geht nur mit
 ```bash
 git ls-files --stage 
 ```
-Den Hash aus dieser Ausgabe findet du oben in der Ordnerstruktur wieder.
+
+Den Hash aus dieser Ausgabe^[In einem richtigen großen Repository
+erscheint hier eine sehr umfangreiche Liste aller Dateien!] 
+findet du oben in der Ordnerstruktur wieder.
 
 ```bash
 100644 ce1332fcf1795166c3c5cd0216b5e7dc2dce7998 0	homepage.htm
@@ -485,7 +524,7 @@ in diesem Ordner eine Datei, deren Name aus den restlichen Zeichen besteht.
 Zusätzlich findet man den Dateityp (100644), den Status (Das ist komplexer! 
 Hier 0) und den Dateinamen.
 
-Den Hash kannst du dir auch so anzeigen lassen:
+Den Hash kannst du dir übrigens auch so anzeigen lassen:
 ```bash
 git hash-object homepage.htm 
 ```
@@ -530,9 +569,13 @@ Darstellung aus Platzgründen entfernt!
     └── tags
 ```
 
+Ab hier bekommst du sicher andere, eigene Hash-Werte! Du 
+musst in den nachfolgenden Befehlen also deine eigenen 
+Werte verwenden.
+
 Wir konzentrieren uns auf die *objects* und das *log*.
 
-Mit `git log --oneline` erfährst du etwas über den erfolgten
+Mit `git log` erfährst du etwas über den erfolgten
 Commit -- zum Beispiel seinen Hash:
 
 ```bash
@@ -543,11 +586,20 @@ Date:   Sun Jan 26 20:20:10 2025 +0100
     homepage.html added
 ```
 
-Durch `git cat-file -t 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f`   
-siehst du, dass es wirklich ein Commit ist (unnötig),   
-durch `git cat-file -p 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f`  
-gibt es weitere Details:
+Etwas kompakter wird die Darstellung mit \cmd{git log --oneline}.
+
+Der Hash 3b02... scheint also ein Commit zu sein. Das kannst 
+du mit \cmd{git cat-file -t 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f} 
+auch noch einmal überprüfen -- steht aber bereits in \cmd{git log}. 
+
+Änderst du den Parameter von *-t* auf *-p* (=pretty print), so 
+bekommst du weitere Details: 
+
 ```bash
+# Eingabe 
+git cat-file -p 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f
+
+# Ausgabe
 tree 94eed25c4ef6cfa1384df66f28308c09dc9bf28d   << wichtig!
 author wolfgang <hoeferwolf@t-online.de> 1737919210 +0100
 committer wolfgang <hoeferwolf@t-online.de> 1737919210 +0100
@@ -555,23 +607,25 @@ committer wolfgang <hoeferwolf@t-online.de> 1737919210 +0100
 homepage.html added
 ```
 
-Am Commit hängt also der *tree* der betroffenen Dateien:
+Am Commit verweist also auf den *tree* mit dem Hash 94ee...   
+Da wir aktuell nur eine Datei haben, ist die Ausgabe des 
+nächsten Befehls sehr kurz, der den tree ausliest:
+
 
 ```bash
+# Eingabe
 git cat-file -p 94eed25c4ef6cfa1384df66f28308c09dc9bf28d
-```
-Diese Ausgabe kennst du bereits aus dem Stage:
 
-```bash
+# Ausgabe - normal deutlich länger!
 100644 blob ce1332fcf1795166c3c5cd0216b5e7dc2dce7998	homepage.html
 ```
 
-und mit 
+Abschließend sehen wir uns den Inhalt des Blob an
 ```bash
+# Eingabe
 git cat-file -p ce1332fcf1795166c3c5cd0216b5e7dc2dce7998
-```
-bekommst du den Inhalt der Datei:
-```bash
+
+# Ausgabe
 Etwas HTML
 ```
 
@@ -581,16 +635,20 @@ Eine kleine Stufe haben wir aber ausgelassen:
 ```bash
 git cat-file -t ce1332fcf1795166c3c5cd0216b5e7dc2dce7998
 ```
-liefert die Information `blob` (Binary large object).
-Es gibt einen Grund, warum ich dir diesen Umweg zumute!
-Di siehst hier ein grundlegendes Konzept von \git, das beim 
-Verständnis hilft:
 
-Der Commit zeigt auf einen Tree und im Tree stehen Dateinamen mit den Hashes.  
-Das sind nur die Namen und nicht die Dateien! Hinter dem Hash 
-verbirgt sich ein *blob*, also reine *Roh*daten **ohne** Dateinamen.
+liefert die Information `blob` (Binary large object).
+
+Hier nochmal die Zusammenfassung der Funktionsweise:  
+
+* Der Commit zeigt auf einen Tree 
+* Im Tree stehen Dateinamen mit den Hashes    
+  Das sind nur die Namen und nicht die Dateien! 
+* Der Hash gehört zu einem *blob* (oder tree),  
+  also den reinen *Roh*daten der Datei **ohne** Dateinamen
+
 Git verwendet das, um von verschiedenen Stellen aus auf die
-gleichen Rohdaten zu verweisen. Ändern sich Dateien zwischen 
+gleichen Rohdaten verweisen zu können, ohne Speicher zu verbrauchen. 
+Ändern sich Dateien zwischen 
 zwei Commits nicht (Hash bleibt gleich), so werden sie nicht neu gespeichert. 
 Der neue Commit zeigt auf einen neuen Tree in dem wieder 
 die gleichen Hashes mit den gleichen Dateinamen stehen.
