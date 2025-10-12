@@ -1,75 +1,3 @@
-#!/bin/bash
-
-set -x
-
-# Anlegen des Vorlagen-Repos
-# Der Aufruf erstellt das Repo im aktuellen Ordner!
-# Eventuell in tmp ... kopieren zum testen
-
-akt=$PWD
-
-cd /tmp
-
-if [ -d storyvorlagen ]; then
-  rm -rf storyvorlagen
-fi
-
-# init und erster Checkin
-git init storyvorlagen
-cd storyvorlagen
-
-# master auf main
-echo Branch umbenennen
-git branch -m main
-
-####### Story 1
-# Ersten Teil der Story als ersten Commit
-head -n 27 $akt/stories/story1.md > ./story1.md
-git add story1.md
-git commit -m "erster Teil von Story 1"
-git tag -a Step_1 -m"erster_Teil_von_Story 1"
-
-# 2. Teil der Story (einfach überbügeln)
-cat $akt/stories/story1.md > ./story1.md
-git add story1.md
-git commit -m 'komplette Story 1'
-git tag -a Step_2 -m "komplette_Story_1"
-
-# Datei für Story 2 - Teil 1
-head -n 32 $akt/stories/story2.md > ./story2.md
-git add story2.md 
-git commit -m "erster Teil von Story 2"
-git tag -a Step_3 -m "erster_Teil_von_Story_2"
-
-# Idee 1 für Story 2
-cat $akt/stories/story2_idee1.md > ./story2.md
-git add story2.md 
-git commit -m "Idee 1 von Story 2"
-git tag -a Step_4 -m "Idee_1_von_Story_2"
-
-# Idee 2 für Story 2
-cat $akt/stories/story2_idee2.md > ./story2.md
-git add story2.md 
-git commit -m "Idee 2 von Story 2"
-git tag -a Step_5 -m "Idee_2_von_Story_2"
-
-#### Rechtschreibfehler in der kurzen story 2 beheben
-# auschecken der "teil 1 von Story 2"
-# weiße durch weise ersetzen
-
-git checkout Step_3 -- story2.md
-sed -i -e "s/weiße/weise/g" story2.md
-
-git add . story2.md
-git commit -m "Typo korrigiert"
-git tag -a Step_6 -m "Typo_korrigiert"
-
-
-exit 0
-
-
-#### Unterrichts-Technik ab Step 7
-
 cd /tmp
 
 if [ -d probe ];
@@ -180,17 +108,19 @@ EOF
 git add gini.md
 git commit -m "ankunft"
 
+exit 0
+
 # ab hier können die Branches "umkehr" und "bei Gini" 
 # in den Susanne-Branch gemerged werden
-git switch susanne
-git merge bei_gini
-git merge umkehr
+#git switch susanne
+#git merge bei_gini
+#git merge umkehr
 
-git switch main
-cat <<EOF>> anleitung.txt
-Ihr könnt auch eigene Branches für Ideen erstellen!
-EOF
+#git switch main
+#cat <<EOF>> anleitung.txt
+#Ihr könnt auch eigene Branches für Ideen erstellen!
+#EOF
 
-git add anleitung.txt
-git commit -m "Anregung Branch!"
+#git add anleitung.txt
+#git commit -m "Anregung Branch!"
 

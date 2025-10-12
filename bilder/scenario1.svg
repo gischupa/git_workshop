@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="scenario1.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="1.0809568"
+     inkscape:cx="205.83617"
+     inkscape:cy="346.9149"
+     inkscape:window-width="1920"
+     inkscape:window-height="1008"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid132" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="TriangleStart"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#000000;stroke-width:1;stroke:#000000"
+       d="M 94.999999,10 V 69.999999 120 v 55 60"
+       id="path238" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="105"
+       y="10"
+       id="text348"><tspan
+         sodipodi:role="line"
+         id="tspan346"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.1"
+         x="105"
+         y="10">Clonen</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="104.61687"
+       y="19.513508"
+       id="text352"><tspan
+         sodipodi:role="line"
+         id="tspan350"
+         style="font-size:4.23333px;stroke-width:0.1"
+         x="104.61687"
+         y="19.513508">Repo anlegen</tspan></text>
+    <path
+       style="fill:#ff0000;stroke:#ff0000;stroke-width:0.5;marker-end:url(#TriangleStart);stroke-dasharray:4, 1;stroke-dashoffset:0"
+       d="M 35.000001,35 H 84.999999"
+       id="path608" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:1"
+       x="14.16859"
+       y="36.024467"
+       id="text1383"><tspan
+         sodipodi:role="line"
+         id="tspan1381"
+         style="stroke-width:0.1"
+         x="14.16859"
+         y="36.024467">Step 1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="44.061077"
+       y="31.100666"
+       id="text1387"><tspan
+         sodipodi:role="line"
+         id="tspan1385"
+         style="stroke-width:0.1"
+         x="44.061077"
+         y="31.100666">story_1.md</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="105"
+       y="35"
+       id="text1393"><tspan
+         sodipodi:role="line"
+         id="tspan1391"
+         style="stroke-width:0.1"
+         x="105"
+         y="35">add</tspan></text>
+    <path
+       style="fill:#ff0000;stroke:#ff0000;stroke-width:0.5;marker-end:url(#TriangleStart);stroke-dasharray:4, 1;stroke-dashoffset:0"
+       d="M 34.226976,47.833335 H 84.226974"
+       id="path1397" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:1"
+       x="13.395564"
+       y="48.857803"
+       id="text1401"><tspan
+         sodipodi:role="line"
+         id="tspan1399"
+         style="stroke-width:0.1"
+         x="13.395564"
+         y="48.857803">Step 2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="43.288052"
+       y="43.934002"
+       id="text1405"><tspan
+         sodipodi:role="line"
+         id="tspan1403"
+         style="stroke-width:0.1"
+         x="43.288052"
+         y="43.934002">story_1.md</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="105"
+       y="50"
+       id="text1411"><tspan
+         sodipodi:role="line"
+         id="tspan1409"
+         style="stroke-width:0.1"
+         x="105"
+         y="50">add</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="105"
+       y="55"
+       id="text1415"><tspan
+         sodipodi:role="line"
+         id="tspan1413"
+         style="stroke-width:0.1"
+         x="105"
+         y="55">commit</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1"
+       d="M 94.999999,69.999999 H 150 v 20"
+       id="path1417" />
+    <path
+       style="fill:#ff0000;stroke:#ff0000;stroke-width:0.5;marker-end:url(#TriangleStart);stroke-dasharray:4, 1;stroke-dashoffset:0"
+       d="M 35.000002,80 H 145"
+       id="path1421"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:1"
+       x="14.168591"
+       y="81.024467"
+       id="text1425"><tspan
+         sodipodi:role="line"
+         id="tspan1423"
+         style="stroke-width:0.1"
+         x="14.168591"
+         y="81.024467">Step 3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="44.061077"
+       y="76.100662"
+       id="text1429"><tspan
+         sodipodi:role="line"
+         id="tspan1427"
+         style="stroke-width:0.1"
+         x="44.061077"
+         y="76.100662">story_2.md</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1"
+       x="129.82433"
+       y="68.254662"
+       id="text1435"><tspan
+         sodipodi:role="line"
+         id="tspan1433"
+         style="fill:#000000;stroke:#000000;stroke-width:0.1"
+         x="129.82433"
+         y="68.254662">branch</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1"
+       x="144.60603"
+       y="68.442268"
+       id="text1435-3"><tspan
+         sodipodi:role="line"
+         id="tspan1433-6"
+         style="fill:#000000;stroke:#000000;stroke-width:0.1"
+         x="144.60603"
+         y="68.442268">story 2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="152.72794"
+       y="79.907669"
+       id="text1598"><tspan
+         sodipodi:role="line"
+         id="tspan1596"
+         style="stroke-width:0.1"
+         x="152.72794"
+         y="79.907669">add</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="152.72794"
+       y="84.907669"
+       id="text1602"><tspan
+         sodipodi:role="line"
+         id="tspan1600"
+         style="stroke-width:0.1"
+         x="152.72794"
+         y="84.907669">commit</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="M 150,89.999999 130,100 l 0,90"
+       id="path1658"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 149.77936,89.8653 20,10.000001 L 170,190"
+       id="path1714"
+       sodipodi:nodetypes="ccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1"
+       x="165.69017"
+       y="94.907669"
+       id="text1718"><tspan
+         sodipodi:role="line"
+         id="tspan1716"
+         style="fill:#000000;stroke:#000000;stroke-width:0.1"
+         x="165.69017"
+         y="94.907669">branch</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1"
+       x="181"
+       y="95"
+       id="text1722"><tspan
+         sodipodi:role="line"
+         id="tspan1720"
+         style="fill:#000000;stroke:#000000;stroke-width:0.1"
+         x="181"
+         y="95">Idee 2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1"
+       x="108.03829"
+       y="94.907669"
+       id="text1726"><tspan
+         sodipodi:role="line"
+         id="tspan1724"
+         style="fill:#000000;stroke:#000000;stroke-width:0.1"
+         x="108.03829"
+         y="94.907669">branch</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1"
+       x="124.22879"
+       y="95.024467"
+       id="text1730"><tspan
+         sodipodi:role="line"
+         id="tspan1728"
+         style="fill:#000000;stroke:#000000;stroke-width:0.1"
+         x="124.22879"
+         y="95.024467">Idee 1</tspan></text>
+    <path
+       style="fill:#ff0000;stroke:#ff0000;stroke-width:0.5;stroke-dasharray:4, 1;stroke-dashoffset:0;marker-end:url(#TriangleStart)"
+       d="m 35,108 93,0"
+       id="path1734"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:1"
+       x="14.168588"
+       y="109.02446"
+       id="text1738"><tspan
+         sodipodi:role="line"
+         id="tspan1736"
+         style="stroke-width:0.1"
+         x="14.168588"
+         y="109.02446">Step 4</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="44.061073"
+       y="104.10065"
+       id="text1742"><tspan
+         sodipodi:role="line"
+         id="tspan1740"
+         style="stroke-width:0.1"
+         x="44.061073"
+         y="104.10065">story_2.md</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="112.72794"
+       y="114.90767"
+       id="text1752"><tspan
+         sodipodi:role="line"
+         id="tspan1750"
+         style="stroke-width:0.1"
+         x="112.72794"
+         y="114.90767">add</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="112.72794"
+       y="119.90767"
+       id="text1756"><tspan
+         sodipodi:role="line"
+         id="tspan1754"
+         style="stroke-width:0.1"
+         x="112.72794"
+         y="119.90767">commit</tspan></text>
+    <path
+       style="fill:#ff0000;stroke:#ff0000;stroke-width:0.5;stroke-dasharray:4, 1;stroke-dashoffset:0;marker-end:url(#TriangleStart)"
+       d="M 37.226978,133 168,133"
+       id="path1760"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:1"
+       x="13.395566"
+       y="133.85782"
+       id="text1764"><tspan
+         sodipodi:role="line"
+         id="tspan1762"
+         style="stroke-width:0.1"
+         x="13.395566"
+         y="133.85782">Step 5</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="43.288052"
+       y="128.93401"
+       id="text1768"><tspan
+         sodipodi:role="line"
+         id="tspan1766"
+         style="stroke-width:0.1"
+         x="43.288052"
+         y="128.93401">story_2.md</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="172.2916"
+       y="136.58749"
+       id="text1772"><tspan
+         sodipodi:role="line"
+         id="tspan1770"
+         style="stroke-width:0.1"
+         x="172.2916"
+         y="136.58749">add</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="172.2916"
+       y="141.58749"
+       id="text1776"><tspan
+         sodipodi:role="line"
+         id="tspan1774"
+         style="stroke-width:0.1"
+         x="172.2916"
+         y="141.58749">commit</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="M 150,89.999999 150,195"
+       id="path1782"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#ff0000;stroke:#ff0000;stroke-width:0.5;stroke-dasharray:4, 1;stroke-dashoffset:0;marker-end:url(#TriangleStart)"
+       d="M 35.291789,152.16748 148,152"
+       id="path1786"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:1"
+       x="11.460377"
+       y="153.0253"
+       id="text1790"><tspan
+         sodipodi:role="line"
+         id="tspan1788"
+         style="stroke-width:0.1"
+         x="11.460377"
+         y="153.0253">Step 6</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="41.352863"
+       y="148.10149"
+       id="text1794"><tspan
+         sodipodi:role="line"
+         id="tspan1792"
+         style="stroke-width:0.1"
+         x="41.352863"
+         y="148.10149">story_2.md</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="151.2916"
+       y="151.58749"
+       id="text1802"><tspan
+         sodipodi:role="line"
+         id="tspan1800"
+         style="stroke-width:0.1"
+         x="151.2916"
+         y="151.58749">add</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="151.2916"
+       y="156.58749"
+       id="text1806"><tspan
+         sodipodi:role="line"
+         id="tspan1804"
+         style="stroke-width:0.1"
+         x="151.2916"
+         y="156.58749">commit</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       d="m 130,160 0,-5 c 0,4 13,11 20,10"
+       id="path1808"
+       sodipodi:nodetypes="ccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="132.12302"
+       y="168.93401"
+       id="text1812"><tspan
+         sodipodi:role="line"
+         id="tspan1810"
+         style="stroke-width:0.1"
+         x="132.12302"
+         y="168.93401">merge</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="113.44212"
+       y="170.27798"
+       id="text1816"><tspan
+         sodipodi:role="line"
+         id="tspan1814"
+         style="stroke-width:0.1"
+         x="113.44212"
+         y="170.27798">add</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="113.44212"
+       y="175.27798"
+       id="text1820"><tspan
+         sodipodi:role="line"
+         id="tspan1818"
+         style="stroke-width:0.1"
+         x="113.44212"
+         y="175.27798">commit</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       d="m 130,184.95169 v -5 c 0,4 13,11 20,10"
+       id="path1822"
+       sodipodi:nodetypes="ccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:#000000;stroke-width:0.1"
+       x="132.12302"
+       y="193.8857"
+       id="text1826"><tspan
+         sodipodi:role="line"
+         id="tspan1824"
+         style="stroke-width:0.1"
+         x="132.12302"
+         y="193.8857">merge</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="102.15166"
+       y="-131.40192"
+       id="text1830"
+       transform="rotate(90)"><tspan
+         sodipodi:role="line"
+         id="tspan1828"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="102.15166"
+         y="-131.40192">weiße Sch.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="102.15166"
+       y="-151.41039"
+       id="text1952"
+       transform="rotate(90)"><tspan
+         sodipodi:role="line"
+         id="tspan1950"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="102.15166"
+         y="-151.41039">weiße Sch.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="102.15166"
+       y="-171.41039"
+       id="text1956"
+       transform="rotate(90)"><tspan
+         sodipodi:role="line"
+         id="tspan1954"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="102.15166"
+         y="-171.41039">weiße Sch.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="68.396912"
+       y="150.1539"
+       id="text1956-7"><tspan
+         sodipodi:role="line"
+         id="tspan1954-5"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="68.396912"
+         y="150.1539">weise Sch.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="152.97342"
+       y="162.13454"
+       id="text1956-7-3"><tspan
+         sodipodi:role="line"
+         id="tspan1954-5-5"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="152.97342"
+         y="162.13454">s</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="153.01314"
+       y="174.58749"
+       id="text1956-7-3-0"><tspan
+         sodipodi:role="line"
+         id="tspan1954-5-5-9"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="153.01314"
+         y="174.58749">s Sch</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="172.57971"
+       y="153.59808"
+       id="text1956-7-3-6"><tspan
+         sodipodi:role="line"
+         id="tspan1954-5-5-2"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="172.57971"
+         y="153.59808">ß</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="115.45104"
+       y="164.59808"
+       id="text1956-7-3-9"><tspan
+         sodipodi:role="line"
+         id="tspan1954-5-5-1"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="115.45104"
+         y="164.59808">ß Rsch</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="125.57972"
+       y="147.59808"
+       id="text2203"><tspan
+         sodipodi:role="line"
+         id="tspan2201"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="125.57972"
+         y="147.59808">ß</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="153.01314"
+       y="188.58749"
+       id="text2285"><tspan
+         sodipodi:role="line"
+         id="tspan2283"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="153.01314"
+         y="188.58749">s Sch</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:none;stroke:#000000;stroke-width:1;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="115.45104"
+       y="180.59808"
+       id="text2289"><tspan
+         sodipodi:role="line"
+         id="tspan2287"
+         style="fill:#ff0000;stroke:none;stroke-width:0.5"
+         x="115.45104"
+         y="180.59808">ß Rsch</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ff0000;stroke:none;stroke-width:0.499999;stroke-dasharray:1, 1;stroke-dashoffset:0"
+       x="134.61215"
+       y="198.51765"
+       id="text2297"><tspan
+         sodipodi:role="line"
+         id="tspan2295"
+         style="stroke-width:0.5"
+         x="134.61215"
+         y="198.51765">FAIL</tspan></text>
+  </g>
+</svg>

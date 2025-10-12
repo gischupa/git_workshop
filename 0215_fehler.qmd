@@ -1,29 +1,42 @@
 ## Fehlerbehebung
 Ein Versionsverwaltungsprogramm hat unter anderem 
-die Aufgabe, ein Projekt in gewissem Umfang revisionssicher
+die Aufgabe, ein Projekt in gewissem Umfang *revisionssicher*
 zu protokollieren. Aus diesem Grund müssen bestimmte 
-*Fehler* in der History erhalten bleiben.  
-Bei anderen Fehlern ist es aber wichtig, dass sie 
-schnell und einfach rückgängig gemacht werden können.
+*Fehler* oder *dokumentierte Probleme* in der History 
+erhalten bleiben, auch wenn sie später behoben wurden.
+
+Allerdings treten auch bei der Verwendung von \git 
+Fehler auf -- im Sinne von Bedienfehlern, zu frühem Committen, ...  
+Derartige Fehler müssen repariert werden, bevor sie 
+endgültig in der Historie festgeschrieben werden.
 
 Relativ unproblematisch sind *Reparaturen* bei lokaler
-Arbeit, bevor ein Commit erfolgt ist:
+Arbeit, also bevor ein Commit erfolgt ist:
 
 * Neue, fehlerhafte Dateien kann man einfach löschen.
 * Bereits versionierte Dateien mit Fehlern können
   durch `git restore <dateiname>` wieder mit 
-  der Version aus dem Stage überschrieben werden^[Es 
-  gibt auch noch den Befehl `git restore <dateiname> --staged`,
-  der das \work unangetastet lässt und nur die Version
-  aus dem Stage löscht.]
+  der Version aus dem Stage überschrieben werden
+* Manchmal soll auch nur die Version gelöscht werden,
+  die irrtümlich auf den Stage geschoben wurde. Dabei darf das 
+  \work nicht verändert werden. Das erreichtst du mit
+   `git restore <dateiname> --staged`.  
+  Das braucht man eigentlich nur, wenn diese Datei doch nicht im 
+  nächsten Commit enthalten sein soll.
+  
 
 \samplestart
 Vorher habe ich geschrieben, dass bei einem Commit die Dateien
 aus dem Stage in die Projekthistorie übertragen und aus 
-dem Stage entfernt werden. Das stimmt so nicht ganz.  
+dem Stage entfernt werden. Intern funktioniert das allerdings 
+etwas anders. Die Datei *index* enthält die Namen und Hashes des 
+aktuellen Commits (tree). Mit einem *add* werden Dateinamen ergänzt.
+Beim Commit wird die Datei nicht geleert, die Hashes bleiben also verfügbar.
 
 In Wirklichkeit zeigt `git status` diese Dateien nur nicht 
 mehr an, was auf einen leeren Stage schließen lassen würde. 
+Also stellt `git status` eigentlich nur ein *diff* zwischen
+*index* und aktuellem *tree* dar. 
 \sampleend
 
 Wäre der Stage wirklich leer, so könnte nachfolgende 
@@ -56,7 +69,7 @@ git restore --source=<HASH> <datei>
 ```
 
 Die Fehlerbehebung kann auch das Löschen ganzer 
-Entwicklungs- oder Testzweige bedeutet, was später
-noch besprochen wird.
+Entwicklungs- oder Testzweige (Branches) bedeutet, 
+was wir später noch besprechen.
 
 

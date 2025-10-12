@@ -2,11 +2,13 @@
 set -x
 # Anlegen des Vorlagen-Repos
 
+# Pfade definieren
 aktuell=$PWD
 tmp="/tmp"
 vorlage=$tmp/vorlage
 arbeit=$tmp/fortbildung/buch
 
+# putzen und neu aufbauen
 cd $tmp
 
 if [ -d fortbildung ]; then
@@ -16,15 +18,19 @@ fi
 mkdir fortbildung
 cd fortbildung
 
+if [ -d buch ]; then
+  rm -rf buch
+fi
 
-# init und erster Checkin
+# Buch init und erster Checkin
 git init buch
 cd $arbeit
 
 echo Branch umbenennen
 git branch -m main
 
-# Ersten Teil der Story als ersten Commit
+##### Ersten Teil der Story als ersten Commit
+## erster add
 cd $vorlage; git checkout Step_1; cd $arbeit
 cp $vorlage/story1.md .
 
@@ -32,14 +38,18 @@ echo erster add
 git add story1.md
 
 
-#Volle Story
+## zweiter add
 cd $vorlage; git checkout Step_2; cd $arbeit
 cp $vorlage/story1.md .
 
-# erster Commit
+## erster Commit
 git add story1.md
 git commit -m 'Guter Ansatz'
 
+## KLÄREN TODO ... warum 2 adds????? ohne diff dazwischen
+
+### Story 2
+## Basisversion kopieren
 # Branch entwicklung_story_2
 git switch -c entwicklung_story_2
 
@@ -51,7 +61,7 @@ cp $vorlage/story2.md .
 git add story2.md 
 git commit -m "Story 2 begonnen"
 
-
+## Branching für Story 2
 # branches für Ideen
 git switch -c story2_idee_1
 git switch entwicklung_story_2
@@ -79,32 +89,39 @@ cp $vorlage/story2.md .
 git add story2.md
 git commit -m "typo 'weiße' korrigiert"
 
-##################### Erster Merge
+## Erster Merge IDEE1 -> Dev
 # Merge in den Entwicklungszweig 
+git switch entwicklung_story_2  # unnötig
 git merge  story2_idee_1
 
 
-# Tier ändern
+## Tier ändern
+# Tier ändern und commit des Branches
 git switch story2_idee_1 
 sed -i -e "s/Schildkröte/Riesenschildkröte/g" story2.md
 git add story2.md 
 git commit -m "Riesenschildkröte"
+
+# merge in dev
 git switch entwicklung_story_2
 git merge  story2_idee_1
-
 
 exit 0
 ########### Hier kommt der Merge-Konflikt
 
+
+# Zentraldokument für Buch in Dev-Branch?
 cat <<EOF> zentral.md
 # Kurzgeschichtensammlung der Klasse XY
 {{< include gini.md >}}
 EOF
 
+# Committen
 git add zentral.md
 git commit -m "zentraldokument erstellt"
 git branch -m "main"
 
+# Neuen Branch erstellen
 git checkout -b susanne
 
 cat <<EOF> gini.md
@@ -131,24 +148,29 @@ Türe hing ein Schild mit der Aufschrift „Bei Gini -- deine Kneipe“.
 ...
 EOF
 
+# Committen
 git add gini.md
 git commit -m "Gini V1 fertig"
 
-
+### Anleitung für Schüler auf MAIN
 git switch main
+
+# Eigentlicher Text
 cat <<EOF> anleitung.txt
 Liebe Schüler,
-bitte erstellt euch einen eigenen Branch mit einem
-in der Klasse eindeutigen Namen (z.B. Vorname).
+bitte erstellt euch einen eigenen Branch mit einem,
+in der Klasse eindeutigen, Namen (z.B. Vorname).
 In diesem Branch erstellt ihr dann eine kleine Kurzgeschichte.
 Wenn ihr fertig seid, veröffentlicht ihr den Branch, damit ich mir
 euer Werk ansehen kann.
 EOF
 
+# Committen
 git add anleitung.txt
 git commit -m "Kurzanleitung"
 git switch main
 
+# Bearbeiten durch Susanne?
 git switch susanne
 git switch -c "umkehr"
 cat <<EOF>> gini.md
@@ -160,11 +182,12 @@ kleine Kinder in sein Haus locken, um sie dann über dem Feuer zu rösten.
 Das war ihm wirklich zu riskant. Und so machte er sich wieder auf den Rückweg.
 EOF
 
+
 git add gini.md
 git commit -m "Umkehr fertig"
 
 git checkout susanne
-git switch -c "bei_geani"
+git switch -c "bei_gini"
 
 cat <<EOF>> gini.md
 Hänsel war echt neugierig, was in diesem Haus vor sich ging.

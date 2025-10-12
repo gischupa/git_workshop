@@ -1,12 +1,12 @@
 # Hands on II
 Du wirst in diesem Abschnitt einige Dinge als redundant empfinden,
-weil sie auch bereits im ersten *Hands On* bereits verwendet wurden.
+weil sie auch bereits im ersten *Hands On* verwendet wurden.
 Sieh es einfach als Übung und da du dieses PDF ohnehin nicht 
 ausdrucken wirst, ist die minimal erhöhte Seitenzahl auch kein Problem.
 
 Dieses Szenario ist etwas komplexer, da wir mit mehreren Dateien
 arbeiten und auch parallele Ideen verfolgen wollen (branching).   
-Da Programmieren zu lange dauert, erstellen wir in diesem 
+Da richtiges Programmieren zu lange dauert, erstellen wir in diesem 
 Projekt ein kleines Buches mit Kurzgeschichten.
 Die Geschichten wurden von einer KI generiert um den Arbeitsaufwand 
 zu minimieren. 
@@ -15,17 +15,19 @@ Die Einzelteile der Geschichten befinden sich in einem \git-Repository
 und müssen zunächst auf den lokalen Computer geclont werden. 
 Das ist ein notwendiger Vorgriff auf den Abschnitt der Teamarbeit,
 den du hier einfach mal ausführst.
-Es handelt sich um ein öffentliches Repository, auf das auch ohne Benutzerkennung zugegriffen werden darf -- aber eben nur lesend. Aus diesem Grund
-wird zum Clonen auch *https* und nicht *ssh* verwendet.
+Es handelt sich um ein öffentliches Repository, auf das auch ohne Benutzerkennung zugegriffen werden darf -- aber eben nur lesend. Aus diesem Grund wird zum Clonen auch *https* und nicht *ssh* verwendet.
 Öffne die \git-Bash (oder ein Terminal) und gib ein:
 
 
 ```bash
 mkdir fortbildung
 cd fortbildung
-git clone https://TODO # Ziel: vorlage.git 
+git clone https://TODO    storyvorlagen # Ziel: vorlage.git 
 cd vorlage
 ```
+
+Es entsteht ein Ordner *storyvorlagen*, in dem die 
+verschiedenen Stände des Projektes enthalten sind.
 
 ## Labor
 Es dürfte am einfachsten sein, wenn du zwei Terminals öffnest: 
@@ -39,16 +41,16 @@ und da sind einzelne Fenster optimal (Wechsel z.B. mit \alt{tab}).
 \samplestart
 Um der Erklärungen besser folgen zu können, wäre es sinnvoll,
 wenn bei jedem Teilnehmer exakt die gleichen Hashwerte wie hier 
-in der Anleitung entstehen würden. Leider ist das nicht so einfach,
+in der Anleitung entstehen würden. Leider ist das nicht möglich,
 weil die Hashwerte nicht reproduzierbar sind -- zumindest auf 
-meinem Rechner! Aus diesem Grund wurden im Vorlagenverzeichnis
-die Commits getagged, so dass du über ihre Namen auf sie zugreifen
+meinem Rechner! Aus diesem Grund wurden im Vorlagenordner
+die Commits *getagged*, so dass du über ihre Namen auf sie zugreifen
 kannst -- wie das geht, siehst du gleich!
 \sampleend
 
 **Erstellen eines Repositories**  
  
-Öffne im Fortbilfungsordner eine \git-Bash und erstelle
+Öffne im Fortbildungsordner eine \git-Bash und erstelle
 ein Repository für das Buch.
 
 ```bash
@@ -60,26 +62,29 @@ cd buch
 ```   
 
 Je nach Version von \git kommt hier eine längere Ausgabe ... oder auch nicht.
+Falls in der Ausgabe der Branch *master* erscheint, bitte 
+umbenennen mit `git branch -m main`
 
-Im Ordner *fortbildungen* sollten nun also die Repositories `vorlage` 
+Im Ordner *fortbildungen* sollten nun also die Repositories `storyvorlagen` 
 und `buch` vorliegen.
 
 **Erste Datei anlegen**  
-Wechsle in das Fenster mit dem  Vorlagenordner und Checke *Step\_1* aus.
+Wechsle in das Fenster mit dem Vorlagenordner und Checke *Step\_1* aus.
 *Auschecken* wird später noch genauer erklärt!
 
 ```bash
 git checkout Step_1
 ```
 
-Kopiere die Datei \datei{story1.md} in den Ordner *buch*.  
+Kopiere die Datei \datei{story1.md} in den Ordner *buch*.   
+
 Sie enthält (strategisch) nur einen Teil der Geschichte! Das Kopieren kann auch 
 gerne mit der Maus im Explorer stattfinden. Wer allerdings nicht ständig
 zwischen Tastatur und Maus wechseln möchte, der kann auch folgenden
 Befehl verwenden:
   
 ```bash
-# aktueller Ort ist das vorlagen-Fenster
+# aktueller Ort ist der vorlagen-Ordner
 cp story1.md  ../buch/ 
 ```
 
@@ -123,8 +128,8 @@ Zum Commit vorgemerkte Änderungen: # <1>
    zum Entfernen aus der Staging-Area)
 	neue Datei:     story1.md # <2>
 ```
-1. Die Datei liegt auf dem Stage, bereit zum Commit
-2. Nur diese eine Datei.
+1. Die Dateien für den nächsten Commit
+2. Hier nur diese eine Datei.
 
 Der Hinweis `git rm --cached <Datei>` bewirkt nicht 
 das Löschen der Datei aus dem Arbeitsverzeichnis, 
@@ -137,13 +142,14 @@ Versionierung aufgenommen, es wurde aber noch kein
 protokollierter Punkt in der Projektgeschichte 
 (=commit) erstellt.
 
-Du schreibst an deiner Geschichte weiter und damit ändert sich der 
-Stand zwischen Arbeitsverzeichnis und Stage. 
-Für dich bedeutet das nun wieder foglende Schritte:
+Du „schreibst“ an deiner Geschichte weiter und damit ändert sich der 
+Stand zwischen Arbeitsverzeichnis und Stage. Wir schreiben nicht -- wir kopieren!   
+Für dich bedeutet das nun das Abarbeiten folgende Schritte:
 
 * Wechsle in den Vorlagenordner
 * Richtigen Stand auschecken: `git checkout Step_2`
 * Kopieren der Datei: `cp story1.md ../buch/`
+* Wechsel in den Buch-Ordner
 * Status checken: `git status`
 
 ```bash
@@ -183,7 +189,8 @@ error: die folgende Datei hat zum Commit vorgemerkte Änderungen
 ```
 
 Bei `git restore story1.md` gibt es keine solche Warnung! 
-Die Datei verbleibt dabei auch im Stage unverändert erhalten.
+Die Datei verbleibt dabei auch im Stage unverändert erhalten,
+aber die Arbeitsversion wird überschrieben.
 \sampleend
 
 Nun kannst du erstmalig eine Differenz zwischen den Versionen
@@ -203,8 +210,8 @@ index 9c818e7..3126a18 100644          # <2>
 +++ b/story1.md
 @@ -25,3 +25,63 @@  # <4>
 entdeckte sie den geheimnisvollen Tunnel.    # <5>
-  der gerade von einem seiner Flüge zurückgekehrt #<6>
-  war und sich auf dem Ast des Apfelbaums niederließ. 
+  der gerade von einem seiner Flüge zurückgekehrt 
+  war und sich auf dem Ast des Apfelbaums niederließ. #<6>
   +„Ich glaube, es ist ein Tunnel!“ miaute Luna #<7>
   +aufgeregt. „Vielleicht führt er zu einem verborgenen
 ```
@@ -214,15 +221,15 @@ entdeckte sie den geheimnisvollen Tunnel.    # <5>
    verglichen werden (dazu unten mehr).
 3. Soll erneut klarstellen `---` ist alt, `+++` ist neu.
 4. Die Zeile heißt *Hunk Header*. Er beginnt und endet mit `@@` 
-5. In diesen Zeilen gab es keine Änderungen
+5. In den nächsten drei Zeilen gab es keine Änderungen
 6. Das ist vor der Änderung.
-7. Diese Zeile steht in *b*.
+7. Diese Zeile steht in *b* -- wegen des „+“ Zeichens.
 
 Leider ist das Format vom *Hunk Header* etwas kryptisch!
 Er gibt immer an, in welcher Zeile der Vergleich beginnt 
 und wie viele Zeilen betroffen sind (vorher und nachher).
 Bei `@@ -3,12 +3,14 @@` beginnt der relevante Bereich ab Zeile 3
-und in der Ursprünglichen Version lagen 12 Zeilen vor, in der neuen
+und in der ursprünglichen Version lagen 12 Zeilen vor, in der neuen
 Version sind es jetzt 14. Die Änderungen im Detail folgen 
 in den nächsten Zeileen.
 
@@ -253,7 +260,7 @@ die auch später bei der Arbeit im Team eine große Rolle spielen werden.
 
 Du hast nun \datei{story1.md} so weit fertig gestellt und möchtest an
 anderen Kurzgeschichten arbeiten. Du beschließt, dass fertige 
-Geschichten und Arbeitesversionen an unterschiedlichen 
+Geschichten und Arbeitsversionen an unterschiedlichen 
 *Orten* aufgehoben werden sollen.
 
 In der Softwareentwicklung sprechen wir hier von *fertigen Produkten*, 
@@ -275,14 +282,15 @@ an ihr zu arbeiten. Das wäre zwar möglich, würde aber mein Szenario
 hier stören!
 
 Nun beginnst du mit Story 2, indem du sie aus dem Vorlagenordner
-kopierst.
+kopierst (wil wir nicht schreiben).
 
 * Wechsle in den Vorlagenordner
 * Richtigen Stand auschecken: `git checkout Step_3`
 * Kopieren der Datei: `cp story2.md ../buch/`
+* Wechsel in den Buch-Ordner
 * Status checken: `git status`
 
-
+Das ist dein Einstieg in Story 2.
 Du bist mit deinem bisherigen Werk ganz zufrieden,
 hast aber zwei Ideen, wie man du weiter machen könntest.
 Aus diesem Grund erstellst du zunächst einen Commit
@@ -305,22 +313,24 @@ Im Branch \branch{story2\_idee\_1} arbeitest du an deiner
 Idee 1 von \datei{story2.md} weiter, im Branch \branch{story2\_idee\_2}
 probierst du einen alternativen Verlauf.
 
-Für dich heißt das:
+Da wir nur kopieren und dicht schreiben, heißt das für dich:  
 
-* Im Fortbildungsordner: `git switch story_2_idee_1`
-* Wechsle in den Vorlagenordner
-* Richten Stand auschecken: `git checkout Step_4`
+* Im Buch-ordner: `git switch story_2_idee_1`
+* Wechsle in den Vorlagen-Ordner
+* Richtigen Stand auschecken: `git checkout Step_4`
 * Kopieren der Datei: `cp story2.md ../buch/`
+* Wechsel in Buch-Ordner
 * `git add story2.md`
 * `git commit -m "Inhalt nach Idee1 fortgeführt"`
 
 Da du aber noch nicht sicher bist, ob diese Version
 verwenden willst, arbeitest auch Idee 2 aus.
 
-* Im Fortbildungsordner: `git switch story_2_idee_2`
+* Im Buch-Ordner: `git switch story_2_idee_2`
 * Wechsle in den Vorlagenordner
-* Richten Stand auschecken: `git checkout Step_5`
+* Richtigen Stand auschecken: `git checkout Step_5`
 * Kopieren der Datei: `cp story2.md ../buch/`
+* Wechsel in den Buch-Ordner
 * `git add story2.md`
 * `git commit -m "Inhalt nach Idee 2 fortgeführt"`
 
@@ -348,10 +358,11 @@ das sich anstelle von *weise* in den Text geschummelt hat.
 * `git checkout Step_6`
 * `cp story2.md ../buch/`
 
-* Im Fortbildungsordner
+* Im Buch-Ordner (aktueller Branch ist *entwicklung_story_2*)
 * `git add story2.md`
 * `git commit -m "typo 'weiße' korrigiert"`
 
+Beachte, dass diese Änderung in den anderen Branches *nicht* ankommt!
 
 Du musst dich nun entscheiden, mit welcher Version
 du dein Projekt fortführen willst. In Wirklichkeit 
@@ -411,7 +422,7 @@ Den Unterschied *weise/weiße* siehst du immer noch,
 der ergänzte Text ist nun ja in beiden Dateien gleich.
 
 Du wechselst in den Ideen-Branch und führst die 
-Änderung durch:
+Änderung durch. Verwende *suchen / ersetzen* oder im Terminal:
 
 ```bash
 git switch story2_idee_1 
@@ -444,7 +455,7 @@ Ein einfaches
 git diff 
 ```
 
-vergleicht die *aktuelle* Version im Workingdir gegen den Commit,
+vergleicht die *aktuelle* Version im \work gegen den Commit,
 weil der Stage aktuell leer ist (siehe folgender Abschnitt)!
 Hier siehst du die Riesenschildkröte und die einfache Schildkröte.
 

@@ -517,14 +517,15 @@ Eine kleine Stufe haben wir aber ausgelassen:
 ```bash
 git cat-file -t ce1332fcf1795166c3c5cd0216b5e7dc2dce7998
 ```
-liefert die Information `blob` (Binary large object).
-Es gibt einen Grund, warum ich dir diesen Umweg zumute!
-Di siehst hier ein grundlegendes Konzept von \git, das beim 
+liefert die Information `blob` (Binary large object).  
+
+Es gibt einen Grund, warum ich dir diesen Umweg zumutet habe!
+Du siehst hier ein grundlegendes Konzept von \git, das beim 
 Verständnis hilft:
 
 Der Commit zeigt auf einen Tree und im Tree stehen Dateinamen mit den Hashes.  
-Das sind nur die Namen und nicht die Dateien! Hinter dem Hash 
-verbirgt sich ein *blob*, also reine *Roh*daten **ohne** Dateinamen.
+Das sind **nur die Namen** und nicht die Dateien! Hinter dem Hash 
+verbirgt sich ein *blob*, also ein Dateisystem-Objekt aus reinen *Roh*daten **ohne** Dateinamen.  
 Git verwendet das, um von verschiedenen Stellen aus auf die
 gleichen Rohdaten zu verweisen. Ändern sich Dateien zwischen 
 zwei Commits nicht (Hash bleibt gleich), so werden sie nicht neu gespeichert. 
