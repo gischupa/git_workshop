@@ -1,17 +1,19 @@
 # gitea
 
 Die Installation von *gitea* ist relativ einfach und kann über 
-kopieren und Einfügen erledigt werden. In den Kursmaterialien 
+Kopieren und Einfügen erledigt werden. In den Kursmaterialien 
 befinden sich die Scripte 
 
-* `setup_gitea.sh` - führt die Basisinstallation durch
-* `selfreg.sh`     - Selbstregistrierung ein/aus
-* `tune.sh`        - Feineinstellungen direkt nach der Installation
+* \script{setup_gitea.sh} - führt die Basisinstallation durch
+* \script{selfreg.sh}     - Selbstregistrierung ein/aus
+* \script{tune.sh}        - Feineinstellungen direkt nach der Installation
 
 
 ## Setup-Script
-In den folgenden Abschnitten sind die relevanten Passagen der Scripte dokumentiert. Die Befehle müssen nicht per Hand eingegeben werden. Das dient lediglich der Dokumentation. Die Scripte `setup_gitea.sh` 
-und `tune.sh` müssen als `root` bzw. über `sudo` ausgeführt werden.
+In den folgenden Abschnitten sind die relevanten Passagen der Scripte dokumentiert. 
+Die Befehle müssen nicht per Hand eingegeben werden. Das dient lediglich der 
+Dokumentation. Die Scripte \script{setup_gitea.sh} 
+und \script{tune.sh} müssen als *root* bzw. über *sudo* ausgeführt werden.
 
 **setup_gitea.sh**  
 ```bash
@@ -152,7 +154,7 @@ echo **WICHTIG:** Administrator einrichten!
 ## Nacharbeiten
 
 Im Nachgang sollten einige Schreibberechtigungen
-entzogen werden, damit nur noch `root` Änderungen vornehmen
+entzogen werden, damit nur noch *root* Änderungen vornehmen
 darf:
 
 ```bash
@@ -183,8 +185,8 @@ done
 systemctl restart gitea
 ```
 
-In der Datei `/etc/gitea/app.ini` kann das wieder 
-rückgängig gemacht werden, indem der Abschnitt `[openid]`
+In der Datei \datei{/etc/gitea/app.ini} kann das wieder 
+rückgängig gemacht werden, indem der Abschnitt *[openid]*
 so abgeändert wird:
 
 ```bash
@@ -200,16 +202,16 @@ Das vereinfacht die Arbeit für den Lehrer enorm, ist aber bei einer
 öffentlich zugänglichen Instanz problematisch. Es ist also sinnvoll,
 diese Einstellung nach dem erfassen der Benutzer zu deaktivieren (kann
 kederzeit wieder aktiviert werden).  
-Dazu muss in der Datei `/etc/gitea/app.ini` die folgende Zeile 
-im Abschnitt `[service]` angepasst werden:
+Dazu muss in der Datei \datei{/etc/gitea/app.ini} die folgende Zeile 
+im Abschnitt *[service]* angepasst werden:
 
 ```bash
 ORIGINAL:  DISABLE_REGISTRATION = false
 ANGEPASST: DISABLE_REGISTRATION = true
 ```
 
-Dies kann über `nano /etc/gitea/app.ini` gemacht werden 
-(Speichern: `strg + o`, Beenden `strg + x` ).
+Dies kann über \cmd{nano /etc/gitea/app.ini} gemacht werden 
+(Speichern: \key{strg + o}, Beenden \key{strg + x} ).
 
 Danach muss Gitea neu gestartet werden:
 
@@ -217,7 +219,9 @@ Danach muss Gitea neu gestartet werden:
 systemctl restart gitea
 ```
 
-Das Setup-Script des Kurses kopiert das Script `selfreg.sh` nach `/usr/local/bin`, so dass die Registrierung einfach aktiviert und deaktiviert werden kann:
+Das Setup-Script des Kurses kopiert das Script \script{selfreg.sh} nach 
+\datei{/usr/local/bin}, so dass die Registrierung einfach aktiviert und 
+deaktiviert werden kann:
 
 ```bash
 selfreg.sh on
@@ -233,7 +237,8 @@ speziellen Fällen verwenden könnte.].
 
 Für den kennwortlosen ssh-Zugriff für clone, push, pull wird ein
 ein ausreichend langer ssh-Schlüssel benötigt. Die üblichen 2048 Bit 
-genügen hier nicht! Dieser *Deploy-Key* wird später dann über die graphische Benutzeroberfläche in *Gitea* eingefügt (s.u.).
+genügen hier nicht! Dieser *Deploy-Key* wird später dann über die 
+graphische Benutzeroberfläche in *Gitea* eingefügt (s.u.).
 
 **Schlüssel erzeugen**  
 ```bash
@@ -262,7 +267,7 @@ OUT: Your identification has been saved in gitea_rsa
      +----[SHA256]-----+
 ```
 
-Der Inhalt von `gitea_rsa.pub` kann durch folgenden Befehl
+Der Inhalt von \datei{gitea_rsa.pub} kann durch folgenden Befehl
 im Terminal angezeigt werden:
 
 ```bash
@@ -284,8 +289,8 @@ Gitea-Instanz zu haben.
 
 
 ## HTTPS
-Aktuell ist die Instanz nur über `http` und Ip-Adresse 
-zugänglich. Es ist möglich, Gitea auch für `HTTPS` zu konfigurieren.
+Aktuell ist die Instanz nur über *http* und Ip-Adresse 
+zugänglich. Es ist möglich, Gitea auch für *HTTPS* zu konfigurieren.
 Hierfür gibt es verschiedenen Lösungen, von denen aber eigentlich
 nur der Einsatz eines Reverse-Proxy mit einem entsprechenden 
 Domain-Name sinnvoll ist. Eine derartige Konfiguration würde 
@@ -297,7 +302,7 @@ Oft ist es effizienter, wenn Dinge über Kommandozeile erledigt werden.
 Wenn z.B. 50 Benutzerkonten erstellt und mit Passwort abgesichert werden sollen,
 weil die Selbstregistrierung nicht gewünscht ist. In diese Fall verwendet
 man die API von Gitea. Dies kann von jedem Rechner aus erfolgen, auf Gitea zugreifen
-kann. Dafür braucht es aber noch zwei Anpassungen an der `/etc/gitea/app.ini`:
+kann. Dafür braucht es aber noch zwei Anpassungen an der \datei{/etc/gitea/app.ini}:
 
 1. Ergänzen Sie am Ende der Datei:
 
@@ -305,7 +310,7 @@ kann. Dafür braucht es aber noch zwei Anpassungen an der `/etc/gitea/app.ini`:
 [api]
 ENABLE_ADMIN = true
 ```
-2. Erweitern Sie den Abschnitt `security` falls Sie die 
+2. Erweitern Sie den Abschnitt *security* falls Sie die 
    Accounts mit sehr einfachen Kennwörtern vorbelegen wollen:
 
 ```bash
@@ -315,9 +320,12 @@ PASSWORD_COMPLEXITY = off
 MIN_PASSWORD_LENGTH = 6
 ```
 
-Melden Sie sich als Administrator in Gitea an und rufen Sie das Menu *Einstellungen* des Benutzers auf.
-Unter *Anwendungen* können *Admin-Token* erzeugt werden, die einen kennwortlosen Zugriff auf das 
-System erlauben. Stellen Sie im aufklappbaren Detail-Abschnitt ein, welche Berechtigungen erforderlich sind:
+Melden Sie sich als Administrator in Gitea an und rufen Sie das 
+Menu *Einstellungen* des Benutzers auf.
+Unter *Anwendungen* können *Admin-Token* erzeugt werden, die einen 
+kennwortlosen Zugriff auf das 
+System erlauben. Stellen Sie im aufklappbaren Detail-Abschnitt ein, 
+welche Berechtigungen erforderlich sind:
 
 * Admin - Lesen und Schreiben
 * Organisation
@@ -342,8 +350,10 @@ curl -X POST "http://<ip-adresse>:3000/api/v1/admin/users" \
 }'
 ```
 
-Verfeinert wird dieser Befehl in ein Script verpackt -- z.B. `gitea_user_anlegen.sh`,
-das man mit einer Namensdatei als Parameter aufrufen kann, in der folgende Spalten auftreten:
+Verfeinert wird dieser Befehl in ein Script verpackt -- z.B. 
+\script{gitea_user_anlegen.sh},
+das man mit einer Namensdatei als Parameter aufrufen kann, 
+in der folgende Spalten auftreten:
 
 ```bash
 # login,kennwort,email  <- Diese Zeile entfernen
@@ -412,7 +422,8 @@ curl -X DELETE "http://192.168.3.195:3000/api/v1/admin/users/${user}" \
 
 ### Teams
 
-Auch ein Team erfordert eine Organisation -- hier würde ich einfach die Schule anlegen.
+Auch ein Team erfordert eine Organisation -- hier würde ich einfach die 
+Schule anlegen.
 
 **Team erstellen**  
 

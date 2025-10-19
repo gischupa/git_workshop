@@ -1,7 +1,9 @@
 # Docker
 
 Docker ist eine besonders effiziente Art der Virtualisierung. Es ist
-möglich, auf einem physikalischen Server viele virtuelle Server zu erstellen, diese miteinander kommunizieren und daten austauschen zu lassen und sie auch über das Internet zugänglich zu machen. Es ist also kein
+möglich, auf einem physikalischen Server viele virtuelle Server zu erstellen, 
+diese miteinander kommunizieren und daten austauschen zu lassen und sie auch 
+über das Internet zugänglich zu machen. Es ist also kein
 Problem, mehrere eigenständige Datenbankserver parallel zu betreiben
 und damit Übungssystem für Schüler bereit zu stellen. Wie groß
 der Server dimensioniert sein muss, hängt dann wieder von den 
@@ -30,14 +32,14 @@ gitlab/gitlab-ee                 GitLab ...     549
 ```
 
 In dieser gekürzten Ausgabe ist also anscheinend kein *offizielles* Image dabei.
-`gitlab/gitlab-ce` ist aber trotzdem offiziell. Dafür recherchiert man kurz auf 
+*gitlab/gitlab-ce* ist aber trotzdem offiziell. Dafür recherchiert man kurz auf 
 [dockerhub](https://dockerhub.com) und dort ist [gitlab](https://hub.docker.com/r/gitlab/gitlab-ce)
 verlinkt, wo die Informationen stehen.
 
 Wir werden übrigens nicht *gitlab* sondern *gitea* verwenden!
 
-Von einem Image kann man dann beliebig viele Instanzen erzeugen, die auch fast ohne 
-Zeitverlust startbar sind. Der längste Teil ist der Download des Image.
+Von einem Image kann man dann beliebig viele Instanzen erzeugen, die auch 
+fast ohne Zeitverlust startbar sind. Der längste Teil ist der Download des Image.
 
 **Hintergrund**  
 Images sind in Schichten konstruiert, die nacheinander heruntergeladen werden.
@@ -124,8 +126,8 @@ bd072e349cab6408a3b5f2d7040d586a9149107d68031089f846d0526c028f45
 Sieht nicht spktakulär aus, bis man `http://SERVERADRESSE:8090` aufruft.
 Du hast hier einen kompletten Server voll mit digitalem Spielzeug erstellt - in no time!
 
-Natürlich kannst du den Container einfach weiter laufen lassen -- wir wollen uns aber einige Dinge
-ansehen:
+Natürlich kannst du den Container einfach weiter laufen lassen -- wir 
+wollen uns aber einige Dinge ansehen:
 
 |Befehl|Wirkung|
 |------|-------|

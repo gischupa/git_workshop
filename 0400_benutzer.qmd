@@ -57,7 +57,7 @@ Hierfür gibt es keine perfekte Lösung.
 Wenn ein Schüler nur \git verwenden soll, dann braucht 
 er kein vollwertiges Benutzerkonto, an dem er sich
 auch für andere Arbeiten anmelden kann. Für die Verwendung 
-von \git genügt es bereits, wenn man einen Benutzer mit Namen 
+von \git genügt es bereits, wenn man einen einzigen Benutzer mit dem Namen 
 \git (als Beispiel) erstellt. Nachfolgend sind dann diese 
 Schritte nötig:
 
@@ -138,7 +138,7 @@ ist.
     den verwendeten Geräten (Schule, Zuhause) hinterlegen und die 
     vom Lehrer auf dem Server freigeschaltet werden. Dies kann
     zu Problemen führen, falls Schüler bereits aus anderen Gründen 
-    mit ssh arbeiten und bereits Schlüssel besitzen^[Auch das
+    mit ssh arbeiten und deshalb schon Schlüssel besitzen^[Auch das
     kann im Prinzip konfiguriert werden, stellt aber höhere 
     Anforderungen an den Benutzer]. 
 

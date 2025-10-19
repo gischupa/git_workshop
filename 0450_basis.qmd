@@ -4,7 +4,7 @@ Nachfolgend wird die Installation eines funktionsfähigen \gitservers
 beschrieben. Bevor man sich an die Installation auf einem Server
 im Internet macht, ist etwas *Training* in einer virtuellen Umgebung
 ganz sinnvoll. Nach Installation und Konfiguration eines Übungsservers 
-in VirtualBox sind die Schritte isdentisch. 
+in VirtualBox sind die Schritte identisch. 
 Die Anleitung zur Installation von VirtualBox 
 und dem entsprechenden Gastsystems *Ubuntu-24.04* befindet sich am Ende 
 des Handouts. Gegebenenfalls also zuerst dort fortfahren und dann erst 
@@ -30,7 +30,8 @@ TODO: Unterschied cmd und putty
 ssh benutzer@ip-adresse 
 ```
 
-Es erscheint eine Sicherheitsabfrage, die mit `yes` und `enter` bestätigt werden muss:
+Es erscheint eine Sicherheitsabfrage, die mit `yes` und `enter` bestätigt 
+werden muss:
 
 TODO: Als Bild einbinden
 
@@ -99,11 +100,11 @@ apt-get install net-tools  # mit y oder J bestätigen
 \samplestart
 **Hinweis**  
 Zum Installieren von Software gibt es auf Linux verschiedene
-Programme: `apt, apt-get, aptitude, snap, flatpak, appimages, ...`.
+Programme: *apt, apt-get, aptitude, snap, flatpak, appimages, ...*.
 Eine detaillierte Beschreibung ginge hier zu weit. In diesem
-Workshop wird nur mit `apt, apt-get` und `aptitude` gearbeitet.
+Workshop wird nur mit *apt, apt-get* und `aptitude` gearbeitet.
 Diese drei Programme verwenden die gleiche Datenbank für 
-verfügbare Software und sind somit weitgehend identisch. `Aptitude`
+verfügbare Software und sind somit weitgehend identisch. *Aptitude*
 verfügt über eine -- für mich -- schönere Suchfunktion. Aus diesem Grund 
 installieren wir es hier gleich nach. 
 \sampleend
@@ -129,7 +130,8 @@ apt get install git -y
 ### Firewall
 Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
 Den Status erfragt man mit `ufw status`. Hierbei steht `ufw` für *uncomplicated firewall*.
-Bei Änderungen an der Firewall immer Vorsicht walten lassen! Man kann sich aussperren!
+Bei Änderungen an der Firewall immer Vorsicht walten lassen! 
+Man kann sich aussperren!
 
 **Ablauf**  
 
@@ -155,13 +157,16 @@ ist keine gute Idee -- besser ist z.B. der Ordner `/srv`. Dort erstellen
 wir auch gleich ein Demo-Repository:
 
 ```bash
+sudo -i
 cd /srv 
 mkdir repositories
 chown git:git repositories 
-cd repositories
+*strg + d*
+cd /srv/repositories
 git init --bare demo.git
+cd demo.git 
+git branch -m main 
 ```
 
-Mit diesem Repository werden wir aber erst später arbeiten. Zunächst 
-bleiben wir auf dem lokalen Rechner, um die Grundzüge zu lernen.
+Dieses Repositoriy ist nun bereit zum Clonen.
 

@@ -18,7 +18,7 @@ drei Container:
 * Datenbankserver
 * Runner (Erklärung folgt)
 
-Mit dem nachfolgenden `docker-compose.yaml` können diese 
+Mit dem nachfolgenden \datei{docker-compose.yaml} können diese 
 erstellt und konfiguriert werden.
 
 **Was ist ein Runner?**  
@@ -41,10 +41,10 @@ eigentliche Aktion zuständig ist. Die Details dazu folgen weiter unten.
 ## Die Dateien
 
 Natürlich kann man für jeden benötigten Container eine eigene
-`docker-compose.yaml` erstellen, es ist aber sinnvoll, alle drei
+\datei{docker-compose.yaml} erstellen, es ist aber sinnvoll, alle drei
 Container gemeinsam zu konfigurieren, da dann auch Abhängigkeiten
 zwischen den Containern autmatisch berücksichtigt werden.
-Wir besprechen die verwendete `docker-compose.yaml` zuerst Zeile
+Wir besprechen die verwendete \datei{docker-compose.yaml} zuerst Zeile
 für Zeile. Die vollständige Version steht am Ende des Kapitels und 
 ist Teil der Kursmaterialien.
 
@@ -68,9 +68,9 @@ volumes:  #<3>
 1. Alle drei Container müssen miteinander kommunizieren
    und werden deshalb in ein gemeinsames Netz mit dem 
    Namen *gitea* eingebunden.
-2. Der Basis-Setup funktioniert hier auch mit `false`.
+2. Der Basis-Setup funktioniert hier auch mit *false*.
    Sobald der Runner aber einen neuen Container erstellt,
-   klappt das nur noch mit `true`.
+   klappt das nur noch mit *true*.
 3. Die Daten der Benutzer und die Einstellungen sollen auch
    über Neustarts und Upgrades hinweg erhalten bleiben.
    Dafür dürfen sie nicht Teil des Containers sein, der dabei
@@ -79,7 +79,7 @@ volumes:  #<3>
    außerhalb des Containers liegen und in diesen hinein 
    verlinkt werden.
 
-ToDo: Was hat es genau mit dem exteral:false auf sich?
+ToDo: Was hat es genau mit dem *external:false* auf sich?
 ToDo: Welche andere Driver haben Volumens noch?
 
 ### Services
@@ -140,11 +140,11 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 1. Container immer automatisch neu starten, wenn etwas 
    schief geht oder der Server neu gestartet wird.
 2. Festlegen des Netzes in dem der Container läuft
-3. Die Daten von Gitea liegen im Ordner `gitea_data`,
-   genauer unter `/var/lib/docker/volumes/gitea_data`.
+3. Die Daten von Gitea liegen im Ordner \datei{gitea_data},
+   genauer unter \datei{/var/lib/docker/volumes/gitea_data}.
    Über Volumes wird aber auch der Zugriff auf Ressourcen
    des Servers gesteuert, hier der Zugriff die Eistellungen
-   der Zeitzone. (`:ro` nur lesender Zugriff)
+   der Zeitzone. (*:ro* nur lesender Zugriff)
 4. IM Container läuft Gitea auf Port 3000, 
    der Zugriff von außen (Browser) erfolgt über Port 4000.
    Ist hier eher als Demo gedacht, 3000:3000 ginge auch.
@@ -210,16 +210,17 @@ Es werden hier nur neue oder wichtige Einstellungen erklärt!
 2. Füllen wir später noch aus
 3. Dieser Container startet erst wenn die beiden anderen laufen
 4. Ein Volume kann auch nur eine einzige Datei sein. Beachte
-   den Unterschied bei der Schreibung von `./config.yaml` und
-   `gitea_runner_data`. Das `./` am Anfang bedeutet, dass diese 
-   Datei im gleichen Ordner liegt wie die `docker-compose.yaml`.
+   den Unterschied bei der Schreibung von \datei{./config.yaml} und
+   \datei{gitea_runner_data}. Das *./* am Anfang bedeutet, dass diese 
+   Datei im gleichen Ordner liegt wie die \datei{docker-compose.yaml}.
 5. Dieser Container braucht auch selbst Zugriff auf Docker, damit
    er selbst neue Container starten kann.
 
 **Das Config-File**  
 Bei vielen Containern kann die Konfiguration durch Einträge
-in der `docker-compose.yaml` erfolgen - wie z.B. die Kennwörter.
-Gerade für Kennwörter gibt es noch sicherere Varianten, das führt aber zu weit. Für den Runner werden aber noch Einstellungen nötig, die man
+in der \datei{docker-compose.yaml} erfolgen - wie z.B. die Kennwörter.
+Gerade für Kennwörter gibt es noch sicherere Varianten, das führt 
+aber zu weit. Für den Runner werden aber noch Einstellungen nötig, die man
 so (anscheinend) nicht übergeben kann. Aus diesem Grund wird oben
 der Parameter `CONFIG_FILE` übergeben. Diese Datei befindet sich 
 ebenfalls in den Kursmaterialien und wird hier nicht abgedruckt.
@@ -238,16 +239,19 @@ docker exec -it gitea_runner act_runner generate-config > config.yaml
 Vielleicht ist dir aufgafallen, dass einmal im Environment Spiegelstriche
 vorkommen und einmal nicht. Das ist Absicht, denn die Server wollen das 
 unterschiedlich haben. Intern wird bei der Spiegelstrich-Variante
-eine Liste der Art `["key=value", "key=vlaue", ...] erstellt, die der 
+eine Liste der Art *["key=value", "key=vlaue", ...]* erstellt, die der 
 Server verarbeiten muss. Der Runner hätte aber lieber ein Dictionary,
-d.h. eine Darstellung `{key:value, key:value, ...}` und das passiert **ohne**
+d.h. eine Darstellung *{key:value, key:value, ...}* und das passiert **ohne**
 die Spiegelstriche.
 \sampleend
 
 **Das Registrierungs-Token**  
 Bist du in Gitea eingelogged, so kannst du über das Einstellungsmenü
 (Das geht auf Instanz-, Repository- oder Userebene) nach *actions* 
-suchen, dort auf *runner* und dann oben rechts auf *neuen runner anlegen* (o.ä.). Dort erscheint dann das Token, das in die `docker-compose.yaml` eingetragen werden muss. Beim Neustart registriert sich der Runner 
+suchen, dort auf *runner* und dann oben rechts auf *neuen runner 
+anlegen* (o.ä.). Dort erscheint dann das Token, das in 
+die \datei{docker-compose.yaml} eingetragen werden muss. 
+Beim Neustart registriert sich der Runner 
 dann damit bei Gitea.
 
 ### Starten
@@ -258,8 +262,8 @@ sonst kann man kein Token erstellen.
 docker-compose up gitea db 
 ```
 
-Später wird der Befehl mit einem zusätzlichen `-d` gestartet, damit
-der Start im Hintergrund erfolgt. Ohne `-d` sieht man eventuelle
+Später wird der Befehl mit einem zusätzlichen \cmd{-d} gestartet, damit
+der Start im Hintergrund erfolgt. Ohne \cmd{-d} sieht man eventuelle
 Fehlermeldungen.
 
 Nun kannst du dich bei Gitea im Browser anmelden und den ersten Benutzer
@@ -272,17 +276,17 @@ konfigurieren -- für einen einfachen Betrieb genügt aber
 das Einrichten des Benutzers.
 
 Nach dem oben beschriebenen Erstellen eines Tokens kannst
-du den Gitea und den DB-Server mit `ctrl-c` zunächst wieder beenden.
-Das Token wird nun in die `docker-compose.yaml` kopiert.
+du den Gitea und den DB-Server mit \cmd{ctrl-c} zunächst wieder beenden.
+Das Token wird nun in die \datei{docker-compose.yaml} kopiert.
 
 Nun kann auch der Runner gestartet werden. Auch jetzt zu Testzwecken
-zuerst ohne `-d`:
+zuerst ohne \cmd{-d}:
 
 ```bash
 docker-compose up
 ```
 
-Hat das ohne Fehler geklappt, dann wieder `strg + c` und dann
+Hat das ohne Fehler geklappt, dann wieder \key{strg + c} und dann
 ein richtiger Start:
 
 ```bash
