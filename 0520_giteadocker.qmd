@@ -140,8 +140,8 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 1. Container immer automatisch neu starten, wenn etwas 
    schief geht oder der Server neu gestartet wird.
 2. Festlegen des Netzes in dem der Container läuft
-3. Die Daten von Gitea liegen im Ordner \datei{gitea_data},
-   genauer unter \datei{/var/lib/docker/volumes/gitea_data}.
+3. Die Daten von Gitea liegen im Ordner \datei{gitea\_data},
+   genauer unter \datei{/var/lib/docker/volumes/gitea\_data}.
    Über Volumes wird aber auch der Zugriff auf Ressourcen
    des Servers gesteuert, hier der Zugriff die Eistellungen
    der Zeitzone. (*:ro* nur lesender Zugriff)
@@ -211,7 +211,7 @@ Es werden hier nur neue oder wichtige Einstellungen erklärt!
 3. Dieser Container startet erst wenn die beiden anderen laufen
 4. Ein Volume kann auch nur eine einzige Datei sein. Beachte
    den Unterschied bei der Schreibung von \datei{./config.yaml} und
-   \datei{gitea_runner_data}. Das *./* am Anfang bedeutet, dass diese 
+   \datei{gitea\_runner\_data}. Das *./* am Anfang bedeutet, dass diese 
    Datei im gleichen Ordner liegt wie die \datei{docker-compose.yaml}.
 5. Dieser Container braucht auch selbst Zugriff auf Docker, damit
    er selbst neue Container starten kann.

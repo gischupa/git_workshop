@@ -149,7 +149,7 @@ Stand zwischen Arbeitsverzeichnis und Stage. Wir schreiben nicht -- wir kopieren
 Für dich bedeutet das nun das Abarbeiten folgende Schritte:
 
 * Wechsle in den Vorlagenordner (also das Fenster)
-* Checke den richtigen Stand aus: \cmd{git checkout Step_2}
+* Checke den richtigen Stand aus: \cmd{git checkout Step\_2}
 * Kopiere die Datei: \cmd{cp story1.md ../buch/}
 * Wechsle in den Buch-Ordner (also das Fenster)
 * Checke den Status: \cmd{git status}
@@ -288,7 +288,7 @@ Nun beginnst du mit Story 2, indem du sie aus dem Vorlagenordner
 kopierst (weil wir nicht schreiben).
 
 * Wechsle in den Vorlagenordner (Fenster)
-* Checke den richtigen Stand aus: \cmd{git checkout Step_3}
+* Checke den richtigen Stand aus: \cmd{git checkout Step\_3}
 * Kopiere die Datei: \cmd{cp story2.md ../buch/}
 * Wechsle in den Buch-Ordner (Fenster)
 * Checke den Status: \cmd{git status}
@@ -318,9 +318,9 @@ probierst du einen alternativen Verlauf.
 
 Da wir nur kopieren und nicht schreiben, heißt das für dich:  
 
-* Im Buch-Ordner: \cmd{git switch story_2_idee_1}
+* Im Buch-Ordner: \cmd{git switch stor\_2\_idee\_1}
 * Wechsle in den Vorlagenordner
-* Checke den richtigen Stand aus: \cmd{git checkout Step_4}
+* Checke den richtigen Stand aus: \cmd{git checkout Step\_4}
 * Kopiere die Datei: \cmd{cp story2.md ../buch/}
 * Wechsle in den Buch-Ordner
 * \cmd{git add story2.md}
@@ -329,9 +329,9 @@ Da wir nur kopieren und nicht schreiben, heißt das für dich:
 Da du aber noch nicht sicher bist, ob diese Version
 verwenden willst, arbeitest auch Idee 2 aus.
 
-* Im Buch-Ordner: \cmd{git switch story_2_idee_2}
+* Im Buch-Ordner: \cmd{git switch story\_2\_idee\_2}
 * Wechsle in den Vorlagenordner
-* Checke den richtigen Stand aus: \cmd{git checkout Step_5}
+* Checke den richtigen Stand aus: \cmd{git checkout Step\_5}
 * Kopiere die Datei: \cmd{cp story2.md ../buch/}
 * Wechsle in den Buch-Ordner
 * \cmd{git add story2.md}
@@ -360,10 +360,10 @@ auf, den du sofort korrigierst. Bei uns ist es das Wort *weiße*,
 das sich anstelle von *weise* in den Text geschummelt hat.
 
 * In den Vorlagenordner
-* \cmd{git checkout Step_6}
+* \cmd{git checkout Step\_6}
 * \cmd{cp story2.md ../buch/}
 
-* Im Buch-Ordner (aktueller Branch ist *entwicklung_story_2*)
+* Im Buch-Ordner (aktueller Branch ist *entwicklung\_story\_2*)
 * \cmd{git add story2.md}
 * \cmd{git commit -m "typo 'weiße' korrigiert"}
 

@@ -4,7 +4,7 @@ Die Installation von *gitea* ist relativ einfach und kann über
 Kopieren und Einfügen erledigt werden. In den Kursmaterialien 
 befinden sich die Scripte 
 
-* \script{setup_gitea.sh} - führt die Basisinstallation durch
+* \script{setup\_gitea.sh} - führt die Basisinstallation durch
 * \script{selfreg.sh}     - Selbstregistrierung ein/aus
 * \script{tune.sh}        - Feineinstellungen direkt nach der Installation
 
@@ -12,10 +12,10 @@ befinden sich die Scripte
 ## Setup-Script
 In den folgenden Abschnitten sind die relevanten Passagen der Scripte dokumentiert. 
 Die Befehle müssen nicht per Hand eingegeben werden. Das dient lediglich der 
-Dokumentation. Die Scripte \script{setup_gitea.sh} 
+Dokumentation. Die Scripte \script{setup\_gitea.sh} 
 und \script{tune.sh} müssen als *root* bzw. über *sudo* ausgeführt werden.
 
-**setup_gitea.sh**  
+**setup\_gitea.sh**  
 ```bash
 
 # Port 3000 muss für das Webinterface offen sein
@@ -267,7 +267,7 @@ OUT: Your identification has been saved in gitea_rsa
      +----[SHA256]-----+
 ```
 
-Der Inhalt von \datei{gitea_rsa.pub} kann durch folgenden Befehl
+Der Inhalt von \datei{gitea\_rsa.pub} kann durch folgenden Befehl
 im Terminal angezeigt werden:
 
 ```bash
@@ -351,7 +351,7 @@ curl -X POST "http://<ip-adresse>:3000/api/v1/admin/users" \
 ```
 
 Verfeinert wird dieser Befehl in ein Script verpackt -- z.B. 
-\script{gitea_user_anlegen.sh},
+\script{gitea\_user\_anlegen.sh},
 das man mit einer Namensdatei als Parameter aufrufen kann, 
 in der folgende Spalten auftreten:
 
@@ -452,4 +452,4 @@ curl -X PUT "http://192.168.3.195:3000/api/v1/orgs/${schule}/teams/${team}/membe
 -H "Authorization: token YOUR_ADMIN_TOKEN"
 ```
 
-TODO: GPT shgt Team_id statt Team_name!
+TODO: GPT shgt Team\_id statt Team\_name!

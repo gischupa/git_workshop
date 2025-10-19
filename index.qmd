@@ -17,7 +17,7 @@ Internet getroffen, auf dem MacOS als Sytem verwendet wird. Das kann
 sich aber natürlich jederzeit ändern!]
 
 {{< include 0170_ersteSchritte.qmd >}}
-{{< include 0180_client.qmd >}}   FÄLLT WEG!?!?!?!
+include 0180\_client.qmd 
 {{< include 0210_bash1.qmd >}}
 {{< include 0215_fehler.qmd >}}
 {{< include 0220_bash2.qmd >}}
