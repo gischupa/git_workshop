@@ -5,7 +5,7 @@ geeignete Client-Software auf deinem Computer^[Diese Aussage
 ist nur bedingt richtig, weil für manche Szenarien auch eine
 reine Online-Plattform genügt.]. Viele Entwicklungsumgebungen bringen ihren individuellen \git-Client mit, was eine pauschale Behandlung erschwert. 
 
-Du Für das Grundversändnis ist es sinnvoll, zuerst mit dem 
+Du Für das Grundverständnis ist es sinnvoll, zuerst mit dem 
 reinen \git-Client im Terminal zu arbeiten. Später spricht
 allerdings nichts dagegen, auch mit grafischen Systemen 
 zu arbeiten.
@@ -34,38 +34,4 @@ in der Version vom Februar 2025.
 
 TODO: Bilder
 
-## Bash Grundlagen
-
-Du kannst die \git-Bash aus dem Explorer heraus über die 
-rechte Maustaste im gewünschten Ordner (z.B. Projektordner) 
-öffnen.
-
-Jeder Befehl in der \git-Bash wird nach Drücken der 
-\key{Enter}-Taste ausgeführt.
-
-**Wichtige Befehle**  
-
-|Befehl|Kurzerklärung|
-|------|-------------|
-|`ls -la`| Auflisten aller Dateien im Ordner|
-|`cd`|Wechsel in den Home-Ordner|
-|`cd <ordner>`|Wechsel in *Ordner*|
-|`cd ..`|Wechsel eine Ebene nach oben|
-|`echo <Text>`|Ausgabe von Text|
-|`> <datei>`|Ausgabe in Datei (s.u.)|
-|`mkdir <ordner>`|Ordner erstellen|
-|`rm -rf <ordner>`|Ordner ohne Rückfrage löschen|
-|`cat <datei>`|Inhalt der Datei komplett ausgeben|
-|`less <datei>`|Langsame Ausgabe, Ende mit `q`|
-
-
-Für viele Beispiele sollst du schnell eine Datei
-mit minimalem Inhalt erstellen, da es ja nur 
-um Beispiele geht. Das kannst du im Prinzip 
-mit dem Editor von Windows aus machen, 
-schneller ist aber im Terminal 
-
-```bash
-echo "Probetext" > demodatei.txt 
-```
 

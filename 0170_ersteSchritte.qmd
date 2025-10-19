@@ -1,84 +1,105 @@
-# Erster Überblick
+# Lokale Arbeit
 
-Eine Einführung in die Arbeit mit \git und Installation der 
-entsprechenden Server-Software ist etwas 
-schwierig, weil auf einen Schlag so viele neue 
-Konzepte zu verarbeiten sind.
+Da \git als Serveranwendung bekannt ist, stellt sich die Frage, 
+warum man auf seinem eigenen Rechner ein Versions-Kontroll-System beim Erstellen von Projekten einsetzen sollte.  
+Neben dem Aspekt, dass bestimmte Probleme beim Backup so gelöst werden^[Natürlich ist ein Backup auf dem gleichen Rechner relativ sinnlos. Es spricht aber nichts dagegen, mit \git auf einer externen Festplatte zu arbeiten!], hat man den Vorteil, ungefährdet mit verschiedenen Versionen seines Projekts zu experimentieren, ohne einen Totalverlust befürchten zu müssen. Im Vorgriff sei gesagt, dass \git im Prinzip nur einen eigenen Ordner für das Projet benötigt und hier ist es relativ egal, wo sich dieser Ordner befindet!
 
-Bevor wir diese beiden Themen angehen, kann ein kleiner 
-Überblick hilfreich sein.
+## Installation
 
-## Lokal -- Remote
-Du kannst ganz alleine auf deinem Rechner mit \git arbeiten
-und hast dann deinen Arbeitsordner mit Unterstütung 
-von \git (eigenes, lokales Repository). 
+Beginnen wir mit Linux, weil dort der Aufwand am geringsten ist.
+Hier genügt es bei einer Debian-basierenden Version, wenn man im 
+Terminal den Befehl eingibt:
 
-Sind an einem Projekt mehr Leute beteiligt, dann 
-wird im Normalfall auf einem Server ein zentrales
-Repository erstellt, von dem sich jeder Mitarbeiter
-eine Kopie als lokales Repository auf den eigenen 
-Rechner holt (clont).
+```bash
+apt update 
+apt install git -y
+```
 
-Der Unterschied beim Arbeiten in den beiden Varianten ist,
-dass die Änderungen der lokalen Repositories immer 
-wieder mit dem zentralen Repository abgeglichen werden 
-müssen (push) und dass sich die anderen Mitarbeiter 
-diese Änderungen auch alle holen müssen (pull).
+MacOS ist minimal schwieriger, weil es etwas darauf ankommt, wie der 
+Rechner konfiguriert ist. Auf meiner Installation genügt ein
 
-Natürlich kann es dabei passieren, dass verschiedene
-Mitarbeiter die gleiche Datei verändern und dann müssen 
-die entstehenden Konflikte *irgendwie* behoben werden --
-Hier hilft \git.
+```bash
+brew install git 
+```
 
-In diesen wenigen Zeilen stecken sehr viele 
-technische Details, die wir im Rahmen dieses 
-Workshops auf keinen Fall alle besprechen können.
+auf anderen Rechner kann es bereits installiert sein, falls Xcode installiert ist. Im Zweifelsfall gibt es aber auch einen Installer 
+unter 
 
-## Idealer Projektablauf
-Beschränken wir uns zuerst auf den lokalen Fall 
-und eine ideale Welt.  
-In diesem Fall würdest du keine Fehler machen, 
-immer genau wissen was du der Reihe nach machst -- 
-perfekte Welt eben.  
+```bash
+https://git-scm.com/download/mac
+```
 
-Dein Arbeitsablauf wäre dann ganz einfach:
+Auch für Windows ist auf dieser Seite ein Installer verfügbar, 
+oder man verwendet den Appstore^[Da ich mit Software-Versionen 
+aus dem App-Store schon öfter auf die Nase gefallen bin, bevorzuge 
+ich den anderen Weg!]. Ein detaillierter Ablauf einer Installation 
+befindet sich im Anhang. Leider ist es mir nicht möglich, minimal Änderungen an den Screenshots ständig aktuell zu halten.
 
-* Änderung programmieren
-* Änderungen herrichten zum Protokollierung
-* Änderung festschreiben im Protokoll
+TODO: Installationsanleitung GIT auf Windows in den Anhang schieben.
 
-In der Sprache von \git werden die letzten
-beiden Schritt als *add* und *commit* 
-bezeichnet.
+## Erster Kontakt
 
-## Realistischer
-Wahrscheinlich musst du ab und zu Dinge 
-ausprobieren und willst dafür deinen 
-funktionierenden Code nicht gefährden.  
-In diesem Fall erstellst du einen 
-Entwicklungszweig (branch), in dem 
-du in Ruhe arbeiten kannst. Wenn 
-du mit deinem Ergebnis zufrieden bist,
-dann übernimmst du deine Entwicklung --
-wenn nicht, dann löschst du sie wieder.
+Wir verzichten am Anfang konsequent auf den Einsatz grafischer
+Hilfsprogramme. Auf diese Weise haben wir auf allen drei Betriebssystemen weitgehend die gleichen Vorgehensweisen und 
+wird lernen wirklich die Grundlagen.  
 
-Man muss hier aber gleich sagen, dass
-das eine extreme Vereinfachung der 
-Realität darstellt. Mit Branches gibt 
-es viele Varianten, die zu besprechen wären.
+Im ersten Schritt muss hierzu ein Terminal geöffent werden.
+Auf Linux und MacOS ist das auch wirklich unter diesem Namen zu 
+finden, bei Windows nennt sich das Programm \git-Bash.
+Natürlich brauchen wir auch einen Projektordner für unsere 
+sämtlichen Experimente. Ich setze voraus, dass jeder für sein 
+System in der Lage ist, einen Ordner mit dem Namen *git_projekte* 
+zu erstellen. Ziel wäre es im Anschluss, dass wir uns im 
+Terminal in diesem Ordner befinden.  
 
-## Im Team 
-Werfen wir noch einen kurzen Blick auf 
-die Entwicklung im Team.  
-Die Wahrscheinlichkeit für das Auftreten 
-von Konflikten ist hier natürlich viel 
-größer und da ist es sehr hilfreich, dass
-\git uns unterstützt. Im Prinzip werden
-bei der Konfliktlösung -- sofern nicht 
-automatisch möglich -- beide (alle) Varianten
-in die betroffene Datei geschrieben. 
-Dabei wird jeweils die Herkunft angegeben 
-und der Zuständige für Konfliktlösung 
-kann löschen oder übernehmen, was er für 
-richtig hält -- auch das ist grob vereinfacht!
+Bei Linux und MacOS erreichen wir das direkt im Terminal mit 
+folgenden Befehlen (jweils mit \key{enter} abschließen):
+
+```bash
+mkdir git_projekte 
+cd git_projekte 
+```
+
+Um den Ordner auch später einfach wiederfinden zu können,
+sollten wir den Pfad zum Ordner identifizieren und eventuell 
+notieren:
+
+```bash
+pwd 
+```
+
+Bei Windows kann man die \git-Bash aus dem Explorer heraus über die 
+rechte Maustaste direkt im gewünschten Ordner (z.B. Projektordner) 
+öffnen.
+
+Da auch die \git-Bash eine Form von abgespecktem Linux darstellt, 
+gelten die nachfolgenden Befehle auf allen drei Systemen in gleicher Weise. Es sinnvoll, sich diese Liste bereit zu legen, oder die Befehle zu verinnerlichen!
+
+**Wichtige Befehle**  
+
+|Befehl|Kurzerklärung|
+|------|-------------|
+|`ls -la`| Auflisten aller Dateien im Ordner|
+|`cd`|Wechsel in den Home-Ordner|
+|`cd <ordner>`|Wechsel in *Ordner*|
+|`cd ..`|Wechsel eine Ebene nach oben|
+|`echo <Text>`|Ausgabe von Text|
+|`> <datei>`|Ausgabe in Datei (s.u.)|
+|`mkdir <ordner>`|Ordner erstellen|
+|`rm -rf <ordner>`|Ordner ohne Rückfrage löschen|
+|`cat <datei>`|Inhalt der Datei komplett ausgeben|
+|`less <datei>`|Langsame Ausgabe, Ende mit `q`|
+
+TODO: Übungsblatt Shell-Befehle erstellen
+
+Für viele Beispiele benötigen wir schnell eine Datei
+mit minimalem Inhalt, da es ja nur 
+um Beispiele geht. Das geh im Prinzip 
+mit dem Editor von Windows, 
+schneller ist es aber direkt im Terminal 
+
+```bash
+echo "Probetext" > demodatei.txt 
+```
+
 
