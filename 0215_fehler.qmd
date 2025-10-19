@@ -32,15 +32,13 @@ dem Stage entfernt werden. Intern funktioniert das allerdings
 etwas anders. Die Datei *index* enthält die Namen und Hashes des 
 aktuellen Commits (tree). Mit einem *add* werden Dateinamen ergänzt.
 Beim Commit wird die Datei nicht geleert, die Hashes bleiben also verfügbar.
-
-In Wirklichkeit zeigt `git status` diese Dateien nur nicht 
-mehr an, was auf einen leeren Stage schließen lassen würde. 
-Also stellt `git status` eigentlich nur ein *diff* zwischen
-*index* und aktuellem *tree* dar. 
+Dass `git status` diese Dateien nicht mehr anzeigt, liegt einfach daran, dass 
+der Befehl eigentlich nur ein *diff* zwischen *index* und aktuellem *tree* 
+ausführt. 
 \sampleend
 
-Wäre der Stage wirklich leer, so könnte nachfolgende 
-Reparatur nicht funktionieren -- was sie aber tut:
+Dass der Stage wirklich nicht leer ist, zeigt folgendes Beispiel,
+das eine Reparatur am \work zeigt.
 
 ```bash
 echo "text" > datei.txt 
@@ -49,8 +47,8 @@ git commit -m "gesichert"
 
 git status   # Stage anscheinend leer 
 
-echo "falscher Text" >> datei.txt   #  Fehler 
-git restore datei.txt              # repariert
+echo "falscher Text" >> datei.txt   #  Fehler im Arbeitsverzeichnis 
+git restore datei.txt              # repariert mit Datei aus Stage
 ```
 
 \samplestart
@@ -62,7 +60,8 @@ wurde eingeführt um eindeutigere Befehle zu schaffen.
 
 
 Mit dem `restore`-Befehl kann man auch eine
-Datei aus einem beliebigen Commit restaurieren:
+Datei aus einem beliebigen Commit restaurieren, von dem man 
+den Hash kennt:
 
 ```bash
 git restore --source=<HASH> <datei>
