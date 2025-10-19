@@ -254,6 +254,8 @@
                {\endlist}
 \makeatother
 \usepackage{my_quarto_tools}
+\usepackage{enumitem}
+\setlist[description]{style=nextline, leftmargin=2.5em}
 \newcommand{\cmd}[1]{\texttt{#1}\xspace}
 \newcommand{\script}[1]{\texttt{#1}\xspace}
 \newcommand{\key}[1]{\texttt{#1}\xspace}
@@ -321,7 +323,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, colback={codebgcolor}, boxrule=0pt, sharp corners, frame hidden, enhanced]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, frame hidden, breakable, enhanced, colback={codebgcolor}, sharp corners]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
