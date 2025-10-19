@@ -52,7 +52,7 @@ Du erkennst auch, dass im Diagramm
 die grünen Spitzen der Branches nicht
 am gleichen Commit sitzen!
 
-Durch `git log --oneline --decorate --graph` 
+Durch \cmd{git log --oneline --decorate --graph} 
 (merken als „git log dog“) wird diese Sitation
 auch passend dargestellt:
 

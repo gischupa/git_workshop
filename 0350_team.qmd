@@ -14,13 +14,16 @@ oder im Internet sprechen -- sobald ein Netzwerk beteiligt ist,
 sind höchstens Sicherheitsaspekte ein Thema, die Basistechnik 
 bleibt gleich.
 
-Für eine servbasierende Teamarbeit gibt es folgende Varianten
+Für eine server-basierende Teamarbeit gibt es folgende Varianten
 
 * einfacher \git-Server  
   Die Installation ist einfach, die Grundkonfiguration auch.
-  Der Zugriff erfolgt über ssh. Soll das ohne Kennwort funktionieren, so müssen Schlüssel erzeugt und auf den Server eingepflegt werden. Sspäter führt um die Schlüssel aber kein Weg herum.
+  Der Zugriff erfolgt über ssh. Soll das ohne Kennwort 
+  funktionieren, so müssen Schlüssel erzeugt und auf den Server 
+  eingepflegt werden. Später führt um die Schlüssel aber 
+  ohnehin kein Weg herum.
 
-* \git-Server mit kennwortlosem Zgriff über http.  
+* \git-Server mit kennwortlosem Zugriff über http.  
   Funktioniert, ist aber keinesfalls für den Live-Einsatz 
   über einen längeren Zeitraum im Internet zu empfehlen.
   Die entsprechenden Docker-Files befinden sich in den 
@@ -43,7 +46,7 @@ Bei der Arbeit im Team ändert sich beim
 lokalen Arbeiten zunächst wenig. Die
 Schritte *branch, add, commit, ...* 
 funktionieren wie auch bisher. Neu sind 
-allerdings die Schritte
+allerdings die folgenden Schritte
 
 * Initiales Holen des Repos auf den eigenen Rechner (=clone)
 * Regelmäßiges Abrufen des aktuellen Standes (=pull)
@@ -53,11 +56,11 @@ Hierbei sind einige Spielregeln zu beachten, damit es nicht
 zu Problemen kommt. Diese Regeln werden meist als Workflow
 oder im Speziellen auch als GitFlow bezeichnet. Es gibt hier 
 zwar gewisse -- aber keinesfalls verbindliche -- Standards.
-Jede Firma stellt hier ihre eigenen, fest vorgeschriebenenen
-Abläufe auf, an die sie die Mitarbeiter zu halten haben.
+Jede Firma stellt für \git ihre eigenen, fest vorgeschriebenenen
+Abläufe auf, an die sich die Mitarbeiter zu halten haben.
 
 #### Gemeinsamkeiten
-Auch diese Gemeinsamkeiten müssen nicht in jeder Firma 
+Auch die folgenden Gemeinsamkeiten müssen nicht in jeder Firma 
 oder jedem Projekt umgesetzt werden!
 
 **Verantwortung**  
@@ -78,9 +81,10 @@ Arbeit dort beendet, muss der Code getestet werden und dann
 erst erfolgt der Merge in den \branch{development}-Branch.
 
 #### Details
-Da jetzt mehr Personen Änderungen zu unvorhersehbaren Zeitpunkten Änderungen am Code vornehmen, muss jeder
-Mitarbeiter dafür sorgen, immer die aktuellste Version 
-vorliegen zu haben. Da er seine Entwicklung aber in seinem 
+Da jetzt mehr Personen zu unvorhersehbaren Zeitpunkten 
+Änderungen am Code vornehmen, muss jeder
+Mitarbeiter dafür sorgen, dass er immer die aktuellste Version 
+vorliegen hat. Da er seine Entwicklung aber in seinem 
 eigenen \branch{Feature}-Branch vorantreibt, müssen 
 diese Änderungen dort aber erst ankommen -- dies geschieht
 durch Merges in die andere Richtung!
@@ -105,10 +109,10 @@ relativ einfach und eventuell muss man den Schülern
 auch nicht mehr erzählen. Da aber Code von anderen 
 Entwicklern auf deinen Rechner kommt, solltest du 
 diesen eventuell nicht ungesehen in deine Entwicklung
-aufnehmen. \cmd{git pull} macht aber genau das.  
+aufnehmen. Der BEfehl \cmd{git pull} macht aber genau das.  
 Willst du an dieser Stelle sicher gehen, so machst
 du zuerst \cmd{git fetch} und siehst dir die Änderungen 
-zuerst an -- siehe weiter unten. Im Anschluss kannst du
+an -- siehe weiter unten. Im Anschluss kannst du
 sie dann mit \cmd{git merge} übernehmen.
 
 ## Hands on
@@ -175,8 +179,8 @@ Der nachfolgende Setup erstellt
 * eine lokale Kopie des Repositories mit dem Namen *susi*
 * eine lokale Kopie des Repositories mit dem Namen *max*
 
-Öffen in einem geeigneten Ordner ein \git-Bash und 
-führe das Script \script{susi\_und\_max.sh} aus (\script{}./susi\_und\_max.sh}).
+Öffen in einem geeigneten Ordner eine \git-Bash und 
+führe das Script \script{susi\_und\_max.sh} aus.
 
 Beachte, dass aus in dem Script im oberen Teil etwas Overhead
 nötig ist, damit die Benutzer nicht mit einem leeren Repository
@@ -210,7 +214,8 @@ jetzt *Susis* \branch{main}-Branch in *diesem* Repository.
 Die Statusmeldung sagt dir, beide Branches *main* (Susis)
 und *origin/main* (der im Original Repo) sind gleich.  
 
-Nachfolgend stehen die Bezeichnungen *Original* und *SUSI* bzw. *MAX* für die entsprechenden Repositories.
+Nachfolgend stehen die Bezeichnungen *Original* und *SUSI* bzw. *MAX* 
+für die entsprechenden Repositories.
 
 Susi erstellt in *SUSI* eine Datei und einen Commit:
 
@@ -409,12 +414,13 @@ Handling der Repositories.
 ```bash
 # auf dem Server 
 git init --bare musterrepo
+cd musterrepo
 git branch -m main 
 ```
 
 ```bash
 # auf dem Client
-# Besndere Schritte NUR auf dem ersten Client
+# Besondere Schritte NUR auf dem ersten Client nötig
 git clone gituser@server:port/pfad/zu/repo.git 
 git switch -c main 
 echo "Welcome" > Readme.txt 
@@ -430,7 +436,7 @@ Jeder weitere Benutzer clont nun ein funktionsfähiges Repostory.
 Auch wenn der Branch \branch{main} besonders klingt, 
 ist er doch ein ganz normaler Branch. Seine Besonderheit  
 ist lediglich, dass er durch das Clonen auch gleichzeitig 
-als *upstream-branch* definiert wurde -- dehalb funktioniert
+als *upstream-branch* definiert wurde -- deshalb funktioniert
 statt \cmd{git pull origin main} auch die kurze Version \cmd{git pull}
 (analog für \cmd{git push}).
 

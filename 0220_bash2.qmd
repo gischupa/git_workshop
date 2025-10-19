@@ -15,7 +15,9 @@ Die Einzelteile der Geschichten befinden sich in einem \git-Repository
 und müssen zunächst auf den lokalen Computer geclont werden. 
 Das ist ein notwendiger Vorgriff auf den Abschnitt der Teamarbeit,
 den du hier einfach mal ausführst.
-Es handelt sich um ein öffentliches Repository, auf das auch ohne Benutzerkennung zugegriffen werden darf -- aber eben nur lesend. Aus diesem Grund wird zum Clonen auch *https* und nicht *ssh* verwendet.
+Es handelt sich um ein öffentliches Repository, auf das auch ohne 
+Benutzerkennung zugegriffen werden darf -- aber eben nur lesend. 
+Aus diesem Grund wird zum Clonen auch *https* und nicht *ssh* verwendet.
 Öffne die \git-Bash (oder ein Terminal) und gib ein:
 
 
@@ -41,7 +43,7 @@ und da sind einzelne Fenster optimal (Wechsel z.B. mit \alt{tab}).
 \samplestart
 Um der Erklärungen besser folgen zu können, wäre es sinnvoll,
 wenn bei jedem Teilnehmer exakt die gleichen Hashwerte wie hier 
-in der Anleitung entstehen würden. Leider ist das nicht möglich,
+in der Anleitung entstehen würden. Leider ist das aber nicht möglich,
 weil die Hashwerte nicht reproduzierbar sind -- zumindest auf 
 meinem Rechner! Aus diesem Grund wurden im Vorlagenordner
 die Commits *getagged*, so dass du über ihre Namen auf sie zugreifen
@@ -63,10 +65,10 @@ cd buch
 
 Je nach Version von \git kommt hier eine längere Ausgabe ... oder auch nicht.
 Falls in der Ausgabe der Branch *master* erscheint, bitte 
-umbenennen mit `git branch -m main`
+umbenennen mit \cmd{git branch -m main}
 
-Im Ordner *fortbildungen* sollten nun also die Repositories `storyvorlagen` 
-und `buch` vorliegen.
+Im Ordner *fortbildungen* sollten nun also die Repositories *storyvorlagen* 
+und *buch* vorliegen.
 
 **Erste Datei anlegen**  
 Wechsle in das Fenster mit dem Vorlagenordner und Checke *Step\_1* aus.
@@ -78,7 +80,7 @@ git checkout Step_1
 
 Kopiere die Datei \datei{story1.md} in den Ordner *buch*.   
 
-Sie enthält (strategisch) nur einen Teil der Geschichte! Das Kopieren kann auch 
+Sie enthält (absichtlich) nur einen Teil der Geschichte! Das Kopieren kann auch 
 gerne mit der Maus im Explorer stattfinden. Wer allerdings nicht ständig
 zwischen Tastatur und Maus wechseln möchte, der kann auch folgenden
 Befehl verwenden:
@@ -146,11 +148,11 @@ Du „schreibst“ an deiner Geschichte weiter und damit ändert sich der
 Stand zwischen Arbeitsverzeichnis und Stage. Wir schreiben nicht -- wir kopieren!   
 Für dich bedeutet das nun das Abarbeiten folgende Schritte:
 
-* Wechsle in den Vorlagenordner
-* Richtigen Stand auschecken: `git checkout Step_2`
-* Kopieren der Datei: `cp story1.md ../buch/`
-* Wechsel in den Buch-Ordner
-* Status checken: `git status`
+* Wechsle in den Vorlagenordner (also das Fenster)
+* Checke den richtigen Stand aus: \cmd{git checkout Step_2}
+* Kopiere die Datei: \cmd{cp story1.md ../buch/}
+* Wechsle in den Buch-Ordner (also das Fenster)
+* Checke den Status: \cmd{git status}
 
 ```bash
 # Ausgabe
@@ -178,9 +180,10 @@ die in diesem Zustand sinnvoll sein können!
 
 \samplestart
 **Hinweis**  
-Wenn du versuchst, die Datei mit `git rm --cached story1.md` aus 
+Wenn du versuchst, die Datei mit \cmd{git rm --cached story1.md} aus 
 dem Stage zu löschen, bekommst du eine Fehlermeldung. 
 Es könnte nämlich sein dass der Vorgang zu Datenverlust führt!
+
 ```bash
 error: die folgende Datei hat zum Commit vorgemerkte Änderungen  
       unterschiedlich zu der Datei und HEAD:
@@ -188,7 +191,7 @@ error: die folgende Datei hat zum Commit vorgemerkte Änderungen
 (benutze *-f*, um die Löschung zu erzwingen)
 ```
 
-Bei `git restore story1.md` gibt es keine solche Warnung! 
+Bei \cmd{git restore story1.md} gibt es keine solche Warnung! 
 Die Datei verbleibt dabei auch im Stage unverändert erhalten,
 aber die Arbeitsversion wird überschrieben.
 \sampleend
@@ -234,7 +237,7 @@ Version sind es jetzt 14. Die Änderungen im Detail folgen
 in den nächsten Zeileen.
 
 ### Hands on
-Nun wird die Datei wieder zum Stage hinzugefügt und dann commitet:
+Nun wird die Datei wieder zum Stage hinzugefügt und dann committet:
 
 *Eingabe*  
 ```bash
@@ -254,11 +257,11 @@ TODO:  Hash aktualisieren
 ### Labor 
 
 Dieser Arbeitszyklus von *add, status, diff, commit* stellt 
-den Kern der Arbeit mit \git dar, wenn man alleine arbeitet.
+den Kern der Arbeit mit \git dar, zumindest wenn man alleine arbeitet.
 Allerdings gibt es noch weitere, sehr wichtige Techniken, 
 die auch später bei der Arbeit im Team eine große Rolle spielen werden.
 
-Du hast nun \datei{story1.md} so weit fertig gestellt und möchtest an
+Du hast nun die Datei \datei{story1.md} so weit fertig gestellt und möchtest an
 anderen Kurzgeschichten arbeiten. Du beschließt, dass fertige 
 Geschichten und Arbeitsversionen an unterschiedlichen 
 *Orten* aufgehoben werden sollen.
@@ -267,7 +270,7 @@ In der Softwareentwicklung sprechen wir hier von *fertigen Produkten*,
 die an den Kunden ausgeliefert werden und von 
 *Experimenten, Features, Bugfixes, ...*, die parallel entwickelt
 werden müssen. Durch ein Experiment darf die aktuell lauffähige 
-Version Nicht beeinträchtigt werden! Du brauchst einen *Entwicklungszweig* 
+Version Nicht beeinträchtigt werden! Du brauchst also einen *Entwicklungszweig* 
 und einen *Auslieferungszweig*.
 
 ```bash
@@ -277,18 +280,18 @@ git switch -c entwicklung_story_2
 
 *Git* teilt dir mit, dass du dich nun in diesem *Zweig* (=Branch) 
 befindest. Du siehst hier immer noch deine aktuelle Story 1!
-Sie ist ebenfalls in dem Branch enthaltne, du hast aber nicht vor,
+Sie ist ebenfalls in dem Branch enthalten, du hast aber nicht vor,
 an ihr zu arbeiten. Das wäre zwar möglich, würde aber mein Szenario
 hier stören!
 
 Nun beginnst du mit Story 2, indem du sie aus dem Vorlagenordner
-kopierst (wil wir nicht schreiben).
+kopierst (weil wir nicht schreiben).
 
-* Wechsle in den Vorlagenordner
-* Richtigen Stand auschecken: `git checkout Step_3`
-* Kopieren der Datei: `cp story2.md ../buch/`
-* Wechsel in den Buch-Ordner
-* Status checken: `git status`
+* Wechsle in den Vorlagenordner (Fenster)
+* Checke den richtigen Stand aus: \cmd{git checkout Step_3}
+* Kopiere die Datei: \cmd{cp story2.md ../buch/}
+* Wechsle in den Buch-Ordner (Fenster)
+* Checke den Status: \cmd{git status}
 
 Das ist dein Einstieg in Story 2.
 Du bist mit deinem bisherigen Werk ganz zufrieden,
@@ -313,26 +316,28 @@ Im Branch \branch{story2\_idee\_1} arbeitest du an deiner
 Idee 1 von \datei{story2.md} weiter, im Branch \branch{story2\_idee\_2}
 probierst du einen alternativen Verlauf.
 
-Da wir nur kopieren und dicht schreiben, heißt das für dich:  
+Da wir nur kopieren und nicht schreiben, heißt das für dich:  
 
-* Im Buch-ordner: `git switch story_2_idee_1`
-* Wechsle in den Vorlagen-Ordner
-* Richtigen Stand auschecken: `git checkout Step_4`
-* Kopieren der Datei: `cp story2.md ../buch/`
-* Wechsel in Buch-Ordner
-* `git add story2.md`
-* `git commit -m "Inhalt nach Idee1 fortgeführt"`
+* Im Buch-Ordner: \cmd{git switch story_2_idee_1}
+* Wechsle in den Vorlagenordner
+* Checke den richtigen Stand aus: \cmd{git checkout Step_4}
+* Kopiere die Datei: \cmd{cp story2.md ../buch/}
+* Wechsle in den Buch-Ordner
+* \cmd{git add story2.md}
+* \cmd{git commit -m "Inhalt nach Idee1 fortgeführt"}
 
 Da du aber noch nicht sicher bist, ob diese Version
 verwenden willst, arbeitest auch Idee 2 aus.
 
-* Im Buch-Ordner: `git switch story_2_idee_2`
+* Im Buch-Ordner: \cmd{git switch story_2_idee_2}
 * Wechsle in den Vorlagenordner
-* Richtigen Stand auschecken: `git checkout Step_5`
-* Kopieren der Datei: `cp story2.md ../buch/`
-* Wechsel in den Buch-Ordner
-* `git add story2.md`
-* `git commit -m "Inhalt nach Idee 2 fortgeführt"`
+* Checke den richtigen Stand aus: \cmd{git checkout Step_5}
+* Kopiere die Datei: \cmd{cp story2.md ../buch/}
+* Wechsle in den Buch-Ordner
+* \cmd{git add story2.md}
+* \cmd{git commit -m "Inhalt nach Idee 2 fortgeführt"}
+
+
 
 Nun hast du das *Problem*, dass du drei Versionen hast:
 
@@ -355,12 +360,12 @@ auf, den du sofort korrigierst. Bei uns ist es das Wort *weiße*,
 das sich anstelle von *weise* in den Text geschummelt hat.
 
 * In den Vorlagenordner
-* `git checkout Step_6`
-* `cp story2.md ../buch/`
+* \cmd{git checkout Step_6}
+* \cmd{cp story2.md ../buch/}
 
 * Im Buch-Ordner (aktueller Branch ist *entwicklung_story_2*)
-* `git add story2.md`
-* `git commit -m "typo 'weiße' korrigiert"`
+* \cmd{git add story2.md}
+* \cmd{git commit -m "typo 'weiße' korrigiert"}
 
 Beachte, dass diese Änderung in den anderen Branches *nicht* ankommt!
 
@@ -467,7 +472,8 @@ wir einfachere Beispiele
 **Variante 1:**  
 Im Commit, dem Stage und dem Workingdir 
 befinden sich (unterschiedliche) Versionen 
-einer Datei: 
+einer Datei:  
+
 ```bash
 git init labor
 cd labor 
@@ -485,23 +491,24 @@ Nun wollen wir die einzelnen Versionen miteinander
 vergleichen. Das sind 3 Befehle:
 
 1. work mit *stage*   
-   `git diff datei.txt`  
+   \cmd{git diff datei.txt}  
    (DAS wird wichtig)
 2. stage mit commit  
-   `git diff --cached datei.txt`  oder  
-   `git diff --staged datei.txt` 
+   \cmd{git diff --cached datei.txt}  oder  
+   \cmd{git diff --staged datei.txt} 
 3. work mit commit  
    Wenn man den Hash (z.B. 1234) vom Commit kennt, z.B. durch  
-   `git log`, so kann man diesen verwenden   
-   `git diff 1234 datei.txt`  
+   \cmd{git log}, so kann man diesen verwenden   
+   \cmd{git diff 1234 datei.txt}  
    Universeller ist 
-   `git diff HEAD datei.txt` 
+   \cmd{git diff HEAD datei.txt} 
 
 
 **Variante 2:**  
 Im Commit und dem Workingdir 
 befinden sich (unterschiedliche) Versionen 
 einer Datei. *Der Stage ist aktuell leer.*
+
 ```bash
 git init labor
 cd labor 
@@ -517,22 +524,22 @@ echo "Version work" > datei.txt
 ```
 
 1. work mit *commit*   
-   `git diff datei.txt`  
+   \cmd{git diff datei.txt}  
    (Weil der Stage leer ist)
 2. stage mit commit  
-   `git diff --cached datei.txt`  oder  
-   `git diff --staged datei.txt` 
+   \cmd{git diff --cached datei.txt}  oder  
+   \cmd{git diff --staged datei.txt} 
 3. work mit commit  
    Wenn man den Hash (z.B. 1234) vom Commit kennt, z.B. durch  
-   `git log`, so kann man diesen verwenden   
-   `git diff 1234 datei.txt`  
+   \cmd{git log`, so kann man diesen verwenden   
+   \cmd{git diff 1234 datei.txt}  
    Universeller ist 
-   `git diff HEAD datei.txt` 
+   \cmd{git diff HEAD datei.txt} 
 
 Hier sind die Fälle 1) und 3) also identisch.  
 Wie kann man also sicher sein, welche Dateien 
-ein reines `git diff` vergleicht?  
-Liefert `git status` einen leeren Stage, 
+ein reines \cmd{git diff} vergleicht?  
+Liefert \cmd{git status} einen leeren Stage, 
 so wird mit dem Commit verglichen. Ist eine
 Datei im Stage, so wird gegen diese Datei
 verglichen.
