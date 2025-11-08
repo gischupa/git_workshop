@@ -1,0 +1,215 @@
+## Maven
+
+### Was ist Maven
+
+Bei Maven handelt es sich um ein Build-Tool, wie es viele gibt und gab (z.B. Ant).
+Mit seiner Hilfe können bei entsprechender Konfiguration viele lästige Kleinigkeiten
+im Entwicklungsprozess automatisiert werden -- z.B. Tests und die Verwaltung von 
+Abhängigkeiten.  Da dieses Tool bei CI/CD absolut üblich ist, brauchst du 
+zumindest ein oberflächliches Grundverständnis.
+
+### Voraussetzungen
+
+Dass ein JDK installiert sein muss, sollte klar sein, denn es soll 
+ja mit Java programmiert werden. Natürlich gibt es wieder Unterschiede
+zwischen Linux, Apple und Windows. 
+
+### Anleitung
+
+#### Windows{.unnumbered}
+
+1. **Java installieren**
+
+Installiere das gewünschte JDK (z. B. Oracle JDK, Temurin).
+
+2. **JAVA_HOME setzen**
+
+   * Öffne die Systemeinstellungen: `Systemeigenschaften -> Erweiterte Systemeinstellungen -> Umgebungsvariablen`
+   * Unter **Systemvariablen** auf **Neu...** klicken
+
+     * Name: `JAVA_HOME`
+     * Wert: Pfad zum JDK, z. B.: \datei{C:\\Program Files\\Java\\jdk-17.0.9}
+
+
+3. **PATH anpassen**
+
+Systemvariable `Path` bearbeiten und hinzufügen: \datei{%JAVA_HOME%\\bin}
+
+
+4. **Überprüfen**
+
+```bash
+java -version
+echo %JAVA_HOME%
+```
+
+
+#### Linux{.unnumbered}
+
+1. **Java installieren**
+
+Installiere ein JDK über den Paketmanager (z. B. Ubuntu/Debian):
+
+```bash
+sudo apt update
+sudo apt install openjdk-17-jdk
+```
+
+2. **JAVA_HOME systemweit setzen**
+
+Erstelle eine neue Datei \datei{/etc/profile.d/java.sh} mit folgendem Inhalt:
+
+```bash
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+export PATH=$JAVA_HOME/bin:$PATH
+```
+
+* Datei ausführbar machen:
+
+```bash
+sudo chmod +x /etc/profile.d/java.sh
+```
+
+3. **Überprüfen**
+
+```bash
+source /etc/profile.d/java.sh
+java -version
+echo $JAVA_HOME
+```
+
+#### macOS{.unnumbered}
+
+1. **Java installieren**
+
+   * Lade ein JDK herunter (z. B. Temurin, Oracle) und installiere es.
+   * Standard-Installationspfad: \datei{/Library/Java/JavaVirtualMachines/}.
+
+2. **JAVA_HOME systemweit setzen**
+
+Über \cmd{launchctl} für GUI-Apps und neue Terminalfenster:
+
+```bash
+sudo launchctl setenv JAVA_HOME $(/usr/libexec/java_home -v 17)
+```
+
+Optional für Shells, die beim Login starten (\datei{~/.zshrc} oder \datei{/etc/profile}):
+
+```bash
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export PATH=$JAVA_HOME/bin:$PATH
+```
+
+3. **Überprüfen**
+
+```bash
+java -version
+echo $JAVA_HOME
+```
+
+### Installation von Maven
+
+#### Linux
+Eine Installation über den Paketmanager ist möglich, liefert aber wahrscheinlich eine 
+veraltete Version. Am einfachsten dürfte dann wohl die Verwendung eines Hilfs-Scriptes sein:
+
+```bash
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+```
+
+Ab jetzt kann mit nachfolgendem Befehl genau die (aktuell) gewünschte Maven-Version
+installiert und verwendet werden:
+
+```bash
+sdk install maven 3.9.9
+```
+
+Zur Kontrolle genügt dann ein 
+
+```bash
+mvn --version 
+```
+
+(Tipp: \cmd{sdk list maven})  
+
+#### Windows{.unnumbered}
+
+TODO
+
+#### Apple{.unnumbered}
+
+TODO
+
+### Erster Test
+
+(Auf Linux)
+
+```bash
+cd /tmp
+mkdir maven-hello-world
+cd maven-hello-world
+mvn archetype:generate -DgroupId=com.example \
+                       -DartifactId=hello-world \
+                       -DarchetypeArtifactId=maven-archetype-quickstart \
+                       -DinteractiveMode=false
+cd hello-world/
+mvn compile
+mvn package
+java -cp target/hello-world-1.0-SNAPSHOT.jar com.example.App
+```
+
+Wir sehen noch einige typische Warnungen, die auf eine falsche 
+Parameterisierung in der \datei{pom.xml} hinweisen -- dazu später mehr.
+
+
+### Konventionen
+
+Maven erwartet eine bestimmte Verzeichnisstruktur und 
+auch entsprechende Namenskonventionen (Du musst das nicht
+per Hand anlegen, da gibt es Hilfs-Scripts!)
+
+```bash
+
+TREE
+
+```
+
+Direkt nach dem Erstellen des Projektes existieren noch nicht
+alle Ordner. Sie werden bei Bedarf dynmaisch von Maven angelegt.
+
+
+### Idee
+
+Maven kennt sogenannte Livecyles. Damit sind bestimmte Abfolgen von Abläufen
+gemeint, die Maven ausführt.
+
+Es gibt folgende Befehle:
+
+* validate (macht nichts)
+* compile (führt zuerst validate aus)
+* test (führt zuerst validate und compile aus)
+* package (erzeugt jars)
+* verify (macht nichts)
+* deploy (macht nicht das, nach was es klingt!)
+
+Beim ersten Aufruf werden alle Abhängigkeiten von einem Repo im Internet 
+in einen Cache im Home des Benutzers geladen.
+
+Beim ersten Aufruf von *compile* wird auch das *target*Verzeichnis erstellt.
+
+
+Beim Nachladen der Dependencies kann es passieren, dass das entsprechende JAR 
+online nicht gefunden wurde (weil es nie hochgeladen wurde und deshalb einfach nicht
+existiert). Derartige (also eigene) jars muss man selbst in den Cache *.m2* einpflegen, 
+damit Maven sie verwenden kann.
+
+Im Ordner liegt eine Ordnerstruktur vor, nach producktID, Version, ...,
+in der man selbst Ordner erstellen kann. Im Prinzip macht das auch Maven,
+wenn man *install* aufruft.
+
+(https://www.youtube.com/watch?v=T00NKLQvwYE) - Windows-lastig
+
+
+
+

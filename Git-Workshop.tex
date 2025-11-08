@@ -262,6 +262,8 @@
 \newcommand{\git}{\textit{git}\xspace}
 \newcommand{\gitserver}{\textit{git}-Server\xspace}
 \newcommand{\gitservers}{\textit{git}-Servers\xspace}
+\newcommand{\gitlab}{\textit{GitLab}\xspace}
+\newcommand{\maven}{\textit{Maven}\xspace}
 \newcommand{\strg}[1]{strg + #1\xspace}
 \newcommand{\alt}[1]{alt + #1\xspace}
 \newcommand{\datei}[1]{\textit{#1}\xspace}
@@ -323,7 +325,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, frame hidden, breakable, enhanced, colback={codebgcolor}, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, colback={codebgcolor}, frame hidden, sharp corners, boxrule=0pt, enhanced]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -397,6 +399,466 @@ Linux oder MacOS sinnvoller\footnote{Ich habe bisher noch keinen Server
 
 \bookmarksetup{startatroot}
 
+\chapter{Roadmap}\label{roadmap}
+
+\section{Installation}\label{installation}
+
+\subsection{Lokal}\label{lokal}
+
+\begin{itemize}
+\tightlist
+\item
+  Installation VB
+\item
+  Deb-Distro \ldots{} wahrscheinlich Ubuntu
+\item
+  Installation in VB - kleine Installation
+\item
+  Installation Docker nötig?
+\item
+  Wie verwalten wir die Schüler?
+\end{itemize}
+
+\subsection{Remote}\label{remote}
+
+\begin{itemize}
+\tightlist
+\item
+  Docker als Perspektive mit Demo von linuxserver.io
+\item
+\end{itemize}
+
+\section{Schülerverwaltung (draft)}\label{schuxfclerverwaltung-draft}
+
+Was können wir den Benutzern zumuten?
+
+\begin{itemize}
+\item
+  Wäre ein VW-Docker Container eine Option?
+\item
+  SCP einer Schülerliste + Anschluss-Script? Problem ist hier die
+  ``Verwaltung'' der Klassen und User. Ein ncurses-script könnte da
+  hilfreich sein, nach ssh-login
+\item
+  Geht das evtl auch über einen ``Zwergen''\_Web-server, der aus dem
+  Terminal gestartet wird?
+\item
+  Git-Server für jede Klasse mit Docker sinnvoll?
+\item
+  Sollen die Schüler einen personalisierten Login haben oder als
+  User1-20 laufen?
+\item
+  Sollen sich die Schüler anmelden dürfen oder nur PK für git?
+\end{itemize}
+
+Vorteile Docker
+
+Nachteile Docker
+
+\begin{itemize}
+\tightlist
+\item
+  die einzelnen Instanzen können nicht alle Port 22 verwenden! den 22er
+  brauchen wir wohl für den HOST
+\item
+  Als Demo ginge Docker schon
+\item
+  Man könnte Demo-Images für Docker
+\end{itemize}
+
+\section{Notizen}\label{notizen}
+
+ssh evtl NICHT als root, sondern als normaler User, dann muss aber sudo
+eingerichtet werden. das geht schon wieder TIEF ins Wissen \ldots{}
+
+\section{Zu klärende Fragen}\label{zu-kluxe4rende-fragen}
+
+Ein einfacher \git-Server ist lediglich ein Server mit einer
+rudimentären Installation von \git und einer Erreichbarkeit über das
+Netz. Da gerade diese Erreichbarkeit bei Windows ein Problem darstellt,
+handelt es sich im Regelfall um einen Linux-Server. Als solcher besitzt
+er üblicherweise kein grafisches Benutzerinterface (GUI).
+
+Je nach Szenario müssen auf dem Server Benutzer angelegt und verwaltet
+werden. Das kann ziemlich aufwändig sein und ist bei größeren
+Benutzerzahlen ohne Scripting kaum machbar. Es gibt Hilfsmittel in Form
+von Weboberflächen, die hier aber nicht weiter thematisiert werden.
+
+Für einen reinen \gitserver genügt allerdings bereits ein einziger
+Bunutzer -- z.B. \git.
+
+\textbf{Zweck des Servers}\\
+Geht es nur um \git oder sollen noch Wordpress, VPN-Server, \ldots{}
+dazu kommen. Für jedes Szenario wird die endgültige Konfiguration anders
+aussehen \ldots{}
+
+\textbf{Wer nutzt den Server}\\
+Müssen auch andere Lehrkräfte (administrativen) Zugriff auf den Server
+besitzen? Werden Gruppen benötigt?
+
+\textbf{Rolle der Benutzer}\\
+Sollen die Benutzer nur für die Verwendung von \git angelegt und
+konfiguriert werden, oder sollen sie \emph{vollwertige} Benutzer sein,
+die den Server auch in anderen Szenarien sinnvoll nutzen dürfen?
+
+\textbf{Benennung der Benutzer}\\
+Sollen die Schüler mit Zugangsdaten versehen werden, die ihren Namen
+widerspiegeln -- Probleme siehe unten -- oder sollen Zugänge im Sinne
+von \texttt{user1} bis \texttt{user20} verwendet werden?
+
+Bei Verwendung von richtigen Namen entstehen folgende Probleme:
+
+\begin{itemize}
+\tightlist
+\item
+  Sonderzeichen in den richtigen Namen erschweren das automatische
+  Erstellen von Benutzernamen.
+\item
+  Verschiedene Namen können den gleichen Login ergeben.
+\item
+  Behandlung von Schülern mit gleichen Namen in gleichen / verschiedenen
+  Klassen
+\end{itemize}
+
+Die Variante mit \texttt{user1} bis \texttt{user20} ist unpersönlich,
+leichter einzurichten, erschwert dem Lehrer aber eventuell eine
+Zuordnung zum echten Schüler.
+
+Hierfür gibt es keine perfekte Lösung.
+
+\section{Nur git}\label{nur-git}
+
+Wenn ein Schüler nur \git verwenden soll, dann braucht er kein
+vollwertiges Benutzerkonto, an dem er sich auch für andere Arbeiten
+anmelden kann. Für die Verwendung von \git genügt es bereits, wenn man
+einen Benutzer mit Namen \git (als Beispiel) erstellt. Nachfolgend sind
+dann diese Schritte nötig:
+
+\begin{itemize}
+\tightlist
+\item
+  Dem Benutzer \git wird eine \emph{echte} Anmeldung unmöglich gemacht.
+\item
+  Schüler erstellen sich SSH-Schlüssel-Paare
+\item
+  Sie schicken ihren Public-Key per Mail an den Lehrer
+\item
+  Der Lehrer fügt den Schlüssel in die Datei
+  \texttt{/home/git/.ssh/authorized\_keys} ein.
+\end{itemize}
+
+\subsection{Detaillierte Anleitung}\label{detaillierte-anleitung}
+
+\textbf{Benutzer anlegen}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{useradd} \AttributeTok{{-}m}\NormalTok{ git}
+\FunctionTok{passwd}\NormalTok{ git  }\CommentTok{\# Das Kennwort wird 2x unsichtbar abgefragt.}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Anmeldung deaktivieren}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{nano}\NormalTok{ /etc/passwd }
+\end{Highlighting}
+\end{Shaded}
+
+Den Benutzer \git  suchen und am Ende der Zeile aus \texttt{/bin/sh} den
+Eintrag \texttt{/bin/false} machen. Nun mit der Tastenkombination
+\strg{o} und `\strg{x} die Änderung abspeichern.
+
+\textbf{Erstellen eines Schlüsselpaars}\\
+Unter Linux / MacOS einfach eingeben:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096 }\AttributeTok{{-}C} \StringTok{"schueler@example.com"}
+\end{Highlighting}
+\end{Shaded}
+
+Als Dateiname \emph{schule} vergeben und die Fragen nach einer
+PassPhrase beide Male mit der Enter-Taste übergehen.
+
+Unter Windows geht das ab Windows 10 mit dem gleichen Befehl aus der
+\emph{cmd.exe} oder \emph{powershell}. Frühere Versionen müssen PuTTYgen
+verwenden -- Anleitung z.B. über KI. Bei der Vorbereitung des Workshops
+hat sich das Erstellen des Schlüsselpaares hier allerdings als ziemlich
+problematisch erwiesen. Mit Standardnamen im Standardordner ging es
+problemlos, bei Angabe eines anderen Namens wurde es kompliziert.
+
+TODO: Überarbeiten Key unter WIndows.
+
+\textbf{Zuschicken der Datei \texttt{schule.pub} per Mail}\\
+Sollte klar sein. Durch die Wahl von \emph{schule} wird das
+Schlüsselpaar auch nicht im versteckten Ordner \texttt{.ssh} angelegt,
+sondern sichtbar direkt unter
+\texttt{c:\textbackslash{}user\textbackslash{}BENUTZER}.
+
+TODO: Das klappt noch nicht
+
+\textbf{Kopieren des Schlüssels}\\
+Der Schlüssel muss aus der eMail in die Datei
+\texttt{/home/git/.ssh/authorized\_keys} eingetragen werden.
+
+TODO: Klappt das über \strg{c}
+
+Die Schüler sollten nun kennwortfrei mit \git arbeiten können.\\
+Beim Einsatz einer Weboberfläche (später im Script) müssen die Schüler
+diesen Schlüssel selbst dort im System registrieren.
+
+\samplestart
+
+\textbf{Hintergrund}\\
+Nach der Anmeldung über ssh wird über die Einstellungen im Benutzerkonto
+entschieden, welche Art von Terminal der Benutzer erhält. Üblich ist die
+\verb+bash, sh, csh, ...+. Wird hier ein \textit{ungültiges} Terminal
+eingetragen, so ist eine Anmeldung auf diese Weise nicht mehr möglich.
+Für \git  spielt diese allerdings keine Rolle, da hierfür das Terminal
+nicht gestartet werden muss. Da trotzdem eine Art von Anmeldung für den
+Zugriff auf \git  erfolgen muss, wird das Public-Key-Verfahren
+verwendet.
+
+Hier muss entschieden werden, wer für die Schlüssel zuständig ist.
+\sampleend
+
+\textbf{Varianten}
+
+\begin{itemize}
+\item
+  Der Lehrer erstellt Schlüsselpaare für die Schüler, die sie auf den
+  verwendeten Geräten (Schule, Zuhause) hinterlegen und die vom Lehrer
+  auf dem Server freigeschaltet werden. Dies kann zu Problemen führen,
+  falls Schüler bereits aus anderen Gründen mit ssh arbeiten und bereits
+  Schlüssel besitzen\footnote{Auch das kann im Prinzip konfiguriert
+    werden, stellt aber höhere Anforderungen an den Benutzer}.
+\item
+  Der Schüler erstellt selbst das Schlüsselpaar oder bringt sein eigenes
+  mit (ausdrücklich NICHT empfohlen, da der Private-Key dann auf einem
+  Schulrechner liegt!). Er muss dann eigenständig seinen Public-Key auf
+  dem Server hinterlegen. Das ist auch problematische, weil der Schüler
+  zunächst das Kennwort für den Benutzer \git besitzen muss. Nach dem
+  Hinterlegen des Schlüssels ist es dann die Aufgabe des Lehrers, den
+  Account zu sperren.
+\item
+  Der Schüler erstellt für die Schule und zuhause unabhängige
+  Schlüsselpaare. In diesem Fall müssen beide Schlüssel auf dem Server
+  als gültig eingetragen werden.
+\end{itemize}
+
+\section{Vorbereitung des Systems}\label{vorbereitung-des-systems}
+
+Nachfolgend wird die Installation eines funktionsfähigen \gitservers
+beschrieben. Bevor man sich an die Installation auf einem Server im
+Internet macht, ist etwas \emph{Training} in einer virtuellen Umgebung
+ganz sinnvoll. Nach Installation und Konfiguration eines Übungsservers
+in VirtualBox sind die Schritte isdentisch. Die Anleitung zur
+Installation von VirtualBox und dem entsprechenden Gastsystems
+\emph{Ubuntu-24.04} befindet sich am Ende des Handouts. Gegebenenfalls
+also zuerst dort fortfahren und dann erst hierher zurückkehren.
+
+\section{Grundkonfiguration}\label{grundkonfiguration}
+
+Alle erforderlichen Konfigurationsschritte erfolgen über ssh im Terminal
+auf dem Server. In der virtuellen Maschine kann dies zwar auch direkt
+aus VirtualBox heraus erfolgen, zum \emph{üben} ist es aber auch hier
+sinnvoll, sich mit ssh auf die VM zu verbinden.
+
+\subsection{SSH-Verbindung}\label{ssh-verbindung}
+
+\textbf{Windows}\\
+Seit einiger Zeit kann auch Windows auch ohne Zusatzsoftware
+SSH-Verbindungen aufbauen. Allerdings unterliegt die \texttt{cmd.exe}
+einigen Einschränkungen (z.B. kopieren von Textinhalten), die bei der
+Verbindung mit Putty besser gelöst sind. Putty kann \href{TODO}{HIER}
+als einzelne Datei heruntergeladen werden. Starten Sie dafür die
+Commandozeile \texttt{cmd.exe} und geben Sie folgenden Befehl ein
+(Benutzer und IP-Adresse müssen bekannt sein, ebenso das Kennwort):
+
+TODO: Unterschied cmd und putty
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh}\NormalTok{ benutzer@ip{-}adresse }
+\end{Highlighting}
+\end{Shaded}
+
+Es erscheint eine Sicherheitsabfrage, die mit \texttt{yes} und
+\texttt{enter} bestätigt werden muss:
+
+TODO: Als Bild einbinden
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{The}\NormalTok{ authenticity of host }\StringTok{\textquotesingle{}try.example.com (38.243.220.195)\textquotesingle{}}\NormalTok{ can}\StringTok{\textquotesingle{}t be established.}
+\StringTok{ED25519 key fingerprint is SHA256:DSeSsfXDL2PkSlLYCt64krg9xa2vNr3og5SBJzZ/WNk.}
+\StringTok{This key is not known by any other names.}
+\StringTok{Are you sure you want to continue connecting (yes/no/[fingerprint])?}
+\end{Highlighting}
+\end{Shaded}
+
+\samplestart
+
+\textbf{Hintergrund}\\
+Der Rechner merkt sich den Fingerabruck des Servers, zu dem die
+Verbindung aufgebaut wurde. Sollte später ein anderer Server diese
+IP-Adresse übernehmen (z.B. Man in the middle), so stimmt der
+Fingerabdruck nicht und es gibt eine Warnung. \sampleend
+
+\textbf{Apple und Linux}\\
+Auch hier erfolgt der Verbindungsaufbau in gleicher Weise direkt aus dem
+Terminal.
+
+Die Eingabe des Kennworts kann je nach Installationsvariante auch ohne
+sichtbare Zeichen erfolgen!
+
+Eine ssh-Verbindung kann auf verschieden Weise wieder abgebaut werden:
+
+\begin{itemize}
+\item
+  brutal, geht aber: Fenster schließen
+\item
+  \texttt{exit()}
+\item
+  \texttt{logout}
+\item
+  \strg{d}
+\end{itemize}
+
+\subsection{Software installieren}\label{software-installieren}
+
+Bei \emph{Ubuntu-24.04} ist in der Standard-Installation die
+Versionsverwaltung \git bereits vorinstalliert und auch der ssh-Server
+sollte bereits funktionieren. Bei gemieteten Installationen muss das
+nicht so sein, ssh sollte aber funktionieren. Für die Verbindung mit ssh
+benötigt man die IP-Adresse. Von einem Mietserver kennt man die Adresse
+im Regelfall, in VirtualBox muss man sie erst im Terminal ermitteln, da
+sie vom DHCP-Server zugewiesen wird.
+
+\samplestart
+
+\textbf{Hinweis}\\
+Falls man \git im Klassenzimmer betreibt (was nicht besonders sinnvoll
+ist) und eine gewisse \emph{Konstanz} in den Unterrichtsverlauf bringen
+möchte, dann sollte der Systemadministrator diese virtuellen Maschine in
+den DHCP-Server eintragen, damit sie immer die gleiche IP-Adresse
+bekommt! \sampleend
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{ip}\NormalTok{ addr show}
+\end{Highlighting}
+\end{Shaded}
+
+Je nach Anbieter des Systems kann die Bildschirmausgabe etwas anders
+aussehen!
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/interfaces.png}}
+
+}
+
+\caption{Interfaces}
+
+\end{figure}%
+
+Der veraltete Befehl \texttt{ifconfig} kann jederzeit nachinstalliert
+werden durch
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo} \AttributeTok{{-}i}           \CommentTok{\# Admin werden}
+\ExtensionTok{apt{-}get}\NormalTok{ update    }\CommentTok{\# Software{-}DB aktualisieren {-} dauert!}
+\ExtensionTok{apt{-}get}\NormalTok{ install net{-}tools  }\CommentTok{\# mit y oder J bestätigen}
+\end{Highlighting}
+\end{Shaded}
+
+\samplestart
+
+\textbf{Hinweis}\\
+Zum Installieren von Software gibt es auf Linux verschiedene Programme:
+\texttt{apt,\ apt-get,\ aptitude,\ snap,\ flatpak,\ appimages,\ ...}.
+Eine detaillierte Beschreibung ginge hier zu weit. In diesem Workshop
+wird nur mit \texttt{apt,\ apt-get} und \texttt{aptitude} gearbeitet.
+Diese drei Programme verwenden die gleiche Datenbank für verfügbare
+Software und sind somit weitgehend identisch. \texttt{Aptitude} verfügt
+über eine -- für mich -- schönere Suchfunktion. Aus diesem Grund
+installieren wir es hier gleich nach. \sampleend
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt{-}get}\NormalTok{ install aptitude }\AttributeTok{{-}y}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Check auf installiertes git}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git} \AttributeTok{{-}{-}version}
+\end{Highlighting}
+\end{Shaded}
+
+Falls eine Fehlermeldung erscheint, muss \git noch installiert werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt}\NormalTok{ update }
+\ExtensionTok{apt}\NormalTok{ get install git }\AttributeTok{{-}y}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Firewall}\label{firewall}
+
+Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
+Den Status erfragt man mit \texttt{ufw\ status}. Hierbei steht
+\texttt{ufw} für \emph{uncomplicated firewall}. Bei Änderungen an der
+Firewall immer Vorsicht walten lassen! Man kann sich aussperren!
+
+\textbf{Ablauf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{IN:}\NormalTok{   ufw status}
+\ExtensionTok{OUT:}\NormalTok{  Status: inactive}
+
+\ExtensionTok{IN:}\NormalTok{   ufw allow ssh }
+\ExtensionTok{OUT:}\NormalTok{  Rules updated}
+      \ExtensionTok{Rules}\NormalTok{ updated }\ErrorTok{(}\ExtensionTok{v6}\KeywordTok{)}
+
+\ExtensionTok{IN:}\NormalTok{   ufw enable}
+\ExtensionTok{OUT:}\NormalTok{  Command may disrupt existing ssh connections. }
+      \ExtensionTok{Proceed}\NormalTok{ with operation }\ErrorTok{(}\ExtensionTok{y}\KeywordTok{|}\ExtensionTok{n}\KeywordTok{)}\ExtensionTok{?}
+\ExtensionTok{IN:}\NormalTok{   y}
+\ExtensionTok{OUT:}\NormalTok{  Firewall is active and enabled on system startup}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Ordner für Repository}\label{ordner-fuxfcr-repository}
+
+Wo man diesen im Verzeichnisbaum von Linux anlegt, ist im Prinzip
+unwichtig -- es gibt aber bessere und schlechtere Orte. Der Home-Ordner
+ist keine gute Idee -- besser ist z.B. der Ordner \texttt{/srv}. Dort
+erstellen wir auch gleich ein Demo-Repository:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ /srv }
+\FunctionTok{mkdir}\NormalTok{ repositories}
+\FunctionTok{chown}\NormalTok{ git:git repositories }
+\BuiltInTok{cd}\NormalTok{ repositories}
+\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ demo.git}
+\end{Highlighting}
+\end{Shaded}
+
+Mit diesem Repository werden wir aber erst später arbeiten. Zunächst
+bleiben wir auf dem lokalen Rechner, um die Grundzüge zu lernen.
+
+\bookmarksetup{startatroot}
+
 \chapter{Lokale Arbeit}\label{lokale-arbeit}
 
 Da \git als Serveranwendung bekannt ist, stellt sich die Frage, warum
@@ -411,7 +873,7 @@ einen Totalverlust befürchten zu müssen. Im Vorgriff sei gesagt, dass
 \git im Prinzip nur einen eigenen Ordner für das Projet benötigt und
 hier ist es relativ egal, wo sich dieser Ordner befindet!
 
-\section{Installation}\label{installation}
+\section{Installation}\label{installation-1}
 
 Beginnen wir mit Linux, weil dort der Aufwand am geringsten ist. Hier
 genügt es bei einer Debian-basierenden Version, wenn man im Terminal den
@@ -532,7 +994,45 @@ Editor von Windows, schneller ist es aber direkt im Terminal
 \end{Highlighting}
 \end{Shaded}
 
-include 0180\_client.qmd
+\bookmarksetup{startatroot}
+
+\chapter{Lokaler Rechner}\label{lokaler-rechner}
+
+\section{Vorüberlegung}\label{voruxfcberlegung}
+
+Um mit \git arbeiten zu können, brauchst du eine geeignete
+Client-Software auf deinem Computer\footnote{Diese Aussage ist nur
+  bedingt richtig, weil für manche Szenarien auch eine reine
+  Online-Plattform genügt.}. Viele Entwicklungsumgebungen bringen ihren
+individuellen \git-Client mit, was eine pauschale Behandlung erschwert.
+
+Du Für das Grundverständnis ist es sinnvoll, zuerst mit dem reinen
+\git-Client im Terminal zu arbeiten. Später spricht allerdings nichts
+dagegen, auch mit grafischen Systemen zu arbeiten.
+
+\section{Installation von Git}\label{installation-von-git}
+
+Bei der Installation von \git werden auf jedem Betriebssystem
+automatisch Client und Server installiert. Bei Linux und MacOS
+verwendest du dann das Terminal, auf Windows heißt das Programm
+\git-Bash.\\
+Es handelt es sich dabei um eine extrem abgespeckte Linux-Umgebung, so
+dass wir in jedem Fall die Grundbefehle im Terminal besprechen müssen.
+
+Lade von \href{https://gitforwindows.org}{gitforwindows.org} die
+Installationsdatei herunter, beginne aber noch nicht mit der
+Installation!
+
+Lade von
+\href{https://notepad-plus-plus.org/downloads/}{notepad-plus-plus.org}
+den Editor \emph{notepad++} herunter und installiere das Programm. Du
+wirst bei der Installation von \git nach diesem Programm gefragt!
+
+Starte nun die Installation von \git durch Doppelklick auf die
+Installationsdatei. Die nachfolgenden Bilder zeigen den Ablauf in der
+Version vom Februar 2025.
+
+TODO: Bilder
 
 \bookmarksetup{startatroot}
 
@@ -1466,7 +1966,7 @@ folgenden Befehl verwenden:
 
 Wechsle in das Fortbildungsfenster
 
-\phantomsection\label{annotated-cell-48}%
+\phantomsection\label{annotated-cell-60}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -1499,7 +1999,7 @@ Empfohlener Befehl \texttt{git\ add\ story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-49}%
+\phantomsection\label{annotated-cell-61}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -1555,7 +2055,7 @@ Für dich bedeutet das nun das Abarbeiten folgende Schritte:
   Checke den Status: \cmd{git status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-50}%
+\phantomsection\label{annotated-cell-62}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -1621,7 +2121,7 @@ erkennen:
 
 TODO: Neu aufbauen
 
-\phantomsection\label{annotated-cell-53}%
+\phantomsection\label{annotated-cell-65}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -2804,7 +3304,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-94}%
+\phantomsection\label{annotated-cell-106}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -3106,12 +3606,7 @@ was du angegeben hast! Das ist eine Fehlerquelle!
 Zunächst sind Branches lokal und werden beim \cmd{git push} auch nicht
 auf den Server übertragen.
 
-\bookmarksetup{startatroot}
-
-\chapter{\texorpdfstring{Ein minimaler
-\git-Server}{Ein minimaler -Server}}\label{ein-minimaler--server}
-
-\section{Zu klärende Fragen}\label{zu-kluxe4rende-fragen}
+\section{Zu klärende Fragen}\label{zu-kluxe4rende-fragen-1}
 
 Ein einfacher \git-Server ist lediglich ein Server mit einer
 rudimentären Installation von \git und einer Erreichbarkeit über das
@@ -3166,7 +3661,7 @@ Zuordnung zum echten Schüler.
 
 Hierfür gibt es keine perfekte Lösung.
 
-\section{Nur git}\label{nur-git}
+\section{Nur git}\label{nur-git-1}
 
 Wenn ein Schüler nur \git verwenden soll, dann braucht er kein
 vollwertiges Benutzerkonto, an dem er sich auch für andere Arbeiten
@@ -3187,7 +3682,7 @@ Nachfolgend sind dann diese Schritte nötig:
   \texttt{/home/git/.ssh/authorized\_keys} ein.
 \end{itemize}
 
-\subsection{Detaillierte Anleitung}\label{detaillierte-anleitung}
+\subsection{Detaillierte Anleitung}\label{detaillierte-anleitung-1}
 
 \textbf{Benutzer anlegen}
 
@@ -3289,7 +3784,7 @@ Hier muss entschieden werden, wer für die Schlüssel zuständig ist.
   als gültig eingetragen werden.
 \end{itemize}
 
-\section{Vorbereitung des Systems}\label{vorbereitung-des-systems}
+\section{Vorbereitung des Systems}\label{vorbereitung-des-systems-1}
 
 Nachfolgend wird die Installation eines funktionsfähigen \gitservers
 beschrieben. Bevor man sich an die Installation auf einem Server im
@@ -3300,14 +3795,14 @@ Installation von VirtualBox und dem entsprechenden Gastsystems
 \emph{Ubuntu-24.04} befindet sich am Ende des Handouts. Gegebenenfalls
 also zuerst dort fortfahren und dann erst hierher zurückkehren.
 
-\section{Grundkonfiguration}\label{grundkonfiguration}
+\section{Grundkonfiguration}\label{grundkonfiguration-1}
 
 Alle erforderlichen Konfigurationsschritte erfolgen über ssh im Terminal
 auf dem Server. In der virtuellen Maschine kann dies zwar auch direkt
 aus VirtualBox heraus erfolgen, zum \emph{üben} ist es aber auch hier
 sinnvoll, sich mit ssh auf die VM zu verbinden.
 
-\subsection{SSH-Verbindung}\label{ssh-verbindung}
+\subsection{SSH-Verbindung}\label{ssh-verbindung-1}
 
 \textbf{Windows}\\
 Seit einiger Zeit kann auch Windows auch ohne Zusatzsoftware
@@ -3368,7 +3863,7 @@ Eine ssh-Verbindung kann auf verschieden Weise wieder abgebaut werden:
   \strg{d}
 \end{itemize}
 
-\subsection{Software installieren}\label{software-installieren}
+\subsection{Software installieren}\label{software-installieren-1}
 
 Bei \emph{Ubuntu-24.04} ist in der Standard-Installation die
 Versionsverwaltung \git bereits vorinstalliert und auch der ssh-Server
@@ -3452,7 +3947,7 @@ Falls eine Fehlermeldung erscheint, muss \git noch installiert werden:
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Firewall}\label{firewall}
+\subsection{Firewall}\label{firewall-1}
 
 Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
 Den Status erfragt man mit \texttt{ufw\ status}. Hierbei steht
@@ -3478,7 +3973,7 @@ Firewall immer Vorsicht walten lassen! Man kann sich aussperren!
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Ordner für Repository}\label{ordner-fuxfcr-repository}
+\subsection{Ordner für Repository}\label{ordner-fuxfcr-repository-1}
 
 Wo man diesen im Verzeichnisbaum von Linux anlegt, ist im Prinzip
 unwichtig -- es gibt aber bessere und schlechtere Orte. Der Home-Ordner
@@ -4082,7 +4577,7 @@ Schicht weiter, ab der Änderungen am Image vorgenommen wurden (weitere
 Software, Dateiänderungen, \ldots). Auf diese Weise wird viel weniger
 Zeit benötigt, als bei einer komplett neuen Erstellung!
 
-\section{Installation}\label{installation-1}
+\section{Installation}\label{installation-2}
 
 Die Befehle befinden sich auch bei den Kursmaterialien!
 
@@ -4320,7 +4815,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-154}%
+\phantomsection\label{annotated-cell-166}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -4380,7 +4875,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-156}%
+\phantomsection\label{annotated-cell-168}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -4414,7 +4909,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-157}%
+\phantomsection\label{annotated-cell-169}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -4486,7 +4981,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-159}%
+\phantomsection\label{annotated-cell-171}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -4829,6 +5324,1195 @@ git commit -m "erledigt"
 \ControlFlowTok{done}
 \end{Highlighting}
 \end{Shaded}
+
+\bookmarksetup{startatroot}
+
+\chapter{CI/CD -- Vom Commit bis zum laufenden
+System}\label{cicd-vom-commit-bis-zum-laufenden-system}
+
+Stell Dir vor, ein Entwicklerteam arbeitet gemeinsam an einer Anwendung.
+Mehrmals täglich werden neue Funktionen hinzugefügt, Fehler behoben oder
+kleine Anpassungen vorgenommen. Damit all diese Änderungen zuverlässig
+und ohne Chaos zusammengeführt werden können, braucht es mehr als nur
+gutes Teamwork -- es braucht klare Prozesse und Automatisierung. Genau
+hier kommt CI/CD ins Spiel.
+
+CI/CD steht für Continuous Integration und Continuous Delivery (oder
+Deployment) -- also für die kontinuierliche Integration und Auslieferung
+von Software. Ziel ist es, dass Codeänderungen schnell, sicher und
+nachvollziehbar vom Entwicklerrechner in die fertige Anwendung überführt
+werden können.
+
+Im ersten Schritt, der Continuous Integration (CI), werden alle
+Änderungen regelmäßig in ein gemeinsames Git-Repository eingespielt.
+Anstatt große, unübersichtliche Updates zu veröffentlichen, integrieren
+Entwickler kleine, überschaubare Änderungen. Diese werden automatisch
+gebaut, getestet und überprüft -- so fällt sofort auf, wenn etwas nicht
+funktioniert. Git spielt hier eine zentrale Rolle, weil es die Grundlage
+für Versionskontrolle, Branches und das Zusammenführen von Code bildet.
+
+Der zweite Schritt, die Continuous Delivery (CD), sorgt dafür, dass die
+geprüfte Software jederzeit bereit ist, ausgeliefert zu werden -- zum
+Beispiel auf einem Testsystem oder sogar direkt in die Produktion.
+Automatisierte Prozesse übernehmen das Bauen, Testen und Bereitstellen
+der Anwendung. So wird vermieden, dass manuelle Schritte zu Fehlern
+führen oder wertvolle Zeit kosten.
+
+CI/CD ist also weit mehr als nur ein technisches Konzept -- es ist eine
+Arbeitsweise. Entwicklerinnen und Entwickler gewinnen durch
+Automatisierung Sicherheit und Freiraum: Sie können sich stärker auf den
+Inhalt ihrer Arbeit konzentrieren, statt auf das „Wie`` des Deployments.
+Teams werden dadurch effizienter, und Software kann in kleineren,
+stabileren Schritten wachsen.
+
+Im Zusammenspiel mit Git entsteht so ein durchgängiger
+Entwicklungsfluss: Vom Commit über die automatische Prüfung bis hin zur
+bereitgestellten Anwendung. CI/CD bildet damit das Rückgrat moderner
+Entwicklungsprozesse -- und ist ein Schlüsselkonzept, das jede
+Git-Nutzerin und jeder Git-Nutzer verstehen sollte.
+
+Wir werden dieses Konzept nur am Beispiel eines winzigen Java-Programms
+durchspielen, da bereits im Vorfeld neben \git diverse andere
+Voraussetzungen klären müssen:
+
+\begin{itemize}
+\tightlist
+\item
+  TDD (Test-Driven-Development)
+\item
+  Arbeiten mit einem Build-System (Maven)
+\item
+  Anbinden an \git via Docker
+\end{itemize}
+
+\href{https://www.digitalocean.com/community/tutorials/install-maven-linux-ubuntu}{Tutorial
+auf digitalocean.com}
+
+\section{CI -- Einstieg}\label{ci-einstieg}
+
+Im Prinzip geht es um die Automatisierung von Abläufen, sobald ein
+bestimmter Stand in der Entwicklung erreicht ist. Wir spielen das nun an
+einem Minimalbeispiel durch und besprechen auch die Probleme, die (aus
+meiner Sicht) dabei auftreten.
+
+Um die Abläufe einfach zu halten, arbeiten wir direkt mit \gitlab auf
+der Weboberfläche -- das setzt einen Account voraus!
+
+\textbf{Schritt 1}\\
+Erstellen eines leeren Repositories auf \gitlab.\\
+Der Name ist aktuell egal. Beim Initialisieren kann eine Readme erstellt
+werden -- das stört nicht!
+
+\textbf{Schritt 2}\\
+Anlegen der folgenden Ordnerstruktur:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{src/main/java/de/alp/kurs}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Schritt 3}\\
+Erstellen der Datei \datei{Demo.java} mit folgendem Inhalt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{package}\NormalTok{ de.alp.kurs}\KeywordTok{;}
+\ExtensionTok{class}\NormalTok{ Demo \{}
+    \ExtensionTok{public}\NormalTok{ static void main}\ErrorTok{(}\ExtensionTok{String}\NormalTok{ [] args}\KeywordTok{)} \KeywordTok{\{}
+        \ExtensionTok{System.out.println}\ErrorTok{(}\StringTok{"Willkommen zum CI/CD {-} Workshop!"}\KeywordTok{);}
+    \KeywordTok{\}}
+\ErrorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Schritt 4}\\
+Erstellen einer Datei mit einer Datei, die unbedingt den Namen
+\datei{.gitlab-ci.yml} tragen muss.\\
+Für den Anfang genügt folgender Inhalt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{stages:}
+    \ExtensionTok{{-}}\NormalTok{ build}
+    \ExtensionTok{{-}}\NormalTok{ test }
+    \ExtensionTok{{-}}\NormalTok{ deploy }
+
+\ExtensionTok{ausgabe\_1:}
+    \ExtensionTok{stage:}\NormalTok{ build }
+    \ExtensionTok{script:}\NormalTok{ echo }\StringTok{"Ich bin die erste Ausgabe"}
+\end{Highlighting}
+\end{Shaded}
+
+Ja -- das hat mit Java noch nichts zu tun, das kommt aber bald. Aktuell
+siehst du in der \datei{.gitlab-ci.yml} lediglich zwei Abschnitte:
+
+\begin{itemize}
+\tightlist
+\item
+  stages
+\item
+  ausgabe\_1
+\end{itemize}
+
+(Beachte die Konventionen für \emph{yml} Dateien in Bezug auf die
+Einrückung mit Leerzeichen.)
+
+Der Abschnitt \emph{stages} ist verbindlich und beschreibt mögliche
+Namen für (Pipeline)Schritte, die abgearbeitet werden sollen. Die Namen
+sind frei wählbar (im Sinne gültiger Variablennamen).
+
+Der Abschnitt \emph{ausgabe\_1} stellt einen \emph{Job} dar, der
+ausgeführt wird, wenn sich das System im Pipline-Schritt \emph{build}
+befindet. Es können weitere Jobs angelegt werden, die duch das
+Schlüsselwort \emph{stage} den einzelnen Pipeline-Schritten zuordenbar
+sind.
+
+Das Schlüsselwort \emph{script} leitet die auszuführenden Befehle ein.
+Bei mehr als einem Befehl lautet die Syntax:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{script:}
+    \ExtensionTok{{-}}\NormalTok{ befehl 1}
+    \ExtensionTok{{-}}\NormalTok{ befehl 2}
+    \ExtensionTok{{-}}\NormalTok{ befehl 3}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Schritt 5}\\
+Das Speichern der Datei entspricht einem Commit und triggert dabei die
+Pipeline. Den Fortschritt siehst du im Menü am linken Rand im Abschnitt
+\emph{Build} und dort \emph{Pipelines}.
+
+Klickst du auf das Symbol des laufenden (oder beendeten) Jobs, so kannst
+du die Bildschirmausgabe des laufenden Docker-Containers sehen.
+
+Vorher habe ich von \emph{Problemen} gesprochen. Je nachdem, wie schnell
+du das entsprechende Menü gefunden hast, lief der Job eventuell noch.
+Das liegt daran, dass hier standardmäßig ein komplettes Docker-Image
+heruntergeladen werden muss, und das dauert (unverhältnismäßig) lange
+für einen derartig winzigen Job. Häufige Commits führen jedes Mal zu
+einem Download des Docker-Images. Da in der kostenlosen Version von
+\gitlab die monatlich Zeit für die Ausführung von Piplines gedeckelt
+ist, kann das zu Engpässen führen!
+
+Es gibt hierfür verschiedene Lösungsansätze:
+
+\begin{itemize}
+\tightlist
+\item
+  Zeit kaufen
+\item
+  \gitlab selbst hosten
+\item
+  Den Docker-Aspekt auf einen anderen Rechner auslagern.
+\end{itemize}
+
+Wenn du vor dem selbst hosten zurückschreckst, bleibt dir nur die dritte
+Option. Hierfür musst du einen sogenannten \emph{Runner} und den
+zugehörigen \emph{Agent} auf deinem eigenen Rechner installieren und
+dort auch die benötigte Infrastruktur (z.B. Docker oder die
+Build-Umgebung). Der Agent führt in konfigurierbaren Abständen Anfragen
+bei \gitlab aus um auf das Vorhandensein von neuen Jobs zu testen. Das
+ist zwar etwas unelegant, löst aber das Problem der Erreichbarakeit des
+eigenen Rechners aus dem Internet -- also der Kontaktaufnahme von Seiten
+von \gitlab.
+
+\section{Bezug zu Java}\label{bezug-zu-java}
+
+Nun baust du die Datei \datei{.gitlab-ci.yml} so aus, dass
+
+\begin{itemize}
+\tightlist
+\item
+  die Datei \datei{Demo.java} beim Commit automatisch übersetzt wird
+\item
+  die fertige Klasse zum Download steht
+\end{itemize}
+
+\samplestart
+
+\textbf{Hinweis}\\
+Natürlich fragst du dich, wofür dieser Aufwand gerechtfertigt ist, wo du
+das Compilieren doch einfach auf deinem Rechner ausführen kannst.\\
+Da hast du Recht! Allerdings nur bei unserem Mini-Projekt. Wenn es um
+große Projekte mit mehreren Mitarbeitenden geht, die an verschiedenen
+Branches arbeiten, \ldots{} da geht es beim Commit darum, ob z.B. das
+gesamte Projekt übersetzbar ist und zwar nicht in der kleines Welt des
+lokalen Entwicklungsrechners sondern auch auf der Zielplattform. Das
+trifft im Besondern dann zu, wenn anschließend Tests ausgeführt werden
+und eventuell sogar die Version des Kunden automatisch ausgreollt werden
+soll.
+
+Fazit: Für uns absolut überdimensioniert, im Praxiseinsatz aber absolut
+üblich. \sampleend
+
+Erweitere nun die \datei{.gitlab-ci.yml} so:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{stages:}
+    \ExtensionTok{{-}}\NormalTok{ build}
+
+\ExtensionTok{compile{-}java{-}with{-}javac:}
+    \ExtensionTok{stage:}\NormalTok{ build}
+    \ExtensionTok{image:}\NormalTok{ eclipse{-}temurin:17{-}jdk}
+    \ExtensionTok{script:}
+        \ExtensionTok{{-}}\NormalTok{ javac src/main/java/de/alp/kurs/}\PreprocessorTok{*}\NormalTok{.java }\AttributeTok{{-}d}\NormalTok{ target/}
+        \ExtensionTok{{-}}\NormalTok{ cd target}
+        \ExtensionTok{{-}}\NormalTok{ java de.alp.kurs.Demo}
+    \ExtensionTok{artifacts:}
+        \ExtensionTok{paths:}\NormalTok{ de/alp/kurs/Demo.class }
+\end{Highlighting}
+\end{Shaded}
+
+Das verwendete Dockerimage \datei{eclipse-temurin:17-jdk} hat einen
+etwas seltsamen Namen und dieser kann sich im Lauf der Zeit auch ändern.
+Im Zweifelsfall musst du hier etwas auf DockerHub recherchieren.
+
+Die fertige Class-Datei wird dann als Zip-Archiv auf der Seite mit den
+Pipelines (rechter Rand) zum Dowmload gestellt.
+
+\section{Komplexere Szenarien}\label{komplexere-szenarien}
+
+Sobald die Projekte umfangreicher werden, ist dieser eher manuelle
+Kompilieransatz und das Testen auf diesem Weg schnell zu komplex. Dafür
+gibt es Build-Tools wie Gradle oder \maven. Letzteres wollen wir näher
+betrachten. Für einen ersten Vorgeschmack erstellst du die Datei
+\datei{pom.xml} im Haupt-Ordner (also oberhalb von \ordner{scr}):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{\textless{}}\NormalTok{project}\OperatorTok{\textgreater{}}
+  \OperatorTok{\textless{}}\NormalTok{modelVersion}\OperatorTok{\textgreater{}}\NormalTok{4.0.0}\OperatorTok{\textless{}}\NormalTok{/modelVersion}\OperatorTok{\textgreater{}}
+  \OperatorTok{\textless{}}\NormalTok{groupId}\OperatorTok{\textgreater{}}\NormalTok{de.alp.kurs}\OperatorTok{\textless{}}\NormalTok{/groupId}\OperatorTok{\textgreater{}}
+  \OperatorTok{\textless{}}\NormalTok{artifactId}\OperatorTok{\textgreater{}}\NormalTok{demo}\OperatorTok{\textless{}}\NormalTok{/artifactId}\OperatorTok{\textgreater{}}
+  \OperatorTok{\textless{}}\NormalTok{version}\OperatorTok{\textgreater{}}\NormalTok{1.0{-}SNAPSHOT}\OperatorTok{\textless{}}\NormalTok{/version}\OperatorTok{\textgreater{}}
+  \OperatorTok{\textless{}}\NormalTok{properties}\OperatorTok{\textgreater{}}
+    \OperatorTok{\textless{}}\NormalTok{maven.compiler.source}\OperatorTok{\textgreater{}}\NormalTok{17}\OperatorTok{\textless{}}\NormalTok{/maven.compiler.source}\OperatorTok{\textgreater{}}
+    \OperatorTok{\textless{}}\NormalTok{maven.compiler.target}\OperatorTok{\textgreater{}}\NormalTok{17}\OperatorTok{\textless{}}\NormalTok{/maven.compiler.target}\OperatorTok{\textgreater{}}
+  \OperatorTok{\textless{}}\NormalTok{/properties}\OperatorTok{\textgreater{}}
+\OperatorTok{\textless{}}\NormalTok{/project}\OperatorTok{\textgreater{}}
+\end{Highlighting}
+\end{Shaded}
+
+Für den Einsatz von \maven baust du die \datei{.gitlab-ci.yml} so um:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{stages:}
+  \ExtensionTok{{-}}\NormalTok{ build}
+
+\ExtensionTok{compile{-}java{-}with{-}maven:}
+  \ExtensionTok{stage:}\NormalTok{ build}
+  \ExtensionTok{image:}\NormalTok{ maven:latest}
+  \ExtensionTok{script:}
+    \ExtensionTok{{-}}\NormalTok{ mvn compile}
+    \ExtensionTok{{-}}\NormalTok{ ls target/classes/de/alp/kurs}
+    \ExtensionTok{{-}}\NormalTok{ cd target/classes}
+    \ExtensionTok{{-}}\NormalTok{ java de.alp.kurs.Demo}
+\end{Highlighting}
+\end{Shaded}
+
+Mit dem Speichern wird das \emph{Projekt} durch \maven erstellt und auch
+probeweise ausgeführt.
+
+Im nächsten Abschnitt werfen wir einen genaueren Blick auf \maven.
+
+\section{Maven}\label{maven}
+
+\subsection{Was ist Maven}\label{was-ist-maven}
+
+Bei Maven handelt es sich um ein Build-Tool, wie es viele gibt und gab
+(z.B. Ant). Mit seiner Hilfe können bei entsprechender Konfiguration
+viele lästige Kleinigkeiten im Entwicklungsprozess automatisiert werden
+-- z.B. Tests und die Verwaltung von Abhängigkeiten. Da dieses Tool bei
+CI/CD absolut üblich ist, brauchst du zumindest ein oberflächliches
+Grundverständnis.
+
+\subsection{Voraussetzungen}\label{voraussetzungen}
+
+Dass ein JDK installiert sein muss, sollte klar sein, denn es soll ja
+mit Java programmiert werden. Natürlich gibt es wieder Unterschiede
+zwischen Linux, Apple und Windows.
+
+\subsection{Anleitung}\label{anleitung}
+
+\subsubsection*{Windows}\label{windows}
+\addcontentsline{toc}{subsubsection}{Windows}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Java installieren}
+\end{enumerate}
+
+Installiere das gewünschte JDK (z.\,B. Oracle JDK, Temurin).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\item
+  \textbf{JAVA\_HOME setzen}
+
+  \begin{itemize}
+  \item
+    Öffne die Systemeinstellungen:
+    \texttt{Systemeigenschaften\ -\textgreater{}\ Erweiterte\ Systemeinstellungen\ -\textgreater{}\ Umgebungsvariablen}
+  \item
+    Unter \textbf{Systemvariablen} auf \textbf{Neu\ldots{}} klicken
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Name: \texttt{JAVA\_HOME}
+    \item
+      Wert: Pfad zum JDK, z.\,B.:
+      \datei{C:\\Program Files\\Java\\jdk-17.0.9}
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{PATH anpassen}
+\end{enumerate}
+
+Systemvariable \texttt{Path} bearbeiten und hinzufügen:
+\textbackslash datei\{\%JAVA\_HOME\%\textbackslash bin\}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \textbf{Überprüfen}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{java} \AttributeTok{{-}version}
+\BuiltInTok{echo}\NormalTok{ \%JAVA\_HOME\%}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection*{Linux}\label{linux}
+\addcontentsline{toc}{subsubsection}{Linux}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Java installieren}
+\end{enumerate}
+
+Installiere ein JDK über den Paketmanager (z.\,B. Ubuntu/Debian):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo}\NormalTok{ apt update}
+\FunctionTok{sudo}\NormalTok{ apt install openjdk{-}17{-}jdk}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{JAVA\_HOME systemweit setzen}
+\end{enumerate}
+
+Erstelle eine neue Datei \datei{/etc/profile.d/java.sh} mit folgendem
+Inhalt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{export} \VariableTok{JAVA\_HOME}\OperatorTok{=}\VariableTok{$(}\FunctionTok{dirname} \VariableTok{$(}\FunctionTok{dirname} \VariableTok{$(}\FunctionTok{readlink} \AttributeTok{{-}f} \VariableTok{$(}\FunctionTok{which}\NormalTok{ java}\VariableTok{))))}
+\BuiltInTok{export} \VariableTok{PATH}\OperatorTok{=}\VariableTok{$JAVA\_HOME}\NormalTok{/bin:}\VariableTok{$PATH}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Datei ausführbar machen:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo}\NormalTok{ chmod +x /etc/profile.d/java.sh}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Überprüfen}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{source}\NormalTok{ /etc/profile.d/java.sh}
+\ExtensionTok{java} \AttributeTok{{-}version}
+\BuiltInTok{echo} \VariableTok{$JAVA\_HOME}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection*{macOS}\label{macos}
+\addcontentsline{toc}{subsubsection}{macOS}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Java installieren}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Lade ein JDK herunter (z.\,B. Temurin, Oracle) und installiere es.
+  \item
+    Standard-Installationspfad:
+    \datei{/Library/Java/JavaVirtualMachines/}.
+  \end{itemize}
+\item
+  \textbf{JAVA\_HOME systemweit setzen}
+\end{enumerate}
+
+Über \cmd{launchctl} für GUI-Apps und neue Terminalfenster:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo}\NormalTok{ launchctl setenv JAVA\_HOME }\VariableTok{$(}\ExtensionTok{/usr/libexec/java\_home} \AttributeTok{{-}v}\NormalTok{ 17}\VariableTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Optional für Shells, die beim Login starten (\datei{~/.zshrc} oder
+\datei{/etc/profile}):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{export} \VariableTok{JAVA\_HOME}\OperatorTok{=}\VariableTok{$(}\ExtensionTok{/usr/libexec/java\_home} \AttributeTok{{-}v}\NormalTok{ 17}\VariableTok{)}
+\BuiltInTok{export} \VariableTok{PATH}\OperatorTok{=}\VariableTok{$JAVA\_HOME}\NormalTok{/bin:}\VariableTok{$PATH}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Überprüfen}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{java} \AttributeTok{{-}version}
+\BuiltInTok{echo} \VariableTok{$JAVA\_HOME}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Installation von Maven}\label{installation-von-maven}
+
+\subsubsection{Linux}\label{linux-1}
+
+Eine Installation über den Paketmanager ist möglich, liefert aber
+wahrscheinlich eine veraltete Version. Am einfachsten dürfte dann wohl
+die Verwendung eines Hilfs-Scriptes sein:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{curl} \AttributeTok{{-}s} \StringTok{"https://get.sdkman.io"} \KeywordTok{|} \FunctionTok{bash}
+\BuiltInTok{source} \StringTok{"}\VariableTok{$HOME}\StringTok{/.sdkman/bin/sdkman{-}init.sh"}
+\end{Highlighting}
+\end{Shaded}
+
+Ab jetzt kann mit nachfolgendem Befehl genau die (aktuell) gewünschte
+Maven-Version installiert und verwendet werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{sdk}\NormalTok{ install maven 3.9.9}
+\end{Highlighting}
+\end{Shaded}
+
+Zur Kontrolle genügt dann ein
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{mvn} \AttributeTok{{-}{-}version} 
+\end{Highlighting}
+\end{Shaded}
+
+(Tipp: \cmd{sdk list maven})
+
+\subsubsection*{Windows}\label{windows-1}
+\addcontentsline{toc}{subsubsection}{Windows}
+
+TODO
+
+\subsubsection*{Apple}\label{apple}
+\addcontentsline{toc}{subsubsection}{Apple}
+
+TODO
+
+\subsection{Erster Test}\label{erster-test}
+
+(Auf Linux)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ /tmp}
+\FunctionTok{mkdir}\NormalTok{ maven{-}hello{-}world}
+\BuiltInTok{cd}\NormalTok{ maven{-}hello{-}world}
+\ExtensionTok{mvn}\NormalTok{ archetype:generate }\AttributeTok{{-}DgroupId}\OperatorTok{=}\NormalTok{com.example }\DataTypeTok{\textbackslash{}}
+                       \AttributeTok{{-}DartifactId}\OperatorTok{=}\NormalTok{hello{-}world }\DataTypeTok{\textbackslash{}}
+                       \AttributeTok{{-}DarchetypeArtifactId}\OperatorTok{=}\NormalTok{maven{-}archetype{-}quickstart }\DataTypeTok{\textbackslash{}}
+                       \AttributeTok{{-}DinteractiveMode}\OperatorTok{=}\NormalTok{false}
+\BuiltInTok{cd}\NormalTok{ hello{-}world/}
+\ExtensionTok{mvn}\NormalTok{ compile}
+\ExtensionTok{mvn}\NormalTok{ package}
+\ExtensionTok{java} \AttributeTok{{-}cp}\NormalTok{ target/hello{-}world{-}1.0{-}SNAPSHOT.jar com.example.App}
+\end{Highlighting}
+\end{Shaded}
+
+Wir sehen noch einige typische Warnungen, die auf eine falsche
+Parameterisierung in der \datei{pom.xml} hinweisen -- dazu später mehr.
+
+\subsection{Konventionen}\label{konventionen}
+
+Maven erwartet eine bestimmte Verzeichnisstruktur und auch entsprechende
+Namenskonventionen (Du musst das nicht per Hand anlegen, da gibt es
+Hilfs-Scripts!)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\ExtensionTok{TREE}
+\end{Highlighting}
+\end{Shaded}
+
+Direkt nach dem Erstellen des Projektes existieren noch nicht alle
+Ordner. Sie werden bei Bedarf dynmaisch von Maven angelegt.
+
+\subsection{Idee}\label{idee-1}
+
+Maven kennt sogenannte Livecyles. Damit sind bestimmte Abfolgen von
+Abläufen gemeint, die Maven ausführt.
+
+Es gibt folgende Befehle:
+
+\begin{itemize}
+\tightlist
+\item
+  validate (macht nichts)
+\item
+  compile (führt zuerst validate aus)
+\item
+  test (führt zuerst validate und compile aus)
+\item
+  package (erzeugt jars)
+\item
+  verify (macht nichts)
+\item
+  deploy (macht nicht das, nach was es klingt!)
+\end{itemize}
+
+Beim ersten Aufruf werden alle Abhängigkeiten von einem Repo im Internet
+in einen Cache im Home des Benutzers geladen.
+
+Beim ersten Aufruf von \emph{compile} wird auch das
+\emph{target}Verzeichnis erstellt.
+
+Beim Nachladen der Dependencies kann es passieren, dass das
+entsprechende JAR online nicht gefunden wurde (weil es nie hochgeladen
+wurde und deshalb einfach nicht existiert). Derartige (also eigene) jars
+muss man selbst in den Cache \emph{.m2} einpflegen, damit Maven sie
+verwenden kann.
+
+Im Ordner liegt eine Ordnerstruktur vor, nach producktID, Version,
+\ldots, in der man selbst Ordner erstellen kann. Im Prinzip macht das
+auch Maven, wenn man \emph{install} aufruft.
+
+(https://www.youtube.com/watch?v=T00NKLQvwYE) - Windows-lastig
+
+\bookmarksetup{startatroot}
+
+\chapter{TDD - Test Driven
+Development}\label{tdd---test-driven-development}
+
+(Video mit Intellij: https://www.youtube.com/watch?v=eMU\_hninZAs)
+
+TDD ist eine sehr strenge Philosophie in Bezug auf den Ablauf bei der
+Software-Entwicklung. Puristen sprechen vom \emph{Red-Green-Refactor}
+Zyklus, der in jedem Fall eingehalten werden muss.
+
+\section{Was versteht man darunter?}\label{was-versteht-man-darunter}
+
+Grob geht es um einen Zyklus von Code schreiben, Code testen, Code
+optimieren, der die Entwicklung -- idealer Weise automatisiert --
+begleitet.
+
+Zum Beginn der Programmentwicklung wird dabei sofort der erste Test
+geschrieben -- einer von sehr sehr vielen im Verlauf der Entwicklung. Er
+testet einen Programmteil, \emph{der aktuell noch nicht existiert} und
+deshalb scheitern muss (Red-Phase). Nun wird die minimale Menge an Code
+geschrieben, damit der Test erfolgreich verläuft (Green-Phase). Nun wird
+das Programm optimiert (refactoring) -- soweit das zu diesem Zeitpunkt
+bereits möglich und sinnvoll ist. Weitere Tests erzwingen Ergänzungen
+und Änderungen am eigentlichen Programm, so dass das Programmieren ein
+ständiger Wechsel zwischen den Phasen Red, Green und Refactoring wird.
+Viele IDEs unterstützen diesen Ablauf aktiv, erstellen also Code zum
+Test (oder anders herum).
+
+Das kann kann zu Situationen führen, die für den Einsteiger in TDD
+befremdlich wirken. Dazu aber nach der Grundkonfiguration.
+
+\section{Grundkonfiguration}\label{grundkonfiguration-2}
+
+Wir starten mit der einfachst möglichen Konfiguration, bestehend aus
+
+\begin{itemize}
+\tightlist
+\item
+  StringFlipper.java = Java-Klasse
+\item
+  StringFlipperTest.java = Testdatei
+\item
+  junit5.jar
+\end{itemize}
+
+Die drei Dateien befinden sich in einem Ordner und können für den
+Workshop aus dem \git-Repository, Ordner \datei{tdd} entnommen werden.
+Die Zip-Datei muss dafür entpackt werden! Es entstehen die oben
+angeführten Dateien. Bei der Datei \datei{junit5.jar} handelt es sich um
+die Version 1.10.0, die von der Maven-Seite geladen werden kann:
+
+\href{https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.0/junit-platform-console-standalone-1.10.0.jar}{maven-junit}
+
+Wir arbeiten nun aus dem Ordner heraus, in dem die Dateien enpackt
+wurden mit dem Terminal.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{javac} \AttributeTok{{-}d}\NormalTok{ . StringFlipper.java StringFlipperTest.java}
+\end{Highlighting}
+\end{Shaded}
+
+Dieser Befehl compiliert die beiden Dateien und erzeugt dabei die
+Ordnerstruktur, die das \emph{Package} repräsentiert:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{.}
+\ExtensionTok{├──}\NormalTok{ de}
+\ExtensionTok{│  }\NormalTok{ └── alp}
+\ExtensionTok{│  }\NormalTok{     └── kurs}
+\ExtensionTok{│  }\NormalTok{         ├── StringFlipper.class}
+\ExtensionTok{│  }\NormalTok{         └── StringFlipperTest.class}
+\end{Highlighting}
+\end{Shaded}
+
+Nun kann die Testklasse ausgeführt werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{java} \AttributeTok{{-}jar}\NormalTok{ junit5.jar }\AttributeTok{{-}{-}class{-}path}\NormalTok{ . }\AttributeTok{{-}{-}scan{-}class{-}path}
+\end{Highlighting}
+\end{Shaded}
+
+Die Ausgabe liefert einen (absichtlich) versagenden Test und etwas
+Statistik:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Failures} \ErrorTok{(}\ExtensionTok{1}\KeywordTok{)}\BuiltInTok{:}
+  \ExtensionTok{JUnit}\NormalTok{ Jupiter:StringFlipperTest:testSwapLastChars}\ErrorTok{(}\KeywordTok{)}
+    \ExtensionTok{MethodSource}\NormalTok{ [className = }\StringTok{\textquotesingle{}de.alp.kurs.StringFlipperTest\textquotesingle{}}\NormalTok{, }
+    \ExtensionTok{methodName}\NormalTok{ = }\StringTok{\textquotesingle{}testSwapLastChars\textquotesingle{}}\NormalTok{, methodParameterTypes = }\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{]}
+    \ExtensionTok{=}\OperatorTok{\textgreater{}}\NormalTok{ org.opentest4j.AssertionFailedError: beabsichtigt}
+       \ExtensionTok{org.junit.jupiter.api.AssertionUtils.fail}\ErrorTok{(}\ExtensionTok{AssertionUtils}
+       \ExtensionTok{.java:38}\KeywordTok{)}
+       \ExtensionTok{org.junit.jupiter.api.Assertions.fail}\ErrorTok{(}\ExtensionTok{Assertions.java:134}\KeywordTok{)}
+       \ExtensionTok{de.alp.kurs.StringFlipperTest.testSwapLastChars}\ErrorTok{(}
+        \ExtensionTok{StringFlipperTest.java:11}\KeywordTok{)}
+       \ExtensionTok{java.base/java.lang.reflect.Method.invoke}\ErrorTok{(}\ExtensionTok{Method.java:580}\KeywordTok{)}
+       \ExtensionTok{java.base/java.util.ArrayList.forEach}\ErrorTok{(}\ExtensionTok{ArrayList.java:1596}\KeywordTok{)}
+       \ExtensionTok{java.base/java.util.ArrayList.forEach}\ErrorTok{(}\ExtensionTok{ArrayList.java:1596}\KeywordTok{)}
+
+\ExtensionTok{Test}\NormalTok{ run finished after 92 ms}
+\BuiltInTok{[}\NormalTok{         4 containers found      }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         0 containers skipped    }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         4 containers started    }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         0 containers aborted    }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         4 containers successful }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         0 containers failed     }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         1 tests found           }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         0 tests skipped         }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         1 tests started         }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         0 tests aborted         }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         0 tests successful      }\BuiltInTok{]}
+\BuiltInTok{[}\NormalTok{         1 tests failed          }\BuiltInTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+In einem Produktionsumfeld sollte die Verzeichnisstruktur etwas
+\emph{aufgeräumter} aussehen, damit Tests und Produktionscode
+voneinander sauber getrennt sind, z.B. so (wir werden später aber mit
+einem anderen Layout arbeiten):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{.}
+\ExtensionTok{├──}\NormalTok{ projekt}
+\ExtensionTok{│  }\NormalTok{ ├── pom.xml}
+\ExtensionTok{│  }\NormalTok{ └── src}
+\ExtensionTok{│  }\NormalTok{     ├── main}
+\ExtensionTok{│  }\NormalTok{     │   └── java}
+\ExtensionTok{│  }\NormalTok{     │       └── de}
+\ExtensionTok{│  }\NormalTok{     │           └── alp}
+\ExtensionTok{│  }\NormalTok{     │               └── kurs}
+\ExtensionTok{│  }\NormalTok{     │                   └── StringFlipper.java}
+\ExtensionTok{│  }\NormalTok{     └── test}
+\ExtensionTok{│  }\NormalTok{         └── java}
+\ExtensionTok{│  }\NormalTok{             └── de}
+\ExtensionTok{│  }\NormalTok{                 └── alp}
+\ExtensionTok{│  }\NormalTok{                     └── kurs}
+\ExtensionTok{│  }\NormalTok{                         └── StringFlipperTest.java}
+\end{Highlighting}
+\end{Shaded}
+
+Bleiben wir aber bei unserem einfachen Lauyout und sehen uns das Testen
+genauer an und zwar die Testklasse. Es geht um eine Funktion, die die
+letzten beiden Buchstaben eines Strings vertauschen soll. Das ist zwar
+relativ unsinnig, dafür aber übersichtlich. Wir können sofort
+identifizieren, welche Fälle als Tests geprüft werden müssen:
+
+\begin{itemize}
+\tightlist
+\item
+  Ein ganz normaler String wie Hallo
+\item
+  Strings der Längen 2, 1, 0
+\end{itemize}
+
+Da TDD von einer Minimalismus-Strategie ausgeht, beginnen wir mit dem
+leeren String. Werfen wir also einen Blick in die Testdatei:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{package}\NormalTok{ de.alp.kurs}\KeywordTok{;}
+
+
+ \ExtensionTok{import}\NormalTok{ org.junit.jupiter.api.Test}\KeywordTok{;}
+ \ExtensionTok{import}\NormalTok{ static org.junit.jupiter.api.Assertions.}\PreprocessorTok{*}\KeywordTok{;}
+
+
+\ExtensionTok{public}\NormalTok{ class StringFlipperTest\{}
+   \ExtensionTok{@Test} 
+   \ExtensionTok{public}\NormalTok{ void testSwapLastChars}\ErrorTok{(}\KeywordTok{)\{}
+      \ExtensionTok{fail}\ErrorTok{(}\StringTok{"beabsichtigt"}\KeywordTok{);}
+   \KeywordTok{\}}
+\ErrorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Der Test soll (nach TDD-Philosophie) Code testen, den es noch nicht gibt
+und deshalb versagen. Wir entfernen die \emph{fail}-Zeile und ersetzen
+sie durch sinnvolleren Inhalt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{@Test}
+\ExtensionTok{public}\NormalTok{ void testSwapLastCcharsInEmptyString}\ErrorTok{(}\KeywordTok{)\{}
+    \ExtensionTok{StringFlipper}\NormalTok{ stringFlipper = new StringFlipper}\ErrorTok{(}\KeywordTok{);}
+    \ExtensionTok{res}\NormalTok{ = stringFlipper}\ErrorTok{(}\StringTok{""}\KeywordTok{);}
+    \ExtensionTok{assertEquals}\ErrorTok{(}\StringTok{""}\ExtensionTok{,}\NormalTok{ res}\KeywordTok{);}
+    \KeywordTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Die Ausführung des Test scheitert wie gewünscht, da die Funktion noch
+nicht existiert. Ändern wir das:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{public}\NormalTok{ String swapChars}\ErrorTok{(}\ExtensionTok{String}\NormalTok{ s}\KeywordTok{)} \KeywordTok{\{}
+        \ControlFlowTok{return} \StringTok{""}\KeywordTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+Minimale Problemlösung -- und wirkt wie eine \emph{Veräppelung}. Dennoch
+ist das absolut ernst gemeint! Schreiben wir den nächsten Test!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{@Test}
+\ExtensionTok{public}\NormalTok{ void testSwapLastTwoCharsOnSingleCharString}\ErrorTok{(}\KeywordTok{)\{}
+    \ExtensionTok{StringFlipper}\NormalTok{ stringFlipper = new StringFlipper}\ErrorTok{(}\KeywordTok{);}
+    \ExtensionTok{String}\NormalTok{ res = stringFlipper.swapChars}\ErrorTok{(}\StringTok{"A"}\KeywordTok{);}
+    \ExtensionTok{assertEquals}\ErrorTok{(}\StringTok{"A"}\ExtensionTok{,res}\KeywordTok{);}
+    \KeywordTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Wir können den Test laufen lassen und beobachten sein Scheitern. Die
+Funktion muss also verfeinert werden. Beim aktuellen Stand wäre das z.B.
+so möglich:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{public}\NormalTok{ String swapChars}\ErrorTok{(}\ExtensionTok{String}\NormalTok{ s}\KeywordTok{)} \KeywordTok{\{}
+    \ControlFlowTok{return} \ExtensionTok{s}\KeywordTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+Beide Tests liefern grünen Status! Probieren wir einen String mit zwei
+Buchstaben.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \ExtensionTok{@Test}
+ \ExtensionTok{public}\NormalTok{ void testSwapLastTwoCharsOnTwoCharString}\ErrorTok{(}\KeywordTok{)\{}
+    \ExtensionTok{StringFlipper}\NormalTok{ stringFlipper = new StringFlipper}\ErrorTok{(}\KeywordTok{);}
+    \ExtensionTok{String}\NormalTok{ res = stringFlipper.swapChars}\ErrorTok{(}\StringTok{"AB"}\KeywordTok{);}
+    \ExtensionTok{assertEquals}\ErrorTok{(}\StringTok{"BA"}\ExtensionTok{,res}\KeywordTok{);}
+    \KeywordTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Der Test scheitert und wir verfeinern die Funktion erneut. Da es sich um
+eine neue Situation handelt, trennen wir die Fälle:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{public}\NormalTok{ String swapChars}\ErrorTok{(}\ExtensionTok{String}\NormalTok{ s}\KeywordTok{)} \KeywordTok{\{}
+    \ExtensionTok{int}\NormalTok{ length = s.length}\ErrorTok{(}\KeywordTok{);}
+    \ControlFlowTok{if} \KeywordTok{(}\ExtensionTok{length} \OperatorTok{\textless{}}\NormalTok{ 2}\KeywordTok{)} \KeywordTok{\{}
+        \ControlFlowTok{return} \ExtensionTok{s}\KeywordTok{;}
+        \KeywordTok{\}}
+    \ExtensionTok{StringBuilder}\NormalTok{ sb = new StringBuilder}\ErrorTok{(}\KeywordTok{);}
+    \ExtensionTok{sb.append}\ErrorTok{(}\ExtensionTok{2}\KeywordTok{);}
+    \ExtensionTok{sb.append}\ErrorTok{(}\ExtensionTok{1}\KeywordTok{);}
+    \ControlFlowTok{return} \FunctionTok{sb.toString()}\KeywordTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+Und wieder \emph{grün}! Nun wollen wir einen vollwertigen String
+probieren!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{@Test}
+    \ExtensionTok{public}\NormalTok{ void testSwapLastTwoCharsOnNormalString}\ErrorTok{(}\KeywordTok{)\{}
+    \ExtensionTok{StringFlipper}\NormalTok{ stringFlipper = new StringFlipper}\ErrorTok{(}\KeywordTok{);}
+    \ExtensionTok{String}\NormalTok{ res = stringFlipper.swapChars}\ErrorTok{(}\StringTok{"Hallo"}\KeywordTok{);}
+    \ExtensionTok{assertEquals}\ErrorTok{(}\StringTok{"Halol"}\ExtensionTok{,res}\KeywordTok{);}
+    \KeywordTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Wieder zum Verfeinern:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{public}\NormalTok{ String swapChars}\ErrorTok{(}\ExtensionTok{String}\NormalTok{ s}\KeywordTok{)} \KeywordTok{\{}
+    \ExtensionTok{int}\NormalTok{ length = s.length}\ErrorTok{(}\KeywordTok{);}
+    \ControlFlowTok{if} \KeywordTok{(}\ExtensionTok{length} \OperatorTok{\textless{}}\NormalTok{ 2}\KeywordTok{)} \KeywordTok{\{}
+        \ControlFlowTok{return} \ExtensionTok{s}\KeywordTok{;}
+        \KeywordTok{\}}
+    \ExtensionTok{StringBuilder}\NormalTok{ sb = new StringBuilder}\ErrorTok{(}\KeywordTok{);}
+    \ControlFlowTok{for} \KeywordTok{(}\ExtensionTok{int}\NormalTok{ i=0}\KeywordTok{;} \ExtensionTok{i} \OperatorTok{\textless{}}\NormalTok{ length{-}2}\KeywordTok{;} \ExtensionTok{i++}\KeywordTok{)\{}
+        \ExtensionTok{sb.append}\ErrorTok{(}\ExtensionTok{s.charAt}\ErrorTok{(}\ExtensionTok{i}\KeywordTok{));}
+    \KeywordTok{\}}
+    \ExtensionTok{sb.append}\ErrorTok{(}\ExtensionTok{s.charAt}\ErrorTok{(}\ExtensionTok{length} \AttributeTok{{-}}\NormalTok{ 1}\KeywordTok{));}
+    \ExtensionTok{sb.append}\ErrorTok{(}\ExtensionTok{s.charAt}\ErrorTok{(}\ExtensionTok{length} \AttributeTok{{-}}\NormalTok{ 2}\KeywordTok{));}
+    \ExtensionTok{String}\NormalTok{ res = sb.toString}\ErrorTok{(}\KeywordTok{);}
+    \ControlFlowTok{return} \ExtensionTok{res}\KeywordTok{;}
+    \KeywordTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Damit haben wir alle Fälle abgehakt, die uns zum Testen eingefallen
+sind. Ja -- dieser Prozess ist langatmig und verführt zum Verwenden von
+Abkürzungen. Leider führen diese Abkürzungen am Ende zu schlecht
+programmierter Software! Ein Beispiel ist der Computer der Bosch-eBikes.
+Hier ist es möglich, dass negative Fahrzeiten auftreten, wenn man keine
+regelmäßigen Resets der Daten durchführt -- ein Fall, der bei gutem
+Testing aufgefallen wäre.
+
+Da Testing so wichtig ist, wird es mittlerweile von allen IDEs
+unterstützt und Build-Tools wie Maven haben es ebenfalls integriert. Für
+unser eigentliches Thema CI/CD werden wir aber gleich \emph{Maven}
+verwenden und uns deshalb vom manuellen Testen weitgehend verabschieden.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{public}\NormalTok{ class StringFlipperTest\{}
+   \ExtensionTok{@Test} 
+   \ExtensionTok{public}\NormalTok{ void testSwapLastChars}\ErrorTok{(}\KeywordTok{)\{}
+      \ExtensionTok{StringFlipper}\NormalTok{ stringflipper = new StringFlipper}\ErrorTok{(}\KeywordTok{);}
+      \ExtensionTok{assertEquals}\ErrorTok{(}\ExtensionTok{1,}\NormalTok{ 1}\KeywordTok{);}
+   \KeywordTok{\}}
+\ErrorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Rerun -- definitiv Red, da es die Klasse noch nicht gibt -- also
+erstellen wir sie im Ordner \datei{src/java/de/alp/kurs}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{nano}\NormalTok{ ../java/de/alp/kurs/StringFlipper.java }
+\end{Highlighting}
+\end{Shaded}
+
+Der Aufruf zum Compilieren muss nun allerdings einen Level nach oben
+springen!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{javac}\NormalTok{ ../java/de/alp/kurs/StringFlipper.java}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Gewohnheiten}\label{gewohnheiten}
+
+\begin{itemize}
+\tightlist
+\item
+  Zuerst das Kriteium formulieren und davon rückwärts arbeiten
+\item
+  Jeder Test muss zuerst gegen einen definierten Fail laufen.
+\item
+  Ein Test bekommt nur einen Grund zum Versagen
+\end{itemize}
+
+\section{Java}\label{java}
+
+\subsection{Idee}\label{idee-2}
+
+Im Zusammenhang mit \git könnte ein Projekt für den Unterricht die
+Entwicklung einer Krypto-Software sein, bei der der Benutzer mit
+verschiedenene Methoden (Cäsar, Vigenere, \ldots) Klartext in
+verschlüsselten Text transformieren kann. Zentral wird eine kleine GUI
+bereitgestellt oder entwickelt, in die die Module der Projektgruppen
+eingebunden werden können.
+
+Nachfolgend nur kurz das Vorgehen für einen einfachen Cäsar mit
+GUI-Anbindung. Wem dies eine zu geringe Anforderung ist, kann auch gerne
+eine andere Technik umsetzen -- schlussendlich geht es eigentlich um die
+Verwendung von Maven in diesem Zusammenhang.
+
+Natürlich kann jede aktuelle IDE auf Knopfdruck auch Maven-Projekte
+generieren, wir wollen es hier aber \emph{from scratch} durchführen, um
+die Vorgänge hinter den Kulissen besser zu verstehen. Das ist u.a.
+deshalb nötig, weil für CI/CD Konfigurationsschritt nötig sind, die
+diesen hier ziemlich genau entsprechen.
+
+\subsection{Erstellen des Projektes}\label{erstellen-des-projektes}
+
+Im Terminal wird bei bereits installiertem Maven eine korrekte
+Ordnerstruktur initialisiert.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{mvn}\NormalTok{ archetype:generate  }\AttributeTok{{-}Dfilter}\OperatorTok{=}\NormalTok{quickstart}
+\end{Highlighting}
+\end{Shaded}
+
+Es müssen einige Parameter eingetellt werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Version:}\NormalTok{ 1.5 }\ErrorTok{(}\ExtensionTok{Taste}\NormalTok{ 9}\KeywordTok{)}
+\ExtensionTok{groupID:}\NormalTok{ de.alp.kurs}
+\ExtensionTok{artifactID:}\NormalTok{ krypto }
+\ExtensionTok{version:}\NormalTok{ 1.0{-}SNAPSHOT}
+\ExtensionTok{package:}\NormalTok{ de.alp.kurs}
+\ExtensionTok{Bestätigen:}\NormalTok{ Y }
+\end{Highlighting}
+\end{Shaded}
+
+Das liefert folgende Struktur:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{.}
+\ExtensionTok{└──}\NormalTok{ krypto}
+    \ExtensionTok{├──}\NormalTok{ pom.xml}
+    \ExtensionTok{└──}\NormalTok{ src}
+        \ExtensionTok{├──}\NormalTok{ main}
+        \ExtensionTok{│  }\NormalTok{ └── java}
+        \ExtensionTok{│  }\NormalTok{     └── de}
+        \ExtensionTok{│  }\NormalTok{         └── alp}
+        \ExtensionTok{│  }\NormalTok{             └── kurs}
+        \ExtensionTok{│  }\NormalTok{                 └── App.java}
+        \ExtensionTok{└──}\NormalTok{ test}
+            \ExtensionTok{└──}\NormalTok{ java}
+                \ExtensionTok{└──}\NormalTok{ de}
+                    \ExtensionTok{└──}\NormalTok{ alp}
+                        \ExtensionTok{└──}\NormalTok{ kurs}
+                            \ExtensionTok{└──}\NormalTok{ AppTest.java}
+\end{Highlighting}
+\end{Shaded}
+
+Dieses Projekt kann bereits (fast) compiliert werden. Zuerst müssen wir
+allerdings noch einige Einträge in der \datei{pom.xml} angepasst werden:
+
+\begin{itemize}
+\tightlist
+\item
+  die lokal installierte Java-Version in die \datei{pom.xml} eintragen.
+  Default ist 17, ich verwende 21.
+\item
+  Konfiguration des \emph{jar}-Plugin:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{...}
+\OperatorTok{\textless{}}\NormalTok{plugin}\OperatorTok{\textgreater{}}
+    \OperatorTok{\textless{}}\NormalTok{artifactId}\OperatorTok{\textgreater{}}\NormalTok{maven{-}jar{-}plugin}\OperatorTok{\textless{}}\NormalTok{/artifactId}\OperatorTok{\textgreater{}}
+    \OperatorTok{\textless{}}\NormalTok{version}\OperatorTok{\textgreater{}}\NormalTok{3.4.2}\OperatorTok{\textless{}}\NormalTok{/version}\OperatorTok{\textgreater{}}
+    \OperatorTok{\textless{}}\NormalTok{configuration}\OperatorTok{\textgreater{}}
+        \OperatorTok{\textless{}}\NormalTok{archive}\OperatorTok{\textgreater{}}
+            \OperatorTok{\textless{}}\NormalTok{manifest}\OperatorTok{\textgreater{}}
+                \OperatorTok{\textless{}}\NormalTok{mainClass}\OperatorTok{\textgreater{}}\NormalTok{de.alp.kurs.App}\OperatorTok{\textless{}}\NormalTok{/mainClass}\OperatorTok{\textgreater{}}
+            \OperatorTok{\textless{}}\NormalTok{/manifest}\OperatorTok{\textgreater{}}
+        \OperatorTok{\textless{}}\NormalTok{/archive}\OperatorTok{\textgreater{}}
+    \OperatorTok{\textless{}}\NormalTok{/configuration}\OperatorTok{\textgreater{}}
+    \OperatorTok{\textless{}}\NormalTok{/plugin}\OperatorTok{\textgreater{}}
+\ExtensionTok{...}
+\end{Highlighting}
+\end{Shaded}
+
+Mit \cmd{mvn package} komplieren wir, führen einen Test aus und
+erstellen das passende jar-Archiv.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{java} \AttributeTok{{-}jar}\NormalTok{ target/krypto{-}1.0{-}SNAPSHOT.jar}
+\end{Highlighting}
+\end{Shaded}
+
+\bookmarksetup{startatroot}
+
+\chapter{cicd Buch}\label{cicd-buch}
+
+\section{Gitlab Runners}\label{gitlab-runners}
+
+Runners are small programs that are installed separately from the main
+GitLab application. Their purpose is to receive new CI/CD jobs published
+by GitLab and follow the jobs' instructions as specified in the
+.gitlab-ci.yml file. Runners can be installed and configured to work
+with a variety of types of infrastructure, including standalone servers,
+VMs, containers, and others.
+
+Zusätzlich zu einem GitLab-Account braucht man ein Gerät, auf dem dem
+der GitLab Runner (Agent) läuft. Das kann \emph{jeder} Rechner sein
+(Auch der Server)!
+
+CICD Pipelines laufen NICHT innerhalb von GitLab, da jeder Job ganz
+individuelle Einstellungen erfordert.
+
+Runners akzeptieren Jobs von GitLab und liefern das Ergebnis zurück an
+GitLab.
+
+Was der Runner macht, ist in der .gitlab-ci.yml definiert.
+
+Jeder Commit triggert einen neuen Lauf der Pipeline.
+
+Bekommt ein Runner einen Job zugewiesen, so holt sich der Runner den
+Commit aus dem Repo.
+
+\subsection{Terminiologie}\label{terminiologie}
+
+GitLab Runner: Die Runner-Software auf einem Rechner\\
+Runner: Das sind quasi registreierte Instanzen, die dann Jobs
+abarbeiten.\\
+Im Prinzip zur Laufzeit ein Runner-Prozess, der einen Job abarbeitet.
+
+Die Gitlab Runner - Software übernimmt die Jobs von GitHub und startet
+daraufhin die passenden Runner-Anwendungen.
+
+\subsection{Runner Agent}\label{runner-agent}
+
+Eine Art von Relais, wenn der runner nicht direkt über einen anstehenden
+Job informiert werden kann. Der Agent pollt in konfigurierbaren
+Abständen den GitLab-Server.
+
+Runner können auf verschiedenen Leveln in GitLab registriert werden. Das
+schließt Projekte, Gruppen, \ldots{} ein.
+
+Shared Runners Only Apply to Self-Managed GitLab
+
+Administrators can only configure shared runners on self-managed GitLab
+instances. GitLab.com customers can choose to use SaaS runners provided
+by GitLab, as well as register their own group or specific runners. A
+certain number of pipeline minutes for SaaS runners are included in each
+GitLab license tier, with additional minutes available for purchase.
+There is never a charge to use your own group or specific runners.
+
+\subsection{Mögliche Executors}\label{muxf6gliche-executors}
+
+\subsubsection{Docker}\label{docker-1}
+
+In diesem Fall muss Docker auf dem gleichen Rechner wie der GitLab
+Runner installiert sein. Meistgenutzter Typ auch bei den SaaS Runners
+von GitLab. Perfekt für reproduzierbare Umgebungen.
+
+Welches Image verwendete wird, kann auf verschiedenen Ebenen festgelegt
+werden (default, pipeline, job).
+
+Das Image kann nicht nur auf Dockerhub gehostet sein!
+
+\subsubsection{Shell}\label{shell}
+
+Stellt im Prinzip eine Shell-Session auf dem Host dar, auf dem der
+GitLab-Runner installiert ist. Im Prinzip wird ein Keyboard simuliert.
+
+Hier bekommt man leider keine \emph{suabere} Umgebung und es können
+Reste vom letzten Lauf zurückbleiben, die den Ablauf stören. Besser
+Finger weg.
+
+\subsubsection{Hypervisoren}\label{hypervisoren}
+
+VB, Parallels, Kubernetes, \ldots{}\\
+Für spezielle Anwendungen -- spezieller als unsere Szenarien.
+
+\subsubsection{Docker Machine}\label{docker-machine}
+
+Simuliert einen kompletten Docker-Host und nicht nur einen Container.
+Wird von Docker nicht mehr aktiv weiter entwickelt.
+
+\subsubsection{SSH}\label{ssh-1}
+
+Damit können Remote-Befehle auf anderen Rechnern ausgeführt werden. Wir
+sprechen von „bash-Level``. Kann sinnvoll sein, um auf einen Server zu
+grätschen, auf dem man keinen Runner installieren will / kann.
+
+\section{Runner Tags}\label{runner-tags}
+
+Ein Runner kann mit einem Tag versehen werden, analog zu Jobs. Damit
+passen Job und Runner zusammen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{deploy{-}to{-}staging:}
+\ExtensionTok{    stage:}\NormalTok{ staging}
+\ExtensionTok{    script:}\NormalTok{ ./deploy{-}staging.sh}
+\ExtensionTok{    tags:}
+\ExtensionTok{        {-}}\NormalTok{ windows}
+\ExtensionTok{        {-}}\NormalTok{ staging}
+\end{Highlighting}
+\end{Shaded}
+
+Dieser Job kann nur (default) von Runnern ausgeführt werden, die
+ebenfalls die Tags \emph{windows} und \emph{staging} besitzen. Das kann
+in den Einstellungen eines Runners aber deaktiviert werden. (Vorsicht:
+Runner-Tags haben nichts mit Git-Tags zu tun)
 
 \bookmarksetup{startatroot}
 
