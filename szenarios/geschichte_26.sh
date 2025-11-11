@@ -79,7 +79,7 @@ Das war ihm wirklich zu riskant. Und so machte er sich wieder auf den Rückweg.
 EOF
 
 git add gini.md
-git commit -m "Umkehr fertig"
+git commit -m "Umkehr Entscheidung"
 
 ######## Branch 2 im Lokal
 git switch susanne
