@@ -212,16 +212,15 @@ zugangsdaten.txt
 ```
 
 Mit diesen Befehlen ist bereits ein einfacher 
-lokaler Entwicklungsprozess abbildbar. Allerdings
-gibt es noch viele weitere Feinheiten und Varianten,
-von denen wir noch etliche in diesem Workshop ansprechen werden.
+lokaler Entwicklungsprozess abbildbar -- allerdings
+gibt es noch viele weitere Feinheiten und Varianten.
 
 \samplestart
 **Hinweis**  
 Es gibt sogar die Möglichkeit, dass man nur Teile 
 der Änderungen in einer Datei in einen Commit und die restlichen
 Änderungen in einen anderen Commit übernimmt. Das sind aber sehr 
-spezielle Varianten, die uns hier nicht interessieren! 
+spezielle Varianten, die wir nicht behandeln! 
 \sampleend
 
 
@@ -230,19 +229,20 @@ spezielle Varianten, die uns hier nicht interessieren!
 Steht ein Ordner unter der Verwaltung von \git, so kann 
 man von drei *logischen* Bereiche sprechen:
 
-* Working-Directory (Arbeitsordner)
+* \work (Arbeitsordner)
 * Stage (auch Index oder Cache genannt)
 * Repository^[Je nach Quelle und Kontext etwas inkonsistent verwendet]
 
-Das Working-Directory enthält die Dateien an denen gearbeitet 
+Das \work enthält die Dateien an denen gearbeitet 
 wird. Er entspricht auf den ersten Blick genau einem normalen 
 Ordner für die Projektentwicklung. Erst durch die Initialisierung 
-durch \git entsteht ein weiterer, versteckter Ordner mit dem Namen *.git*.
-Dieser Ordner bildet den *Stage* und das *Repository* gleichzeitig^[Hier sieht man den 
+durch \git entsteht dann ein weiterer, versteckter Ordner mit dem Namen *.git*.
+Dieser Ordner bildet gleichzeitig den *Stage* und das *Repository*^[Hier siehst du den 
 inkonsistenten Gebrauch von „Repository“. Einerseits wird der gesamte Projektorder 
 als Repository bezeichnet, sobald er von \git verwaltet wird, andererseits
 befindet sich das eigentliche Repository im Ordner *.git*.]. 
-*Logisch* bedeutet in diesem Zusammenhang, dass diese beiden 
+
+*Logische Bereiche* bedeutet in diesem Zusammenhang, dass diese beiden 
 Bereiche von \git verwaltet werden und vom unbedarften 
 Benutzer nicht einfach unterschieden werden können.
 In einem späteren Abschnitt werden wir einen genaueren 
@@ -252,12 +252,29 @@ Betrachten wir zunächst einen Entwicklungszyklus im Detail. Dabei
 wirst du im Wesentlichen die gleichen Befehle wie vorher verwenden, 
 allerdings untersuchen wir einige Varianten, die für das Verständnis 
 wichtig sind.
-Dafür arbeitest einfach im aktuellen Ordner weiter. Er sollte akutell 
-eine Datei und zwei Commits enthalten.  
+
+Du bist immer noch im aktuellen Ordner \ordner{hands_on_1}. 
+Er sollte akutell eine Datei und zwei Commits enthalten.  
 Das kannst du mit folgendem Befehl überprüfen:
 
 ```bash
 git log
+```
+
+liefert 
+
+```bash
+commit 6db4f3383512a7f3aaaf3b050334d7fd2c474688 (HEAD -> main)
+Author: Wolfgang <hoeferwolf@t-online.de>
+Date:   Thu Nov 13 10:46:50 2025 +0100
+
+    Erläuterung
+
+commit 430149c83906005ae2c53c8eaf9ce230e3456ad0
+Author: Wolfgang <hoeferwolf@t-online.de>
+Date:   Thu Nov 13 10:46:50 2025 +0100
+
+    Erste Datei erstellt
 ```
 
 Ob noch Änderungen offen sind,zeigt dir:
@@ -275,7 +292,7 @@ Arbeitsverzeichnis unverändert
 Das bedeutet, dass du aktuell einen *sauberen* Zustand 
 deines Arbeitsordners ohne Änderungen vorliegen hast.
 
-Erstelle eine neue \datei{datei2.txt} und füge 
+Erstelle nun eine neue \datei{datei2.txt} und füge 
 die Zeile *Version 1* ein. In der Datei \datei{datei1.txt}
 kommt die Zeile *Version 3* dazu:
 
@@ -283,6 +300,8 @@ kommt die Zeile *Version 3* dazu:
 # Eingabe (Lasse ich zukünftig weg)
 echo "Version 3" >> datei1.txt
 echo "Version 1" >> datei2.txt
+
+# Status anzeigen lassen 
 git status 
 
 # Ausgabe
@@ -327,7 +346,10 @@ Nun werden die aktuelle Stände *auf den Stage*/*in den Stage*
 übertragen:
 
 ```bash
-git add . 
+# Deien aufnehmen
+git add .
+
+# Status abzeigen
 git status 
 
 # Ausgabe  
@@ -341,8 +363,7 @@ Zum Commit vorgemerkte Änderungen:
 ```
 
 Diese Dateien sind nun zum Commit vorgemerkt, also zum festen 
-Eintrag in die Projekthistorie. Der Befehl \cmd{git status} 
-zeigt dir wieder den aktuellen Zustand des *Stage* an.
+Eintrag in die Projekthistorie -- führst du aber **nicht aus**!. 
 
 Als Demonstration fügen wir beiden Dateien eine weitere 
 Zeile hinzu und fragen wieder den Status ab:
@@ -352,7 +373,7 @@ echo "Weitere Zeile" >> datei1.txt
 echo "Weitere Zeile" >> datei2.txt 
 git status 
 
-# Ausgabe ( ---- Anmerkung ----)
+# Ausgabe ( "----"" sind Anmerkungen )
 Auf Branch main
 Zum Commit vorgemerkte Änderungen:
   (benutzen Sie "git restore --staged <Datei>..."  
@@ -391,11 +412,39 @@ aktuellen Änderungen nach wie vor im Arbeitsverzeichnis vorhanden
 sind, weil für sie noch kein *add* stattgefunden hat.
 
 
+```bash
+git Status
+
+# Ausgabe 
+Auf Branch main
+Änderungen, die nicht zum Commit vorgemerkt sind:
+  (benutzen Sie "git add <Datei>...", um die Änderungen zum Commit vorzumerken)
+  (benutzen Sie "git restore <Datei>...", um die Änderungen im Arbeitsverzeichnis zu verwerfen)
+	geändert:       datei1.txt
+	geändert:       datei2.txt
+
+keine Änderungen zum Commit vorgemerkt (benutzen Sie "git add" und/oder "git commit -a")
+
+# Zum Stage hinzufügen
+git add 
+
+git status
+
+# Ausgabe
+
+Auf Branch main
+Zum Commit vorgemerkte Änderungen:
+  (benutzen Sie "git restore --staged <Datei>..." zum Entfernen aus der Staging-Area)
+	geändert:       datei1.txt
+	geändert:       datei2.txt
+```
+
+
 \samplestart
 **Hinweis**  
 Wenn ich hier von *transferieren* spreche, so führt das
 zu einer falschen Vorstellung. In Wirklichkeit werden
-im *.git*-Ordner nur einige Verweise geändert -- wobei 
+im *.git*-Ordner nur einige Verweise (Links, Zeiger) geändert -- wobei 
 das auch wieder nicht die ganze Wahrheit ist!
 \sampleend
 

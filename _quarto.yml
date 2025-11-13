@@ -44,6 +44,6 @@ format:
         \newcommand{\datei}[1]{\textit{#1}\xspace}
         \newcommand{\ordner}[1]{\textit{#1}\xspace}
         \newcommand{\branch}[1]{\textit{#1}\xspace}
-        \newcommand{\work}{\textit{Workingdir}\xspace}
+        \newcommand{\work}{\textit{Working-Directory}\xspace}
 
 
