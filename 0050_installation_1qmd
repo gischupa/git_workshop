@@ -1,0 +1,68 @@
+# Installation
+
+## Vorabinformation
+
+Die Installation auf dem Client (eigener Rechner mit Windows, Linux, MacOS) 
+ist im Regelfall völlig problemlos und wird nachfolgend noch genau beschrieben.
+Für einen Git-Server braucht man -- wie schon der Name sagt -- einen Server.
+Da es für einfache Versuche etwas aufwändig ist, sich eine entsprechende Installation
+im Internet zu mieten, greifen wir in diesem Workshop auf virtuelle Umgebungen zurück.
+Damit ist gemeint, dass sich jeweils 4 Teilnehmer ein Gerät teilen, das für sie 
+jeweils einen eigenen Spielserver bereit stellt. Die Installation dieser Infrastruktur 
+ist im Anhang genauer beschrieben. Es ist natürlich auch möglich, einen Spielserver 
+mit Hilfe von Virtualbox auf dem eigenen Computer zu installieren. Der eigentliche
+Server wird in jedem Fall ein Ubuntu 24.04 sein.  
+
+Wem die letzten Zeilen gar nichts gesagt haben, der sollte im Anhang den Abschnitt 
+über Virtualisierung lesen und dann hierher zurückkehren.
+
+## Client-Installation
+
+Für die ersten Schritte mit \git ist es sehr sinnvoll, einen ganz einfachen 
+Client zu verwenden. Hier ist mit *einfach* nicht die Bedienung sondern eher 
+*ursprünglich* gemeint. Mittlerweile bringt jede Entwicklungsumgebung bereits
+eine eigene Version eines \git-Clients mit und wir können beim besten Willen 
+nicht jede Variante, eventuell noch mit eigenen Features, besprechen.
+
+Faktisch gibt es eigentlich keinen reinen \git-Client, weil immer 
+automatisch Client und Server installiert werden. Gerade bei Windows 
+bedeutet das aber nicht, dass man den Server auch verwenden kann. Hier 
+hat Microsoft so viele Hindernisse in den Weg gelagt, dass man besser die 
+Finger davon lässt!
+
+### Windows
+
+Für die Installation auf Windows ist es hilfreich, wenn du dich an 
+folgende Reihenfolge hältst:
+
+* Notepad++ installieren
+* Git installieren
+
+#### Notepad++
+
+Lade von [notepad-plus-plus.org](https://notepad-plus-plus.org/downloads/) 
+den Editor *notepad++* herunter und installiere das 
+Programm durch den üblichen Doppelklick. Es gibt keine Stellen, wo das Vorgehen nicht eindeutig wäre. Du wirst später bei der Installation von \git nach diesem Programm gefragt werden!  
+
+#### Git
+
+Lade von [gitforwindows.org](https://gitforwindows.org) die
+Installationsdatei herunter.
+
+Starte nun die Installation von \git durch Doppelklick auf die 
+Installationsdatei. Die nachfolgenden Bilder zeigen den Ablauf
+in der Version vom November 2025.
+
+ToDo: Bilderstrecke
+
+### Linux
+
+Hier hängt es etwas von der Distribution ab. Bei Ubuntu genügt der 
+Befehl \cmd{apt install git -y}
+
+### MacOS
+
+MacOS ist ähnlich pflegeleicht. Mit \cmd{brew install git} 
+ist die Insallation ebenfalls bereits gestartet und nach kurzer 
+Zeit beendet.
+

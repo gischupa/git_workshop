@@ -13,13 +13,6 @@ durch die letzten Befehle geblättert werden -- damit gehen
 manche Dinge sehr schnell!
 \sampleend
 
-\samplestart
-**Hinweis**  
-Ab dieser Stelle wechsle ich vom neutralen *man* 
-auf das kollegiale *Du*, weil manche Formulierungen
-sonst unnötig klobig werden!
-\sampleend
-
 ## Konfigurieren von git
 
 Öffne die \git-Bash^[bzw. das Terminal deines Systems. 
