@@ -16,10 +16,10 @@ manche Dinge sehr schnell!
 ## Konfigurieren von git
 
 Öffne die \git-Bash^[bzw. das Terminal deines Systems. 
-Das setze ich in Zukunft stillschweigend voraus]. Da es sich um
+Das setze ich in Zukunft stillschweigend voraus.]. Da es sich um
 globale Einstellungen handelt, muss das nicht unbedingt im 
-Projektordner sein!^[Sollte dir 
-die Schrift im Fenter zu klein sein,
+Projektordner sein!^[Sollte dir still
+die Schrift im Fentser zu klein sein,
 kannst du sie mit \strg{+} vergrößern.].
 
 **Aktuelle Einstellungen ansehen**  
@@ -49,7 +49,7 @@ git init hands_on_1
 cd hands_on_1
 ```
 
-Alternativ kann man das auch mit mehreren Schritten erledigen:
+Alternativ kannst du das auch mit mehreren Schritten erledigen:
 
 ```bash
 mkdir hands_on_1 
@@ -60,16 +60,17 @@ git init
 Es erscheint eine Meldung, die je nach System etwas anders aussehen kann:
 
 ```bash
-Hinweis: Als Name für den initialen Branch wurde 'master' benutzt. Dieser
-Hinweis: Standard-Branchname kann sich ändern. Um den Namen des initialen Branches
-Hinweis: zu konfigurieren, der in allen neuen Repositories verwendet werden soll und
+Hinweis: Als Name für den initialen Branch wurde 'master' benutzt. 
+Hinweis: Dieser Standard-Branchname kann sich ändern.
+Hinweis: Um den Namen des initialen Branches zu konfigurieren,
+Hinweis: der in allen neuen Repositories verwendet werden soll und
 Hinweis: um diese Warnung zu unterdrücken, führen Sie aus:
 Hinweis: 
 Hinweis: 	git config --global init.defaultBranch <Name>
 Hinweis: 
-Hinweis: Häufig gewählte Namen statt 'master' sind 'main', 'trunk' und
-Hinweis: 'development'. Der gerade erstellte Branch kann mit diesem Befehl
-Hinweis: umbenannt werden:
+Hinweis: Häufig gewählte Namen statt 'master' sind 'main', 'trunk'
+Hinweis: und 'development'. Der gerade erstellte Branch kann 
+Hinweis: mit diesem Befehl umbenannt werden:
 Hinweis: 
 Hinweis: 	git branch -m <Name>
 Leeres Git-Repository in /tmp/hands_on_1/.git/ initialisiert
@@ -84,7 +85,7 @@ Arbeitszweig von *master* auf *main* umzubenennen:
 git branch -m main 
 ```
 
-Den Erfolg kann man schnell mit 
+Den Erfolg kannst du schnell überprüfen:
 
 ```bash
 git status
@@ -103,7 +104,7 @@ Sie "git add" zum Versionieren)
 
 \samplestart 
 **Hinweis**  
-Man kann \git auch so konfigurieren, dass der Branch eines 
+Du kannst \git auch so konfigurieren, dass der Branch eines 
 neu angelegten Repositories automatisch *main* genannt wird.
 ```bash 
 git config --global init.defaultBranch main
@@ -145,7 +146,7 @@ Du sammelst Dateien mit *add*, in denen du Änderungen
 vorgenommen hat und schreibst diese Änderungen mit 
 *commit* in die Projekthistorie. Wie oft, mit wie vielen
 Dateien in welchen Zeitabständen ... das ist ziemlich 
-alleine Deine Entscheidung.
+alleine *deine* Entscheidung.
 
 Generell gilt allerdings: „Lieber mehr Commits, als zu wenige!“  
 
@@ -192,7 +193,7 @@ Version mit *add* für den Commit zu registrieren.
 
 Es kann ab und zu passieren, dass du Änderungen 
 an Dateien vornimmst, die zu verschiedenen Problemen 
-gehören. Es wäre dann etwas unübersichtlich, wenn sich 
+gehören. Es wäre dann etwas unübersichtlich, wenn  
 diese Dateien dann im gleichen Commit festgeschrieben 
 werden. In einem solchen Fall solltest du bei *add*
 genau die Dateinamen angeben.
@@ -253,7 +254,7 @@ wirst du im Wesentlichen die gleichen Befehle wie vorher verwenden,
 allerdings untersuchen wir einige Varianten, die für das Verständnis 
 wichtig sind.
 
-Du bist immer noch im aktuellen Ordner \ordner{hands_on_1}. 
+Du bist immer noch im aktuellen Ordner \ordner{hands\_on\_1}. 
 Er sollte akutell eine Datei und zwei Commits enthalten.  
 Das kannst du mit folgendem Befehl überprüfen:
 
@@ -491,6 +492,8 @@ Wenn du nun die Verzeichnisstruktur des Ordners *.git*
 genauer untersuchst, wirst du in etwa dies hier sehen,
 weil noch keine Dateien im \work sind:
 
+![](bilder/git_internals/base.png)
+
 ```bash
 .git/
 ├── branches
@@ -529,8 +532,11 @@ git add homepage.html
 ```
 
 Du siehst erste Änderungen im *.git*-Ordner.
-Ich gebe nur die relevante Stelle an -- der Hashe 
-lautet bei dir eventuell anders!
+Im Bild siehst du aus Platzgründen nur den 
+relevanten Ausschnitt. Bei dir kann der Hash
+einen anderen Wert besitzen!
+
+![](bilder/git_internals/1_neue_datei.png)
 
 ```bash
 .
@@ -579,6 +585,8 @@ git commit -m "homepage.html added"
 Nun sieht die Ordnerstruktur verändert aus -- die Hooks habe ich in der
 Darstellung aus Platzgründen entfernt!
 
+![](bilder/git_internals/2_commit.png)
+
 ```bash
 .git/
 ├── branches
@@ -621,7 +629,7 @@ Mit `git log` erfährst du etwas über den erfolgten
 Commit -- zum Beispiel seinen Hash:
 
 ```bash
-commit 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f (HEAD -> main)
+commit b7510dd34252cb3e42bfc82f043d9f42aa00b2f5 (HEAD -> main)
 Author: wolfgang <hoeferwolf@t-online.de>
 Date:   Sun Jan 26 20:20:10 2025 +0100
 
@@ -630,8 +638,8 @@ Date:   Sun Jan 26 20:20:10 2025 +0100
 
 Etwas kompakter wird die Darstellung mit \cmd{git log --oneline}.
 
-Der Hash 3b02... scheint also ein Commit zu sein. Das kannst 
-du mit \cmd{git cat-file -t 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f} 
+Der Hash b751... scheint also ein Commit zu sein. Das kannst 
+du mit \cmd{git cat-file -t b7510dd34252cb3e42bfc82f043d9f42aa00b2f5} 
 auch noch einmal überprüfen -- steht aber bereits in \cmd{git log}. 
 
 Änderst du den Parameter von *-t* auf *-p* (=pretty print), so 
@@ -639,7 +647,7 @@ bekommst du weitere Details:
 
 ```bash
 # Eingabe 
-git cat-file -p 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f
+git cat-file -p b7510dd34252cb3e42bfc82f043d9f42aa00b2f5
 
 # Ausgabe
 tree 94eed25c4ef6cfa1384df66f28308c09dc9bf28d   << wichtig!

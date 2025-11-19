@@ -238,13 +238,13 @@ Je nach perönlichem Vertrauen kann auch ein Online-Schlüsselgenerator verwende
 [https://cryptotools.net/rsagen](https://cryptotools.net/rsagen)  
 (Die *einige Sekunden* sind durchaus deutlich mehr Sekunden, wenn man eine Schlüssellänge von 4096 Bit wählt!)
 
-Der Inhalt der (öffentlichen) Schlüsseldateien müssen dann in einer Datei mit dem Namen \datei{authorized_keys} 
+Der Inhalt der (öffentlichen) Schlüsseldateien müssen dann in einer Datei mit dem Namen \datei{authorized\_keys} 
 gesammelt und im Ordner des \git-Benutzers abgelegt werden.
 
 #### Schlüssel eintragen
 
 Der einfachste Weg besteht wohl darin, sämtliche Schlüsseldateien nach Einsendeschluss gesammelt auf den 
-Server zu kopieren und sie dann durch ein kleines Script in die \datei{authorized_keys} zu übertragen.
+Server zu kopieren und sie dann durch ein kleines Script in die \datei{authorized\_keys} zu übertragen.
 
 **Schritt 1: Benutzer anlegen**  
 
@@ -278,9 +278,10 @@ for i in $(ls *pub); do cat $i >> .ssh/authorized_keys; done
 **Hinweis**  
 Dieses Script ist **nur** für einen Erstimport geeignet.
 Werden später noch Schlüsseldateien nachgeliefert, so würden in der 
-\datei{authorized_keys} lauter Duplikate entstehen! Wenn du nach dem 
+\datei{authorized\_keys} lauter Duplikate entstehen! Wenn du nach dem 
 Import die Schlüsseldateien löschst, dann können spätere Dateien aber 
 schon auf diese Weise eingespielt werden! 
+\sampleend
 
 Löschen der Dateien  
 ```bash

@@ -173,6 +173,7 @@ echo "Version 1" > datei1.txt
 
 Das Symbol `>` überschreibt den Inhalt der Datei ohne Warnung, 
 mit `>>` wird der Text an das Ende der Datei angehängt.
+\sampleend
 
 ### Versionieren -- einfachste Form
 

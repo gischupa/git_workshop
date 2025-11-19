@@ -11,19 +11,227 @@ Derartige Fehler müssen repariert werden, bevor sie
 endgültig in der Historie festgeschrieben werden.
 
 Relativ unproblematisch sind *Reparaturen* bei lokaler
-Arbeit, also bevor ein Commit erfolgt ist:
+Arbeit, weil keine anderen Team-Mitglieder betroffen sind.
+Nachfolgend besprechen wir einige Szenarien mit kleinen Beispielen. 
+Aktuell ist das Arbeiten mit verschiedenen Entwicklungszweigen noch nicht 
+Thema!
 
-* Neue, fehlerhafte Dateien kann man einfach löschen.
-* Bereits versionierte Dateien mit Fehlern können
-  durch `git restore <dateiname>` wieder mit 
-  der Version aus dem Stage überschrieben werden
-* Manchmal soll auch nur die Version gelöscht werden,
-  die irrtümlich auf den Stage geschoben wurde. Dabei darf das 
-  \work nicht verändert werden. Das erreichtst du mit
-   `git restore <dateiname> --staged`.  
-  Das braucht man eigentlich nur, wenn diese Datei doch nicht im 
-  nächsten Commit enthalten sein soll.
-  
+
+### Kleiner Fehler 1
+
+Der Fehler ist ganz frisch ...
+
+```bash
+git init beispiel_1
+cd beispiel_1
+git branch -m main
+
+# alles funktioniert
+echo "Alles gut" > datei.txt
+git add .
+git commit -m "alles gut"
+
+# Hier kommt der Fehler
+echo "Mist gebaut" >> datei.txt
+
+###### Alte Version wieder herstellen
+git restore datei.txt  
+```
+
+### Kleiner Fehler 2
+
+Der Fehler wurde bereits ge-add-et.
+
+```bash
+########### IRRWEG !!!!!!!!! #########
+git init beispiel_2
+cd beispiel_2
+git branch -m main
+
+# alles funktioniert
+echo "Alles gut" > datei.txt
+git add .
+git commit -m "alles gut"
+
+# Hier kommt der Fehler
+echo "Mist gebaut" >> datei.txt
+git add . 
+
+#####################
+###### Das geht jetzt nicht, weil Stage = Workdir
+#####################
+git restore datei.txt  
+```
+
+Du musst nun mit \cmd{git log} den Hash vom letzten 
+Commit ermitteln und dann geht
+
+```bash
+git restore --source=<HASH> datei.txt 
+```
+
+### Größerer Fehler 1
+
+Viele Fehler nach letztem Commit
+
+```bash
+git init beispiel_3
+cd beispiel_3
+git branch -m main
+
+# alles funktioniert
+echo "Alles gut datei1" > datei1.txt
+echo "Alles gut datei2" > datei2.txt
+# ... viele Dateien
+git add .
+git commit -m "alles gut"
+
+# Hier kommen DIE Fehler
+echo "Mist gebaut" >> datei1.txt
+echo "Mist gebaut" >> datei2.txt
+# ... viele Fehler in vielen Dateien
+
+# Rücksetzen des kompletten Projekts auf den letzten Commit 
+git reset --hard HEAD 
+```
+
+Sind viele Dateien *verkorkst*, so bietet sich ein komplettes
+Rücksetzen auf einen alten Stand an. Allerdings gibt es da einige 
+Varianten (siehe Tabelle unten).
+
+Wird der Befehl ohne \cmd{--hard} ausgeführt, so wird nur 
+der Stage auf den Stand des alten Commit gesetzt, nicht aber das 
+\work. Aber eigentlich verlassen wir hier schon die einfachen 
+Fälle. Ich persönlich verliere bei so vielen Varianten bald den 
+Überblick und von einem *routinierten Handling* kann keine Rede 
+sein!
+
+```bash
+git reset = git reset HEAD 
+```
+
+| Befehl (Beispiel) | Wirkung | Warnung / Hinweis |
+|---|---|---|
+| `git reset --hard HEAD` | Setzt Arbeitsverzeichnis und Staging auf `HEAD` zurück; alle uncommitted Änderungen werden gelöscht. | Unwiderruflich, wenn Änderungen nicht anderweitig gesichert sind. |
+| `git reset --hard HEAD~1` | Branch-Zeiger bewegt sich ein Commit zurück; Arbeitsverzeichnis entspricht dem vorletzten Commit. | Vorsichtig bei bereits gepushten Commits — Remote bleibt davon unberührt. |
+| `git reset --soft HEAD~1` | Entfernt letzten Commit, macht die Änderungen als gestaged verfügbar (Index enthält sie). | Gut zum Kombinieren/Neuformulieren von Commits. |
+| `git reset --mixed HEAD~1` (oder `git reset HEAD~1`) | Entfernt Commit; Änderungen bleiben im Working Directory, aber sind nicht gestaged. | Standardmodus (`--mixed`) wenn kein Flag angegeben. |
+| `git reset HEAD` | Entfernt Dateien aus dem Index; Änderungen bleiben im Arbeitsverzeichnis. | Nützlich, um versehentliches `git add` rückgängig zu machen. |
+| `git reset --hard <commit-hash>` | Setzt Branch auf den angegebenen Commit; Arbeitsverzeichnis wird entsprechend angepasst. | `<commit-hash>` vorher mit `git log`/`git rev-parse` prüfen. |
+| `git reset --hard HEAD~1` + `git push --force` | Lokaler und Remote-Branch zeigen auf den älteren Commit (push überschreibt Remote). | **Gefährlich**: ändert history auf Remote — Absprache mit Team erforderlich. |
+
+
+### Da war doch mal was
+Machnmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man gerne 
+die Version zurück, die man vor einigen Tagen gelöscht hat. Bei \git hast du 
+Zugriff auf alle alten Versionen! Allerdings ist oft die Frage, in welchem Commit 
+sich die Version versteckt. Hier wird es nötig, sich rückwärts durch die ensprechenden
+Commits zu arbeiten. Dabei gibt es allerdings ein Besonderheit, die du kennen musst.
+Nachfolgende Script erzeugt das passende Szenario:
+
+
+```bash
+git init suche
+cd suche
+git branch -m main
+
+for i in {1..5};do 
+ echo "Version $i" > datei.txt 
+ git add .
+ git commit -m "Version $i"
+done 
+
+echo "gewünschte Version" > datei.txt 
+git add .
+git commit -m "Version 6"
+
+for i in {7..10};do 
+ echo "Version $i" > datei.txt 
+ git add .
+ git commit -m "Version $i"
+done 
+```
+
+Du weißt aus dem Script, dass Version 6 die Datei in der gewünschten Form enthält.
+Im Ernstfall weißt du das wahrscheinlich nicht. Du beginnst also mit der Suche:
+
+```bash
+git log --oneline
+
+# Ausgabe
+b55b329 (HEAD -> main) Version 10
+0149855 Version 9
+a4bc57f Version 8
+95a37c9 Version 7
+d370ffb Version 6
+25fd886 Version 5
+c745eda Version 4
+4a64eef Version 3
+68a4d14 Version 2
+461eee6 Version 1
+```
+
+Am Besten kopierst du dir die Ausgabe in eine Datei, damit du immer Zugriff auf die Hashwerte 
+der Commits hast. Nimm nun als Beispiel einen Sprung zu Version 7.
+
+```bash
+git checkout 95a37c9
+```
+
+Nun kommt eine große Warnung, die dich darüber informiert, dass du gerade 
+außen an der Versionsverwaltung entlang krabbelst. Da du noch nicht mit 
+Branches arbeitest, solltest du aktuell keinerlei 
+Änderungen an den Dateien vornehmen! In die Dateien hinein sehen ist keine
+Änderung -- das ist also ok. Du kannst auch Teile der Inhalte wegkopieren um sie später 
+weiterverwenden zu können.
+
+```bash
+Hinweis: Wechsle zu '95a3'.
+
+Sie befinden sich im Zustand eines 'losgelösten HEAD'. Sie können sich
+umschauen, experimentelle Änderungen vornehmen und diese committen, und
+Sie können alle möglichen Commits, die Sie in diesem Zustand machen,
+ohne Auswirkungen auf irgendeinen Branch verwerfen, indem Sie zu einem
+anderen Branch wechseln.
+
+Wenn Sie einen neuen Branch erstellen möchten, um Ihre erstellten Commits
+zu behalten, können Sie das (jetzt oder später) durch Nutzung von
+'switch' mit der Option -c tun. Beispiel:
+
+  git switch -c <neuer-Branchname>
+
+Oder um diese Operation rückgängig zu machen:
+  git switch -
+
+Sie können diesen Hinweis ausschalten, indem Sie die Konfigurationsvariable
+'advice.detachedHead' auf 'false' setzen.
+
+HEAD ist jetzt bei 95a37c9 Version 7
+```
+
+### Es ging nur wenig schief
+Du hast nach dem letzten Commit an einer Datei weiter gearbeitet, 
+bist mit dem Ergebnis aber nicht zufrieden. Du möchtest die letzte
+Version der Datei wieder herstellen:
+
+```bash
+git init sz1
+cd sz1
+git branch -m main
+
+echo "Alles gut" > datei.txt
+git add .
+git commit -m "alles gut"
+
+echo "Mist gebaut" >> datei.txt
+
+###### Zurück rollen
+git status
+git restore datei.txt  
+```
+Bereits versionierte Dateien mit Fehlern können
+durch `git restore <dateiname>` wieder mit 
+der Version aus dem Stage überschrieben werden.
 
 \samplestart
 Vorher habe ich geschrieben, dass bei einem Commit die Dateien
@@ -70,5 +278,151 @@ git restore --source=<HASH> <datei>
 Die Fehlerbehebung kann auch das Löschen ganzer 
 Entwicklungs- oder Testzweige (Branches) bedeutet, 
 was wir später noch besprechen.
+
+
+* Manchmal soll auch nur die Version gelöscht werden,
+  die irrtümlich auf den Stage geschoben wurde. Dabei darf das 
+  \work nicht verändert werden. Das erreichst du mit
+   `git restore <dateiname> --staged`.  
+  Das braucht man eigentlich nur, wenn diese Datei doch nicht im 
+  nächsten Commit enthalten sein soll.
+
+
+### Was ist mit Revert?
+
+Ja -- \cmd{revert} gibt es und es spielt bei der Arbeit im 
+Team auch eine große Rolle. Bei der lokalen Arbeit wirst 
+du diesen Befehl praktisch nie brauchen -- \cmd{reset}
+und \cmd{checkout} sind hier meist einfacher und schneller.
+Du wirst im Abschnitt über die Teamarbeit aber noch mehr 
+darüber hören!
+
+Der Befehl \cmd{revert} wird meistens in einem Atemzug mit \cmd{reset}
+genannt, hat aber einen deutlich anderen Anwendungsbereich. Hierfür 
+müssen wir etwas auf die Arbeit mit entfernten Repositories vorgreifen
+
+**Szenario**
+
+Du hast einen Commit gemacht und programmierst weiter. 
+Du erstellst einige neue Dateien und erweiterst bestehenden Code 
+in anderen Dateien.
+Nach deinem nächsten Commit erkennst du, dass du durch 
+einen Denkfehler in einigen Dateien viel Code kaputt 
+gemacht hast und es wäre zu viel Aufwand, die ganzen 
+Fehler per Hand rückgängig zu machen. 
+Nun kannst du \cmd{reset} verwenden (aber es gibt natürlich 
+auch andere Möglichkeiten). Je nach Parameter erzielst du 
+nun unterschiedliche Ergebnisse:
+
+* \cmd{git reset HEAD\^}  
+  Der letzte Commit wird verworfen, der aktuelle Bearbeitungsstand 
+  (mit den Fehlern) ist immer noch vorhanden. Das ist sinnvoll, wenn 
+  du einige Dateien behalten und andere zurücksetzen willst.  
+* \cmd{git reset HEAD~1}  
+  Alternative Schreibweise, die aber auch auf frühere Commits 
+  anwendbar ist `~2, ~3`.
+* \cmd{git reset --hard}  
+  Die Dateien werden auf den Zustand nach dem Commit gesetzt. 
+  Alle Fehler sind weg -- sinnvoller neuer Code aber auch!
+
+Da in den ersten beiden Varianten die Fehler noch alle vorhanden sind,
+musst diese noch ausbessern. Willst du das durch Rücksetzen (reset)
+der Dateien erreichen, brauchst du nun 
+
+```bash
+git checkout <HASH> -- <dateiname> 
+```
+
+Dieser Weg ist völlig ok, solange du nur lokal arbeitest
+und den Commit non nicht in ein entferntes Repository 
+übertragen hast. Durch diesen Reset verlieren dein lokales
+und dein entferntes Repository die Synchronisation.
+Ein neuer Commit mit Push nach re
+
+
+
+
+Es gibt noch (mindestens) einen weiteren Befehl, um 
+Fehler in der Commit-History auszubügeln: \cmd{git revert <HASH>}.
+
+Von der Idee her geht es darum, dass Änderungen in einem 
+früheren Commit wieder zurückgesetzt werden. Dafür wird zuerst
+analysiert, welche Änderungen der *schlechte* Commit eingeführt
+hat (das wird mit \cmd{diff} gemacht). Dann werden diese Änderungen
+gewissermaßen *negiert* und ein Patch erstellt, der auf den aktuellen 
+Stand angewendet wird. Das Ergebnis ist ein neuer Commit, der diesen 
+Prozess dokumentiert.
+
+Betrachte folgendes (extrem einfaches) Beispiel. Ein Programmierer 
+schreibt ein Programm zum Berechnen des Body-Mass-Index (BMI). 
+Er committet extrem kurzschrittig und hat in einem bestimmten Commit 
+einen Fehler produziert, das er den Variablentyp bei der Parameterübergabe
+einer Funktion falsch wählt -- er erkennt später, dass es *double* sein sollte.
+
+```java
+public static void ausgabe(String bmi){
+        System.out.print("Dein BMI beträt:");
+        System.out.print(bmi);
+    }
+```
+
+Im nachfolgenden Repository ist die Entwicklung nachvollziehbar:
+
+```bash
+git clone git@gitlab.com:dillingen/bmi.git
+```
+
+Da es nur um eine einzige Datei geht, kannst du direkt in die 
+einzelnen Versionen hinein sehen^[bei vielen Dateien ist das 
+unpraktisch!], wenn di den Hash des Commits kennst:
+
+```bash
+git log --oneline 
+
+# Ausgabe
+c83ae97 (HEAD -> main, origin/main) 
+      Hier wird der Fehler String vs. double erkannt
+5eb974e Berechnung BMI
+834e608 Eingabe Gewicht
+207e388 Ausgabe verfeinert - DAS IST DER FEHLER
+67b0a17 Eingabe der Körpergröße
+33feb0c Mini - Ausgabe
+8a6be40 Initial2
+630a635 Initial
+daef3c8 Start mit Boilerplate
+```
+
+Du rufst auf:
+
+```bash
+git show 33feb0c:./bmi/src/Main.java
+
+# ausgabe
+public class Main {
+    public static void main(String[] args) {
+
+    }
+
+    public static void ausgabe(){
+        System.out.print("Dein BMI beträt:");
+        System.out.print(42); // später ausbauen
+    }
+}
+```
+
+Beim Commit 207e388 wird der Fehler in den Code 
+eingebaut und bis zu Commit c83ae97 nicht erkannt.
+Nun kannst du mit 
+
+```bash
+git revert 207e388
+```
+
+die alte Version zurückbekommen. Das heißt aber *nicht*, dass 
+der falsche Commit verschwindet! Es wird die aktuelle Version
+durch die damalige Version überschrieben und sofort ein neuer 
+Commit gemacht, um das zu dokumentieren.
+
+
 
 
