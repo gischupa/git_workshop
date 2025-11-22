@@ -13,18 +13,18 @@ In der Praxis treten^[Bei mir] meist zwei Fälle auf, da ich
 in der Regel alleine entwickle:
 
 * Während ich am Entwicklungs-Branch arbeite, 
-  passiert auf dem Auslieferungsbranch nichts.
+  passiert auf dem Auslieferungsbranch (hier *main*) nichts.
 * Ich entwickle an einem völlig anderen Feature,
-  das den Auslieferungsbranch gar nicht betrifft.
+  das den *main*-Branch gar nicht betrifft.
   Weil das oft aus Zeitgründen länger dauert, kann
-  es im Auslieferungsbranch Änderungen geben, die im
+  es im *main*-Branch Änderungen geben, die im
   Entwicklungsbranch nicht interessieren.
 
 ### Fast-Forward 
-Ohne Änderung im Auslieferungsbranch wird der der 
-Entwicklungsbranch einfach (schnell davor) vor den 
-letzten Commit des Auslieferungsbranchs gesetzt. 
-In dieser Situation wird im Diagramm der Branch nicht 
+Befindest du dich auf dem (unveränderten) *main*-Branch
+und holst den Entwicklungsbranch mit Merge, so wird dieser  
+einfach vor den letzten Commit des *main*-Branch gesetzt. 
+In dieser Situation wird der Branch im Diagramm nicht 
 einmal als visuelle Abzweigung dargestellt:
 
 ![](bilder/bash/fast_forward.png){width=16cm}
@@ -38,15 +38,15 @@ Wie du siehst, hat sich beim Merge die
 Anzahl Commits nicht verändert.
 
 ### Drei-Wege Merge
-Wenn sich der Auslieferungsbranch parallel
+Wenn sich der *main*-Branch parallel
 zum Entwicklungsbranch weiterentwickelt,
 sieht die Sitation ganz anders aus!
 
 ![](bilder/bash/drei_wege.png)
 
 Du siehst, dass sich der *main*-Branch 
-zu *Schritt 7* weiterentwickelt hat. Beim 
-Merge entsteht ein neuer Commit, der 
+zu *Schritt 7* weiterentwickelt hat (neuer Commit). 
+Beim Merge entsteht ein neuer Commit, der 
 die Spitze beider Branches darstellt.
 Du erkennst auch, dass im Diagramm 
 die grünen Spitzen der Branches nicht
@@ -69,16 +69,19 @@ auch passend dargestellt:
 * 66dcd4f Schritt 1
 ```
 
+(Welcher Branch (main oder entwicklung) als Abzweigung erscheint, entscheidet die jeweilige Git-Software abhängig von der aktuellen
+Situation!)
+
 ## Alte Branches
 Die Commits eines Branches stellen eine Dokumentation 
-des Projektverlaufes dar, die für das Verständnis der
-erfolgten Änderungen eventuell notwendig sind. 
+des Projektverlaufs dar, die für das Verständnis der
+erfolgten Änderungen eventuell notwendig ist. 
 Zu viele Branches und Commits erschweren auf der anderen 
 Seite den Überblick. 
 
 Es geht also darum, alte Branches zu löschen, 
 die *wichtigen* Commits aber zu behalten. 
-Für den schulischen ist das aber weniger relevant.
+Für den schulischen Kontext ist das aber weniger relevant.
 
 Um einen lokalen Branch zu löschen, gibt es 
 folgenden Befehl:
@@ -91,8 +94,8 @@ Er scheitert aber, wenn \git den Branch noch nicht
 als abgeschlossen betrachtet.
 
 Probieren wir das beim letzten Szenario aus. 
-Sieh dir die Abbildung oben nich einmal an und
-dann lösche den Branche
+Sieh dir die Abbildung oben noch einmal an und
+dann lösche den Branch
 
 ```bash
 git branch -d entwicklung 
@@ -115,7 +118,8 @@ Du siehst eine minimale Änderung
 Das *Etikett* vom Entwicklungsbranch wurde gelöscht,
 die Commits bleiben aber in exakt der gleichen 
 Anordnung erhalten! Der Branch ist nicht mehr über seinen 
-Namen zugänglich, die History ist aber weiterhin vorhanden.
+Namen zugänglich, die History ist aber weiterhin vorhanden,
+d.h. ein *checkout* der Commits ist immer noch möglich.
 
 
 ## Rebase
@@ -130,8 +134,8 @@ um die Branches zu verkürzen. Gerade bei der Zusammenarbeit
 im Team kann das aber sehr problematisch werden, wenn 
 man nicht genau weiß, was man macht. Das liegt daran, dass
 sich die Hashwerte von Commits ändern können und wenn 
-sich ein anderer Mitarbeiter den früheren Stand kopiert hat,
-dann kann das zu großem Chaos führen.
+sich ein anderer Mitarbeiter den früheren Stand auf den 
+eigenen Rechner geholt hat, dann kann das zu großem Chaos führen.
 
 https://www.youtube.com/watch?v=CtyLg10aHN0
 https://www.youtube.com/watch?v=1TNK-OkaelI
@@ -159,10 +163,11 @@ Commits im Branch geändert.
 |/  
 * 7fea00c Start
 ```
-Du siehst einen Branch \branch{arbeit} mit mehreren Commits
-und einen neuen Commit im \branch{main}-Branch.
 
-Wenn du nun vom Branch \branch{arbeit} einen Rebase 
+Du siehst einen Branch \branch{arbeit} mit mehreren Commits
+und einen einzigen Commit im \branch{main}-Branch (Zwischenstopp).
+
+Wenn du nun vom Branch \branch{arbeit} aus einen Rebase 
 auf den Branch \branch{main} ausführst:
 
 ```bash
@@ -187,13 +192,15 @@ dann sieht das Ergebnis so aus:
 * 7fea00c Start
 ```
 
-Die Verzeigung ist verschwunden und der Branch \branch{arbeit}
+Die Verzweigung ist verschwunden und der Branch \branch{arbeit}
 hängt mit seinen Commits und neuen Hashwerten  
 am Commit mit dem Hash 2c58be7 aus dem Branch \branch{main}.
 
 Auch wenn es nicht so wirkt: Der Branch \branch{arbeit} 
 ist immer noch vorhanden! Das kannst du auch einfach
-testen, indem du auf den \branch{main}-Branch wechselst
+testen, indem du auf den \branch{main}-Branch und das 
+Log betrachtest -- es sind immer noch zwei Commits! 
+Du kannst im Main auch einen wechselst
 und dort einen neuen Commit erstellst:
 
 ```bash
@@ -206,9 +213,8 @@ git commit -m "Kontrolle"
 Das Log zeigt dann
 
 ```bash
-* 3508cce (HEAD -> main) kkkddd
-| * f4ba9f7 (arbeit) kkk
-| * 1cad272 Neuer Inhalt 10
+* 3508cce (HEAD -> main) Kontrolle 
+| * 1cad272 (arbeit) Neuer Inhalt 10
 ....
 | * dc4b1b0 Neuer Inhalt 2
 | * 9591035 Neuer Inhalt 1
@@ -218,7 +224,7 @@ Das Log zeigt dann
 ```
 
 Die Branches laufen also wieder auseinander.
-Möchte man den Branch \branch{arbeit} loswerden,
+Möchtest du den Branch \branch{arbeit} loswerden,
 dann würdest du hier eher den Rebase von \branch{main}
 auf \branch{arbeit} ausführen. \git versucht dann, 
 den \branch{main}-Branch hinter den Branch \branch{arbeit}
@@ -228,4 +234,29 @@ auch den Branch \branch{arbeit} löschen:
 ```bash
 git branch -d arbeit 
 ```
+
+Es ist aber unrealistische, derartige Szenarien wirklich 
+im Unterricht nachzuspielen.
+
+## Squash
+
+Squash ist kein eigenständiger Befehl, sondern ein Parameter von 
+*rebase*. Angenommen, du hast eine ganze Liste von filigranen
+Commits erzeugt, die du im Nachhinein zu einem Commit 
+zusammenfassen willst. In diesem Fall führst du einen 
+*interaktiven Squash* durch :
+
+```bash
+git rebase -i HEAD~3 # 3 Commits, rückwärts von HEAD
+git rebase -i <hash> # der älteste Commit zum Squashen
+```
+
+Als Reaktion wird dein Editor gestartet, der dir in den 
+ersten Zeile die zum Squash verfügbaren Commits anzeigt.
+Angenommen, es geht um 3 Commits, dann ersetzt du beim 
+allen **bis auf den neuesten** Commits das *pick* durch
+ein *s* (für Squash).  
+Mit dem Speichern der Datei wird dies durchgeführt und du
+bekommst ein neues Editor-Fenster für eine Commit-Message.
+Hast du diese gespeichert, ist der Squash beendet.
 

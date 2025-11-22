@@ -1,4 +1,5 @@
 # Lokale Arbeit
+## Geplante Inhalte
 Bevor du wirklich mit dem Server arbeiten wirst, steht die lokale Anwendung 
 von \git im Vordergrund. Du arbeitest also auf deinem Laptop, Arbeitsplatz, ...  
 
@@ -13,9 +14,38 @@ Nachfolgend besprechen wir folgende Punkte
 * Einfache Fehlerbehebung
 
 
-# Konfigurieren von git
+Die nachfolgende Liste an Befehlen ist keineswegs vollständig,
+aber mit den markierten Befehlen sind fast alle Aspekte der 
+täglichen Arbeit abgedeckt. Wir werden sie nachfolgend behandeln,
+wenn auch nicht in genau dieser Reihenfolge.
 
-Öffne die \git-Bash^[bzw. das Terminal deines Systems. 
+| Befehl  | Befehl |
+|---|---|
+| > `git status` | `git clean`|
+| `git init`| > `git push`|
+| > `git log`| > `git pull`|
+| > `git add`| `git diff`|
+| > `git commit`| `git mergetool`|
+| `git stash`| > `git show`|
+| > `git checkout`| `git fetch`|
+| > `git merge`| `git clone`|
+| > `git branch`| > `git remote`|
+| > `git switch`| |
+
+Darüber hinaus gibt es noch fortgeschrittene Befehle,
+die meist der Fehlerbehebung dienen. Auf diese Befehle 
+werden wir auch einen Blick werfen, aber nicht zu sehr 
+in die Tiefe gehen.
+
+| Befehl  | Befehl |
+|---|---|
+| `git reset` | `git revert`|
+| `git cherry-pick`| `git restore`|
+
+
+## Konfigurieren von git
+
+Öffne die \gitbash^[bzw. das Terminal deines Systems. 
 Das setze ich in Zukunft stillschweigend voraus]. Da es sich um
 globale Einstellungen handelt, muss das nicht unbedingt im 
 Projektordner sein!^[Sollte dir 
@@ -42,28 +72,28 @@ git config --global user.email="susi@sandmann.de"
 
 ## Erstellen eines Repositories 
 Die Voraussetzung für die Arbeit mit \git ist ein  Projektordner, in dem die relevanten Dateien liegen sollen. 
-In diesem Ordener wirst die dein erstes (lokales) Repository erstellen.   
+In diesem Ordener wirst du dein erstes (lokales) Repository erstellen.   
 
 ### Ordner anlegen
 Ich gehe davon aus, dass das Erstellen eines Ordners 
 mit dem üblichen Werkzeugen kein Problem darstellt und
-zege es hier mit Hilfe des Terminals bzw. der \git-Bash.
+zeige es hier mit Hilfe des Terminals bzw. der \gitbash.
 
 ```bash
-mkdir hands_on_1  
-cd hands_on_1 
+mkdir versuch1  
+cd versuch1
 ```
 
 Um den Ordner auch später einfach wiederfinden zu können,
-sollten wir den Pfad zum Ordner identifizieren und eventuell notieren:
+solltes du den Pfad zum Ordner identifizieren und eventuell notieren:
 
 ```bash
 pwd 
 ```
 
-Da auch die \git-Bash eine Form von abgespecktem Linux darstellt, 
+Da auch die \gitbash eine Form von abgespecktem Linux darstellt, 
 gelten die nachfolgenden Befehle auf allen drei Systemen in gleicher Weise. 
-Es sinnvoll, wenn du dir diese Liste bereitlegst (oder die Befehle lernst).
+Es sinnvoll, wenn du dir diese Liste bereit legst (oder die Befehle lernst).
 
 **Wichtige Befehle**  
 
@@ -84,15 +114,16 @@ TODO: Übungsblatt Shell-Befehle erstellen
 
 \samplestart
 **TIPP**  
-Im Terminal kann mit der *Pfeil hoch* Taste
-durch die letzten Befehle geblättert werden -- damit gehen 
+Im Terminal kannst du mit der *Pfeil hoch* Taste
+durch die letzten Befehle blättern -- damit gehen 
 manche Dinge sehr schnell!
 \sampleend
 
 
 ### Anlegen des Repositories
 
-Im Projektordner gibst du folgenden Befehl ein:
+Im Projektordner gibst du folgenden Befehl ein^[Er ist in obiger Tabelle 
+nicht markiert, weil man ihn nicht ständig braucht. Wichtig ist er aber trotzdem!]:
 
 ```bash
 git init
@@ -101,23 +132,24 @@ git init
 Es erscheint eine Meldung, die je nach System etwas anders aussehen kann:
 
 ```bash
-Hinweis: Als Name für den initialen Branch wurde 'master' benutzt. Dieser
-Hinweis: Standard-Branchname kann sich ändern. Um den Namen des initialen Branches
-Hinweis: zu konfigurieren, der in allen neuen Repositories verwendet werden soll und
+Hinweis: Als Name für den initialen Branch wurde 'master' benutzt. 
+Hinweis: Dieser Standard-Branchname kann sich ändern. Um den 
+Hinweis: Namen des initialen Branches zu konfigurieren, der in 
+Hinweis: allen neuen Repositories verwendet werden soll und
 Hinweis: um diese Warnung zu unterdrücken, führen Sie aus:
 Hinweis: 
 Hinweis: 	git config --global init.defaultBranch <Name>
 Hinweis: 
-Hinweis: Häufig gewählte Namen statt 'master' sind 'main', 'trunk' und
-Hinweis: 'development'. Der gerade erstellte Branch kann mit diesem Befehl
-Hinweis: umbenannt werden:
+Hinweis: Häufig gewählte Namen statt 'master' sind 'main', 'trunk'
+Hinweis:  und 'development'. Der gerade erstellte Branch kann
+Hinweis:  mit diesem Befehl umbenannt werden:
 Hinweis: 
 Hinweis: 	git branch -m <Name>
-Leeres Git-Repository in /tmp/hands_on_1/.git/ initialisiert
+Leeres Git-Repository in /tmp/versuch1/.git/ initialisiert
 ```
 
 Es hat sich eingebürgert^[Bedingt durch gesellschaftspolitische 
-Strömungen, die *Master* mit Sklaverei gleichsetzen, aber Eine 
+Strömungen, die *Master* mit Sklaverei gleichsetzen, aber eine 
 Master-Arbeit hier nicht als Problem sehen.], den 
 Arbeitszweig von *master* auf *main* umzubenennen:
 
@@ -125,7 +157,7 @@ Arbeitszweig von *master* auf *main* umzubenennen:
 git branch -m main 
 ```
 
-Den Erfolg kann man schnell mit 
+Den Erfolg kannst du schnell mit 
 
 ```bash
 git status
@@ -150,17 +182,20 @@ git config --global init.defaultBranch main
 ```
 \sampleend
 
-### Eine Datei erstellen
-
-Generell ist ist (natürlich) möglich, jeden Typ von 
+## Einfacher Workflow
+### Daten erstellen
+Generell ist es (natürlich) möglich, jeden Typ von 
 Datei mit \git zu versionieren. Eine der Stärken von 
 \git ist allerdings der Vergleich von Versionsständen
 auf Zeichenebene und deshalb sind Binärformate wie 
-Musik, Bider, aber auch Dokumente der gängigen Office-Produkte nur bedingt geeignet. 
+Musik, Bilder, aber auch Dokumente der gängigen Office-Produkte nur bedingt geeignet. 
+Auch sehr große Dateien sind möglich -- aber nicht sinnvoll. Hier kann auf \git-LFS 
+(Large File Storage) ausgewichen werden, was in diesem Workshop aber nicht Thema ist!
 
-Erstelle nun eine einfache Datei mit Hilfe eines 
-Editors (notepad, notepad++, Programmierumgebung, ...)
-mit dem Namen \datei{datei1.txt}, die als Inhalt nur den Inhalt *Version 1* enthält.
+
+Erstelle nun mit Hilfe eines 
+Editors (notepad, notepad++, Programmierumgebung, ...) eine einfache Datei 
+mit dem Namen \datei{datei1.txt}, die als Inhalt nur ie Zeile *Version 1* enthält.
 
 Auch hier wieder Version mit dem Terminal:
 
@@ -175,9 +210,9 @@ Das Symbol `>` überschreibt den Inhalt der Datei ohne Warnung,
 mit `>>` wird der Text an das Ende der Datei angehängt.
 \sampleend
 
-### Versionieren -- einfachste Form
+### Versionieren 
 
-Dieser Abschnitt ist im Prinzip relativ kurz, solange keine Probleme auftreten:
+Einfaches Versionieren geht sehr schnell und einfach.
 
 Nimm die Datei in die Versionierung auf
 
@@ -191,8 +226,7 @@ und schreibe einen Eintrag in die Projekt-History
 git commit -m "Erste Datei erstellt"
 ```
 
-Natürlich kommen die beiden Befehle hier in deutlich 
-zu kurzem Abstand! Der generella Ablauf sieht aber genau so aus:
+Damit der Versionierungsablauf eigentlich schon definiert:
 
 * Dateien, in denen du Änderungen vorgenommen hast, 
   sammelst du mit *add*
@@ -201,13 +235,14 @@ mit einer aussagekräftigen Beschreibung.
 
 \samplestart
 **Hinweise**  
-Wenn du die Beschreibung lieber mit dem Editor machen möchtest, rufts du *nur* \cmd{git commit} auf.  
+Wenn du die Beschreibung lieber mit dem Editor machen möchtest, rufst du *nur* \cmd{git commit} auf.  
 
 In welche Zeitabständen oder Sinnzusammenhängen du
-Commits erstellst, ist alleine *deine* Entscheidung.  
+Commits erstellst, ist alleine *deine* Entscheidung.
 Du solltest aber bedenken, dass ein Rücksprung zu einem 
 älteren Commit zunächst von *allen* Dateien die Vorgängerversion restauriert. Wenn du also zu viel 
-Änderungen am Code vorgenommen hast, die behalten willst, dann wirst du einiges an Handarbeit haben. Deshalb lieber mehr Commits in kürzeren Abständen!
+Änderungen am Code vorgenommen hast, die behalten willst, dann wirst du einiges an Handarbeit haben. Deshalb lieber mehr Commits in kürzeren Abständen! Fehlerbehebung ist aber ein komplett
+anderes Thema -- auf einem deutlich anderen Niveau!
 \sampleend
 
 Ändere deine Datei nun ab, indem du eine 
@@ -219,8 +254,17 @@ git add datei1.txt
 git commit -m "Erläuterung"
 ```
 
-Die Historie besitzt nun zwei Punkte, an die du zurückgekehren
-könntest -- wie das geht, lernst du noch.
+Die Historie besitzt nun zwei Punkte:
+
+```bash
+git log --oneline 
+
+# Ausgabe
+eaa6289 (HEAD -> main) Erläuterung
+afbc9c5 Erste Datei erstellt
+```
+
+Die Hash-Werte sind bei dir in der Regel anders! 
 
 **Hinweis**  
 Du kannst natürlich auch mehrere Dateien 
@@ -238,13 +282,3 @@ git add --all  # (oder -A) fügt alle Dateien
 Wir werden später sehen, was genau beim *add* 
 passiert, z.B. wenn man die gleiche Datei zwischen 
 zwei Commits mehrfach ändert und *addet*.
-
-### Versionieren -- etwas genauer betrachtet
-
-Aktuell hast du zwei Commits und keine neuen 
-Änderungen an den Dateien. Diesen Zustan solltest 
-du sehen, wenn du den Status abfragst:
-
-```bash
-git status
-```

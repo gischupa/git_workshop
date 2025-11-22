@@ -1,0 +1,51 @@
+# Cherry Picking
+
+Dieser Befehl klingt nach hoher Expertise, ist aber im Vergleich 
+zu anderen Techniken relativ leicht zu verstehen. Kurz gesagt 
+ermöglicht es Cherry-Pick, sich Commits aus anderen Branches 
+in den eigenen Branch zu kopieren. Das ist Hilfreich, wenn 
+z.B. in einem Branch ein Bug behoben wird, der auch im eigenen 
+Branch benötigt wird.
+
+\begin{tikzpicture}
+
+\draw(1,0) --++(8,0);
+
+\draw((3,0) --( 5,-2.5);
+\draw(5, -2.5) -- ++ (3.5,0);
+
+\draw[dashed, ->](7, -2.5) -- ( 11,0 );
+
+
+%obere Schiene
+\foreach \x in {1,3,...,9}{
+  \draw[fill=white] (\x, 0) circle(0.5);
+}
+
+
+%untere Schiene
+\foreach \x in {5,7,9}{
+  \draw[fill=white] (\x, -2.5) circle(0.5);
+}
+
+\draw [ fill=red] (7, -2.5) circle(0.5);
+
+
+\draw(9,1) node{HEAD};
+\draw(7, -3.5) node {534875};
+\end{tikzpicture}
+
+Der zugehörige Befehl würde -- ausgehend vom 
+aktuellen Branch (HEAD) lauten:
+
+```bash
+git cherry-pick 534875
+```
+
+Die Folge ist ein komplett neuer Commit im aktuellen Branch.
+
+**Beispiel**  
+
+Hierfür clonst du das Repository *Cherry*
+
+TODO: Repo Cherry

@@ -38,6 +38,7 @@ format:
         \newcommand{\gitserver}{\textit{git}-Server\xspace}
         \newcommand{\gitservers}{\textit{git}-Servers\xspace}
         \newcommand{\gitlab}{\textit{GitLab}\xspace}
+        \newcommand{\gitbash}{\textit{git-Bash}\xspace}
         \newcommand{\maven}{\textit{Maven}\xspace}
         \newcommand{\strg}[1]{strg + #1\xspace}
         \newcommand{\alt}[1]{alt + #1\xspace}

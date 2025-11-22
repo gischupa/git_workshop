@@ -263,6 +263,7 @@
 \newcommand{\gitserver}{\textit{git}-Server\xspace}
 \newcommand{\gitservers}{\textit{git}-Servers\xspace}
 \newcommand{\gitlab}{\textit{GitLab}\xspace}
+\newcommand{\gitbash}{\textit{git-Bash}\xspace}
 \newcommand{\maven}{\textit{Maven}\xspace}
 \newcommand{\strg}[1]{strg + #1\xspace}
 \newcommand{\alt}[1]{alt + #1\xspace}
@@ -325,7 +326,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, frame hidden, enhanced, sharp corners, colback={codebgcolor}, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, colback={codebgcolor}, boxrule=0pt, enhanced, breakable, sharp corners]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -839,6 +840,8 @@ mehr im Weg.
 
 \chapter{Lokale Arbeit}\label{lokale-arbeit}
 
+\section{Geplante Inhalte}\label{geplante-inhalte}
+
 Bevor du wirklich mit dem Server arbeiten wirst, steht die lokale
 Anwendung von \git im Vordergrund. Du arbeitest also auf deinem Laptop,
 Arbeitsplatz, \ldots{}
@@ -861,11 +864,49 @@ Nachfolgend besprechen wir folgende Punkte
   Einfache Fehlerbehebung
 \end{itemize}
 
-\bookmarksetup{startatroot}
+Die nachfolgende Liste an Befehlen ist keineswegs vollständig, aber mit
+den markierten Befehlen sind fast alle Aspekte der täglichen Arbeit
+abgedeckt. Wir werden sie nachfolgend behandeln, wenn auch nicht in
+genau dieser Reihenfolge.
 
-\chapter{Konfigurieren von git}\label{konfigurieren-von-git}
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Befehl & Befehl \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textgreater{} \texttt{git\ status} & \texttt{git\ clean} \\
+\texttt{git\ init} & \textgreater{} \texttt{git\ push} \\
+\textgreater{} \texttt{git\ log} & \textgreater{} \texttt{git\ pull} \\
+\textgreater{} \texttt{git\ add} & \texttt{git\ diff} \\
+\textgreater{} \texttt{git\ commit} & \texttt{git\ mergetool} \\
+\texttt{git\ stash} & \textgreater{} \texttt{git\ show} \\
+\textgreater{} \texttt{git\ checkout} & \texttt{git\ fetch} \\
+\textgreater{} \texttt{git\ merge} & \texttt{git\ clone} \\
+\textgreater{} \texttt{git\ branch} & \textgreater{}
+\texttt{git\ remote} \\
+\textgreater{} \texttt{git\ switch} & \\
+\end{longtable}
 
-Öffne die \git-Bash\footnote{bzw. das Terminal deines Systems. Das setze
+Darüber hinaus gibt es noch fortgeschrittene Befehle, die meist der
+Fehlerbehebung dienen. Auf diese Befehle werden wir auch einen Blick
+werfen, aber nicht zu sehr in die Tiefe gehen.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Befehl & Befehl \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{git\ reset} & \texttt{git\ revert} \\
+\texttt{git\ cherry-pick} & \texttt{git\ restore} \\
+\end{longtable}
+
+\section{Konfigurieren von git}\label{konfigurieren-von-git}
+
+Öffne die \gitbash\footnote{bzw. das Terminal deines Systems. Das setze
   ich in Zukunft stillschweigend voraus}. Da es sich um globale
 Einstellungen handelt, muss das nicht unbedingt im Projektordner
 sein!\footnote{Sollte dir die Schrift im Fenter zu klein sein, kannst du
@@ -899,24 +940,24 @@ sein!\footnote{Sollte dir die Schrift im Fenter zu klein sein, kannst du
 Repositories}\label{erstellen-eines-repositories}
 
 Die Voraussetzung für die Arbeit mit \git ist ein Projektordner, in dem
-die relevanten Dateien liegen sollen. In diesem Ordener wirst die dein
+die relevanten Dateien liegen sollen. In diesem Ordener wirst du dein
 erstes (lokales) Repository erstellen.
 
 \subsection{Ordner anlegen}\label{ordner-anlegen}
 
 Ich gehe davon aus, dass das Erstellen eines Ordners mit dem üblichen
-Werkzeugen kein Problem darstellt und zege es hier mit Hilfe des
-Terminals bzw. der \git-Bash.
+Werkzeugen kein Problem darstellt und zeige es hier mit Hilfe des
+Terminals bzw. der \gitbash.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{mkdir}\NormalTok{ hands\_on\_1  }
-\BuiltInTok{cd}\NormalTok{ hands\_on\_1 }
+\FunctionTok{mkdir}\NormalTok{ versuch1  }
+\BuiltInTok{cd}\NormalTok{ versuch1}
 \end{Highlighting}
 \end{Shaded}
 
-Um den Ordner auch später einfach wiederfinden zu können, sollten wir
-den Pfad zum Ordner identifizieren und eventuell notieren:
+Um den Ordner auch später einfach wiederfinden zu können, solltes du den
+Pfad zum Ordner identifizieren und eventuell notieren:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -924,9 +965,10 @@ den Pfad zum Ordner identifizieren und eventuell notieren:
 \end{Highlighting}
 \end{Shaded}
 
-Da auch die \git-Bash eine Form von abgespecktem Linux darstellt, gelten
+Da auch die \gitbash eine Form von abgespecktem Linux darstellt, gelten
 die nachfolgenden Befehle auf allen drei Systemen in gleicher Weise. Es
-sinnvoll, wenn du dir diese Liste bereitlegst (oder die Befehle lernst).
+sinnvoll, wenn du dir diese Liste bereit legst (oder die Befehle
+lernst).
 
 \textbf{Wichtige Befehle}
 
@@ -959,13 +1001,14 @@ TODO: Übungsblatt Shell-Befehle erstellen
 \samplestart
 
 \textbf{TIPP}\\
-Im Terminal kann mit der \emph{Pfeil hoch} Taste durch die letzten
-Befehle geblättert werden -- damit gehen manche Dinge sehr schnell!
-\sampleend
+Im Terminal kannst du mit der \emph{Pfeil hoch} Taste durch die letzten
+Befehle blättern -- damit gehen manche Dinge sehr schnell! \sampleend
 
 \subsection{Anlegen des Repositories}\label{anlegen-des-repositories}
 
-Im Projektordner gibst du folgenden Befehl ein:
+Im Projektordner gibst du folgenden Befehl ein\footnote{Er ist in obiger
+  Tabelle nicht markiert, weil man ihn nicht ständig braucht. Wichtig
+  ist er aber trotzdem!}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -978,24 +1021,25 @@ kann:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{Hinweis:}\NormalTok{ Als Name für den initialen Branch wurde }\StringTok{\textquotesingle{}master\textquotesingle{}}\NormalTok{ benutzt. Dieser}
-\ExtensionTok{Hinweis:}\NormalTok{ Standard{-}Branchname kann sich ändern. Um den Namen des initialen Branches}
-\ExtensionTok{Hinweis:}\NormalTok{ zu konfigurieren, der in allen neuen Repositories verwendet werden soll und}
+\ExtensionTok{Hinweis:}\NormalTok{ Als Name für den initialen Branch wurde }\StringTok{\textquotesingle{}master\textquotesingle{}}\NormalTok{ benutzt. }
+\ExtensionTok{Hinweis:}\NormalTok{ Dieser Standard{-}Branchname kann sich ändern. Um den }
+\ExtensionTok{Hinweis:}\NormalTok{ Namen des initialen Branches zu konfigurieren, der in }
+\ExtensionTok{Hinweis:}\NormalTok{ allen neuen Repositories verwendet werden soll und}
 \ExtensionTok{Hinweis:}\NormalTok{ um diese Warnung zu unterdrücken, führen Sie aus:}
 \ExtensionTok{Hinweis:} 
 \ExtensionTok{Hinweis:}\NormalTok{    git config }\AttributeTok{{-}{-}global}\NormalTok{ init.defaultBranch }\OperatorTok{\textless{}}\NormalTok{Name}\OperatorTok{\textgreater{}}
 \ExtensionTok{Hinweis:} 
-\ExtensionTok{Hinweis:}\NormalTok{ Häufig gewählte Namen statt }\StringTok{\textquotesingle{}master\textquotesingle{}}\NormalTok{ sind }\StringTok{\textquotesingle{}main\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}trunk\textquotesingle{}}\NormalTok{ und}
-\ExtensionTok{Hinweis:} \StringTok{\textquotesingle{}development\textquotesingle{}}\NormalTok{. Der gerade erstellte Branch kann mit diesem Befehl}
-\ExtensionTok{Hinweis:}\NormalTok{ umbenannt werden:}
+\ExtensionTok{Hinweis:}\NormalTok{ Häufig gewählte Namen statt }\StringTok{\textquotesingle{}master\textquotesingle{}}\NormalTok{ sind }\StringTok{\textquotesingle{}main\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}trunk\textquotesingle{}}
+\ExtensionTok{Hinweis:}\NormalTok{  und }\StringTok{\textquotesingle{}development\textquotesingle{}}\NormalTok{. Der gerade erstellte Branch kann}
+\ExtensionTok{Hinweis:}\NormalTok{  mit diesem Befehl umbenannt werden:}
 \ExtensionTok{Hinweis:} 
 \ExtensionTok{Hinweis:}\NormalTok{    git branch }\AttributeTok{{-}m} \OperatorTok{\textless{}}\NormalTok{Name}\OperatorTok{\textgreater{}}
-\ExtensionTok{Leeres}\NormalTok{ Git{-}Repository in /tmp/hands\_on\_1/.git/ initialisiert}
+\ExtensionTok{Leeres}\NormalTok{ Git{-}Repository in /tmp/versuch1/.git/ initialisiert}
 \end{Highlighting}
 \end{Shaded}
 
 Es hat sich eingebürgert\footnote{Bedingt durch gesellschaftspolitische
-  Strömungen, die \emph{Master} mit Sklaverei gleichsetzen, aber Eine
+  Strömungen, die \emph{Master} mit Sklaverei gleichsetzen, aber eine
   Master-Arbeit hier nicht als Problem sehen.}, den Arbeitszweig von
 \emph{master} auf \emph{main} umzubenennen:
 
@@ -1005,7 +1049,7 @@ Es hat sich eingebürgert\footnote{Bedingt durch gesellschaftspolitische
 \end{Highlighting}
 \end{Shaded}
 
-Den Erfolg kann man schnell mit
+Den Erfolg kannst du schnell mit
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1040,17 +1084,21 @@ angelegten Repositories automatisch \emph{main} genannt wird.
 
 \sampleend
 
-\subsection{Eine Datei erstellen}\label{eine-datei-erstellen}
+\section{Einfacher Workflow}\label{einfacher-workflow}
 
-Generell ist ist (natürlich) möglich, jeden Typ von Datei mit \git zu
+\subsection{Daten erstellen}\label{daten-erstellen}
+
+Generell ist es (natürlich) möglich, jeden Typ von Datei mit \git zu
 versionieren. Eine der Stärken von \git ist allerdings der Vergleich von
 Versionsständen auf Zeichenebene und deshalb sind Binärformate wie
-Musik, Bider, aber auch Dokumente der gängigen Office-Produkte nur
-bedingt geeignet.
+Musik, Bilder, aber auch Dokumente der gängigen Office-Produkte nur
+bedingt geeignet. Auch sehr große Dateien sind möglich -- aber nicht
+sinnvoll. Hier kann auf \git-LFS (Large File Storage) ausgewichen
+werden, was in diesem Workshop aber nicht Thema ist!
 
-Erstelle nun eine einfache Datei mit Hilfe eines Editors (notepad,
-notepad++, Programmierumgebung, \ldots) mit dem Namen
-\datei{datei1.txt}, die als Inhalt nur den Inhalt \emph{Version 1}
+Erstelle nun mit Hilfe eines Editors (notepad, notepad++,
+Programmierumgebung, \ldots) eine einfache Datei mit dem Namen
+\datei{datei1.txt}, die als Inhalt nur ie Zeile \emph{Version 1}
 enthält.
 
 Auch hier wieder Version mit dem Terminal:
@@ -1069,11 +1117,9 @@ Das Symbol \texttt{\textgreater{}} überschreibt den Inhalt der Datei
 ohne Warnung, mit \texttt{\textgreater{}\textgreater{}} wird der Text an
 das Ende der Datei angehängt. \sampleend
 
-\subsection{Versionieren -- einfachste
-Form}\label{versionieren-einfachste-form}
+\subsection{Versionieren}\label{versionieren}
 
-Dieser Abschnitt ist im Prinzip relativ kurz, solange keine Probleme
-auftreten:
+Einfaches Versionieren geht sehr schnell und einfach.
 
 Nimm die Datei in die Versionierung auf
 
@@ -1091,8 +1137,7 @@ und schreibe einen Eintrag in die Projekt-History
 \end{Highlighting}
 \end{Shaded}
 
-Natürlich kommen die beiden Befehle hier in deutlich zu kurzem Abstand!
-Der generella Ablauf sieht aber genau so aus:
+Damit der Versionierungsablauf eigentlich schon definiert:
 
 \begin{itemize}
 \tightlist
@@ -1108,16 +1153,17 @@ Der generella Ablauf sieht aber genau so aus:
 \samplestart
 
 \textbf{Hinweise}\\
-Wenn du die Beschreibung lieber mit dem Editor machen möchtest, rufts du
+Wenn du die Beschreibung lieber mit dem Editor machen möchtest, rufst du
 \emph{nur} \cmd{git commit} auf.
 
 In welche Zeitabständen oder Sinnzusammenhängen du Commits erstellst,
-ist alleine \emph{deine} Entscheidung.\\
-Du solltest aber bedenken, dass ein Rücksprung zu einem älteren Commit
-zunächst von \emph{allen} Dateien die Vorgängerversion restauriert. Wenn
-du also zu viel Änderungen am Code vorgenommen hast, die behalten
-willst, dann wirst du einiges an Handarbeit haben. Deshalb lieber mehr
-Commits in kürzeren Abständen! \sampleend
+ist alleine \emph{deine} Entscheidung. Du solltest aber bedenken, dass
+ein Rücksprung zu einem älteren Commit zunächst von \emph{allen} Dateien
+die Vorgängerversion restauriert. Wenn du also zu viel Änderungen am
+Code vorgenommen hast, die behalten willst, dann wirst du einiges an
+Handarbeit haben. Deshalb lieber mehr Commits in kürzeren Abständen!
+Fehlerbehebung ist aber ein komplett anderes Thema -- auf einem deutlich
+anderen Niveau! \sampleend
 
 Ändere deine Datei nun ab, indem du eine Zeile ergänzt:
 
@@ -1129,8 +1175,19 @@ Commits in kürzeren Abständen! \sampleend
 \end{Highlighting}
 \end{Shaded}
 
-Die Historie besitzt nun zwei Punkte, an die du zurückgekehren könntest
--- wie das geht, lernst du noch.
+Die Historie besitzt nun zwei Punkte:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} 
+
+\CommentTok{\# Ausgabe}
+\ExtensionTok{eaa6289} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Erläuterung}
+\ExtensionTok{afbc9c5}\NormalTok{ Erste Datei erstellt}
+\end{Highlighting}
+\end{Shaded}
+
+Die Hash-Werte sind bei dir in der Regel anders!
 
 \textbf{Hinweis}\\
 Du kannst natürlich auch mehrere Dateien in einem Rutsch hinzufügen!
@@ -1150,18 +1207,6 @@ Wir werden später sehen, was genau beim \emph{add} passiert, z.B. wenn
 man die gleiche Datei zwischen zwei Commits mehrfach ändert und
 \emph{addet}.
 
-\subsection{Versionieren -- etwas genauer
-betrachtet}\label{versionieren-etwas-genauer-betrachtet}
-
-Aktuell hast du zwei Commits und keine neuen Änderungen an den Dateien.
-Diesen Zustan solltest du sehen, wenn du den Status abfragst:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ status}
-\end{Highlighting}
-\end{Shaded}
-
 \bookmarksetup{startatroot}
 
 \chapter{Hands On I}\label{hands-on-i}
@@ -1179,38 +1224,6 @@ vorgenommen hat\footnote{Wir sprechen hier NICHT von einer Absicherung
 Im Terminal kann mit der \emph{Pfeil hoch} Taste durch die letzten
 Befehle geblättert werden -- damit gehen manche Dinge sehr schnell!
 \sampleend
-
-\section{Konfigurieren von git}\label{konfigurieren-von-git-1}
-
-Öffne die \git-Bash\footnote{bzw. das Terminal deines Systems. Das setze
-  ich in Zukunft stillschweigend voraus.}. Da es sich um globale
-Einstellungen handelt, muss das nicht unbedingt im Projektordner
-sein!\footnote{Sollte dir still die Schrift im Fentser zu klein sein,
-  kannst du sie mit \strg{+} vergrößern.}.
-
-\textbf{Aktuelle Einstellungen ansehen}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Eingabe}
-\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}list}
-
-\CommentTok{\# Ausgabe}
-\ExtensionTok{user.email=}
-\ExtensionTok{user.name=}
-     \ExtensionTok{...}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Einstellungen anpassen}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# eigene Phantasiedaten verwenden}
-\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.name=}\StringTok{"Susi Sandmann"} 
-\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.email=}\StringTok{"susi@sandmann.de"}
-\end{Highlighting}
-\end{Shaded}
 
 \section{Erste Schritt}\label{erste-schritt}
 
@@ -2073,6 +2086,12 @@ eigentlich verlassen wir hier schon die einfachen Fälle. Ich persönlich
 verliere bei so vielen Varianten bald den Überblick und von einem
 \emph{routinierten Handling} kann keine Rede sein!
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ reset = git reset HEAD }
+\end{Highlighting}
+\end{Shaded}
+
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
@@ -2119,7 +2138,7 @@ history auf Remote --- Absprache mit Team erforderlich. \\
 
 \subsection{Da war doch mal was}\label{da-war-doch-mal-was}
 
-Machnmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man
+Manchmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man
 gerne die Version zurück, die man vor einigen Tagen gelöscht hat. Bei
 \git hast du Zugriff auf alle alten Versionen! Allerdings ist oft die
 Frage, in welchem Commit sich die Version versteckt. Hier wird es nötig,
@@ -2305,150 +2324,165 @@ Testzweige (Branches) bedeutet, was wir später noch besprechen.
 \subsection{Was ist mit Revert?}\label{was-ist-mit-revert}
 
 Ja -- \cmd{revert} gibt es und es spielt bei der Arbeit im Team auch
-eine große Rolle. Bei der lokalen Arbeit wirst du diesen Befehl
-praktisch nie brauchen -- \cmd{reset} und \cmd{checkout} sind hier meist
+eine große Rolle. Bei der lokalen Arbeit wirst du diesen Befehl sehr
+selten brauchen -- \cmd{reset} und \cmd{checkout} sind hier meist
 einfacher und schneller. Du wirst im Abschnitt über die Teamarbeit aber
 noch mehr darüber hören!
 
-Der Befehl \cmd{revert} wird meistens in einem Atemzug mit \cmd{reset}
-genannt, hat aber einen deutlich anderen Anwendungsbereich. Hierfür
-müssen wir etwas auf die Arbeit mit entfernten Repositories vorgreifen
-
-\textbf{Szenario}
-
-Du hast einen Commit gemacht und programmierst weiter. Du erstellst
-einige neue Dateien und erweiterst bestehenden Code in anderen Dateien.
-Nach deinem nächsten Commit erkennst du, dass du durch einen Denkfehler
-in einigen Dateien viel Code kaputt gemacht hast und es wäre zu viel
-Aufwand, die ganzen Fehler per Hand rückgängig zu machen. Nun kannst du
-\cmd{reset} verwenden (aber es gibt natürlich auch andere
-Möglichkeiten). Je nach Parameter erzielst du nun unterschiedliche
-Ergebnisse:
+Zum Verständis der Problematik dennoch ein Beispiel. Angenommen, du
+erstellst ein Programm zur Berechnung des Body-Mass-Index und gehst
+extrem kleinschrittig mit den Commits um. Dein Ablauf wäre dann - jeder
+Punkt ist ein Commit (siehe Nummer):
 
 \begin{itemize}
+\tightlist
 \item
-  \cmd{git reset HEAD\^}
-
-  Der letzte Commit wird verworfen, der aktuelle Bearbeitungsstand (mit
-  den Fehlern) ist immer noch vorhanden. Das ist sinnvoll, wenn du
-  einige Dateien behalten und andere zurücksetzen willst.\\
+  \begin{enumerate}
+  \def\labelenumi{(\arabic{enumi})}
+  \tightlist
+  \item
+    Java-Boilerplate
+  \end{enumerate}
 \item
-  \cmd{git reset HEAD~1}
-
-  Alternative Schreibweise, die aber auch auf frühere Commits anwendbar
-  ist \texttt{\textasciitilde{}2,\ \textasciitilde{}3}.
+  \begin{enumerate}
+  \def\labelenumi{(\arabic{enumi})}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    Ausgabefunktion ohne Übergabeparameter und Blankotext
+  \end{enumerate}
 \item
-  \cmd{git reset --hard}
-
-  Die Dateien werden auf den Zustand nach dem Commit gesetzt. Alle
-  Fehler sind weg -- sinnvoller neuer Code aber auch!
+  \begin{enumerate}
+  \def\labelenumi{(\arabic{enumi})}
+  \setcounter{enumi}{2}
+  \tightlist
+  \item
+    Eingabefunktion für die Körpergröße
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\arabic{enumi})}
+  \setcounter{enumi}{3}
+  \tightlist
+  \item
+    Ändern der Ausgabefunktion für Übergabe von String\\
+    Das ist der Fehler, weil du später \emph{double} willst
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\arabic{enumi})}
+  \setcounter{enumi}{3}
+  \tightlist
+  \item
+    Eingabefunktion für die Körpermasse
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\arabic{enumi})}
+  \setcounter{enumi}{4}
+  \tightlist
+  \item
+    Berechnungsfunktion
+  \end{enumerate}
 \end{itemize}
 
-Da in den ersten beiden Varianten die Fehler noch alle vorhanden sind,
-musst diese noch ausbessern. Willst du das durch Rücksetzen (reset) der
-Dateien erreichen, brauchst du nun
+Nun verdrahtest du das alles in der \emph{main}-Funktion und stellst
+fest, dass der Übergabeparameter den falschen Typ besitzt.\\
+Aus desem Grund möchtest du diesen Commit -- der ja NUR diese Funktion
+betrifft -- rückgängig machen.
+
+In meinem System lauten die Hashes wie folgt:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ checkout }\OperatorTok{\textless{}}\NormalTok{HASH}\OperatorTok{\textgreater{}}\NormalTok{ {-}{-} }\OperatorTok{\textless{}}\NormalTok{dateiname}\OperatorTok{\textgreater{}} 
-\end{Highlighting}
-\end{Shaded}
-
-Dieser Weg ist völlig ok, solange du nur lokal arbeitest und den Commit
-non nicht in ein entferntes Repository übertragen hast. Durch diesen
-Reset verlieren dein lokales und dein entferntes Repository die
-Synchronisation. Ein neuer Commit mit Push nach re
-
-Es gibt noch (mindestens) einen weiteren Befehl, um Fehler in der
-Commit-History auszubügeln: \cmd{git revert <HASH>}.
-
-Von der Idee her geht es darum, dass Änderungen in einem früheren Commit
-wieder zurückgesetzt werden. Dafür wird zuerst analysiert, welche
-Änderungen der \emph{schlechte} Commit eingeführt hat (das wird mit
-\cmd{diff} gemacht). Dann werden diese Änderungen gewissermaßen
-\emph{negiert} und ein Patch erstellt, der auf den aktuellen Stand
-angewendet wird. Das Ergebnis ist ein neuer Commit, der diesen Prozess
-dokumentiert.
-
-Betrachte folgendes (extrem einfaches) Beispiel. Ein Programmierer
-schreibt ein Programm zum Berechnen des Body-Mass-Index (BMI). Er
-committet extrem kurzschrittig und hat in einem bestimmten Commit einen
-Fehler produziert, das er den Variablentyp bei der Parameterübergabe
-einer Funktion falsch wählt -- er erkennt später, dass es \emph{double}
-sein sollte.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{public} \DataTypeTok{static} \DataTypeTok{void} \FunctionTok{ausgabe}\OperatorTok{(}\BuiltInTok{String}\NormalTok{ bmi}\OperatorTok{)\{}
-        \BuiltInTok{System}\OperatorTok{.}\FunctionTok{out}\OperatorTok{.}\FunctionTok{print}\OperatorTok{(}\StringTok{"Dein BMI beträt:"}\OperatorTok{);}
-        \BuiltInTok{System}\OperatorTok{.}\FunctionTok{out}\OperatorTok{.}\FunctionTok{print}\OperatorTok{(}\NormalTok{bmi}\OperatorTok{);}
-    \OperatorTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Im nachfolgenden Repository ist die Entwicklung nachvollziehbar:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ clone git@gitlab.com:dillingen/bmi.git}
-\end{Highlighting}
-\end{Shaded}
-
-Da es nur um eine einzige Datei geht, kannst du direkt in die einzelnen
-Versionen hinein sehen\footnote{bei vielen Dateien ist das unpraktisch!},
-wenn di den Hash des Commits kennst:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} 
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline}
 
 \CommentTok{\# Ausgabe}
-\ExtensionTok{c83ae97} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main, origin/main}\KeywordTok{)} 
-      \ExtensionTok{Hier}\NormalTok{ wird der Fehler String vs. double erkannt}
-\ExtensionTok{5eb974e}\NormalTok{ Berechnung BMI}
-\ExtensionTok{834e608}\NormalTok{ Eingabe Gewicht}
-\ExtensionTok{207e388}\NormalTok{ Ausgabe verfeinert }\AttributeTok{{-}}\NormalTok{ DAS IST DER FEHLER}
-\ExtensionTok{67b0a17}\NormalTok{ Eingabe der Körpergröße}
-\ExtensionTok{33feb0c}\NormalTok{ Mini }\AttributeTok{{-}}\NormalTok{ Ausgabe}
-\ExtensionTok{8a6be40}\NormalTok{ Initial2}
-\ExtensionTok{630a635}\NormalTok{ Initial}
-\ExtensionTok{daef3c8}\NormalTok{ Start mit Boilerplate}
+\ExtensionTok{a93cb87} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{kombi}
+\ExtensionTok{e676f14}\NormalTok{ berechnung}
+\ExtensionTok{d497b2f}\NormalTok{ eingabe 2}
+\ExtensionTok{4fe5b44}\NormalTok{ ERROR}
+\ExtensionTok{2c9c7f1}\NormalTok{ eingabe 1}
+\ExtensionTok{d051611}\NormalTok{ ausgabe}
+\ExtensionTok{9201570}\NormalTok{ initial}
 \end{Highlighting}
 \end{Shaded}
 
-Du rufst auf:
+Der Befehl \emph{revert} verläuft nun wie folgt:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ show 33feb0c:./bmi/src/Main.java}
+\FunctionTok{git}\NormalTok{ revert 4fe5 }\CommentTok{\# 4 reichen}
 
-\CommentTok{\# ausgabe}
-\ExtensionTok{public}\NormalTok{ class Main \{}
-    \ExtensionTok{public}\NormalTok{ static void main}\ErrorTok{(}\ExtensionTok{String[]}\NormalTok{ args}\KeywordTok{)} \KeywordTok{\{}
+\CommentTok{\# Ausgabe}
+\ExtensionTok{automatischer}\NormalTok{ Merge von Main.java}
+\ExtensionTok{KONFLIKT} \ErrorTok{(}\ExtensionTok{Inhalt}\KeywordTok{)}\BuiltInTok{:}\NormalTok{ Merge{-}Konflikt in Main.java}
+\ExtensionTok{error:}\NormalTok{ Konnte }\StringTok{"revert"}\NormalTok{ nicht auf 4fe5b44... }\ErrorTok{(}\ExtensionTok{ERROR}\KeywordTok{)} \ExtensionTok{ausführen}
+\ExtensionTok{Hinweis:}\NormalTok{ Lösen Sie alle Konflikte manuell auf, }
+\ExtensionTok{Hinweis:}\NormalTok{ markieren Sie diese mit}
+\ExtensionTok{Hinweis:} \StringTok{"git add/rm \textless{}Pfadspezifikation\textgreater{}"}\NormalTok{ und führen Sie }
+\ExtensionTok{Hinweis:}\NormalTok{ dann }\StringTok{"git revert {-}{-}continue"}\NormalTok{ aus.}
+\ExtensionTok{Hinweis:}\NormalTok{ Sie können stattdessen auch diesen Commit }
+\ExtensionTok{Hinweis:}\NormalTok{ auslassen, indem Sie }
+\ExtensionTok{Hinweise:} \StringTok{"git revert {-}{-}skip"}\NormalTok{ ausführen.}
+\ExtensionTok{Hinweis:}\NormalTok{ Um abzubrechen und zurück zum Zustand }
+\ExtensionTok{Hinweise:}\NormalTok{ vor }\StringTok{"git revert"}\NormalTok{ zu gelangen,}
+\ExtensionTok{Hinweis:}\NormalTok{ führen Sie }\StringTok{"git revert {-}{-}abort"}\NormalTok{ aus.}
+\end{Highlighting}
+\end{Shaded}
 
+Es gibt also einen \emph{Konflikt}. Der Inhalt der Datei sieht aktuell
+so aus:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{ Main.java }
+
+\CommentTok{\# Ausgabe }
+\ExtensionTok{import}\NormalTok{ java.util.Scanner}\KeywordTok{;}
+
+\ExtensionTok{public}\NormalTok{ class Main\{}
+  \ExtensionTok{public}\NormalTok{ static void main}\ErrorTok{(}\KeywordTok{)\{}
+
+    \ExtensionTok{int}\NormalTok{ cm = eingabeCM}\ErrorTok{(}\KeywordTok{);}
+    \ExtensionTok{int}\NormalTok{ kg = eingabeKG}\ErrorTok{(}\KeywordTok{);}
+    \ExtensionTok{double}\NormalTok{ bmi = berechnung}\ErrorTok{(}\ExtensionTok{cm,}\NormalTok{ kg}\KeywordTok{);}
+    \ExtensionTok{ausgabe}\ErrorTok{(}\ExtensionTok{bmi}\KeywordTok{);}
+  \KeywordTok{\}}
+
+  \ExtensionTok{public}\NormalTok{ static void ausgabe}\ErrorTok{(}\KeywordTok{)\{}
+    \ExtensionTok{System.out.print}\ErrorTok{(}\StringTok{"Dein BMI beträgt: "}\KeywordTok{);}
+    \ExtensionTok{System.out.println}\ErrorTok{(}\ExtensionTok{42}\KeywordTok{);}
+  \KeywordTok{\}}
+
+  \ExtensionTok{public}\NormalTok{ static int eingabeCM}\ErrorTok{(}\KeywordTok{)\{}
+    \ExtensionTok{System.out.print}\ErrorTok{(}\StringTok{"CM:"}\KeywordTok{);}
+    \ExtensionTok{int}\NormalTok{ cm = new Scanner}\ErrorTok{(}\ExtensionTok{System.in}\KeywordTok{)}\FunctionTok{.nextInt()}\KeywordTok{;}
+   \ControlFlowTok{return} \ExtensionTok{cm}\KeywordTok{;}
+  \KeywordTok{\}}
+
+\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ HEAD}
+  \ExtensionTok{public}\NormalTok{ static int eingabeKG}\ErrorTok{(}\KeywordTok{)\{} \ExtensionTok{//Größe}\NormalTok{ in cm}
+        \ExtensionTok{System.out.print}\ErrorTok{(}\StringTok{"KG:"}\KeywordTok{);}
+        \ExtensionTok{int}\NormalTok{ kg = new Scanner}\ErrorTok{(}\ExtensionTok{System.in}\KeywordTok{)}\FunctionTok{.nextInt()}\KeywordTok{;}
+        \ControlFlowTok{return} \ExtensionTok{kg}\KeywordTok{;}
     \KeywordTok{\}}
 
-    \ExtensionTok{public}\NormalTok{ static void ausgabe}\ErrorTok{(}\KeywordTok{)\{}
-        \ExtensionTok{System.out.print}\ErrorTok{(}\StringTok{"Dein BMI beträt:"}\KeywordTok{);}
-        \ExtensionTok{System.out.print}\ErrorTok{(}\ExtensionTok{42}\KeywordTok{);} \ExtensionTok{//}\NormalTok{ später ausbauen}
+  \ExtensionTok{public}\NormalTok{ static double berechnen}\ErrorTok{(}\ExtensionTok{int}\NormalTok{ cm, int kg}\KeywordTok{)\{}
+        \ExtensionTok{double}\NormalTok{ bmi = kg / Math.pow}\ErrorTok{(}\ExtensionTok{cm}\NormalTok{ /100.0, 2}\KeywordTok{);}
+        \ControlFlowTok{return} \ExtensionTok{bmi}\KeywordTok{;}
     \KeywordTok{\}}
+
+\ExtensionTok{=======}
+\OperatorTok{\textgreater{}\textgreater{}\textgreater{}\textgreater{}\textgreater{}\textgreater{}\textgreater{}}\NormalTok{ parent }\ExtensionTok{of}\NormalTok{ 4fe5b44 }\ErrorTok{(}\ExtensionTok{ERROR}\KeywordTok{)}
 \ErrorTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
-Beim Commit 207e388 wird der Fehler in den Code eingebaut und bis zu
-Commit c83ae97 nicht erkannt. Nun kannst du mit
+Wie du erkennen kannst, wurde die \emph{relevante Funktion} korrekt
+zurückgesetzt. Der Konflikt tritt erst weiter unten in der Datei auf.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ revert 207e388}
-\end{Highlighting}
-\end{Shaded}
-
-die alte Version zurückbekommen. Das heißt aber \emph{nicht}, dass der
-falsche Commit verschwindet! Es wird die aktuelle Version durch die
-damalige Version überschrieben und sofort ein neuer Commit gemacht, um
-das zu dokumentieren.
+Warum passiert das?
 
 \bookmarksetup{startatroot}
 
@@ -2559,7 +2593,7 @@ folgenden Befehl verwenden:
 
 Wechsle in das Fortbildungsfenster
 
-\phantomsection\label{annotated-cell-87}%
+\phantomsection\label{annotated-cell-83}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2592,7 +2626,7 @@ Empfohlener Befehl \texttt{git\ add\ story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-88}%
+\phantomsection\label{annotated-cell-84}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2648,7 +2682,7 @@ Für dich bedeutet das nun das Abarbeiten folgende Schritte:
   Checke den Status: \cmd{git status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-89}%
+\phantomsection\label{annotated-cell-85}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -2714,7 +2748,7 @@ erkennen:
 
 TODO: Neu aufbauen
 
-\phantomsection\label{annotated-cell-92}%
+\phantomsection\label{annotated-cell-88}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -3264,20 +3298,21 @@ der Regel alleine entwickle:
 \tightlist
 \item
   Während ich am Entwicklungs-Branch arbeite, passiert auf dem
-  Auslieferungsbranch nichts.
+  Auslieferungsbranch (hier \emph{main}) nichts.
 \item
   Ich entwickle an einem völlig anderen Feature, das den
-  Auslieferungsbranch gar nicht betrifft. Weil das oft aus Zeitgründen
-  länger dauert, kann es im Auslieferungsbranch Änderungen geben, die im
+  \emph{main}-Branch gar nicht betrifft. Weil das oft aus Zeitgründen
+  länger dauert, kann es im \emph{main}-Branch Änderungen geben, die im
   Entwicklungsbranch nicht interessieren.
 \end{itemize}
 
 \subsection{Fast-Forward}\label{fast-forward}
 
-Ohne Änderung im Auslieferungsbranch wird der der Entwicklungsbranch
-einfach (schnell davor) vor den letzten Commit des Auslieferungsbranchs
-gesetzt. In dieser Situation wird im Diagramm der Branch nicht einmal
-als visuelle Abzweigung dargestellt:
+Befindest du dich auf dem (unveränderten) \emph{main}-Branch und holst
+den Entwicklungsbranch mit Merge, so wird dieser\\
+einfach vor den letzten Commit des \emph{main}-Branch gesetzt. In dieser
+Situation wird der Branch im Diagramm nicht einmal als visuelle
+Abzweigung dargestellt:
 
 \includegraphics[width=16cm,height=\textheight,keepaspectratio]{bilder/bash/fast_forward.png}
 
@@ -3288,15 +3323,16 @@ Wie du siehst, hat sich beim Merge die Anzahl Commits nicht verändert.
 
 \subsection{Drei-Wege Merge}\label{drei-wege-merge}
 
-Wenn sich der Auslieferungsbranch parallel zum Entwicklungsbranch
+Wenn sich der \emph{main}-Branch parallel zum Entwicklungsbranch
 weiterentwickelt, sieht die Sitation ganz anders aus!
 
 \pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/drei_wege.png}}
 
 Du siehst, dass sich der \emph{main}-Branch zu \emph{Schritt 7}
-weiterentwickelt hat. Beim Merge entsteht ein neuer Commit, der die
-Spitze beider Branches darstellt. Du erkennst auch, dass im Diagramm die
-grünen Spitzen der Branches nicht am gleichen Commit sitzen!
+weiterentwickelt hat (neuer Commit). Beim Merge entsteht ein neuer
+Commit, der die Spitze beider Branches darstellt. Du erkennst auch, dass
+im Diagramm die grünen Spitzen der Branches nicht am gleichen Commit
+sitzen!
 
 Durch \cmd{git log --oneline --decorate --graph} (merken als „git log
 dog``) wird diese Sitation auch passend dargestellt:
@@ -3316,16 +3352,20 @@ dog``) wird diese Sitation auch passend dargestellt:
 \end{Highlighting}
 \end{Shaded}
 
+(Welcher Branch (main oder entwicklung) als Abzweigung erscheint,
+entscheidet die jeweilige Git-Software abhängig von der aktuellen
+Situation!)
+
 \section{Alte Branches}\label{alte-branches}
 
 Die Commits eines Branches stellen eine Dokumentation des
-Projektverlaufes dar, die für das Verständnis der erfolgten Änderungen
-eventuell notwendig sind. Zu viele Branches und Commits erschweren auf
+Projektverlaufs dar, die für das Verständnis der erfolgten Änderungen
+eventuell notwendig ist. Zu viele Branches und Commits erschweren auf
 der anderen Seite den Überblick.
 
 Es geht also darum, alte Branches zu löschen, die \emph{wichtigen}
-Commits aber zu behalten. Für den schulischen ist das aber weniger
-relevant.
+Commits aber zu behalten. Für den schulischen Kontext ist das aber
+weniger relevant.
 
 Um einen lokalen Branch zu löschen, gibt es folgenden Befehl:
 
@@ -3339,7 +3379,7 @@ Er scheitert aber, wenn \git den Branch noch nicht als abgeschlossen
 betrachtet.
 
 Probieren wir das beim letzten Szenario aus. Sieh dir die Abbildung oben
-nich einmal an und dann lösche den Branche
+noch einmal an und dann lösche den Branch
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3367,7 +3407,7 @@ Du siehst eine minimale Änderung
 Das \emph{Etikett} vom Entwicklungsbranch wurde gelöscht, die Commits
 bleiben aber in exakt der gleichen Anordnung erhalten! Der Branch ist
 nicht mehr über seinen Namen zugänglich, die History ist aber weiterhin
-vorhanden.
+vorhanden, d.h. ein \emph{checkout} der Commits ist immer noch möglich.
 
 \section{Rebase}\label{rebase}
 
@@ -3379,8 +3419,8 @@ seiner Hilfe können auch mehrere Commits zusammengefasst werden, um die
 Branches zu verkürzen. Gerade bei der Zusammenarbeit im Team kann das
 aber sehr problematisch werden, wenn man nicht genau weiß, was man
 macht. Das liegt daran, dass sich die Hashwerte von Commits ändern
-können und wenn sich ein anderer Mitarbeiter den früheren Stand kopiert
-hat, dann kann das zu großem Chaos führen.
+können und wenn sich ein anderer Mitarbeiter den früheren Stand auf den
+eigenen Rechner geholt hat, dann kann das zu großem Chaos führen.
 
 https://www.youtube.com/watch?v=CtyLg10aHN0
 https://www.youtube.com/watch?v=1TNK-OkaelI
@@ -3412,9 +3452,9 @@ geändert.
 \end{Shaded}
 
 Du siehst einen Branch \branch{arbeit} mit mehreren Commits und einen
-neuen Commit im \branch{main}-Branch.
+einzigen Commit im \branch{main}-Branch (Zwischenstopp).
 
-Wenn du nun vom Branch \branch{arbeit} einen Rebase auf den Branch
+Wenn du nun vom Branch \branch{arbeit} aus einen Rebase auf den Branch
 \branch{main} ausführst:
 
 \begin{Shaded}
@@ -3443,13 +3483,15 @@ dann sieht das Ergebnis so aus:
 \end{Highlighting}
 \end{Shaded}
 
-Die Verzeigung ist verschwunden und der Branch \branch{arbeit} hängt mit
-seinen Commits und neuen Hashwerten\\
+Die Verzweigung ist verschwunden und der Branch \branch{arbeit} hängt
+mit seinen Commits und neuen Hashwerten\\
 am Commit mit dem Hash 2c58be7 aus dem Branch \branch{main}.
 
 Auch wenn es nicht so wirkt: Der Branch \branch{arbeit} ist immer noch
 vorhanden! Das kannst du auch einfach testen, indem du auf den
-\branch{main}-Branch wechselst und dort einen neuen Commit erstellst:
+\branch{main}-Branch und das Log betrachtest -- es sind immer noch zwei
+Commits! Du kannst im Main auch einen wechselst und dort einen neuen
+Commit erstellst:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3464,9 +3506,8 @@ Das Log zeigt dann
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{*}\NormalTok{ 3508cce }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{kkkddd}
-\KeywordTok{|} \ExtensionTok{*}\NormalTok{ f4ba9f7 }\ErrorTok{(}\ExtensionTok{arbeit}\KeywordTok{)} \ExtensionTok{kkk}
-\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 1cad272 Neuer Inhalt 10}
+\ExtensionTok{*}\NormalTok{ 3508cce }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Kontrolle} 
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 1cad272 }\ErrorTok{(}\ExtensionTok{arbeit}\KeywordTok{)} \ExtensionTok{Neuer}\NormalTok{ Inhalt 10}
 \ExtensionTok{....}
 \KeywordTok{|} \ExtensionTok{*}\NormalTok{ dc4b1b0 Neuer Inhalt 2}
 \KeywordTok{|} \ExtensionTok{*}\NormalTok{ 9591035 Neuer Inhalt 1}
@@ -3476,7 +3517,7 @@ Das Log zeigt dann
 \end{Highlighting}
 \end{Shaded}
 
-Die Branches laufen also wieder auseinander. Möchte man den Branch
+Die Branches laufen also wieder auseinander. Möchtest du den Branch
 \branch{arbeit} loswerden, dann würdest du hier eher den Rebase von
 \branch{main} auf \branch{arbeit} ausführen. \git versucht dann, den
 \branch{main}-Branch hinter den Branch \branch{arbeit} zu hängen. Aus
@@ -3488,6 +3529,32 @@ löschen:
 \FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}d}\NormalTok{ arbeit }
 \end{Highlighting}
 \end{Shaded}
+
+Es ist aber unrealistische, derartige Szenarien wirklich im Unterricht
+nachzuspielen.
+
+\section{Squash}\label{squash}
+
+Squash ist kein eigenständiger Befehl, sondern ein Parameter von
+\emph{rebase}. Angenommen, du hast eine ganze Liste von filigranen
+Commits erzeugt, die du im Nachhinein zu einem Commit zusammenfassen
+willst. In diesem Fall führst du einen \emph{interaktiven Squash} durch
+:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ rebase }\AttributeTok{{-}i}\NormalTok{ HEAD\textasciitilde{}3 }\CommentTok{\# 3 Commits, rückwärts von HEAD}
+\FunctionTok{git}\NormalTok{ rebase }\AttributeTok{{-}i} \OperatorTok{\textless{}}\NormalTok{hash}\OperatorTok{\textgreater{}} \CommentTok{\# der älteste Commit zum Squashen}
+\end{Highlighting}
+\end{Shaded}
+
+Als Reaktion wird dein Editor gestartet, der dir in den ersten Zeile die
+zum Squash verfügbaren Commits anzeigt. Angenommen, es geht um 3
+Commits, dann ersetzt du beim allen \textbf{bis auf den neuesten}
+Commits das \emph{pick} durch ein \emph{s} (für Squash).\\
+Mit dem Speichern der Datei wird dies durchgeführt und du bekommst ein
+neues Editor-Fenster für eine Commit-Message. Hast du diese gespeichert,
+ist der Squash beendet.
 
 \bookmarksetup{startatroot}
 
@@ -3897,7 +3964,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-133}%
+\phantomsection\label{annotated-cell-130}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -5408,7 +5475,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-193}%
+\phantomsection\label{annotated-cell-190}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -5468,7 +5535,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-195}%
+\phantomsection\label{annotated-cell-192}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -5502,7 +5569,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-196}%
+\phantomsection\label{annotated-cell-193}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -5574,7 +5641,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-198}%
+\phantomsection\label{annotated-cell-195}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -7106,6 +7173,20 @@ Dieser Job kann nur (default) von Runnern ausgeführt werden, die
 ebenfalls die Tags \emph{windows} und \emph{staging} besitzen. Das kann
 in den Einstellungen eines Runners aber deaktiviert werden. (Vorsicht:
 Runner-Tags haben nichts mit Git-Tags zu tun)
+
+ERLEDIGEN:
+
+Man kann alles speichern - aber sollte man?
+
+Git Large File Storage (LFS)
+
+https://www.youtube.com/watch?v=JOIL6gof2BA
+
+11:36 Auflistung der Befehle
+
+Unter der Haube
+
+https://www.youtube.com/watch?v=RxHJdapz2p0\&t=13s
 
 \bookmarksetup{startatroot}
 

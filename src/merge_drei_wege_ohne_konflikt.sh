@@ -1,5 +1,5 @@
 #!/bin/bash
-# Basteln eines FF-Merge
+# Basteln eines 3-Wege-Merge
 
 cd /tmp
 
@@ -9,7 +9,9 @@ fi
 
 git init projekt
 cd projekt
+git branch -m main
 
+# Auf dm Main Branch
 for i in {1..3}
 do
   echo "Schritt $i" >> datei.txt
@@ -17,20 +19,27 @@ do
   git commit -m "Schritt $i"
 done
 
-git branch -m main
-
+####################
+# Branch-Wechsel
 git switch -c entwicklung
 
 for i in {4..6}
 do
   echo "Schritt $i" >> datei.txt
   git add datei.txt
-  git commit -m "Schritt $i"
+  git commit -m "Entwicklung $i"
 done
 
-echo Zweig erstellt - vor Merge
-read
-
+###############
+# Branch-Wechsel
 git switch main
+
+# Weiterentwicklung von main
+echo "Schritt 7" >> datei_a.txt # <<<<<< neue Datei
+git add datei_a.txt
+git commit -m "Schritt 7"
+
+###########
+# Merge
 
 git merge entwicklung

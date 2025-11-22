@@ -122,7 +122,7 @@ git reset = git reset HEAD
 
 
 ### Da war doch mal was
-Machnmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man gerne 
+Manchmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man gerne 
 die Version zurück, die man vor einigen Tagen gelöscht hat. Bei \git hast du 
 Zugriff auf alle alten Versionen! Allerdings ist oft die Frage, in welchem Commit 
 sich die Version versteckt. Hier wird es nötig, sich rückwärts durch die ensprechenden
@@ -292,137 +292,116 @@ was wir später noch besprechen.
 
 Ja -- \cmd{revert} gibt es und es spielt bei der Arbeit im 
 Team auch eine große Rolle. Bei der lokalen Arbeit wirst 
-du diesen Befehl praktisch nie brauchen -- \cmd{reset}
+du diesen Befehl sehr selten brauchen -- \cmd{reset}
 und \cmd{checkout} sind hier meist einfacher und schneller.
 Du wirst im Abschnitt über die Teamarbeit aber noch mehr 
 darüber hören!
 
-Der Befehl \cmd{revert} wird meistens in einem Atemzug mit \cmd{reset}
-genannt, hat aber einen deutlich anderen Anwendungsbereich. Hierfür 
-müssen wir etwas auf die Arbeit mit entfernten Repositories vorgreifen
+Zum Verständis der Problematik dennoch ein Beispiel.
+Angenommen, du erstellst ein Programm zur Berechnung 
+des Body-Mass-Index und gehst extrem kleinschrittig 
+mit den Commits um. Dein Ablauf wäre dann - jeder Punkt 
+ist ein Commit (siehe Nummer):
 
-**Szenario**
+* (1) Java-Boilerplate
+* (2) Ausgabefunktion ohne Übergabeparameter und Blankotext
+* (3) Eingabefunktion für die Körpergröße
+* (4) Ändern der Ausgabefunktion für Übergabe von String  
+  Das ist der Fehler, weil du später *double* willst
+* (4) Eingabefunktion für die Körpermasse
+* (5) Berechnungsfunktion
 
-Du hast einen Commit gemacht und programmierst weiter. 
-Du erstellst einige neue Dateien und erweiterst bestehenden Code 
-in anderen Dateien.
-Nach deinem nächsten Commit erkennst du, dass du durch 
-einen Denkfehler in einigen Dateien viel Code kaputt 
-gemacht hast und es wäre zu viel Aufwand, die ganzen 
-Fehler per Hand rückgängig zu machen. 
-Nun kannst du \cmd{reset} verwenden (aber es gibt natürlich 
-auch andere Möglichkeiten). Je nach Parameter erzielst du 
-nun unterschiedliche Ergebnisse:
+Nun verdrahtest du das alles in der *main*-Funktion
+und stellst fest, dass der Übergabeparameter den 
+falschen Typ besitzt.  
+Aus desem Grund möchtest du diesen Commit -- der ja NUR diese 
+Funktion betrifft -- rückgängig machen.
 
-* \cmd{git reset HEAD\^}  
-  Der letzte Commit wird verworfen, der aktuelle Bearbeitungsstand 
-  (mit den Fehlern) ist immer noch vorhanden. Das ist sinnvoll, wenn 
-  du einige Dateien behalten und andere zurücksetzen willst.  
-* \cmd{git reset HEAD~1}  
-  Alternative Schreibweise, die aber auch auf frühere Commits 
-  anwendbar ist `~2, ~3`.
-* \cmd{git reset --hard}  
-  Die Dateien werden auf den Zustand nach dem Commit gesetzt. 
-  Alle Fehler sind weg -- sinnvoller neuer Code aber auch!
-
-Da in den ersten beiden Varianten die Fehler noch alle vorhanden sind,
-musst diese noch ausbessern. Willst du das durch Rücksetzen (reset)
-der Dateien erreichen, brauchst du nun 
+In meinem System lauten die Hashes wie folgt:
 
 ```bash
-git checkout <HASH> -- <dateiname> 
-```
-
-Dieser Weg ist völlig ok, solange du nur lokal arbeitest
-und den Commit non nicht in ein entferntes Repository 
-übertragen hast. Durch diesen Reset verlieren dein lokales
-und dein entferntes Repository die Synchronisation.
-Ein neuer Commit mit Push nach re
-
-
-
-
-Es gibt noch (mindestens) einen weiteren Befehl, um 
-Fehler in der Commit-History auszubügeln: \cmd{git revert <HASH>}.
-
-Von der Idee her geht es darum, dass Änderungen in einem 
-früheren Commit wieder zurückgesetzt werden. Dafür wird zuerst
-analysiert, welche Änderungen der *schlechte* Commit eingeführt
-hat (das wird mit \cmd{diff} gemacht). Dann werden diese Änderungen
-gewissermaßen *negiert* und ein Patch erstellt, der auf den aktuellen 
-Stand angewendet wird. Das Ergebnis ist ein neuer Commit, der diesen 
-Prozess dokumentiert.
-
-Betrachte folgendes (extrem einfaches) Beispiel. Ein Programmierer 
-schreibt ein Programm zum Berechnen des Body-Mass-Index (BMI). 
-Er committet extrem kurzschrittig und hat in einem bestimmten Commit 
-einen Fehler produziert, das er den Variablentyp bei der Parameterübergabe
-einer Funktion falsch wählt -- er erkennt später, dass es *double* sein sollte.
-
-```java
-public static void ausgabe(String bmi){
-        System.out.print("Dein BMI beträt:");
-        System.out.print(bmi);
-    }
-```
-
-Im nachfolgenden Repository ist die Entwicklung nachvollziehbar:
-
-```bash
-git clone git@gitlab.com:dillingen/bmi.git
-```
-
-Da es nur um eine einzige Datei geht, kannst du direkt in die 
-einzelnen Versionen hinein sehen^[bei vielen Dateien ist das 
-unpraktisch!], wenn di den Hash des Commits kennst:
-
-```bash
-git log --oneline 
+git log --oneline
 
 # Ausgabe
-c83ae97 (HEAD -> main, origin/main) 
-      Hier wird der Fehler String vs. double erkannt
-5eb974e Berechnung BMI
-834e608 Eingabe Gewicht
-207e388 Ausgabe verfeinert - DAS IST DER FEHLER
-67b0a17 Eingabe der Körpergröße
-33feb0c Mini - Ausgabe
-8a6be40 Initial2
-630a635 Initial
-daef3c8 Start mit Boilerplate
+a93cb87 (HEAD -> main) kombi
+e676f14 berechnung
+d497b2f eingabe 2
+4fe5b44 ERROR
+2c9c7f1 eingabe 1
+d051611 ausgabe
+9201570 initial
 ```
 
-Du rufst auf:
+Der Befehl *revert* verläuft nun wie folgt:
 
 ```bash
-git show 33feb0c:./bmi/src/Main.java
+git revert 4fe5 # 4 reichen
 
-# ausgabe
-public class Main {
-    public static void main(String[] args) {
+# Ausgabe
+automatischer Merge von Main.java
+KONFLIKT (Inhalt): Merge-Konflikt in Main.java
+error: Konnte "revert" nicht auf 4fe5b44... (ERROR) ausführen
+Hinweis: Lösen Sie alle Konflikte manuell auf, 
+Hinweis: markieren Sie diese mit
+Hinweis: "git add/rm <Pfadspezifikation>" und führen Sie 
+Hinweis: dann "git revert --continue" aus.
+Hinweis: Sie können stattdessen auch diesen Commit 
+Hinweis: auslassen, indem Sie 
+Hinweise: "git revert --skip" ausführen.
+Hinweis: Um abzubrechen und zurück zum Zustand 
+Hinweise: vor "git revert" zu gelangen,
+Hinweis: führen Sie "git revert --abort" aus.
+```
 
+Es gibt also einen *Konflikt*. Der Inhalt der Datei sieht 
+aktuell so aus:
+
+```bash
+cat Main.java 
+
+# Ausgabe 
+import java.util.Scanner;
+
+public class Main{
+  public static void main(){
+
+    int cm = eingabeCM();
+    int kg = eingabeKG();
+    double bmi = berechnung(cm, kg);
+    ausgabe(bmi);
+  }
+
+  public static void ausgabe(){
+    System.out.print("Dein BMI beträgt: ");
+    System.out.println(42);
+  }
+
+  public static int eingabeCM(){
+    System.out.print("CM:");
+    int cm = new Scanner(System.in).nextInt();
+   return cm;
+  }
+
+<<<<<<< HEAD
+  public static int eingabeKG(){ //Größe in cm
+        System.out.print("KG:");
+        int kg = new Scanner(System.in).nextInt();
+        return kg;
     }
 
-    public static void ausgabe(){
-        System.out.print("Dein BMI beträt:");
-        System.out.print(42); // später ausbauen
+  public static double berechnen(int cm, int kg){
+        double bmi = kg / Math.pow(cm /100.0, 2);
+        return bmi;
     }
+
+=======
+>>>>>>> parent of 4fe5b44 (ERROR)
 }
 ```
 
-Beim Commit 207e388 wird der Fehler in den Code 
-eingebaut und bis zu Commit c83ae97 nicht erkannt.
-Nun kannst du mit 
+Wie du erkennen kannst, wurde die *relevante Funktion* korrekt 
+zurückgesetzt. Der Konflikt tritt erst weiter unten in der 
+Datei auf.  
 
-```bash
-git revert 207e388
-```
-
-die alte Version zurückbekommen. Das heißt aber *nicht*, dass 
-der falsche Commit verschwindet! Es wird die aktuelle Version
-durch die damalige Version überschrieben und sofort ein neuer 
-Commit gemacht, um das zu dokumentieren.
-
-
-
+Warum passiert das?  
 

@@ -41,3 +41,19 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
  {{< include 0750_tdd.qmd >}}
  {{< include 0810_java_anteil.qmd >}}
  {{< include 0850_cicdbuch.qmd >}}
+
+ERLEDIGEN:  
+
+Man kann alles speichern - aber sollte man?
+
+Git Large File Storage (LFS)
+
+https://www.youtube.com/watch?v=JOIL6gof2BA
+
+11:36 Auflistung der Befehle
+
+
+Unter der Haube
+
+https://www.youtube.com/watch?v=RxHJdapz2p0&t=13s
+
