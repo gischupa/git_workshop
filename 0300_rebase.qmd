@@ -1,4 +1,4 @@
-# Merge, Rebase, Squash
+# Fortgeschritten: Merge, Rebase, Squash
 Im letzten Abschnitt hast du einfaches Arbeiten 
 mit Branches gelernt und wie man sie mit Hilfe eines *Merge* 
 zusammengeführt. Das wollen wir uns jetzt genauer ansehen.
@@ -132,10 +132,10 @@ ein Werkzeug für fortgeschrittene Benutzer. Mit seiner
 Hilfe können auch mehrere Commits zusammengefasst werden, 
 um die Branches zu verkürzen. Gerade bei der Zusammenarbeit 
 im Team kann das aber sehr problematisch werden, wenn 
-man nicht genau weiß, was man macht. Das liegt daran, dass
+man nicht ganz genau weiß, was man macht. Das liegt daran, dass
 sich die Hashwerte von Commits ändern können und wenn 
 sich ein anderer Mitarbeiter den früheren Stand auf den 
-eigenen Rechner geholt hat, dann kann das zu großem Chaos führen.
+eigenen Rechner geholt hat, dann passt nichts mehr zusammen.
 
 https://www.youtube.com/watch?v=CtyLg10aHN0
 https://www.youtube.com/watch?v=1TNK-OkaelI

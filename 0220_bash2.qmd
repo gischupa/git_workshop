@@ -1,6 +1,6 @@
 # Hands on II
 Du wirst in diesem Abschnitt einige Dinge als redundant empfinden,
-weil sie auch bereits im ersten *Hands On* verwendet wurden.
+weil sie auch bereits früher verwendet wurden.
 Sieh es einfach als Übung und da du dieses PDF ohnehin nicht 
 ausdrucken wirst, ist die minimal erhöhte Seitenzahl auch kein Problem.
 
@@ -14,17 +14,17 @@ zu minimieren.
 Die Einzelteile der Geschichten befinden sich in einem \git-Repository
 und müssen zunächst auf den lokalen Computer geclont werden. 
 Das ist ein notwendiger Vorgriff auf den Abschnitt der Teamarbeit,
-den du hier einfach mal ausführst.
+den du hier einfach unhinterfragt ausführst.
 Es handelt sich um ein öffentliches Repository, auf das auch ohne 
 Benutzerkennung zugegriffen werden darf -- aber eben nur lesend. 
 Aus diesem Grund wird zum Clonen auch *https* und nicht *ssh* verwendet.
-Öffne die \git-Bash (oder ein Terminal) und gib ein:
+Öffne die \gitbash (oder ein Terminal) und gib ein:
 
 
 ```bash
 mkdir fortbildung
 cd fortbildung
-git clone https://TODO    storyvorlagen # Ziel: vorlage.git 
+git clone https://TODO    storyvorlagen vorlage # Ziel: vorlage.git 
 cd vorlage
 ```
 
@@ -38,9 +38,10 @@ Es dürfte am einfachsten sein, wenn du zwei Terminals öffnest:
 * Eines für deinen Arbeitsordner
 
 Du wirst ständig zwischen diesen Repositories wechseln müssen
-und da sind einzelne Fenster optimal (Wechsel z.B. mit \alt{tab}).
+und dabei sind einzelne Fenster optimal (Wechsel z.B. mit \alt{tab}).
 
 \samplestart
+**Hinweis**  
 Um der Erklärungen besser folgen zu können, wäre es sinnvoll,
 wenn bei jedem Teilnehmer exakt die gleichen Hashwerte wie hier 
 in der Anleitung entstehen würden. Leider ist das aber nicht möglich,
@@ -52,7 +53,7 @@ kannst -- wie das geht, siehst du gleich!
 
 **Erstellen eines Repositories**  
  
-Öffne im Fortbildungsordner eine \git-Bash und erstelle
+Öffne im Fortbildungsordner eine \gitbash und erstelle
 ein Repository für das Buch.
 
 ```bash
@@ -63,11 +64,13 @@ git init buch
 cd buch 
 ```   
 
-Je nach Version von \git kommt hier eine längere Ausgabe ... oder auch nicht.
-Falls in der Ausgabe der Branch *master* erscheint, bitte 
-umbenennen mit \cmd{git branch -m main}
+Falls du nicht die globalen Einstellungen geändert hat:
 
-Im Ordner *fortbildungen* sollten nun also die Repositories *storyvorlagen* 
+```bash
+git branch -m main 
+```
+
+Im Ordner *fortbildungen* sollten nun also die Repositories *vorlage* 
 und *buch* vorliegen.
 
 **Erste Datei anlegen**  
@@ -108,9 +111,9 @@ Unversionierte Dateien:
 nichts zum Commit vorgemerkt, aber es gibt unversionierte Dateien
 (benutzen Sie "git add" zum Versionieren) # <3>
 ```
-1. Geänderter Name ist ok.
-2. Diese Datei ist betroffen, hier kann eine längere Liste stehen.
-3. Empfohlener Befehl `git add story1.md` 
+1. Geänderter Branch-Name ist ok.
+2. Diese Datei ist betroffen.
+3. Empfohlener Befehl \cmd{git add story1.md} 
 
 
 **Übertragen in den Stage**  
@@ -133,9 +136,9 @@ Zum Commit vorgemerkte Änderungen: # <1>
 1. Die Dateien für den nächsten Commit
 2. Hier nur diese eine Datei.
 
-Der Hinweis `git rm --cached <Datei>` bewirkt nicht 
+Der Hinweis \cmd{git rm --cached <Datei>} bewirkt nicht 
 das Löschen der Datei aus dem Arbeitsverzeichnis, 
-sondern aus dem Stage!
+sondern nur aus dem Stage!
 
 ### Labor
 
@@ -219,7 +222,7 @@ entdeckte sie den geheimnisvollen Tunnel.    # <5>
   +aufgeregt. „Vielleicht führt er zu einem verborgenen
 ```
 1. Welche Dateien werden verglichen? `a/` und `b/` sind nur Kennzeichner der Dateien.
-   `a/` ist die ältere (z.B. Stage) und `b/` die neuere Datei (z.B. Workingdir).
+   `a/` ist die ältere (z.B. Stage) und `b/` die neuere Datei (z.B. \work).
 2. Bei 9c818e7 und 3126a18 handelt es sich um die Hash-Ids der beiden Dateien, die
    verglichen werden (dazu unten mehr).
 3. Soll erneut klarstellen `---` ist alt, `+++` ist neu.
@@ -234,9 +237,9 @@ und wie viele Zeilen betroffen sind (vorher und nachher).
 Bei `@@ -3,12 +3,14 @@` beginnt der relevante Bereich ab Zeile 3
 und in der ursprünglichen Version lagen 12 Zeilen vor, in der neuen
 Version sind es jetzt 14. Die Änderungen im Detail folgen 
-in den nächsten Zeileen.
+in den nächsten Zeilen.
 
-### Hands on
+### Weiter beim Buch
 Nun wird die Datei wieder zum Stage hinzugefügt und dann committet:
 
 *Eingabe*  
@@ -253,8 +256,6 @@ TODO:  Hash aktualisieren
  1 file changed, 4 insertions(+)
  create mode 100644 story1.md
 ```
-
-### Labor 
 
 Dieser Arbeitszyklus von *add, status, diff, commit* stellt 
 den Kern der Arbeit mit \git dar, zumindest wenn man alleine arbeitet.
@@ -295,7 +296,7 @@ kopierst (weil wir nicht schreiben).
 
 Das ist dein Einstieg in Story 2.
 Du bist mit deinem bisherigen Werk ganz zufrieden,
-hast aber zwei Ideen, wie man du weiter machen könntest.
+hast aber zwei Ideen, wie du weiter machen könntest.
 Aus diesem Grund erstellst du zunächst einen Commit
 
 ```bash
@@ -318,7 +319,7 @@ probierst du einen alternativen Verlauf.
 
 Da wir nur kopieren und nicht schreiben, heißt das für dich:  
 
-* Im Buch-Ordner: \cmd{git switch stor\_2\_idee\_1}
+* Im Buch-Ordner: \cmd{git switch story\_2\_idee\_1}
 * Wechsle in den Vorlagenordner
 * Checke den richtigen Stand aus: \cmd{git checkout Step\_4}
 * Kopiere die Datei: \cmd{cp story2.md ../buch/}
@@ -339,7 +340,7 @@ verwenden willst, arbeitest auch Idee 2 aus.
 
 
 
-Nun hast du das *Problem*, dass du drei Versionen hast:
+Nun hast du das *Problem*, dass du drei Versionen von \datei{story2.md} hast:
 
 1. Version 1 im Entwicklungszweig.  
    Sie ist die Stufe vor der Neubearbeitung.
@@ -359,7 +360,8 @@ Dabei fällt dir ein *grober Rechtschreibfehler* im Entwicklungszweig
 auf, den du sofort korrigierst. Bei uns ist es das Wort *weiße*,
 das sich anstelle von *weise* in den Text geschummelt hat.
 
-* In den Vorlagenordner
+* Kontrolliere, dass du im Branch \branch{entwicklung_story_2} bist
+* Wechsel in den Vorlagenordner
 * \cmd{git checkout Step\_6}
 * \cmd{cp story2.md ../buch/}
 
@@ -367,7 +369,7 @@ das sich anstelle von *weise* in den Text geschummelt hat.
 * \cmd{git add story2.md}
 * \cmd{git commit -m "typo 'weiße' korrigiert"}
 
-Beachte, dass diese Änderung in den anderen Branches *nicht* ankommt!
+Beachte, dass diese Änderung in den anderen beiden Branches *nicht* ankommt!
 
 Du musst dich nun entscheiden, mit welcher Version
 du dein Projekt fortführen willst. In Wirklichkeit 
@@ -470,7 +472,7 @@ Diese Diffs sind verwirrend, betrachten
 wir einfachere Beispiele
 
 **Variante 1:**  
-Im Commit, dem Stage und dem Workingdir 
+Im Commit, dem Stage und dem \work 
 befinden sich (unterschiedliche) Versionen 
 einer Datei:  
 
@@ -500,8 +502,8 @@ vergleichen. Das sind 3 Befehle:
    Wenn man den Hash (z.B. 1234) vom Commit kennt, z.B. durch  
    \cmd{git log}, so kann man diesen verwenden   
    \cmd{git diff 1234 datei.txt}  
-   Universeller ist 
-   \cmd{git diff HEAD datei.txt} 
+   Universeller ist: 
+   \cmd{ git diff HEAD datei.txt} 
 
 
 **Variante 2:**  
@@ -531,10 +533,10 @@ echo "Version work" > datei.txt
    \cmd{git diff --staged datei.txt} 
 3. work mit commit  
    Wenn man den Hash (z.B. 1234) vom Commit kennt, z.B. durch  
-   \cmd{git log`, so kann man diesen verwenden   
+   \cmd{git log}, so kann man diesen verwenden   
    \cmd{git diff 1234 datei.txt}  
-   Universeller ist 
-   \cmd{git diff HEAD datei.txt} 
+   Universeller ist: 
+   \cmd{ git diff HEAD datei.txt} 
 
 Hier sind die Fälle 1) und 3) also identisch.  
 Wie kann man also sicher sein, welche Dateien 
@@ -544,7 +546,7 @@ so wird mit dem Commit verglichen. Ist eine
 Datei im Stage, so wird gegen diese Datei
 verglichen.
 
-### Labor
+### Wieder zum Buch
 Die Version mit der Riesenschildkröte willst du nun wieder in den 
 Entwicklungsstand mergen. Dafür musst du vorher wieder einen 
 Commit machen.
@@ -615,11 +617,11 @@ Baut man die Szenarien nicht zu komplex auf,
 dann gibt auch meist keine Probleme beim Merge.
 
 Immer wenn du Änderungen in einem Zweig vornimmst, die du
-auch im anderen Branch menötigst (weiße/weise) kannst du
+auch im anderen Branch benötigst (weiße/weise) kannst du
 den Merge auch in die andere Richtung ausführen.
-Das ist ein übliches Verfahren weil man als Entwickler
+Das ist ein übliches Verfahren, weil man als Entwickler
 immer auf dem aktuellen Stand des Auslieferungszweigs 
-sein muss, auch wenn er weiter an seinem Experiment arbeitet.
+sein muss, auch wenn du weiter an deinem Experiment arbeitest.
 
 Die Vergleiche mit *diff* sind definitiv 
 gewöhnungsbedürftig. Machst du häufige Commits 
@@ -632,7 +634,8 @@ git diff <commit>..<commit> <datei>
 
 Der Nachteil von vielen Commits sind 
 allerdings ... viele Commits. Es gibt
-allerdings Möglichkeiten nachträglich
+aber Möglichkeiten nachträglich
 Commits zusammenzufassen um die 
 Entwicklungsgeschichte zu verschlanken.
-Diesen Vorgang nennt man *squashen*.
+Diesen Vorgang nennt man *squashen* und er ist 
+eine Variante von *rebase*.

@@ -16,10 +16,18 @@ Nachfolgend besprechen wir einige Szenarien mit kleinen Beispielen.
 Aktuell ist das Arbeiten mit verschiedenen Entwicklungszweigen noch nicht 
 Thema!
 
+\samplestart
+**Ein Hinweis vorab**  
+Im Netz findet man statt \cmd{restore} oft noch die Variante mit 
+\cmd{checkout}, die früher üblich war.
+\sampleend
 
-### Kleiner Fehler 1
 
-Der Fehler ist ganz frisch ...
+
+### Kleiner Fehler 1 
+
+Der Fehler wird schnell bemerkt und die Datei aus dem 
+Stage wieder in das \work kopiert (siehe Hinweis unter dem Code!). 
 
 ```bash
 git init beispiel_1
@@ -34,13 +42,31 @@ git commit -m "alles gut"
 # Hier kommt der Fehler
 echo "Mist gebaut" >> datei.txt
 
-###### Alte Version wieder herstellen
+###### Alte Version vom Stage wieder herstellen
 git restore datei.txt  
 ```
 
+
+
+
+\samplestart
+**Hinweis**  
+Vorher habe ich geschrieben, dass bei einem Commit die Dateien
+aus dem Stage in die Projekthistorie übertragen und aus 
+dem Stage entfernt werden. Intern funktioniert das allerdings 
+etwas anders. Die Datei *index* enthält die Namen und Hashes des 
+aktuellen Commits (tree). Mit einem *add* werden Dateinamen ergänzt.
+Beim Commit wird die Datei nicht geleert, die Hashes bleiben also verfügbar.
+Dass `git status` diese Dateien nicht mehr anzeigt, liegt einfach daran, dass 
+der Befehl eigentlich nur ein *diff* zwischen *index* und aktuellem *tree* 
+ausführt. 
+\sampleend
+
 ### Kleiner Fehler 2
 
-Der Fehler wurde bereits ge-add-et.
+Der Fehler wurde bereits ge-add-et. Damit gibt es im 
+Stage keine Version zum Rückkopieren. Du musst einen 
+Schritt rückwärts gehen.
 
 ```bash
 ########### IRRWEG !!!!!!!!! #########
@@ -55,25 +81,44 @@ git commit -m "alles gut"
 
 # Hier kommt der Fehler
 echo "Mist gebaut" >> datei.txt
-git add . 
+git add .   # DAS ist anders!
 
 #####################
-###### Das geht jetzt nicht, weil Stage = Workdir
+###### Das geht jetzt nicht, weil der 
+###### Stage die falsche Version enthält.
 #####################
 git restore datei.txt  
 ```
 
-Du musst nun mit \cmd{git log} den Hash vom letzten 
+Du musst mit \cmd{git log} den Hash vom letzten 
 Commit ermitteln und dann geht
 
 ```bash
 git restore --source=<HASH> datei.txt 
 ```
 
+Falls du die Datei länger bearbeitet hast und die 
+Änderungen immer mit \cmd{add} auf den Stage geschrieben 
+hast, wirst du Verluste haben!
+
+\samplestart
+**Zusatz**  
+Mit \cmd{restore} können natürlich nicht nur Dateien aus dem direkt 
+vorausgehenden Commit entnommen werden! Kennst du den Hash, so kannst 
+du auf jeden Commit zugreifen.
+\sampleend
+
 ### Größerer Fehler 1
 
-Viele Fehler nach letztem Commit
+Du hast nach dem letztem Commit viele Fehler erzeugt 
+und willst den Stand verwerfen. Hier hilft \cmd{reset}.
+Diesen Befehl gibt es in 3 Versionen
 
+* hard
+* mixed
+* soft
+
+#### Hard
 ```bash
 git init beispiel_3
 cd beispiel_3
@@ -95,30 +140,67 @@ echo "Mist gebaut" >> datei2.txt
 git reset --hard HEAD 
 ```
 
-Sind viele Dateien *verkorkst*, so bietet sich ein komplettes
-Rücksetzen auf einen alten Stand an. Allerdings gibt es da einige 
-Varianten (siehe Tabelle unten).
+Hiermit ist alles gelöscht, was du nach diesem Commit 
+produziert hast -- unwiederruflich weg!
 
-Wird der Befehl ohne \cmd{--hard} ausgeführt, so wird nur 
-der Stage auf den Stand des alten Commit gesetzt, nicht aber das 
-\work. Aber eigentlich verlassen wir hier schon die einfachen 
-Fälle. Ich persönlich verliere bei so vielen Varianten bald den 
-Überblick und von einem *routinierten Handling* kann keine Rede 
-sein!
+\samplestart
+**Hinweis**  
+Du kannst in der Commit-History auch weiter zurück springen
+und somit die letzten Commits verwerfen. Das ist völlig problemlos,
+solange du alleine, lokal auf deinem Rechner arbeitest. Im Team
+oder auch nur mit Serverabgleich ist das extrem problematisch!
+\sampleend
 
 ```bash
 git reset = git reset HEAD 
 ```
 
-| Befehl (Beispiel) | Wirkung | Warnung / Hinweis |
-|---|---|---|
-| `git reset --hard HEAD` | Setzt Arbeitsverzeichnis und Staging auf `HEAD` zurück; alle uncommitted Änderungen werden gelöscht. | Unwiderruflich, wenn Änderungen nicht anderweitig gesichert sind. |
-| `git reset --hard HEAD~1` | Branch-Zeiger bewegt sich ein Commit zurück; Arbeitsverzeichnis entspricht dem vorletzten Commit. | Vorsichtig bei bereits gepushten Commits — Remote bleibt davon unberührt. |
-| `git reset --soft HEAD~1` | Entfernt letzten Commit, macht die Änderungen als gestaged verfügbar (Index enthält sie). | Gut zum Kombinieren/Neuformulieren von Commits. |
-| `git reset --mixed HEAD~1` (oder `git reset HEAD~1`) | Entfernt Commit; Änderungen bleiben im Working Directory, aber sind nicht gestaged. | Standardmodus (`--mixed`) wenn kein Flag angegeben. |
-| `git reset HEAD` | Entfernt Dateien aus dem Index; Änderungen bleiben im Arbeitsverzeichnis. | Nützlich, um versehentliches `git add` rückgängig zu machen. |
-| `git reset --hard <commit-hash>` | Setzt Branch auf den angegebenen Commit; Arbeitsverzeichnis wird entsprechend angepasst. | `<commit-hash>` vorher mit `git log`/`git rev-parse` prüfen. |
-| `git reset --hard HEAD~1` + `git push --force` | Lokaler und Remote-Branch zeigen auf den älteren Commit (push überschreibt Remote). | **Gefährlich**: ändert history auf Remote — Absprache mit Team erforderlich. |
+
+#### Mixed
+Das ist so ziemlich die gebräuchlichste Variante.
+
+```bash
+git reset --mixed <HASH>
+git reset <HASH>
+```
+
+Die Commits werden gelöscht, alle Änderungen liegen aber immer 
+noch in den Dateien des \work vor. Du kannst also Korrekturen 
+vornehmen und danach neue Commits erstellen. 
+Auch hier ist natürlich wichtig, dass die Commits deinen Rechner
+vorher noch nicht verlassen hatten!
+
+**Demo**  
+
+```bash
+rm -rf demo_mix 
+git init demo_mix
+cd demo_mix
+git branch -m main 
+
+
+for i in {1..10}; do 
+  echo "Zeile $i" >> datei.txt 
+  git add . && git commit -m "Zeile $i eingefügt"
+  git tag commit_$i
+done 
+
+cat datei.txt # liefert 10 Zeilen 
+
+git reset --mixed commit_4
+
+cat datei.txt # liefert immer noch 10 Zeilen
+
+git log --oneline # liefert 4 Zeilen
+
+git status # zeigt eine geänderte, versionierte Datei 
+```
+
+#### Soft
+
+Wenn du in obigem Script das \cmd{--mixed} durch \cmd{--soft}
+ersetzt, dann passiert auf den ersten Blick nichts anderes als bei \cmd{--mixed}. Beim \cmd{status} erscheint die Datei mit den 10 Zeile 
+aber nun bereits im Stage und könnte sofort commitet werden.
 
 
 ### Da war doch mal was
@@ -188,83 +270,35 @@ weiterverwenden zu können.
 ```bash
 Hinweis: Wechsle zu '95a3'.
 
-Sie befinden sich im Zustand eines 'losgelösten HEAD'. Sie können sich
-umschauen, experimentelle Änderungen vornehmen und diese committen, und
-Sie können alle möglichen Commits, die Sie in diesem Zustand machen,
-ohne Auswirkungen auf irgendeinen Branch verwerfen, indem Sie zu einem
+Sie befinden sich im Zustand eines 'losgelösten HEAD'. 
+Sie können sich umschauen, experimentelle Änderungen 
+vornehmen und diese committen, und Sie können alle möglichen 
+Commits, die Sie in diesem Zustand machen, ohne Auswirkungen 
+auf irgendeinen Branch verwerfen, indem Sie zu einem
 anderen Branch wechseln.
 
-Wenn Sie einen neuen Branch erstellen möchten, um Ihre erstellten Commits
-zu behalten, können Sie das (jetzt oder später) durch Nutzung von
-'switch' mit der Option -c tun. Beispiel:
+Wenn Sie einen neuen Branch erstellen möchten, um Ihre erstellten 
+Commits zu behalten, können Sie das (jetzt oder später) durch 
+Nutzung von 'switch' mit der Option -c tun. Beispiel:
 
   git switch -c <neuer-Branchname>
 
 Oder um diese Operation rückgängig zu machen:
   git switch -
 
-Sie können diesen Hinweis ausschalten, indem Sie die Konfigurationsvariable
-'advice.detachedHead' auf 'false' setzen.
+Sie können diesen Hinweis ausschalten, indem Sie die 
+Konfigurationsvariable 'advice.detachedHead' auf 'false' setzen.
 
 HEAD ist jetzt bei 95a37c9 Version 7
 ```
 
-### Es ging nur wenig schief
-Du hast nach dem letzten Commit an einer Datei weiter gearbeitet, 
-bist mit dem Ergebnis aber nicht zufrieden. Du möchtest die letzte
-Version der Datei wieder herstellen:
+Hast du die relevanten Zeilen kopiert, so kannst du mit folgendem
+Befehl wieder in die Versionsverwaltung einsteigen:
 
 ```bash
-git init sz1
-cd sz1
-git branch -m main
-
-echo "Alles gut" > datei.txt
-git add .
-git commit -m "alles gut"
-
-echo "Mist gebaut" >> datei.txt
-
-###### Zurück rollen
-git status
-git restore datei.txt  
-```
-Bereits versionierte Dateien mit Fehlern können
-durch `git restore <dateiname>` wieder mit 
-der Version aus dem Stage überschrieben werden.
-
-\samplestart
-Vorher habe ich geschrieben, dass bei einem Commit die Dateien
-aus dem Stage in die Projekthistorie übertragen und aus 
-dem Stage entfernt werden. Intern funktioniert das allerdings 
-etwas anders. Die Datei *index* enthält die Namen und Hashes des 
-aktuellen Commits (tree). Mit einem *add* werden Dateinamen ergänzt.
-Beim Commit wird die Datei nicht geleert, die Hashes bleiben also verfügbar.
-Dass `git status` diese Dateien nicht mehr anzeigt, liegt einfach daran, dass 
-der Befehl eigentlich nur ein *diff* zwischen *index* und aktuellem *tree* 
-ausführt. 
-\sampleend
-
-Dass der Stage wirklich nicht leer ist, zeigt folgendes Beispiel,
-das eine Reparatur am \work zeigt.
-
-```bash
-echo "text" > datei.txt 
-git add datei.txt     # danach im Stage 
-git commit -m "gesichert"
-
-git status   # Stage anscheinend leer 
-
-echo "falscher Text" >> datei.txt   #  Fehler im Arbeitsverzeichnis 
-git restore datei.txt              # repariert mit Datei aus Stage
+git checkout main 
 ```
 
-\samplestart
-**Hinweis**  
-Im Netz findet man oft die Variante mit 
-`checkout`, die früher üblich war. `restore`
-wurde eingeführt um eindeutigere Befehle zu schaffen.
-\sampleend
 
 
 Mit dem `restore`-Befehl kann man auch eine
@@ -279,14 +313,15 @@ Die Fehlerbehebung kann auch das Löschen ganzer
 Entwicklungs- oder Testzweige (Branches) bedeutet, 
 was wir später noch besprechen.
 
-
-* Manchmal soll auch nur die Version gelöscht werden,
+\samplestart
+**Trick**  
+Manchmal soll auch nur die Version gelöscht werden,
   die irrtümlich auf den Stage geschoben wurde. Dabei darf das 
   \work nicht verändert werden. Das erreichst du mit
    `git restore <dateiname> --staged`.  
   Das braucht man eigentlich nur, wenn diese Datei doch nicht im 
   nächsten Commit enthalten sein soll.
-
+\sampleend
 
 ### Was ist mit Revert?
 
@@ -295,7 +330,57 @@ Team auch eine große Rolle. Bei der lokalen Arbeit wirst
 du diesen Befehl sehr selten brauchen -- \cmd{reset}
 und \cmd{checkout} sind hier meist einfacher und schneller.
 Du wirst im Abschnitt über die Teamarbeit aber noch mehr 
-darüber hören!
+darüber hören! 
+
+In der Theorie liest \git die Änderungen, die ein 
+Commit vorgenommen hat, invertiert diese Änderungen 
+und wendet sie auf den aktuellen Stand an. Dabei wird 
+ein neuer Commit erstellt. Im Kern handelt es sich um 
+eine Art von Merge. Wenn es sich bei dem aufzuhebenden
+Commit nicht um den HEAD handelt, sind Konflikte im 
+Normalfall fast nicht zu vermeiden! 
+
+**Typischer Ablauf**  
+
+```bash
+
+git log --oneline 
+
+# Ausgabe 
+4353add (HEAD -> master) C: Modify B-line
+f9d333a B: Add B-line
+0d43a86 A: Add A-line
+3954336 Initial 
+
+git revert 0d43a86
+
+# Ausgabe 
+KONFLIKT (ändern/löschen): file.txt gelöscht in (empty tree) und 
+geändert in HEAD. Stand HEAD von file.txt wurde im Arbeitsbereich gelassen.
+
+error: Konnte "revert" nicht auf 0d43a86... (A: Add A-line) ausführen
+
+Hinweis: Lösen Sie alle Konflikte manuell auf, markieren Sie diese mit
+Hinweis: "git add/rm <Pfadspezifikation>" und führen Sie dann
+Hinweis: "git revert --continue" aus.
+Hinweis: Sie können stattdessen auch diesen Commit auslassen, indem
+Hinweis: Sie "git revert --skip" ausführen.
+Hinweis: Um abzubrechen und zurück zum Zustand vor "git revert" zu gelangen,
+Hinweis: führen Sie "git revert --abort" aus.
+```
+
+Die Anleitung für das weitere Vorgehen steht komplett in den Hinweisen:
+
+* Datei öffnen und Konflikt bereinigen
+* \cmd{git add .}
+* \cmd{git revert --continue}
+
+
+
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxx AUSGLIEDERN xxxxxxxxxxxxxxxxxxxxxxxxx
 
 Zum Verständis der Problematik dennoch ein Beispiel.
 Angenommen, du erstellst ein Programm zur Berechnung 

@@ -326,7 +326,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, colback={codebgcolor}, boxrule=0pt, enhanced, breakable, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, frame hidden, boxrule=0pt, enhanced, sharp corners, colback={codebgcolor}]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -1211,233 +1211,22 @@ man die gleiche Datei zwischen zwei Commits mehrfach ändert und
 
 \chapter{Hands On I}\label{hands-on-i}
 
-Bevor wir beginnen, müssen einmalig einige Konfigurationen vorgenommen
-werden -- einige davon betreffen auch bereits den späteren Einsatz im
-Netz, wo klar sein muss, welcher Benutzer Änderungen an den Dateien
-vorgenommen hat\footnote{Wir sprechen hier NICHT von einer Absicherung
-  gegen Dummheit oder Bosheit. Sobald Änderungen von papst@vatikan.va
-  auftauchen, wäre ich skeptisch!}.
+\section{Übung}\label{uxfcbung}
 
-\samplestart
+Besonders bei komplexen Systemen wie \git gilt \emph{use it or lose it}!
+In diesem Sinne kommt hier nun ein winziger *Projektauftrag:
 
-\textbf{TIPP}\\
-Im Terminal kann mit der \emph{Pfeil hoch} Taste durch die letzten
-Befehle geblättert werden -- damit gehen manche Dinge sehr schnell!
-\sampleend
-
-\section{Erste Schritt}\label{erste-schritt}
-
-Lege nun einen Arbeitsordner für dieses \emph{Hands on} an:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ init hands\_on\_1 }
-\BuiltInTok{cd}\NormalTok{ hands\_on\_1}
-\end{Highlighting}
-\end{Shaded}
-
-Alternativ kannst du das auch mit mehreren Schritten erledigen:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{mkdir}\NormalTok{ hands\_on\_1 }
-\BuiltInTok{cd}\NormalTok{ hands\_on\_1 }
-\FunctionTok{git}\NormalTok{ init }
-\end{Highlighting}
-\end{Shaded}
-
-Es erscheint eine Meldung, die je nach System etwas anders aussehen
-kann:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{Hinweis:}\NormalTok{ Als Name für den initialen Branch wurde }\StringTok{\textquotesingle{}master\textquotesingle{}}\NormalTok{ benutzt. }
-\ExtensionTok{Hinweis:}\NormalTok{ Dieser Standard{-}Branchname kann sich ändern.}
-\ExtensionTok{Hinweis:}\NormalTok{ Um den Namen des initialen Branches zu konfigurieren,}
-\ExtensionTok{Hinweis:}\NormalTok{ der in allen neuen Repositories verwendet werden soll und}
-\ExtensionTok{Hinweis:}\NormalTok{ um diese Warnung zu unterdrücken, führen Sie aus:}
-\ExtensionTok{Hinweis:} 
-\ExtensionTok{Hinweis:}\NormalTok{    git config }\AttributeTok{{-}{-}global}\NormalTok{ init.defaultBranch }\OperatorTok{\textless{}}\NormalTok{Name}\OperatorTok{\textgreater{}}
-\ExtensionTok{Hinweis:} 
-\ExtensionTok{Hinweis:}\NormalTok{ Häufig gewählte Namen statt }\StringTok{\textquotesingle{}master\textquotesingle{}}\NormalTok{ sind }\StringTok{\textquotesingle{}main\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}trunk\textquotesingle{}}
-\ExtensionTok{Hinweis:}\NormalTok{ und }\StringTok{\textquotesingle{}development\textquotesingle{}}\NormalTok{. Der gerade erstellte Branch kann }
-\ExtensionTok{Hinweis:}\NormalTok{ mit diesem Befehl umbenannt werden:}
-\ExtensionTok{Hinweis:} 
-\ExtensionTok{Hinweis:}\NormalTok{    git branch }\AttributeTok{{-}m} \OperatorTok{\textless{}}\NormalTok{Name}\OperatorTok{\textgreater{}}
-\ExtensionTok{Leeres}\NormalTok{ Git{-}Repository in /tmp/hands\_on\_1/.git/ initialisiert}
-\end{Highlighting}
-\end{Shaded}
-
-Es hat sich eingebürgert\footnote{Bedingt durch gesellschaftspolitische
-  Strömungen, die \emph{Master} mit Sklaverei gleichsetzen, aber Eine
-  Master-Arbeit hier nicht als Problem sehen.}, den Arbeitszweig von
-\emph{master} auf \emph{main} umzubenennen:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main }
-\end{Highlighting}
-\end{Shaded}
-
-Den Erfolg kannst du schnell überprüfen:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ status}
-\end{Highlighting}
-\end{Shaded}
-
-Es sollte folgender Text (eventuell englisch) erscheinen:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{Auf}\NormalTok{ Branch main}
-
-\ExtensionTok{Noch}\NormalTok{ keine Commits}
-
-\ExtensionTok{nichts}\NormalTok{ zu committen }\ErrorTok{(}\ExtensionTok{erstellen/kopieren}\NormalTok{ Sie Dateien und benutzen}
-\ExtensionTok{Sie} \StringTok{"git add"}\NormalTok{ zum Versionieren}\KeywordTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hinweis}\\
-Du kannst \git auch so konfigurieren, dass der Branch eines neu
-angelegten Repositories automatisch \emph{main} genannt wird.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ init.defaultBranch main}
-\end{Highlighting}
-\end{Shaded}
-
-\sampleend
-
-Erstelle nun eine erste Datei mit dem Namen \datei{datei1.txt}.\\
-Wenn du das nicht über die \git-Bash machen willst, dann achte darauf,
-dass du eine reine Textdatei erstellst -- also nicht mit Word o.ä.
-sondern mit einem reinen Editor wie \emph{notepad}, \emph{notepad++}
-oder einer Entwicklungsumgebung.
-
-Schneller geht das aber mit \git-Bash\footnote{Das Zeichen
-  \texttt{\textgreater{}} überschreibt alle Inhalte einer Datei,
-  \texttt{\textgreater{}\textgreater{}} hängt die Daten hinten an.}.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{echo} \StringTok{"Version 1"} \OperatorTok{\textgreater{}}\NormalTok{ datei1.txt }
-\end{Highlighting}
-\end{Shaded}
-
-Diese Datei nimmst du dann in die Versionsverwaltung auf
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ add datei1.txt }
-\end{Highlighting}
-\end{Shaded}
-
-und erstellst einen Commit
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Erste Datei erstellt"}
-\end{Highlighting}
-\end{Shaded}
-
-Durch die Kombination aus \emph{add} und \emph{commit} hast du einen
-\emph{Meilenstein} in der Projekthistorie erstellt. Damit kennst bereits
-einen typischen Ablauf von \git:
-
-Du sammelst Dateien mit \emph{add}, in denen du Änderungen vorgenommen
-hat und schreibst diese Änderungen mit \emph{commit} in die
-Projekthistorie. Wie oft, mit wie vielen Dateien in welchen
-Zeitabständen \ldots{} das ist ziemlich alleine \emph{deine}
-Entscheidung.
-
-Generell gilt allerdings: „Lieber mehr Commits, als zu wenige!{}``
-
-\samplestart
-
-\textbf{Hinweis}\\
-Ein Commit ist ein Projektstand, an den du zurückkehren kannst, wenn
-etwas grob missglückt ist. Vergeht zu viel Zeit (=viel Code) zwischen
-zwei Commits, so entstehen eventuell größere Verluste bei einem
-Rücksprung zum alten Stand.\\
-Später im Workshop lernst du auch, wie du Commits nachträglich
-zusammenfassen kannst (=squash) um deine Entwicklungsschritte
-übersichtlich zu halten. \sampleend 
-
-Ändere deine Datei nun ab, indem du eine Zeile ergänzt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{echo} \StringTok{"Version 2"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei1.txt }
-\FunctionTok{git}\NormalTok{ add datei1.txt }
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Erläuterung"}
-\end{Highlighting}
-\end{Shaded}
-
-Die Historie besitzt nun zwei Punkte, an die du zurückgekehren könntest
--- wie das geht, lernst du noch.
-
-Natürlich ist das \emph{adden} nicht auf eine einzige Datei beschränkt.
-Liegen mehrere geänderte Dateien vor, so müssen sie nicht einzeln
-hinzugefügt werden. Es gibt dafür einen \emph{Sammelbefehl}, der den
-gesamten Ordner mit allen Unterordnern hinzufügt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ add . }
-\end{Highlighting}
-\end{Shaded}
-
-Das \emph{adden} ist generell unabhängig vom \emph{commit}. Es ist sogar
-üblich, immer erst einige Dateien anzusammeln, bevor du einen Commit
-machst.\\
-Es ist auch völlig unproblematisch eine Datei zwischen zwei Commits
-mehrfach in der aktuellen Version mit \emph{add} für den Commit zu
-registrieren.
-
-Es kann ab und zu passieren, dass du Änderungen an Dateien vornimmst,
-die zu verschiedenen Problemen gehören. Es wäre dann etwas
-unübersichtlich, wenn\\
-diese Dateien dann im gleichen Commit festgeschrieben werden. In einem
-solchen Fall solltest du bei \emph{add} genau die Dateinamen angeben.
-
-Zusätzlich kann es natürlich auch sein, dass du bestimmte Dateien
-überhaupt nicht in die Versionsverwaltung aufnehmen willst. Das ist zum
-Beispiel dann der Fall, falls sich Kennwörter und Zugangsdaten in eine
-Datei befinden. Wenn du die Namen dieser Datei(en) in eine Datei mit dem
-Namen \texttt{.gitignore} einträgst, werden sie beim \emph{add}
-ignoriert.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Format der Datei}
-\ExtensionTok{*.log} 
-\ExtensionTok{*.tmp} 
-\ExtensionTok{zugangsdaten.txt}
-\end{Highlighting}
-\end{Shaded}
-
-Mit diesen Befehlen ist bereits ein einfacher lokaler
-Entwicklungsprozess abbildbar -- allerdings gibt es noch viele weitere
-Feinheiten und Varianten.
-
-\samplestart
-
-\textbf{Hinweis}\\
-Es gibt sogar die Möglichkeit, dass man nur Teile der Änderungen in
-einer Datei in einen Commit und die restlichen Änderungen in einen
-anderen Commit übernimmt. Das sind aber sehr spezielle Varianten, die
-wir nicht behandeln! \sampleend
+\begin{quote}
+Erstelle in einem Repository ein Mini-Projekt in deiner üblichen
+Programmiersprache. Idealer Weise besteht es aus mehreren Dateien. Für
+jede Änderung am Code soll ein Commit erstellt werden. Verschaffe dir im
+Anschluss einen Überblick über die Commit-History.
+\end{quote}
 
 \section{Ein genauerer Blick auf Git}\label{ein-genauerer-blick-auf-git}
 
 Steht ein Ordner unter der Verwaltung von \git, so kann man von drei
-\emph{logischen} Bereiche sprechen:
+\emph{logischen} Bereichen sprechen:
 
 \begin{itemize}
 \tightlist
@@ -1446,8 +1235,8 @@ Steht ein Ordner unter der Verwaltung von \git, so kann man von drei
 \item
   Stage (auch Index oder Cache genannt)
 \item
-  Repository\footnote{Je nach Quelle und Kontext etwas inkonsistent
-    verwendet}
+  Repository\footnote{Je nach Quelle und Kontext wird der Begriff etwas
+    inkonsistent verwendet}
 \end{itemize}
 
 Das \work enthält die Dateien an denen gearbeitet wird. Er entspricht
@@ -1460,6 +1249,13 @@ Ordner bildet gleichzeitig den \emph{Stage} und das
   Repository bezeichnet, sobald er von \git verwaltet wird, andererseits
   befindet sich das eigentliche Repository im Ordner \emph{.git}.}.
 
+\samplestart
+
+\textbf{Hinweis}\\
+Es kann sein, dass in deinem Betriebssystem Ordner mit einem führenden
+Punkt nicht angezeigt werden. Dies aber üblicherweise im Dateimanager
+konfigurierbar. \sampleend
+
 \emph{Logische Bereiche} bedeutet in diesem Zusammenhang, dass diese
 beiden Bereiche von \git verwaltet werden und vom unbedarften Benutzer
 nicht einfach unterschieden werden können. In einem späteren Abschnitt
@@ -1469,7 +1265,7 @@ Betrachten wir zunächst einen Entwicklungszyklus im Detail. Dabei wirst
 du im Wesentlichen die gleichen Befehle wie vorher verwenden, allerdings
 untersuchen wir einige Varianten, die für das Verständnis wichtig sind.
 
-Du bist immer noch im aktuellen Ordner \ordner{hands\_on\_1}. Er sollte
+Du bist immer noch im aktuellen Ordner \ordner{versuch1}. Er sollte
 akutell eine Datei und zwei Commits enthalten.\\
 Das kannst du mit folgendem Befehl überprüfen:
 
@@ -1552,22 +1348,19 @@ Erstelle nun eine neue \datei{datei2.txt} und füge die Zeile
 Es wird dir angezeigt, dass Änderungen im \work vorliegen.\\
 Du siehst auch, dass \git die \datei{datei1.txt} bereits kennt
 (=geändert) und dass \datei{datei2.txt} noch nicht in die\\
-Versionsverwaltung aufgenommen wurde (=Unversioniert).
+Versionsverwaltung aufgenommen wurde (=unversioniert).
 
 \samplestart
 
-\textbf{Hinweis}\\
-In Bezug auf \emph{add} muss man zwei Dinge im Hinterkopf behalten. 1.
-Die Abkürzung \cmd{git commit -a} führt zwar im Hintergrund ein
-\emph{add} aus, aber nur für bereits versionierte Dateien --
-\datei{datei2.txt} würde also ignoeriert.\\
-2. Der Befehl \cmd{git add .} findet nur Dateien im aktuellen Ordner und
-den Unterordnern. Sollen auch Dateien in übergeordneten oder
-\emph{parallelen} Ordnern berücksichtigt werden, so brauchst du
-\cmd{git add --all}. \sampleend
+\textbf{Vorsicht}\\
+Es gibt den Befehl \cmd{git commit -am "bemerkung"}.\\
+Hier musst du wissen, dass nur bereits versionierte Dateien in
+geänderter Form in den Commit übernommen werden -- \datei{datei2.txt}
+würde also ignoeriert.\\
+\sampleend
 
-Nun werden die aktuelle Stände \emph{auf den Stage}/\emph{in den Stage}
-übertragen:
+Übertrage nun die Änderungen beider Dateien \emph{auf den
+Stage}/\emph{in den Stage}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1589,7 +1382,7 @@ Nun werden die aktuelle Stände \emph{auf den Stage}/\emph{in den Stage}
 \end{Shaded}
 
 Diese Dateien sind nun zum Commit vorgemerkt, also zum festen Eintrag in
-die Projekthistorie -- führst du aber \textbf{nicht aus}!.
+die Projekthistorie -- Das führst du jetzt aber \textbf{nicht aus}!
 
 Als Demonstration fügen wir beiden Dateien eine weitere Zeile hinzu und
 fragen wieder den Status ab:
@@ -1626,17 +1419,15 @@ fragen wieder den Status ab:
 
 Beide Dateien liegen also in verschiedenen Versionen im Stage und im
 \work vor.\\
-Ein Commit transferiert die Dateien aus dem Stage ins Repository, also
-in die Projekthistorie. Das führt dann zu folgender Situation:
+Ein Commit transferiert \textbf{nur} die Versionen der Dateien aus dem
+Stage ins Repository, also in die Projekthistorie. Das führt dann zu
+folgender Situation:
 
-\begin{verbatim}
-git commit -m "nur Stage"
-\end{verbatim}
-
-Ein \cmd{git status} zeigt dir, dass die oberen beiden Dateiversionen
-aus dem Stage verschwunden sind (sind jetzt Teil des Commits) und die
-aktuellen Änderungen nach wie vor im Arbeitsverzeichnis vorhanden sind,
-weil für sie noch kein \emph{add} stattgefunden hat.
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"nur Stage"}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1651,9 +1442,18 @@ weil für sie noch kein \emph{add} stattgefunden hat.
     \ExtensionTok{geändert:}\NormalTok{       datei2.txt}
 
 \ExtensionTok{keine}\NormalTok{ Änderungen zum Commit vorgemerkt }\ErrorTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git add"}\NormalTok{ und/oder }\StringTok{"git commit {-}a"}\KeywordTok{)}
+\end{Highlighting}
+\end{Shaded}
 
+Die oberen beiden Dateiversionen sind aus dem Stage verschwunden sind
+(sind jetzt Teil des Commits) und die aktuellen Änderungen sind nach wie
+vor im Arbeitsverzeichnis vorhanden sind, weil für sie noch kein
+\emph{add} stattgefunden hat.
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{\# Zum Stage hinzufügen}
-\FunctionTok{git}\NormalTok{ add }
+\FunctionTok{git}\NormalTok{ add . }
 
 \FunctionTok{git}\NormalTok{ status}
 
@@ -1701,17 +1501,18 @@ oder Metadaten.
 \textbf{tree}\\
 Ein Tree ist ein (namentliches) Abbild des Arbeitsverzeichnisses. Er
 enthält aber nur die Namen, Typ und Hash der Dateien, Unterordner, also
-der Blobs und trees, die an anderer Stelle gespeichert sind. Ein Tree
+der Blobs und Trees, die an anderer Stelle gespeichert sind. Ein Tree
 ist klein, da er keine Dateiinhalte enthält.
 
 \textbf{commit}\\
-Zeigt auf den Tree, der zum Zeitpunkt des Commits aktuell war. Er
-enthält noch weitere Metadaten.
+Ein Commit ist ein Zeiger auf den Tree, der zum Zeitpunkt des Commits
+aktuell war. Er enthält noch weitere Metadaten.
 
 \textbf{tag}\\
-Zusatznamen für ausgewählte Commits (Releases)
+Er ist ein Zusatznamen für ausgewählte Commits (Releases), um ohne
+Kenntnis des Hashs darauf zugreifen zu können.
 
-\textbf{Sehen wir uns das genauer an}
+\subsection{Eigene Experimente}\label{eigene-experimente}
 
 Erstelle dir ein neues Repository in einem anderen Ordner
 
@@ -1730,39 +1531,9 @@ im \work sind:
 
 \pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/base.png}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{.git/}
-\ExtensionTok{├──}\NormalTok{ branches}
-\ExtensionTok{├──}\NormalTok{ config}
-\ExtensionTok{├──}\NormalTok{ description}
-\ExtensionTok{├──}\NormalTok{ HEAD}
-\ExtensionTok{├──}\NormalTok{ hooks}
-\ExtensionTok{│  }\NormalTok{ ├── applypatch{-}msg.sample}
-\ExtensionTok{│  }\NormalTok{ ├── commit{-}msg.sample}
-\ExtensionTok{│  }\NormalTok{ ├── fsmonitor{-}watchman.sample}
-\ExtensionTok{│  }\NormalTok{ ├── post{-}update.sample}
-\ExtensionTok{│  }\NormalTok{ ├── pre{-}applypatch.sample}
-\ExtensionTok{│  }\NormalTok{ ├── pre{-}commit.sample}
-\ExtensionTok{│  }\NormalTok{ ├── pre{-}merge{-}commit.sample}
-\ExtensionTok{│  }\NormalTok{ ├── prepare{-}commit{-}msg.sample}
-\ExtensionTok{│  }\NormalTok{ ├── pre{-}push.sample}
-\ExtensionTok{│  }\NormalTok{ ├── pre{-}rebase.sample}
-\ExtensionTok{│  }\NormalTok{ ├── pre{-}receive.sample}
-\ExtensionTok{│  }\NormalTok{ └── update.sample}
-\ExtensionTok{├──}\NormalTok{ info}
-\ExtensionTok{│  }\NormalTok{ └── exclude}
-\ExtensionTok{├──}\NormalTok{ objects}
-\ExtensionTok{│  }\NormalTok{ ├── info}
-\ExtensionTok{│  }\NormalTok{ └── pack}
-\ExtensionTok{└──}\NormalTok{ refs}
-    \ExtensionTok{├──}\NormalTok{ heads}
-    \ExtensionTok{└──}\NormalTok{ tags}
-\end{Highlighting}
-\end{Shaded}
-
-Lege nun im leeren \work eine Datei an\footnote{Ich habe absichtlich
-  nicht index.html verwendet, weil „index`` aktuell anders belegt ist.}
+Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
+  habe absichtlich nicht index.html verwendet, weil „index`` aktuell
+  anders belegt ist.}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1771,30 +1542,14 @@ Lege nun im leeren \work eine Datei an\footnote{Ich habe absichtlich
 \end{Highlighting}
 \end{Shaded}
 
-Du siehst erste Änderungen im \emph{.git}-Ordner. Im Bild siehst du aus
-Platzgründen nur den relevanten Ausschnitt. Bei dir kann der Hash einen
-anderen Wert besitzen!
+Du siehst erste Änderungen im \emph{.git}-Ordner. Im Bild ist aus
+Platzgründen nur der relevante Ausschnitt angezeigt. Bei dir kann der
+Hash einen anderen Wert besitzen!
 
 \pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/1_neue_datei.png}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{.}
-\BuiltInTok{.}
-\BuiltInTok{.}
-\ExtensionTok{├──}\NormalTok{ index            }\OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ neu }
-\ExtensionTok{├──}\NormalTok{ info}
-\ExtensionTok{│  }\NormalTok{ └── exclude}
-\ExtensionTok{├──}\NormalTok{ objects}
-\ExtensionTok{│  }\NormalTok{ ├── ce          }\OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ neu, bei dir evtl anders! }
-\ExtensionTok{│  }\NormalTok{ │   └── 1332fcf1795166c3c5cd0216b5e7dc2dce7998}
-\ExtensionTok{│  }\NormalTok{ ├── info}
-\ExtensionTok{│  }\NormalTok{ └── pack}
-\end{Highlighting}
-\end{Shaded}
-
-Die Datei \emph{index} stellt den Stage dar. Diese Datei kannst du nicht
-direkt lesen. Das geht nur mit
+Die Datei \datei{index} stellt den \emph{Stage} dar. Diese Datei kannst
+du nicht direkt lesen. Das geht nur mit
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1838,46 +1593,12 @@ Darstellung aus Platzgründen entfernt!
 
 \pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/2_commit.png}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{.git/}
-\ExtensionTok{├──}\NormalTok{ branches}
-\ExtensionTok{├──}\NormalTok{ COMMIT\_EDITMSG}
-\ExtensionTok{├──}\NormalTok{ config}
-\ExtensionTok{├──}\NormalTok{ description}
-\ExtensionTok{├──}\NormalTok{ HEAD}
-\ExtensionTok{├──}\NormalTok{ hooks}
-    \ExtensionTok{....}
-\ExtensionTok{├──}\NormalTok{ index}
-\ExtensionTok{├──}\NormalTok{ info}
-\ExtensionTok{│  }\NormalTok{ └── exclude}
-\ExtensionTok{├──}\NormalTok{ logs}
-\ExtensionTok{│  }\NormalTok{ ├── HEAD}
-\ExtensionTok{│  }\NormalTok{ └── refs}
-\ExtensionTok{│  }\NormalTok{     └── heads}
-\ExtensionTok{│  }\NormalTok{         └── main}
-\ExtensionTok{├──}\NormalTok{ objects}
-\ExtensionTok{│  }\NormalTok{ ├── 3b  }
-\ExtensionTok{│  }\NormalTok{ │   └── 028e4d0230fb8f3553f0f7579e68e6c4e27d3f}
-\ExtensionTok{│  }\NormalTok{ ├── 94}
-\ExtensionTok{│  }\NormalTok{ │   └── eed25c4ef6cfa1384df66f28308c09dc9bf28d}
-\ExtensionTok{│  }\NormalTok{ ├── ce}
-\ExtensionTok{│  }\NormalTok{ │   └── 1332fcf1795166c3c5cd0216b5e7dc2dce7998}
-\ExtensionTok{│  }\NormalTok{ ├── info}
-\ExtensionTok{│  }\NormalTok{ └── pack}
-\ExtensionTok{└──}\NormalTok{ refs}
-    \ExtensionTok{├──}\NormalTok{ heads}
-    \ExtensionTok{│  }\NormalTok{ └── main}
-    \ExtensionTok{└──}\NormalTok{ tags}
-\end{Highlighting}
-\end{Shaded}
-
 Ab hier bekommst du sicher andere, eigene Hash-Werte! Du musst in den
 nachfolgenden Befehlen also deine eigenen Werte verwenden.
 
 Wir konzentrieren uns auf die \emph{objects} und das \emph{log}.
 
-Mit \texttt{git\ log} erfährst du etwas über den erfolgten Commit -- zum
+Mit \cmd{git log} erfährst du etwas über den erfolgten Commit -- zum
 Beispiel seinen Hash:
 
 \begin{Shaded}
@@ -1915,7 +1636,7 @@ bekommst du weitere Details:
 
 Am Commit verweist also auf den \emph{tree} mit dem Hash 94ee\ldots{}\\
 Da wir aktuell nur eine Datei haben, ist die Ausgabe des nächsten
-Befehls sehr kurz, der den tree ausliest:
+Befehls sehr kurz, der den Tree ausliest:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1966,9 +1687,10 @@ Hier nochmal die Zusammenfassung der Funktionsweise:
 
 Git verwendet das, um von verschiedenen Stellen aus auf die gleichen
 Rohdaten verweisen zu können, ohne Speicher zu verbrauchen. Ändern sich
-Dateien zwischen zwei Commits nicht (Hash bleibt gleich), so werden sie
-nicht neu gespeichert. Der neue Commit zeigt auf einen neuen Tree in dem
-wieder die gleichen Hashes mit den gleichen Dateinamen stehen.
+Dateien zwischen zwei Commits \emph{nicht} (Hash bleibt gleich), so
+werden sie nicht neu gespeichert. Der \emph{neue} Commit zeigt auf einen
+\emph{neuen} Tree in dem wieder die gleichen Hashes mit den gleichen
+Dateinamen stehen.
 
 Tiefer will ich an dieser Stelle in dieses Thema nicht einsteigen!
 
@@ -1990,9 +1712,16 @@ keine anderen Team-Mitglieder betroffen sind. Nachfolgend besprechen wir
 einige Szenarien mit kleinen Beispielen. Aktuell ist das Arbeiten mit
 verschiedenen Entwicklungszweigen noch nicht Thema!
 
+\samplestart
+
+\textbf{Ein Hinweis vorab}\\
+Im Netz findet man statt \cmd{restore} oft noch die Variante mit
+\cmd{checkout}, die früher üblich war. \sampleend
+
 \subsection{Kleiner Fehler 1}\label{kleiner-fehler-1}
 
-Der Fehler ist ganz frisch \ldots{}
+Der Fehler wird schnell bemerkt und die Datei aus dem Stage wieder in
+das \work kopiert (siehe Hinweis unter dem Code!).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2008,14 +1737,28 @@ Der Fehler ist ganz frisch \ldots{}
 \CommentTok{\# Hier kommt der Fehler}
 \BuiltInTok{echo} \StringTok{"Mist gebaut"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt}
 
-\CommentTok{\#\#\#\#\#\# Alte Version wieder herstellen}
+\CommentTok{\#\#\#\#\#\# Alte Version vom Stage wieder herstellen}
 \FunctionTok{git}\NormalTok{ restore datei.txt  }
 \end{Highlighting}
 \end{Shaded}
 
+\samplestart
+
+\textbf{Hinweis}\\
+Vorher habe ich geschrieben, dass bei einem Commit die Dateien aus dem
+Stage in die Projekthistorie übertragen und aus dem Stage entfernt
+werden. Intern funktioniert das allerdings etwas anders. Die Datei
+\emph{index} enthält die Namen und Hashes des aktuellen Commits (tree).
+Mit einem \emph{add} werden Dateinamen ergänzt. Beim Commit wird die
+Datei nicht geleert, die Hashes bleiben also verfügbar. Dass
+\texttt{git\ status} diese Dateien nicht mehr anzeigt, liegt einfach
+daran, dass der Befehl eigentlich nur ein \emph{diff} zwischen
+\emph{index} und aktuellem \emph{tree} ausführt. \sampleend
+
 \subsection{Kleiner Fehler 2}\label{kleiner-fehler-2}
 
-Der Fehler wurde bereits ge-add-et.
+Der Fehler wurde bereits ge-add-et. Damit gibt es im Stage keine Version
+zum Rückkopieren. Du musst einen Schritt rückwärts gehen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2031,16 +1774,17 @@ Der Fehler wurde bereits ge-add-et.
 
 \CommentTok{\# Hier kommt der Fehler}
 \BuiltInTok{echo} \StringTok{"Mist gebaut"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt}
-\FunctionTok{git}\NormalTok{ add . }
+\FunctionTok{git}\NormalTok{ add .   }\CommentTok{\# DAS ist anders!}
 
 \CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
-\CommentTok{\#\#\#\#\#\# Das geht jetzt nicht, weil Stage = Workdir}
+\CommentTok{\#\#\#\#\#\# Das geht jetzt nicht, weil der }
+\CommentTok{\#\#\#\#\#\# Stage die falsche Version enthält.}
 \CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
 \FunctionTok{git}\NormalTok{ restore datei.txt  }
 \end{Highlighting}
 \end{Shaded}
 
-Du musst nun mit \cmd{git log} den Hash vom letzten Commit ermitteln und
+Du musst mit \cmd{git log} den Hash vom letzten Commit ermitteln und
 dann geht
 
 \begin{Shaded}
@@ -2049,9 +1793,33 @@ dann geht
 \end{Highlighting}
 \end{Shaded}
 
+Falls du die Datei länger bearbeitet hast und die Änderungen immer mit
+\cmd{add} auf den Stage geschrieben hast, wirst du Verluste haben!
+
+\samplestart
+
+\textbf{Zusatz}\\
+Mit \cmd{restore} können natürlich nicht nur Dateien aus dem direkt
+vorausgehenden Commit entnommen werden! Kennst du den Hash, so kannst du
+auf jeden Commit zugreifen. \sampleend
+
 \subsection{Größerer Fehler 1}\label{gruxf6uxdferer-fehler-1}
 
-Viele Fehler nach letztem Commit
+Du hast nach dem letztem Commit viele Fehler erzeugt und willst den
+Stand verwerfen. Hier hilft \cmd{reset}. Diesen Befehl gibt es in 3
+Versionen
+
+\begin{itemize}
+\tightlist
+\item
+  hard
+\item
+  mixed
+\item
+  soft
+\end{itemize}
+
+\subsubsection{Hard}\label{hard}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2076,15 +1844,16 @@ Viele Fehler nach letztem Commit
 \end{Highlighting}
 \end{Shaded}
 
-Sind viele Dateien \emph{verkorkst}, so bietet sich ein komplettes
-Rücksetzen auf einen alten Stand an. Allerdings gibt es da einige
-Varianten (siehe Tabelle unten).
+Hiermit ist alles gelöscht, was du nach diesem Commit produziert hast --
+unwiederruflich weg!
 
-Wird der Befehl ohne \cmd{--hard} ausgeführt, so wird nur der Stage auf
-den Stand des alten Commit gesetzt, nicht aber das \work. Aber
-eigentlich verlassen wir hier schon die einfachen Fälle. Ich persönlich
-verliere bei so vielen Varianten bald den Überblick und von einem
-\emph{routinierten Handling} kann keine Rede sein!
+\samplestart
+
+\textbf{Hinweis}\\
+Du kannst in der Commit-History auch weiter zurück springen und somit
+die letzten Commits verwerfen. Das ist völlig problemlos, solange du
+alleine, lokal auf deinem Rechner arbeitest. Im Team oder auch nur mit
+Serverabgleich ist das extrem problematisch! \sampleend
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2092,49 +1861,56 @@ verliere bei so vielen Varianten bald den Überblick und von einem
 \end{Highlighting}
 \end{Shaded}
 
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Befehl (Beispiel)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Wirkung
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Warnung / Hinweis
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\texttt{git\ reset\ -\/-hard\ HEAD} & Setzt Arbeitsverzeichnis und
-Staging auf \texttt{HEAD} zurück; alle uncommitted Änderungen werden
-gelöscht. & Unwiderruflich, wenn Änderungen nicht anderweitig gesichert
-sind. \\
-\texttt{git\ reset\ -\/-hard\ HEAD\textasciitilde{}1} & Branch-Zeiger
-bewegt sich ein Commit zurück; Arbeitsverzeichnis entspricht dem
-vorletzten Commit. & Vorsichtig bei bereits gepushten Commits --- Remote
-bleibt davon unberührt. \\
-\texttt{git\ reset\ -\/-soft\ HEAD\textasciitilde{}1} & Entfernt letzten
-Commit, macht die Änderungen als gestaged verfügbar (Index enthält sie).
-& Gut zum Kombinieren/Neuformulieren von Commits. \\
-\texttt{git\ reset\ -\/-mixed\ HEAD\textasciitilde{}1} (oder
-\texttt{git\ reset\ HEAD\textasciitilde{}1}) & Entfernt Commit;
-Änderungen bleiben im Working Directory, aber sind nicht gestaged. &
-Standardmodus (\texttt{-\/-mixed}) wenn kein Flag angegeben. \\
-\texttt{git\ reset\ HEAD} & Entfernt Dateien aus dem Index; Änderungen
-bleiben im Arbeitsverzeichnis. & Nützlich, um versehentliches
-\texttt{git\ add} rückgängig zu machen. \\
-\texttt{git\ reset\ -\/-hard\ \textless{}commit-hash\textgreater{}} &
-Setzt Branch auf den angegebenen Commit; Arbeitsverzeichnis wird
-entsprechend angepasst. & \texttt{\textless{}commit-hash\textgreater{}}
-vorher mit \texttt{git\ log}/\texttt{git\ rev-parse} prüfen. \\
-\texttt{git\ reset\ -\/-hard\ HEAD\textasciitilde{}1} +
-\texttt{git\ push\ -\/-force} & Lokaler und Remote-Branch zeigen auf den
-älteren Commit (push überschreibt Remote). & \textbf{Gefährlich}: ändert
-history auf Remote --- Absprache mit Team erforderlich. \\
-\end{longtable}
+\subsubsection{Mixed}\label{mixed}
+
+Das ist so ziemlich die gebräuchlichste Variante.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ reset }\AttributeTok{{-}{-}mixed} \OperatorTok{\textless{}}\NormalTok{HASH}\OperatorTok{\textgreater{}}
+\FunctionTok{git}\NormalTok{ reset }\OperatorTok{\textless{}}\NormalTok{HASH}\OperatorTok{\textgreater{}}
+\end{Highlighting}
+\end{Shaded}
+
+Die Commits werden gelöscht, alle Änderungen liegen aber immer noch in
+den Dateien des \work vor. Du kannst also Korrekturen vornehmen und
+danach neue Commits erstellen. Auch hier ist natürlich wichtig, dass die
+Commits deinen Rechner vorher noch nicht verlassen hatten!
+
+\textbf{Demo}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ demo\_mix }
+\FunctionTok{git}\NormalTok{ init demo\_mix}
+\BuiltInTok{cd}\NormalTok{ demo\_mix}
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main }
+
+
+\ControlFlowTok{for}\NormalTok{ i }\KeywordTok{in} \DataTypeTok{\{}\DecValTok{1}\DataTypeTok{..}\DecValTok{10}\DataTypeTok{\}}\KeywordTok{;} \ControlFlowTok{do} 
+  \BuiltInTok{echo} \StringTok{"Zeile }\VariableTok{$i}\StringTok{"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt }
+  \FunctionTok{git}\NormalTok{ add . }\KeywordTok{\&\&} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Zeile }\VariableTok{$i}\StringTok{ eingefügt"}
+  \FunctionTok{git}\NormalTok{ tag commit\_}\VariableTok{$i}
+\ControlFlowTok{done} 
+
+\FunctionTok{cat}\NormalTok{ datei.txt }\CommentTok{\# liefert 10 Zeilen }
+
+\FunctionTok{git}\NormalTok{ reset }\AttributeTok{{-}{-}mixed}\NormalTok{ commit\_4}
+
+\FunctionTok{cat}\NormalTok{ datei.txt }\CommentTok{\# liefert immer noch 10 Zeilen}
+
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} \CommentTok{\# liefert 4 Zeilen}
+
+\FunctionTok{git}\NormalTok{ status }\CommentTok{\# zeigt eine geänderte, versionierte Datei }
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Soft}\label{soft}
+
+Wenn du in obigem Script das \cmd{--mixed} durch \cmd{--soft} ersetzt,
+dann passiert auf den ersten Blick nichts anderes als bei \cmd{--mixed}.
+Beim \cmd{status} erscheint die Datei mit den 10 Zeile aber nun bereits
+im Stage und könnte sofort commitet werden.
 
 \subsection{Da war doch mal was}\label{da-war-doch-mal-was}
 
@@ -2213,90 +1989,37 @@ später weiterverwenden zu können.
 \begin{Highlighting}[]
 \ExtensionTok{Hinweis:}\NormalTok{ Wechsle zu }\StringTok{\textquotesingle{}95a3\textquotesingle{}}\NormalTok{.}
 
-\ExtensionTok{Sie}\NormalTok{ befinden sich im Zustand eines }\StringTok{\textquotesingle{}losgelösten HEAD\textquotesingle{}}\NormalTok{. Sie können sich}
-\ExtensionTok{umschauen,}\NormalTok{ experimentelle Änderungen vornehmen und diese committen, und}
-\ExtensionTok{Sie}\NormalTok{ können alle möglichen Commits, die Sie in diesem Zustand machen,}
-\ExtensionTok{ohne}\NormalTok{ Auswirkungen auf irgendeinen Branch verwerfen, indem Sie zu einem}
+\ExtensionTok{Sie}\NormalTok{ befinden sich im Zustand eines }\StringTok{\textquotesingle{}losgelösten HEAD\textquotesingle{}}\NormalTok{. }
+\ExtensionTok{Sie}\NormalTok{ können sich umschauen, experimentelle Änderungen }
+\ExtensionTok{vornehmen}\NormalTok{ und diese committen, und Sie können alle möglichen }
+\ExtensionTok{Commits,}\NormalTok{ die Sie in diesem Zustand machen, ohne Auswirkungen }
+\ExtensionTok{auf}\NormalTok{ irgendeinen Branch verwerfen, indem Sie zu einem}
 \ExtensionTok{anderen}\NormalTok{ Branch wechseln.}
 
-\ExtensionTok{Wenn}\NormalTok{ Sie einen neuen Branch erstellen möchten, um Ihre erstellten Commits}
-\ExtensionTok{zu}\NormalTok{ behalten, können Sie das }\ErrorTok{(}\ExtensionTok{jetzt}\NormalTok{ oder später}\KeywordTok{)} \ExtensionTok{durch}\NormalTok{ Nutzung von}
-\StringTok{\textquotesingle{}switch\textquotesingle{}}\NormalTok{ mit der Option }\AttributeTok{{-}c}\NormalTok{ tun. Beispiel:}
+\ExtensionTok{Wenn}\NormalTok{ Sie einen neuen Branch erstellen möchten, um Ihre erstellten }
+\ExtensionTok{Commits}\NormalTok{ zu behalten, können Sie das }\ErrorTok{(}\ExtensionTok{jetzt}\NormalTok{ oder später}\KeywordTok{)} \ExtensionTok{durch} 
+\ExtensionTok{Nutzung}\NormalTok{ von }\StringTok{\textquotesingle{}switch\textquotesingle{}}\NormalTok{ mit der Option }\AttributeTok{{-}c}\NormalTok{ tun. Beispiel:}
 
   \FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c} \OperatorTok{\textless{}}\NormalTok{neuer{-}Branchname}\OperatorTok{\textgreater{}}
 
 \ExtensionTok{Oder}\NormalTok{ um diese Operation rückgängig zu machen:}
   \FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}}
 
-\ExtensionTok{Sie}\NormalTok{ können diesen Hinweis ausschalten, indem Sie die Konfigurationsvariable}
-\StringTok{\textquotesingle{}advice.detachedHead\textquotesingle{}}\NormalTok{ auf }\StringTok{\textquotesingle{}false\textquotesingle{}}\NormalTok{ setzen.}
+\ExtensionTok{Sie}\NormalTok{ können diesen Hinweis ausschalten, indem Sie die }
+\ExtensionTok{Konfigurationsvariable} \StringTok{\textquotesingle{}advice.detachedHead\textquotesingle{}}\NormalTok{ auf }\StringTok{\textquotesingle{}false\textquotesingle{}}\NormalTok{ setzen.}
 
 \ExtensionTok{HEAD}\NormalTok{ ist jetzt bei 95a37c9 Version 7}
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Es ging nur wenig schief}\label{es-ging-nur-wenig-schief}
-
-Du hast nach dem letzten Commit an einer Datei weiter gearbeitet, bist
-mit dem Ergebnis aber nicht zufrieden. Du möchtest die letzte Version
-der Datei wieder herstellen:
+Hast du die relevanten Zeilen kopiert, so kannst du mit folgendem Befehl
+wieder in die Versionsverwaltung einsteigen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ init sz1}
-\BuiltInTok{cd}\NormalTok{ sz1}
-\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
-
-\BuiltInTok{echo} \StringTok{"Alles gut"} \OperatorTok{\textgreater{}}\NormalTok{ datei.txt}
-\FunctionTok{git}\NormalTok{ add .}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"alles gut"}
-
-\BuiltInTok{echo} \StringTok{"Mist gebaut"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt}
-
-\CommentTok{\#\#\#\#\#\# Zurück rollen}
-\FunctionTok{git}\NormalTok{ status}
-\FunctionTok{git}\NormalTok{ restore datei.txt  }
+\FunctionTok{git}\NormalTok{ checkout main }
 \end{Highlighting}
 \end{Shaded}
-
-Bereits versionierte Dateien mit Fehlern können durch
-\texttt{git\ restore\ \textless{}dateiname\textgreater{}} wieder mit der
-Version aus dem Stage überschrieben werden.
-
-\samplestart
-
-Vorher habe ich geschrieben, dass bei einem Commit die Dateien aus dem
-Stage in die Projekthistorie übertragen und aus dem Stage entfernt
-werden. Intern funktioniert das allerdings etwas anders. Die Datei
-\emph{index} enthält die Namen und Hashes des aktuellen Commits (tree).
-Mit einem \emph{add} werden Dateinamen ergänzt. Beim Commit wird die
-Datei nicht geleert, die Hashes bleiben also verfügbar. Dass
-\texttt{git\ status} diese Dateien nicht mehr anzeigt, liegt einfach
-daran, dass der Befehl eigentlich nur ein \emph{diff} zwischen
-\emph{index} und aktuellem \emph{tree} ausführt. \sampleend
-
-Dass der Stage wirklich nicht leer ist, zeigt folgendes Beispiel, das
-eine Reparatur am \work zeigt.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{echo} \StringTok{"text"} \OperatorTok{\textgreater{}}\NormalTok{ datei.txt }
-\FunctionTok{git}\NormalTok{ add datei.txt     }\CommentTok{\# danach im Stage }
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"gesichert"}
-
-\FunctionTok{git}\NormalTok{ status   }\CommentTok{\# Stage anscheinend leer }
-
-\BuiltInTok{echo} \StringTok{"falscher Text"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt   }\CommentTok{\#  Fehler im Arbeitsverzeichnis }
-\FunctionTok{git}\NormalTok{ restore datei.txt              }\CommentTok{\# repariert mit Datei aus Stage}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hinweis}\\
-Im Netz findet man oft die Variante mit \texttt{checkout}, die früher
-üblich war. \texttt{restore} wurde eingeführt um eindeutigere Befehle zu
-schaffen. \sampleend
 
 Mit dem \texttt{restore}-Befehl kann man auch eine Datei aus einem
 beliebigen Commit restaurieren, von dem man den Hash kennt:
@@ -2310,16 +2033,15 @@ beliebigen Commit restaurieren, von dem man den Hash kennt:
 Die Fehlerbehebung kann auch das Löschen ganzer Entwicklungs- oder
 Testzweige (Branches) bedeutet, was wir später noch besprechen.
 
-\begin{itemize}
-\tightlist
-\item
-  Manchmal soll auch nur die Version gelöscht werden, die irrtümlich auf
-  den Stage geschoben wurde. Dabei darf das \work nicht verändert
-  werden. Das erreichst du mit
-  \texttt{git\ restore\ \textless{}dateiname\textgreater{}\ -\/-staged}.\\
-  Das braucht man eigentlich nur, wenn diese Datei doch nicht im
-  nächsten Commit enthalten sein soll.
-\end{itemize}
+\samplestart
+
+\textbf{Trick}\\
+Manchmal soll auch nur die Version gelöscht werden, die irrtümlich auf
+den Stage geschoben wurde. Dabei darf das \work nicht verändert werden.
+Das erreichst du mit
+\texttt{git\ restore\ \textless{}dateiname\textgreater{}\ -\/-staged}.\\
+Das braucht man eigentlich nur, wenn diese Datei doch nicht im nächsten
+Commit enthalten sein soll. \sampleend
 
 \subsection{Was ist mit Revert?}\label{was-ist-mit-revert}
 
@@ -2328,6 +2050,56 @@ eine große Rolle. Bei der lokalen Arbeit wirst du diesen Befehl sehr
 selten brauchen -- \cmd{reset} und \cmd{checkout} sind hier meist
 einfacher und schneller. Du wirst im Abschnitt über die Teamarbeit aber
 noch mehr darüber hören!
+
+In der Theorie liest \git die Änderungen, die ein Commit vorgenommen
+hat, invertiert diese Änderungen und wendet sie auf den aktuellen Stand
+an. Dabei wird ein neuer Commit erstellt. Im Kern handelt es sich um
+eine Art von Merge. Wenn es sich bei dem aufzuhebenden Commit nicht um
+den HEAD handelt, sind Konflikte im Normalfall fast nicht zu vermeiden!
+
+\textbf{Typischer Ablauf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} 
+
+\CommentTok{\# Ausgabe }
+\ExtensionTok{4353add} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ master}\KeywordTok{)} \ExtensionTok{C:}\NormalTok{ Modify B{-}line}
+\ExtensionTok{f9d333a}\NormalTok{ B: Add B{-}line}
+\ExtensionTok{0d43a86}\NormalTok{ A: Add A{-}line}
+\ExtensionTok{3954336}\NormalTok{ Initial }
+
+\FunctionTok{git}\NormalTok{ revert 0d43a86}
+
+\CommentTok{\# Ausgabe }
+\ExtensionTok{KONFLIKT} \ErrorTok{(}\ExtensionTok{ändern/löschen}\KeywordTok{)}\BuiltInTok{:}\NormalTok{ file.txt gelöscht in }\ErrorTok{(}\ExtensionTok{empty}\NormalTok{ tree}\KeywordTok{)} \ExtensionTok{und} 
+\ExtensionTok{geändert}\NormalTok{ in HEAD. Stand HEAD von file.txt wurde im Arbeitsbereich gelassen.}
+
+\ExtensionTok{error:}\NormalTok{ Konnte }\StringTok{"revert"}\NormalTok{ nicht auf 0d43a86... }\ErrorTok{(}\ExtensionTok{A:}\NormalTok{ Add A{-}line}\KeywordTok{)} \ExtensionTok{ausführen}
+
+\ExtensionTok{Hinweis:}\NormalTok{ Lösen Sie alle Konflikte manuell auf, markieren Sie diese mit}
+\ExtensionTok{Hinweis:} \StringTok{"git add/rm \textless{}Pfadspezifikation\textgreater{}"}\NormalTok{ und führen Sie dann}
+\ExtensionTok{Hinweis:} \StringTok{"git revert {-}{-}continue"}\NormalTok{ aus.}
+\ExtensionTok{Hinweis:}\NormalTok{ Sie können stattdessen auch diesen Commit auslassen, indem}
+\ExtensionTok{Hinweis:}\NormalTok{ Sie }\StringTok{"git revert {-}{-}skip"}\NormalTok{ ausführen.}
+\ExtensionTok{Hinweis:}\NormalTok{ Um abzubrechen und zurück zum Zustand vor }\StringTok{"git revert"}\NormalTok{ zu gelangen,}
+\ExtensionTok{Hinweis:}\NormalTok{ führen Sie }\StringTok{"git revert {-}{-}abort"}\NormalTok{ aus.}
+\end{Highlighting}
+\end{Shaded}
+
+Die Anleitung für das weitere Vorgehen steht komplett in den Hinweisen:
+
+\begin{itemize}
+\item
+  Datei öffnen und Konflikt bereinigen
+\item
+  \cmd{git add .}
+\item
+  \cmd{git revert --continue}
+\end{itemize}
+
+xxxxxxxxxxxxxxxxxxxxxxxxxx AUSGLIEDERN xxxxxxxxxxxxxxxxxxxxxxxxx
 
 Zum Verständis der Problematik dennoch ein Beispiel. Angenommen, du
 erstellst ein Programm zur Berechnung des Body-Mass-Index und gehst
@@ -2593,7 +2365,7 @@ folgenden Befehl verwenden:
 
 Wechsle in das Fortbildungsfenster
 
-\phantomsection\label{annotated-cell-83}%
+\phantomsection\label{annotated-cell-70}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2626,7 +2398,7 @@ Empfohlener Befehl \texttt{git\ add\ story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-84}%
+\phantomsection\label{annotated-cell-71}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2682,7 +2454,7 @@ Für dich bedeutet das nun das Abarbeiten folgende Schritte:
   Checke den Status: \cmd{git status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-85}%
+\phantomsection\label{annotated-cell-72}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -2748,7 +2520,7 @@ erkennen:
 
 TODO: Neu aufbauen
 
-\phantomsection\label{annotated-cell-88}%
+\phantomsection\label{annotated-cell-75}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -3964,7 +3736,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-130}%
+\phantomsection\label{annotated-cell-117}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -5475,7 +5247,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-190}%
+\phantomsection\label{annotated-cell-177}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -5535,7 +5307,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-192}%
+\phantomsection\label{annotated-cell-179}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -5569,7 +5341,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-193}%
+\phantomsection\label{annotated-cell-180}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -5641,7 +5413,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-195}%
+\phantomsection\label{annotated-cell-182}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
