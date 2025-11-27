@@ -19,7 +19,7 @@ done
 # Branch-Wechsel
 git switch main 
 
-echo "Zwischenstopp" >> datei2.txt
+echo "Zwischenstopp" >> datei.txt     # <<<< HIER Konflikt
 git add . && git commit -m "Zwischenstopp"
 
 

@@ -41,6 +41,7 @@ in die Tiefe gehen.
 |---|---|
 | `git reset` | `git revert`|
 | `git cherry-pick`| `git restore`|
+| `git rebase` ||
 
 
 ## Konfigurieren von git
@@ -145,7 +146,7 @@ Hinweis:  und 'development'. Der gerade erstellte Branch kann
 Hinweis:  mit diesem Befehl umbenannt werden:
 Hinweis: 
 Hinweis: 	git branch -m <Name>
-Leeres Git-Repository in /tmp/versuch1/.git/ initialisiert
+Leeres Git-Repository in /tmp/versuch_1/.git/ initialisiert
 ```
 
 Es hat sich eingebürgert^[Bedingt durch gesellschaftspolitische 
@@ -281,4 +282,13 @@ git add --all  # (oder -A) fügt alle Dateien
 
 Wir werden später sehen, was genau beim *add* 
 passiert, z.B. wenn man die gleiche Datei zwischen 
-zwei Commits mehrfach ändert und *addet*.
+zwei Commits mehrfach ändert und *addet*. 
+
+
+\samplestart
+**Hinweis**  
+\git archiviert keine leeren Ordner, weil es in 
+ihnen keine zu archivierenden Dateien gibt.
+Soll ein leerer Ordner erhalten bleiben, musst 
+du eine Datei \datei{.gitkeep} im Ordner erstellen.
+\sampleend
