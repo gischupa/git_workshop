@@ -11,6 +11,12 @@ Besonders bei komplexen Systemen wie \git gilt *use it or lose it*! In diesem Si
 
 ## Ein genauerer Blick auf Git
 
+\samplestart
+**Hinweis**  
+Um die nachfolgenden Erläuterungen praktisch vollziehen zu können,
+verwendest du bitte wieder das Repository \ordner{versuch\_2}.
+\sampleend
+
 Steht ein Ordner unter der Verwaltung von \git, so kann 
 man von drei *logischen* Bereichen sprechen:
 
@@ -45,7 +51,7 @@ wirst du im Wesentlichen die gleichen Befehle wie vorher verwenden,
 allerdings untersuchen wir einige Varianten, die für das Verständnis 
 wichtig sind.
 
-Du bist immer noch im aktuellen Ordner \ordner{versuch1}. 
+Du bist immer noch im aktuellen Ordner \ordner{versuch\_3}. 
 Er sollte akutell eine Datei und zwei Commits enthalten.  
 Das kannst du mit folgendem Befehl überprüfen:
 
@@ -133,7 +139,7 @@ werden -- \datei{datei2.txt} würde also ignoeriert.
 Übertrage nun die Änderungen beider Dateien *auf den Stage*/*in den Stage*:
 
 ```bash
-# Deien aufnehmen
+# Dateien aufnehmen
 git add .
 
 # Status abzeigen
@@ -167,7 +173,7 @@ Zum Commit vorgemerkte Änderungen:
    zum Entfernen aus der Staging-Area)
 	
     geändert:       datei1.txt
-	  neue Datei:     datei2.txt
+    neue Datei:     datei2.txt
 
 --------------- Ende Stage ------------
 --------------- Anfang Workdir --------
@@ -179,8 +185,8 @@ Zum Commit vorgemerkte Änderungen:
   (benutzen Sie "git restore <Datei>...", 
    um die Änderungen im Arbeitsverzeichnis zu verwerfen)
 
-	geändert:       datei1.txt
-	geändert:       datei2.txt
+  geändert:       datei1.txt
+  geändert:       datei2.txt
 ```
 
 Beide Dateien liegen also in verschiedenen Versionen im Stage und im \work vor.  
@@ -236,6 +242,8 @@ das auch wieder nicht die ganze Wahrheit ist!
 
 ### Etwas mehr Wahrheit
 Dieser Abschnitt ist nur als Einblick für Interessierte gedacht!
+Bitte installiere dir in \gitbash das Programm *tree*, um den 
+Ausführungen folgen zu können. Die Anleitung befindet sich im Anhang.
 
 Ganz am Anfang muss man wissen, dass es 4 Git-Objekte gibt:
 

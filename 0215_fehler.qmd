@@ -7,14 +7,12 @@ erhalten bleiben, auch wenn sie später behoben wurden.
 
 Allerdings treten auch bei der Verwendung von \git 
 Fehler auf -- im Sinne von Bedienfehlern, zu frühem Committen, ...  
-Derartige Fehler müssen repariert werden, bevor sie 
-endgültig in der Historie festgeschrieben werden.
-
-Relativ unproblematisch sind *Reparaturen* bei lokaler
-Arbeit, weil keine anderen Team-Mitglieder betroffen sind.
+Derartige Fehler müssen möglichst auf dem eigenen Rechner repariert 
+werden, bevor sie dem Team zur Verfügung gestellt werden. 
 Nachfolgend besprechen wir einige Szenarien mit kleinen Beispielen. 
 Aktuell ist das Arbeiten mit verschiedenen Entwicklungszweigen noch nicht 
-Thema!
+Thema und auch Teamarbeit lassen wir außen vor. Wenn wir die aktuellen
+Beispiele behandelt haben, ist der Schritt zur Teamarbeit nur sehr kurz.
 
 \samplestart
 **Ein Hinweis vorab**  
@@ -26,8 +24,10 @@ Im Netz findet man statt \cmd{restore} oft noch die Variante mit
 
 ### Kleiner Fehler 1 
 
-Der Fehler wird schnell bemerkt und die Datei aus dem 
-Stage wieder in das \work kopiert (siehe Hinweis unter dem Code!). 
+Beim Programmieren entsteht ein Fehler, bei dem eine manuelle Behebung zu 
+aufwändig ist. Die einfachere Lösung ist die Wiederherstellung der betroffenen 
+Datei in der letzten lauffähigen Version. Solange kein *add* erfolgt ist, kannst 
+du die Datei aus dem Stage wieder in das \work kopieren (siehe Hinweis unter dem Code!). 
 
 ```bash
 git init beispiel_1
@@ -46,9 +46,6 @@ echo "Mist gebaut" >> datei.txt
 git restore datei.txt  
 ```
 
-
-
-
 \samplestart
 **Hinweis**  
 Vorher habe ich geschrieben, dass bei einem Commit die Dateien
@@ -65,8 +62,8 @@ ausführt.
 ### Kleiner Fehler 2
 
 Der Fehler wurde bereits ge-add-et. Damit gibt es im 
-Stage keine Version zum Rückkopieren. Du musst einen 
-Schritt rückwärts gehen.
+Stage keine Version zum Rückkopieren. Du musst also einen 
+weiteren Schritt rückwärts gehen.
 
 ```bash
 ########### IRRWEG !!!!!!!!! #########
@@ -97,9 +94,10 @@ Commit ermitteln und dann geht
 git restore --source=<HASH> datei.txt 
 ```
 
-Falls du die Datei länger bearbeitet hast und die 
+Falls du die Datei schon längere Zeit bearbeitet hast und die 
 Änderungen immer mit \cmd{add} auf den Stage geschrieben 
-hast, wirst du Verluste haben!
+hast, wirst du natürlich Verluste haben! Hättest du kleinschrittig
+committet, so wären die Verluste geringer.
 
 \samplestart
 **Zusatz**  
@@ -110,9 +108,9 @@ du auf jeden Commit zugreifen.
 
 ### Größerer Fehler 1
 
-Du hast nach dem letztem Commit viele Fehler erzeugt 
-und willst den Stand verwerfen. Hier hilft \cmd{reset}.
-Diesen Befehl gibt es in 3 Versionen
+Du hast nach dem letztem Commit viele Fehler in einer Vilezahl 
+von Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. 
+Hier hilft \cmd{reset}. Diesen Befehl gibt es in 3 Versionen
 
 * hard
 * mixed
@@ -148,13 +146,8 @@ produziert hast -- unwiederruflich weg!
 Du kannst in der Commit-History auch weiter zurück springen
 und somit die letzten Commits verwerfen. Das ist völlig problemlos,
 solange du alleine, lokal auf deinem Rechner arbeitest. Im Team
-oder auch nur mit Serverabgleich ist das extrem problematisch!
+oder auch nur mit Serverabgleich wird das extrem problematisch!
 \sampleend
-
-```bash
-git reset = git reset HEAD 
-```
-
 
 #### Mixed
 Das ist so ziemlich die gebräuchlichste Variante.
@@ -208,8 +201,8 @@ Manchmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man gerne
 die Version zurück, die man vor einigen Tagen gelöscht hat. Bei \git hast du 
 Zugriff auf alle alten Versionen! Allerdings ist oft die Frage, in welchem Commit 
 sich die Version versteckt. Hier wird es nötig, sich rückwärts durch die ensprechenden
-Commits zu arbeiten. Dabei gibt es allerdings ein Besonderheit, die du kennen musst.
-Nachfolgende Script erzeugt das passende Szenario:
+Commits zu arbeiten. Dabei gibt es allerdings eine Besonderheit, die du kennen musst.
+Nachfolgendes Script erzeugt das passende Szenario:
 
 
 ```bash
@@ -264,8 +257,8 @@ Nun kommt eine große Warnung, die dich darüber informiert, dass du gerade
 außen an der Versionsverwaltung entlang krabbelst. Da du noch nicht mit 
 Branches arbeitest, solltest du aktuell keinerlei 
 Änderungen an den Dateien vornehmen! In die Dateien hinein sehen ist keine
-Änderung -- das ist also ok. Du kannst auch Teile der Inhalte wegkopieren um sie später 
-weiterverwenden zu können.
+Änderung -- das ist also ok. Du kannst auch Teile der Inhalte wegkopieren 
+(in einen anderen ordner) um sie später weiterverwenden zu können.
 
 ```bash
 Hinweis: Wechsle zu '95a3'.
@@ -299,18 +292,8 @@ Befehl wieder in die Versionsverwaltung einsteigen:
 git checkout main 
 ```
 
-
-
-Mit dem `restore`-Befehl kann man auch eine
-Datei aus einem beliebigen Commit restaurieren, von dem man 
-den Hash kennt:
-
-```bash
-git restore --source=<HASH> <datei>
-```
-
 Die Fehlerbehebung kann auch das Löschen ganzer 
-Entwicklungs- oder Testzweige (Branches) bedeutet, 
+Entwicklungs- oder Testzweige (Branches) bedeuten,
 was wir später noch besprechen.
 
 \samplestart

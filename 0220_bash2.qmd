@@ -360,7 +360,7 @@ Dabei fällt dir ein *grober Rechtschreibfehler* im Entwicklungszweig
 auf, den du sofort korrigierst. Bei uns ist es das Wort *weiße*,
 das sich anstelle von *weise* in den Text geschummelt hat.
 
-* Kontrolliere, dass du im Branch \branch{entwicklung_story_2} bist
+* Kontrolliere, dass du im Branch \branch{entwicklung\_story\_2} bist
 * Wechsel in den Vorlagenordner
 * \cmd{git checkout Step\_6}
 * \cmd{cp story2.md ../buch/}
