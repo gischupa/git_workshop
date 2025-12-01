@@ -1,34 +1,67 @@
-# TDD - Test Driven Development
-
-(Video mit Intellij: https://www.youtube.com/watch?v=eMU_hninZAs)
-
-TDD ist eine sehr strenge Philosophie in Bezug auf den 
-Ablauf bei der Software-Entwicklung. Puristen sprechen 
-vom *Red-Green-Refactor* Zyklus, der in jedem Fall eingehalten 
-werden muss. 
-
-## Was versteht man darunter? 
-
-Grob geht es um einen Zyklus von Code schreiben, Code testen,
-Code optimieren, der die Entwicklung -- idealer Weise automatisiert -- begleitet.  
-
-Zum Beginn der Programmentwicklung wird dabei sofort der erste Test
-geschrieben -- einer von sehr sehr vielen im Verlauf der Entwicklung.
-Er testet einen Programmteil, *der aktuell noch nicht existiert* und 
-deshalb scheitern muss (Red-Phase). Nun wird die minimale Menge an Code 
-geschrieben, damit der Test erfolgreich verläuft (Green-Phase). 
-Nun wird das Programm optimiert (refactoring) -- soweit das zu diesem Zeitpunkt bereits 
-möglich und sinnvoll ist. Weitere Tests erzwingen Ergänzungen und 
-Änderungen am eigentlichen Programm, so dass das Programmieren ein 
-ständiger Wechsel zwischen den Phasen Red, Green und Refactoring wird.
-Viele IDEs unterstützen diesen Ablauf aktiv, erstellen also Code zum Test 
-(oder anders herum).
-
-Das kann kann zu Situationen führen, die für den Einsteiger in TDD
-befremdlich wirken. Dazu aber nach der Grundkonfiguration.
-
-
 ## Grundkonfiguration
+
+### Installation
+
+Dieser Abschnitt dient nur als Hilfe, falls die benötigte
+Software auf dem Remote-System noch nicht installiert ist.
+
+```bash
+java --version # Falls keine Ausgabe erfolgt, muss installiert werden
+```
+
+
+
+### Kurze Wiederholung zum Projektaufbau
+
+In (klassischem) Java werden Quelldateien mit der Endung *java* 
+erstellt und mit dem Befehl *javac* in *Class*-Dateien übersetzt, 
+die dann mai *java* gestartet werden können. Das Erstellen von 
+Jar-Archiven ist hier erst einmal nicht Thema.
+
+Für TDD sollten wir -- besonders im Hinblick auf den späteren 
+Einsatz des Build-Systems *Maven* bereits die passende 
+Ordnerstruktur auch für einfache Projekte verwenden.
+
+Durch das Script \datei{Java_ordner.sh} kann eine entsprechende
+Ordnerstruktur für ein Projekt mit dem Namen \ordner{java\_01}
+erstellt werden.
+
+Der eigentliche Source-Code liegt dann im Ordner
+
+```bash
+java_01/src/main/java/de/dillingen/alp/kurs
+```
+
+und die späteren Tests analog unter
+
+```bash
+java_01/src/test/java/de/dillingen/alp/kurs
+```
+
+Für die Tests werden die *jar*-Dateien im Ordner \ordner{src/lib}
+abgelegt.
+
+Das Compilieren der Quelldateien erfolgt mit folgendem Befehl:
+
+``bash
+javac -d out $(find src/main/java -name "*.java")
+javac -d out -cp "out:lib/*" $(find src/test/java -name "*.java")
+```
+
+\samplestart
+**Hinweis**  
+Bei Windows müssen die Befehle anders lauten, das *find* 
+Befehl dort in dieser Form nich existiert.
+Gerade bei sehr wenigen Dateien kann es eine Alternative sein,
+die Dateien dediziert per Hand anzugeben. Statt dem Doppelpunkt 
+muss übrigens ein Semicolon verwendete werden!
+\sampleend
+
+```bash
+javac -d out src/main/java/de/dillingen/alp/kurs/Main.java
+javac -d out -cp "out;lib/*" src/test/java/de/dillingen/alp/kurs/MainTest.java
+java -cp "out;lib/*" org.junit.platform.console.ConsoleLauncher --scan-class-path
+```
 
 Wir starten mit der einfachst möglichen Konfiguration, bestehend aus 
 
@@ -41,6 +74,8 @@ Workshop aus dem \git-Repository, Ordner \datei{tdd} entnommen werden.
 Die Zip-Datei muss dafür entpackt werden! Es entstehen die oben 
 angeführten Dateien. Bei der Datei \datei{junit5.jar} handelt es sich 
 um die Version 1.10.0, die von der Maven-Seite geladen werden kann:
+
+TODO: Java-Repo einrichten
 
 [maven-junit](https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.0/junit-platform-console-standalone-1.10.0.jar)
 
@@ -302,3 +337,77 @@ javac ../java/de/alp/kurs/StringFlipper.java
 * Jeder Test muss zuerst gegen einen definierten Fail laufen.
 * Ein Test bekommt nur einen Grund zum Versagen
 
+
+
+
+
+
+
+
+
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Damit ein Benutzer einen Text codieren kann, muss zunächst Text
+eingegeben werden. Das Programm braucht also eine Eingabe-Methode.
+
+
+
+Aus diesem Grund schreibst du jetzt bereits den ersten Test und zwar 
+direkt in die \datei{CaesarTest.java}. Die Erklärungen findest du 
+unter dem Code :
+
+```java
+//imports
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import java.lang.reflect.*;
+
+... bisheriger Code ...
+
+@Test
+public void inputShouldExist(){  
+    Method method = null;       
+    try {
+        method = Caesar.class.getDeclaredMethod("input"); 
+    }
+    catch (NoSuchMethodException ignore){
+        System.out.println("Methode input fehlt");
+    }
+    assertNotNull(method, "Methode input fehlt");
+}
+```
+
+Die Inputs wurden mit WildeCards formuliert, um den Code kürzer 
+zu halten. In einer IDE werden die Imports automatisch optimiert!  
+In früheren jUnit-Versoinen mussten die Testmethoden sollten mit 
+dem Wort *test* beginnen. Das ist mittlerweile wegen `@Test` überflüssig.  
+
+Der Variablentyp *Method* stammt aus dem *reflect*-Package. Die 
+Variable *method* wird am Ende verwendet, um den Test als erfolreich 
+einstufen zu können. Nimmt sie einen Wert ungleich *null* an, so existiert 
+die Methode *input*. Möglicherweise auftretende Fehler werden einfach ignoriert.
+
+Da die Methode noch nicht geschrieben ist, *muss* der Test scheitern. 
+Nach TDD-Paradigma musst du den Test ausführen, um ihn scheitern zu sehen.
+
+```bash
+mvn test
+```
+
+Nun schreibst du den minimalen Code, damit der Test erfolgreich sein wird:
+
+```java
+# In der Caesar.java in der Caesar Klasse 
+public void input(){}
+```
+
+Die Methode macht gar nichts, aber der Test läuft erfolgreich durch.  
+Zeit, einen weiteren Test zu schreiben.  
+
+Eine Input-Funktion sollte dazu führen, dass in der Klasse einer Varaiblen ein 
+Wert zugewiesen wird. Das soll der nächste Test überprüfen. Da eine derartige 
+Variable aber im Regelfall als *private* deklariert ist, kommen wir nicht so einfach 
+an sie ran. Ein Getter wäre eine Möglichkeit, besitzt aber im Kontext 
+des Programms keinen Sinn.

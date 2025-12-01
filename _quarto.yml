@@ -30,21 +30,25 @@ format:
       text: |
         \usepackage{my_quarto_tools}
         \usepackage{enumitem}
+        \usepackage{changepage}
         \setlist[description]{style=nextline, leftmargin=2.5em}
         \newcommand{\cmd}[1]{\texttt{#1}\xspace}
         \newcommand{\script}[1]{\texttt{#1}\xspace}
         \newcommand{\key}[1]{\texttt{#1}\xspace}
+        \newcommand{\Git}{\textit{Git}\xspace}
         \newcommand{\git}{\textit{git}\xspace}
         \newcommand{\gitserver}{\textit{git}-Server\xspace}
         \newcommand{\gitservers}{\textit{git}-Servers\xspace}
         \newcommand{\gitlab}{\textit{GitLab}\xspace}
         \newcommand{\gitbash}{\textit{git-Bash}\xspace}
         \newcommand{\maven}{\textit{Maven}\xspace}
+        \newcommand{\Maven}{\textit{Maven}\xspace}
         \newcommand{\strg}[1]{strg + #1\xspace}
         \newcommand{\alt}[1]{alt + #1\xspace}
-        \newcommand{\datei}[1]{\textit{#1}\xspace}
+        \newcommand{\datei}[1]{\lstinline{#1}\xspace}
         \newcommand{\ordner}[1]{\textit{#1}\xspace}
         \newcommand{\branch}[1]{\textit{#1}\xspace}
         \newcommand{\work}{\textit{Working-Directory}\xspace}
-
+        \newcommand{\blarge}{\begin{adjustwidth}{0cm}{-1.3cm}}
+        \newcommand{\elarge}{\end{adjustwidth}}
 

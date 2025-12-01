@@ -8,35 +8,35 @@ im Entwicklungsprozess automatisiert werden -- z.B. Tests und die Verwaltung von
 Abhängigkeiten.  Da dieses Tool bei CI/CD absolut üblich ist, brauchst du 
 zumindest ein oberflächliches Grundverständnis.
 
-### Voraussetzungen
 
+### Vorbereitung
 Dass ein JDK installiert sein muss, sollte klar sein, denn es soll 
 ja mit Java programmiert werden. Natürlich gibt es wieder Unterschiede
-zwischen Linux, Apple und Windows. 
+zwischen Linux, Apple und Windows.
 
-### Anleitung
 
 #### Windows{.unnumbered}
 
-1. **Java installieren**
+*Java installieren*  
 
 Installiere das gewünschte JDK (z. B. Oracle JDK, Temurin).
 
-2. **JAVA_HOME setzen**
+*JAVA_HOME setzen*  
 
-   * Öffne die Systemeinstellungen: `Systemeigenschaften -> Erweiterte Systemeinstellungen -> Umgebungsvariablen`
+   * Öffne die Systemeinstellungen:  
+     `Systemeigenschaften - Erweiterte Systemeinstellungen - Umgebungsvariablen`
    * Unter **Systemvariablen** auf **Neu...** klicken
 
      * Name: `JAVA_HOME`
-     * Wert: Pfad zum JDK, z. B.: \datei{C:\\Program Files\\Java\\jdk-17.0.9}
+     * Wert: Pfad zum JDK, z.B.: \datei{C:\\Program Files\\Java\\jdk-17.0.9}
 
 
-3. **PATH anpassen**
+*PATH anpassen*  
 
-Systemvariable `Path` bearbeiten und hinzufügen: \datei{%JAVA_HOME%\\bin}
+Systemvariable `Path` bearbeiten und hinzufügen: \datei{\%JAVA_HOME\%\\bin}
 
 
-4. **Überprüfen**
+*Überprüfen*  
 
 ```bash
 java -version
@@ -46,7 +46,7 @@ echo %JAVA_HOME%
 
 #### Linux{.unnumbered}
 
-1. **Java installieren**
+*Java installieren*  
 
 Installiere ein JDK über den Paketmanager (z. B. Ubuntu/Debian):
 
@@ -55,7 +55,7 @@ sudo apt update
 sudo apt install openjdk-17-jdk
 ```
 
-2. **JAVA_HOME systemweit setzen**
+*JAVA_HOME systemweit setzen*  
 
 Erstelle eine neue Datei \datei{/etc/profile.d/java.sh} mit folgendem Inhalt:
 
@@ -64,28 +64,37 @@ export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
-* Datei ausführbar machen:
+*Datei ausführbar machen*  
 
 ```bash
 sudo chmod +x /etc/profile.d/java.sh
 ```
 
-3. **Überprüfen**
+
+*Alternativ nur für den aktuellen Benutzer*  
+
+Füge die gleichen beiden (export) Zeilen an das Ende der Datei folgenden Datei an  
+
+\datei{/home/<benutzer>/.profile}
+
+
+*Überprüfen*  
 
 ```bash
 source /etc/profile.d/java.sh
+# bzw. source ~/.profile 
 java -version
 echo $JAVA_HOME
 ```
 
 #### macOS{.unnumbered}
 
-1. **Java installieren**
+*Java installieren*  
 
    * Lade ein JDK herunter (z. B. Temurin, Oracle) und installiere es.
    * Standard-Installationspfad: \datei{/Library/Java/JavaVirtualMachines/}.
 
-2. **JAVA_HOME systemweit setzen**
+*JAVA_HOME systemweit setzen*  
 
 Über \cmd{launchctl} für GUI-Apps und neue Terminalfenster:
 
@@ -93,14 +102,15 @@ echo $JAVA_HOME
 sudo launchctl setenv JAVA_HOME $(/usr/libexec/java_home -v 17)
 ```
 
-Optional für Shells, die beim Login starten (\datei{~/.zshrc} oder \datei{/etc/profile}):
+Optional für Shells, die beim Login starten  
+(\datei{/home/<benutzer>/.zshrc} oder \datei{/etc/profile}):
 
 ```bash
 export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
-3. **Überprüfen**
+*Überprüfen*  
 
 ```bash
 java -version
@@ -131,7 +141,7 @@ Zur Kontrolle genügt dann ein
 mvn --version 
 ```
 
-(Tipp: \cmd{sdk list maven})  
+(Tipp: Im Terminal eingeben: \cmd{sdk list maven})  
 
 #### Windows{.unnumbered}
 
@@ -145,6 +155,7 @@ TODO
 
 (Auf Linux)
 
+\blarge 
 ```bash
 cd /tmp
 mkdir maven-hello-world
@@ -158,6 +169,13 @@ mvn compile
 mvn package
 java -cp target/hello-world-1.0-SNAPSHOT.jar com.example.App
 ```
+\elarge
+
+Hier wird die Ordnerstruktur automatisch von \maven erstellt und mit 
+Demo-Dateien bestückt. Wir werden -- darauf aufbauend -- im nächsten
+Block ein TDD-Beispiel durchspielen.  
+
+TODO: Wirklich? aktuell keine Warnungen!
 
 Wir sehen noch einige typische Warnungen, die auf eine falsche 
 Parameterisierung in der \datei{pom.xml} hinweisen -- dazu später mehr.
@@ -171,20 +189,18 @@ per Hand anlegen, da gibt es Hilfs-Scripts!)
 
 ```bash
 
-TREE
+TODO: Bild vom TREE
 
 ```
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht
-alle Ordner. Sie werden bei Bedarf dynmaisch von Maven angelegt.
+alle Ordner. Sie werden bei Bedarf dynmaisch von \maven angelegt.
 
 
 ### Idee
 
-Maven kennt sogenannte Livecyles. Damit sind bestimmte Abfolgen von Abläufen
-gemeint, die Maven ausführt.
-
-Es gibt folgende Befehle:
+\Maven kennt sogenannte LiveCyles. Damit sind bestimmte Abfolgen von Abläufen
+gemeint, die Maven ausführt, nämlich
 
 * validate (macht nichts)
 * compile (führt zuerst validate aus)
@@ -193,22 +209,21 @@ Es gibt folgende Befehle:
 * verify (macht nichts)
 * deploy (macht nicht das, nach was es klingt!)
 
-Beim ersten Aufruf werden alle Abhängigkeiten von einem Repo im Internet 
+Beim ersten Aufruf werden alle Abhängigkeiten (dependencies) von einem 
+Repository (hat nichts mit \git zu tun!) im Internet 
 in einen Cache im Home des Benutzers geladen.
 
-Beim ersten Aufruf von *compile* wird auch das *target*Verzeichnis erstellt.
+Wählst du als LiveCycle *compile*, so wird auch das *target* Verzeichnis erstellt.
 
+Beim Nachladen der Dependencies kann es passieren, dass die entsprechende *jar*-Datei 
+online nicht gefunden wird (weil sie nie hochgeladen wurde und deshalb einfach nicht
+existiert). Derartige (also eigene) *jar*-Dateien musst du selbst in den Cache \ordner{.m2} einpflegen, damit Maven sie verwenden kann.
 
-Beim Nachladen der Dependencies kann es passieren, dass das entsprechende JAR 
-online nicht gefunden wurde (weil es nie hochgeladen wurde und deshalb einfach nicht
-existiert). Derartige (also eigene) jars muss man selbst in den Cache *.m2* einpflegen, 
-damit Maven sie verwenden kann.
+Im Ordner liegt eine Ordnerstruktur vor, geordnet nach productID, Version, ...,
+in der man selbst Ordner erstellen kann. Im Prinzip macht Maven genau das,
+wenn du *install* aufrufst.
 
-Im Ordner liegt eine Ordnerstruktur vor, nach producktID, Version, ...,
-in der man selbst Ordner erstellen kann. Im Prinzip macht das auch Maven,
-wenn man *install* aufruft.
-
-(https://www.youtube.com/watch?v=T00NKLQvwYE) - Windows-lastig
+LINK-Tipp: [https://www.youtube.com/watch?v=T00NKLQvwYE](https://www.youtube.com/watch?v=T00NKLQvwYE) - Windows-lastig
 
 
 

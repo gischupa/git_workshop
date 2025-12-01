@@ -36,10 +36,11 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
  {{< include 0550_client.qmd >}}
  {{< include 0600_autograde.qmd >}}
  {{< include 0700_cicd.qmd >}}
+ 
  {{< include 0710_basis_ci.qmd >}}
- {{< include 0730_maven.qmd >}}
- {{< include 0750_tdd.qmd >}}
- {{< include 0810_java_anteil.qmd >}}
+ {{< include 0820_tdd.qmd >}}
+ {{< include 0830_maven.qmd >}}
+ {{< include 0840_java_komplexer.qmd >}}
  {{< include 0850_cicdbuch.qmd >}}
 
 ERLEDIGEN:  

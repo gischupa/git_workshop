@@ -255,22 +255,27 @@
 \makeatother
 \usepackage{my_quarto_tools}
 \usepackage{enumitem}
+\usepackage{changepage}
 \setlist[description]{style=nextline, leftmargin=2.5em}
 \newcommand{\cmd}[1]{\texttt{#1}\xspace}
 \newcommand{\script}[1]{\texttt{#1}\xspace}
 \newcommand{\key}[1]{\texttt{#1}\xspace}
+\newcommand{\Git}{\textit{Git}\xspace}
 \newcommand{\git}{\textit{git}\xspace}
 \newcommand{\gitserver}{\textit{git}-Server\xspace}
 \newcommand{\gitservers}{\textit{git}-Servers\xspace}
 \newcommand{\gitlab}{\textit{GitLab}\xspace}
 \newcommand{\gitbash}{\textit{git-Bash}\xspace}
 \newcommand{\maven}{\textit{Maven}\xspace}
+\newcommand{\Maven}{\textit{Maven}\xspace}
 \newcommand{\strg}[1]{strg + #1\xspace}
 \newcommand{\alt}[1]{alt + #1\xspace}
-\newcommand{\datei}[1]{\textit{#1}\xspace}
+\newcommand{\datei}[1]{\lstinline{#1}\xspace}
 \newcommand{\ordner}[1]{\textit{#1}\xspace}
 \newcommand{\branch}[1]{\textit{#1}\xspace}
 \newcommand{\work}{\textit{Working-Directory}\xspace}
+\newcommand{\blarge}{\begin{adjustwidth}{0cm}{-1.3cm}}
+\newcommand{\elarge}{\end{adjustwidth}}
 \KOMAoption{captions}{tableheading}
 \makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
@@ -326,7 +331,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, frame hidden, boxrule=0pt, enhanced, sharp corners, colback={codebgcolor}]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, colback={codebgcolor}, enhanced, sharp corners, frame hidden, breakable]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -902,6 +907,7 @@ Befehl & Befehl \\
 \endlastfoot
 \texttt{git\ reset} & \texttt{git\ revert} \\
 \texttt{git\ cherry-pick} & \texttt{git\ restore} \\
+\texttt{git\ rebase} & \\
 \end{longtable}
 
 \section{Konfigurieren von git}\label{konfigurieren-von-git}
@@ -1034,7 +1040,7 @@ kann:
 \ExtensionTok{Hinweis:}\NormalTok{  mit diesem Befehl umbenannt werden:}
 \ExtensionTok{Hinweis:} 
 \ExtensionTok{Hinweis:}\NormalTok{    git branch }\AttributeTok{{-}m} \OperatorTok{\textless{}}\NormalTok{Name}\OperatorTok{\textgreater{}}
-\ExtensionTok{Leeres}\NormalTok{ Git{-}Repository in /tmp/versuch1/.git/ initialisiert}
+\ExtensionTok{Leeres}\NormalTok{ Git{-}Repository in /tmp/versuch\_1/.git/ initialisiert}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1049,7 +1055,7 @@ Es hat sich eingebürgert\footnote{Bedingt durch gesellschaftspolitische
 \end{Highlighting}
 \end{Shaded}
 
-Den Erfolg kannst du schnell mit
+Den Erfolg kannst du schnell überprüfen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1137,6 +1143,17 @@ und schreibe einen Eintrag in die Projekt-History
 \end{Highlighting}
 \end{Shaded}
 
+\samplestart
+
+\textbf{Hinweis}\\
+Ein Commit ist ein Projektstand, an den du zurückkehren kannst, wenn
+etwas grob missglückt ist. Vergeht zu viel Zeit (=viel Code) zwischen
+zwei Commits, so entstehen eventuell größere Verluste bei einem
+Rücksprung zum alten Stand.\\
+Später im Workshop lernst du auch, wie du Commits nachträglich
+zusammenfassen kannst (=squash) um deine Entwicklungsschritte
+übersichtlich zu halten. \sampleend 
+
 Damit der Versionierungsablauf eigentlich schon definiert:
 
 \begin{itemize}
@@ -1207,6 +1224,29 @@ Wir werden später sehen, was genau beim \emph{add} passiert, z.B. wenn
 man die gleiche Datei zwischen zwei Commits mehrfach ändert und
 \emph{addet}.
 
+Zusätzlich kann es natürlich auch sein, dass du bestimmte Dateien
+überhaupt nicht in die Versionsverwaltung aufnehmen willst. Das ist zum
+Beispiel dann der Fall, falls sich Kennwörter und Zugangsdaten in eine
+Datei befinden. Wenn du die Namen dieser Datei(en) in eine Datei mit dem
+Namen \texttt{.gitignore} einträgst, werden sie beim \emph{add}
+ignoriert.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Format der Datei}
+\ExtensionTok{*.log} 
+\ExtensionTok{*.tmp} 
+\ExtensionTok{zugangsdaten.txt}
+\end{Highlighting}
+\end{Shaded}
+
+\samplestart
+
+\textbf{Hinweis}\\
+\git archiviert keine leeren Ordner, weil es in ihnen keine zu
+archivierenden Dateien gibt. Soll ein leerer Ordner erhalten bleiben,
+musst du eine Datei \datei{.gitkeep} im Ordner erstellen. \sampleend
+
 \bookmarksetup{startatroot}
 
 \chapter{Hands On I}\label{hands-on-i}
@@ -1224,6 +1264,13 @@ Anschluss einen Überblick über die Commit-History.
 \end{quote}
 
 \section{Ein genauerer Blick auf Git}\label{ein-genauerer-blick-auf-git}
+
+\samplestart
+
+\textbf{Hinweis}\\
+Um die nachfolgenden Erläuterungen praktisch vollziehen zu können,
+verwendest du bitte wieder das Repository \ordner{versuch\_2}.
+\sampleend
 
 Steht ein Ordner unter der Verwaltung von \git, so kann man von drei
 \emph{logischen} Bereichen sprechen:
@@ -1265,7 +1312,7 @@ Betrachten wir zunächst einen Entwicklungszyklus im Detail. Dabei wirst
 du im Wesentlichen die gleichen Befehle wie vorher verwenden, allerdings
 untersuchen wir einige Varianten, die für das Verständnis wichtig sind.
 
-Du bist immer noch im aktuellen Ordner \ordner{versuch1}. Er sollte
+Du bist immer noch im aktuellen Ordner \ordner{versuch\_3}. Er sollte
 akutell eine Datei und zwei Commits enthalten.\\
 Das kannst du mit folgendem Befehl überprüfen:
 
@@ -1364,7 +1411,7 @@ Stage}/\emph{in den Stage}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Deien aufnehmen}
+\CommentTok{\# Dateien aufnehmen}
 \FunctionTok{git}\NormalTok{ add .}
 
 \CommentTok{\# Status abzeigen}
@@ -1400,7 +1447,7 @@ fragen wieder den Status ab:
    \ExtensionTok{zum}\NormalTok{ Entfernen aus der Staging{-}Area}\KeywordTok{)}
     
     \ExtensionTok{geändert:}\NormalTok{       datei1.txt}
-      \ExtensionTok{neue}\NormalTok{ Datei:     datei2.txt}
+    \ExtensionTok{neue}\NormalTok{ Datei:     datei2.txt}
 
 \ExtensionTok{{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}\NormalTok{ Ende Stage }\AttributeTok{{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
 \ExtensionTok{{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}\NormalTok{ Anfang Workdir }\AttributeTok{{-}{-}{-}{-}{-}{-}{-}{-}}
@@ -1412,8 +1459,8 @@ fragen wieder den Status ab:
   \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git restore \textless{}Datei\textgreater{}..."}\NormalTok{, }
    \ExtensionTok{um}\NormalTok{ die Änderungen im Arbeitsverzeichnis zu verwerfen}\KeywordTok{)}
 
-    \ExtensionTok{geändert:}\NormalTok{       datei1.txt}
-    \ExtensionTok{geändert:}\NormalTok{       datei2.txt}
+  \ExtensionTok{geändert:}\NormalTok{       datei1.txt}
+  \ExtensionTok{geändert:}\NormalTok{       datei2.txt}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1477,7 +1524,9 @@ die ganze Wahrheit ist! \sampleend
 
 \subsection{Etwas mehr Wahrheit}\label{etwas-mehr-wahrheit}
 
-Dieser Abschnitt ist nur als Einblick für Interessierte gedacht!
+Dieser Abschnitt ist nur als Einblick für Interessierte gedacht! Bitte
+installiere dir in \gitbash das Programm \emph{tree}, um den
+Ausführungen folgen zu können. Die Anleitung befindet sich im Anhang.
 
 Ganz am Anfang muss man wissen, dass es 4 Git-Objekte gibt:
 
@@ -1704,13 +1753,12 @@ wurden.
 
 Allerdings treten auch bei der Verwendung von \git  Fehler auf -- im
 Sinne von Bedienfehlern, zu frühem Committen, \ldots{}\\
-Derartige Fehler müssen repariert werden, bevor sie endgültig in der
-Historie festgeschrieben werden.
-
-Relativ unproblematisch sind \emph{Reparaturen} bei lokaler Arbeit, weil
-keine anderen Team-Mitglieder betroffen sind. Nachfolgend besprechen wir
-einige Szenarien mit kleinen Beispielen. Aktuell ist das Arbeiten mit
-verschiedenen Entwicklungszweigen noch nicht Thema!
+Derartige Fehler müssen möglichst auf dem eigenen Rechner repariert
+werden, bevor sie dem Team zur Verfügung gestellt werden. Nachfolgend
+besprechen wir einige Szenarien mit kleinen Beispielen. Aktuell ist das
+Arbeiten mit verschiedenen Entwicklungszweigen noch nicht Thema und auch
+Teamarbeit lassen wir außen vor. Wenn wir die aktuellen Beispiele
+behandelt haben, ist der Schritt zur Teamarbeit nur sehr kurz.
 
 \samplestart
 
@@ -1720,8 +1768,11 @@ Im Netz findet man statt \cmd{restore} oft noch die Variante mit
 
 \subsection{Kleiner Fehler 1}\label{kleiner-fehler-1}
 
-Der Fehler wird schnell bemerkt und die Datei aus dem Stage wieder in
-das \work kopiert (siehe Hinweis unter dem Code!).
+Beim Programmieren entsteht ein Fehler, bei dem eine manuelle Behebung
+zu aufwändig ist. Die einfachere Lösung ist die Wiederherstellung der
+betroffenen Datei in der letzten lauffähigen Version. Solange kein
+\emph{add} erfolgt ist, kannst du die Datei aus dem Stage wieder in das
+\work kopieren (siehe Hinweis unter dem Code!).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1758,7 +1809,7 @@ daran, dass der Befehl eigentlich nur ein \emph{diff} zwischen
 \subsection{Kleiner Fehler 2}\label{kleiner-fehler-2}
 
 Der Fehler wurde bereits ge-add-et. Damit gibt es im Stage keine Version
-zum Rückkopieren. Du musst einen Schritt rückwärts gehen.
+zum Rückkopieren. Du musst also einen weiteren Schritt rückwärts gehen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1793,8 +1844,10 @@ dann geht
 \end{Highlighting}
 \end{Shaded}
 
-Falls du die Datei länger bearbeitet hast und die Änderungen immer mit
-\cmd{add} auf den Stage geschrieben hast, wirst du Verluste haben!
+Falls du die Datei schon längere Zeit bearbeitet hast und die Änderungen
+immer mit \cmd{add} auf den Stage geschrieben hast, wirst du natürlich
+Verluste haben! Hättest du kleinschrittig committet, so wären die
+Verluste geringer.
 
 \samplestart
 
@@ -1805,9 +1858,9 @@ auf jeden Commit zugreifen. \sampleend
 
 \subsection{Größerer Fehler 1}\label{gruxf6uxdferer-fehler-1}
 
-Du hast nach dem letztem Commit viele Fehler erzeugt und willst den
-Stand verwerfen. Hier hilft \cmd{reset}. Diesen Befehl gibt es in 3
-Versionen
+Du hast nach dem letztem Commit viele Fehler in einer Vilezahl von
+Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. Hier
+hilft \cmd{reset}. Diesen Befehl gibt es in 3 Versionen
 
 \begin{itemize}
 \tightlist
@@ -1853,13 +1906,7 @@ unwiederruflich weg!
 Du kannst in der Commit-History auch weiter zurück springen und somit
 die letzten Commits verwerfen. Das ist völlig problemlos, solange du
 alleine, lokal auf deinem Rechner arbeitest. Im Team oder auch nur mit
-Serverabgleich ist das extrem problematisch! \sampleend
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ reset = git reset HEAD }
-\end{Highlighting}
-\end{Shaded}
+Serverabgleich wird das extrem problematisch! \sampleend
 
 \subsubsection{Mixed}\label{mixed}
 
@@ -1919,8 +1966,8 @@ gerne die Version zurück, die man vor einigen Tagen gelöscht hat. Bei
 \git hast du Zugriff auf alle alten Versionen! Allerdings ist oft die
 Frage, in welchem Commit sich die Version versteckt. Hier wird es nötig,
 sich rückwärts durch die ensprechenden Commits zu arbeiten. Dabei gibt
-es allerdings ein Besonderheit, die du kennen musst. Nachfolgende Script
-erzeugt das passende Szenario:
+es allerdings eine Besonderheit, die du kennen musst. Nachfolgendes
+Script erzeugt das passende Szenario:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1982,8 +2029,8 @@ Nun kommt eine große Warnung, die dich darüber informiert, dass du
 gerade außen an der Versionsverwaltung entlang krabbelst. Da du noch
 nicht mit Branches arbeitest, solltest du aktuell keinerlei Änderungen
 an den Dateien vornehmen! In die Dateien hinein sehen ist keine Änderung
--- das ist also ok. Du kannst auch Teile der Inhalte wegkopieren um sie
-später weiterverwenden zu können.
+-- das ist also ok. Du kannst auch Teile der Inhalte wegkopieren (in
+einen anderen ordner) um sie später weiterverwenden zu können.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2021,17 +2068,8 @@ wieder in die Versionsverwaltung einsteigen:
 \end{Highlighting}
 \end{Shaded}
 
-Mit dem \texttt{restore}-Befehl kann man auch eine Datei aus einem
-beliebigen Commit restaurieren, von dem man den Hash kennt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ restore }\AttributeTok{{-}{-}source}\OperatorTok{=\textless{}}\NormalTok{HASH}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{datei}\OperatorTok{\textgreater{}}
-\end{Highlighting}
-\end{Shaded}
-
 Die Fehlerbehebung kann auch das Löschen ganzer Entwicklungs- oder
-Testzweige (Branches) bedeutet, was wir später noch besprechen.
+Testzweige (Branches) bedeuten, was wir später noch besprechen.
 
 \samplestart
 
@@ -2261,9 +2299,9 @@ Warum passiert das?
 \chapter{Hands on II}\label{hands-on-ii}
 
 Du wirst in diesem Abschnitt einige Dinge als redundant empfinden, weil
-sie auch bereits im ersten \emph{Hands On} verwendet wurden. Sieh es
-einfach als Übung und da du dieses PDF ohnehin nicht ausdrucken wirst,
-ist die minimal erhöhte Seitenzahl auch kein Problem.
+sie auch bereits früher verwendet wurden. Sieh es einfach als Übung und
+da du dieses PDF ohnehin nicht ausdrucken wirst, ist die minimal erhöhte
+Seitenzahl auch kein Problem.
 
 Dieses Szenario ist etwas komplexer, da wir mit mehreren Dateien
 arbeiten und auch parallele Ideen verfolgen wollen (branching).\\
@@ -2274,17 +2312,17 @@ von einer KI generiert um den Arbeitsaufwand zu minimieren.
 Die Einzelteile der Geschichten befinden sich in einem \git-Repository
 und müssen zunächst auf den lokalen Computer geclont werden. Das ist ein
 notwendiger Vorgriff auf den Abschnitt der Teamarbeit, den du hier
-einfach mal ausführst. Es handelt sich um ein öffentliches Repository,
-auf das auch ohne Benutzerkennung zugegriffen werden darf -- aber eben
-nur lesend. Aus diesem Grund wird zum Clonen auch \emph{https} und nicht
-\emph{ssh} verwendet. Öffne die \git-Bash (oder ein Terminal) und gib
-ein:
+einfach unhinterfragt ausführst. Es handelt sich um ein öffentliches
+Repository, auf das auch ohne Benutzerkennung zugegriffen werden darf --
+aber eben nur lesend. Aus diesem Grund wird zum Clonen auch \emph{https}
+und nicht \emph{ssh} verwendet. Öffne die \gitbash (oder ein Terminal)
+und gib ein:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{mkdir}\NormalTok{ fortbildung}
 \BuiltInTok{cd}\NormalTok{ fortbildung}
-\FunctionTok{git}\NormalTok{ clone https://TODO    storyvorlagen }\CommentTok{\# Ziel: vorlage.git }
+\FunctionTok{git}\NormalTok{ clone https://TODO    storyvorlagen vorlage }\CommentTok{\# Ziel: vorlage.git }
 \BuiltInTok{cd}\NormalTok{ vorlage}
 \end{Highlighting}
 \end{Shaded}
@@ -2304,11 +2342,12 @@ Es dürfte am einfachsten sein, wenn du zwei Terminals öffnest:
   Eines für deinen Arbeitsordner
 \end{itemize}
 
-Du wirst ständig zwischen diesen Repositories wechseln müssen und da
+Du wirst ständig zwischen diesen Repositories wechseln müssen und dabei
 sind einzelne Fenster optimal (Wechsel z.B. mit \alt{tab}).
 
 \samplestart
 
+\textbf{Hinweis}\\
 Um der Erklärungen besser folgen zu können, wäre es sinnvoll, wenn bei
 jedem Teilnehmer exakt die gleichen Hashwerte wie hier in der Anleitung
 entstehen würden. Leider ist das aber nicht möglich, weil die Hashwerte
@@ -2319,7 +2358,7 @@ gleich! \sampleend
 
 \textbf{Erstellen eines Repositories}
 
-Öffne im Fortbildungsordner eine \git-Bash und erstelle ein Repository
+Öffne im Fortbildungsordner eine \gitbash und erstelle ein Repository
 für das Buch.
 
 \begin{Shaded}
@@ -2332,12 +2371,16 @@ für das Buch.
 \end{Highlighting}
 \end{Shaded}
 
-Je nach Version von \git kommt hier eine längere Ausgabe \ldots{} oder
-auch nicht. Falls in der Ausgabe der Branch \emph{master} erscheint,
-bitte umbenennen mit \cmd{git branch -m main}
+Falls du nicht die globalen Einstellungen geändert hat:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main }
+\end{Highlighting}
+\end{Shaded}
 
 Im Ordner \emph{fortbildungen} sollten nun also die Repositories
-\emph{storyvorlagen} und \emph{buch} vorliegen.
+\emph{vorlage} und \emph{buch} vorliegen.
 
 \textbf{Erste Datei anlegen}\\
 Wechsle in das Fenster mit dem Vorlagenordner und Checke \emph{Step\_1}
@@ -2389,11 +2432,11 @@ Wechsle in das Fortbildungsfenster
 \begin{description}
 \tightlist
 \item[\circled{1}]
-Geänderter Name ist ok.
+Geänderter Branch-Name ist ok.
 \item[\circled{2}]
-Diese Datei ist betroffen, hier kann eine längere Liste stehen.
+Diese Datei ist betroffen.
 \item[\circled{3}]
-Empfohlener Befehl \texttt{git\ add\ story1.md}
+Empfohlener Befehl \cmd{git add story1.md}
 \end{description}
 
 \textbf{Übertragen in den Stage}
@@ -2425,9 +2468,8 @@ Die Dateien für den nächsten Commit
 Hier nur diese eine Datei.
 \end{description}
 
-Der Hinweis \texttt{git\ rm\ -\/-cached\ \textless{}Datei\textgreater{}}
-bewirkt nicht das Löschen der Datei aus dem Arbeitsverzeichnis, sondern
-aus dem Stage!
+Der Hinweis \cmd{git rm --cached <Datei>} bewirkt nicht das Löschen der
+Datei aus dem Arbeitsverzeichnis, sondern nur aus dem Stage!
 
 \subsection{Labor}\label{labor-1}
 
@@ -2541,7 +2583,7 @@ TODO: Neu aufbauen
 \item[\circled{1}]
 Welche Dateien werden verglichen? \texttt{a/} und \texttt{b/} sind nur
 Kennzeichner der Dateien. \texttt{a/} ist die ältere (z.B. Stage) und
-\texttt{b/} die neuere Datei (z.B. Workingdir).
+\texttt{b/} die neuere Datei (z.B. \work).
 \item[\circled{2}]
 Bei 9c818e7 und 3126a18 handelt es sich um die Hash-Ids der beiden
 Dateien, die verglichen werden (dazu unten mehr).
@@ -2562,9 +2604,9 @@ immer an, in welcher Zeile der Vergleich beginnt und wie viele Zeilen
 betroffen sind (vorher und nachher). Bei \texttt{@@\ -3,12\ +3,14\ @@}
 beginnt der relevante Bereich ab Zeile 3 und in der ursprünglichen
 Version lagen 12 Zeilen vor, in der neuen Version sind es jetzt 14. Die
-Änderungen im Detail folgen in den nächsten Zeileen.
+Änderungen im Detail folgen in den nächsten Zeilen.
 
-\subsection{Hands on}\label{hands-on}
+\subsection{Weiter beim Buch}\label{weiter-beim-buch}
 
 Nun wird die Datei wieder zum Stage hinzugefügt und dann committet:
 
@@ -2588,8 +2630,6 @@ TODO: Hash aktualisieren
  \ExtensionTok{create}\NormalTok{ mode 100644 story1.md}
 \end{Highlighting}
 \end{Shaded}
-
-\subsection{Labor}\label{labor-2}
 
 Dieser Arbeitszyklus von \emph{add, status, diff, commit} stellt den
 Kern der Arbeit mit \git dar, zumindest wenn man alleine arbeitet.
@@ -2639,8 +2679,8 @@ kopierst (weil wir nicht schreiben).
 \end{itemize}
 
 Das ist dein Einstieg in Story 2. Du bist mit deinem bisherigen Werk
-ganz zufrieden, hast aber zwei Ideen, wie man du weiter machen könntest.
-Aus diesem Grund erstellst du zunächst einen Commit
+ganz zufrieden, hast aber zwei Ideen, wie du weiter machen könntest. Aus
+diesem Grund erstellst du zunächst einen Commit
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2667,7 +2707,7 @@ Da wir nur kopieren und nicht schreiben, heißt das für dich:
 
 \begin{itemize}
 \item
-  Im Buch-Ordner: \cmd{git switch stor\_2\_idee\_1}
+  Im Buch-Ordner: \cmd{git switch story\_2\_idee\_1}
 \item
   Wechsle in den Vorlagenordner
 \item
@@ -2702,7 +2742,8 @@ arbeitest auch Idee 2 aus.
   \cmd{git commit -m "Inhalt nach Idee 2 fortgeführt"}
 \end{itemize}
 
-Nun hast du das \emph{Problem}, dass du drei Versionen hast:
+Nun hast du das \emph{Problem}, dass du drei Versionen von
+\datei{story2.md} hast:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -2734,7 +2775,9 @@ geschummelt hat.
 
 \begin{itemize}
 \item
-  In den Vorlagenordner
+  Kontrolliere, dass du im Branch \branch{entwicklung\_story\_2} bist
+\item
+  Wechsel in den Vorlagenordner
 \item
   \cmd{git checkout Step\_6}
 \item
@@ -2747,7 +2790,7 @@ geschummelt hat.
   \cmd{git commit -m "typo 'weiße' korrigiert"}
 \end{itemize}
 
-Beachte, dass diese Änderung in den anderen Branches \emph{nicht}
+Beachte, dass diese Änderung in den anderen beiden Branches \emph{nicht}
 ankommt!
 
 Du musst dich nun entscheiden, mit welcher Version du dein Projekt
@@ -2859,7 +2902,7 @@ die Riesenschildkröte und die einfache Schildkröte.
 Diese Diffs sind verwirrend, betrachten wir einfachere Beispiele
 
 \textbf{Variante 1:}\\
-Im Commit, dem Stage und dem Workingdir befinden sich (unterschiedliche)
+Im Commit, dem Stage und dem \work  befinden sich (unterschiedliche)
 Versionen einer Datei:
 
 \begin{Shaded}
@@ -2896,7 +2939,7 @@ Nun wollen wir die einzelnen Versionen miteinander vergleichen. Das sind
   Wenn man den Hash (z.B. 1234) vom Commit kennt, z.B. durch\\
   \cmd{git log}, so kann man diesen verwenden\\
   \cmd{git diff 1234 datei.txt}\\
-  Universeller ist \cmd{git diff HEAD datei.txt}
+  Universeller ist: \cmd{ git diff HEAD datei.txt}
 \end{enumerate}
 
 \textbf{Variante 2:}\\
@@ -2933,9 +2976,9 @@ einer Datei. \emph{Der Stage ist aktuell leer.}
 \item
   work mit commit\\
   Wenn man den Hash (z.B. 1234) vom Commit kennt, z.B. durch\\
-  \textbackslash cmd\{git log`, so kann man diesen verwenden\\
+  \cmd{git log}, so kann man diesen verwenden\\
   \cmd{git diff 1234 datei.txt}\\
-  Universeller ist \cmd{git diff HEAD datei.txt}
+  Universeller ist: \cmd{ git diff HEAD datei.txt}
 \end{enumerate}
 
 Hier sind die Fälle 1) und 3) also identisch.\\
@@ -2945,7 +2988,7 @@ Liefert \cmd{git status} einen leeren Stage, so wird mit dem Commit
 verglichen. Ist eine Datei im Stage, so wird gegen diese Datei
 verglichen.
 
-\subsection{Labor}\label{labor-3}
+\subsection{Wieder zum Buch}\label{wieder-zum-buch}
 
 Die Version mit der Riesenschildkröte willst du nun wieder in den
 Entwicklungsstand mergen. Dafür musst du vorher wieder einen Commit
@@ -3023,10 +3066,10 @@ Branches erlauben gefahrloses Arbeiten an Ideen. Baut man die Szenarien
 nicht zu komplex auf, dann gibt auch meist keine Probleme beim Merge.
 
 Immer wenn du Änderungen in einem Zweig vornimmst, die du auch im
-anderen Branch menötigst (weiße/weise) kannst du den Merge auch in die
-andere Richtung ausführen. Das ist ein übliches Verfahren weil man als
+anderen Branch benötigst (weiße/weise) kannst du den Merge auch in die
+andere Richtung ausführen. Das ist ein übliches Verfahren, weil man als
 Entwickler immer auf dem aktuellen Stand des Auslieferungszweigs sein
-muss, auch wenn er weiter an seinem Experiment arbeitet.
+muss, auch wenn du weiter an deinem Experiment arbeitest.
 
 Die Vergleiche mit \emph{diff} sind definitiv gewöhnungsbedürftig.
 Machst du häufige Commits auch schon bei kleinen Änderungen, so bekommst
@@ -3039,26 +3082,29 @@ du auch übersichtliche \emph{diffs}.
 \end{Shaded}
 
 Der Nachteil von vielen Commits sind allerdings \ldots{} viele Commits.
-Es gibt allerdings Möglichkeiten nachträglich Commits zusammenzufassen
-um die Entwicklungsgeschichte zu verschlanken. Diesen Vorgang nennt man
-\emph{squashen}.
+Es gibt aber Möglichkeiten nachträglich Commits zusammenzufassen um die
+Entwicklungsgeschichte zu verschlanken. Diesen Vorgang nennt man
+\emph{squashen} und er ist eine Variante von \emph{rebase}.
 
 \bookmarksetup{startatroot}
 
-\chapter{Merge, Rebase, Squash}\label{merge-rebase-squash}
+\chapter{Fortgeschritten: Merge, Rebase,
+Squash}\label{fortgeschritten-merge-rebase-squash}
 
 Im letzten Abschnitt hast du einfaches Arbeiten mit Branches gelernt und
 wie man sie mit Hilfe eines \emph{Merge} zusammengeführt. Das wollen wir
-uns jetzt genauer ansehen. Offen geblieben sind aber folgende Fragen:
+uns jetzt genauer ansehen. Offen geblieben sind folgende Fragen:
 
 \begin{itemize}
 \tightlist
 \item
+  Details zu Merges
+\item
   Was passiert mit alten Branches?
 \item
-  Was mache ich mit zu vielen Commits?
-\item
   Wie sieht die Alternative zu \emph{Merge} aus?
+\item
+  Was mache ich mit zu vielen Commits?
 \end{itemize}
 
 \section{Verschiedene Merges}\label{verschiedene-merges}
@@ -3181,6 +3227,35 @@ bleiben aber in exakt der gleichen Anordnung erhalten! Der Branch ist
 nicht mehr über seinen Namen zugänglich, die History ist aber weiterhin
 vorhanden, d.h. ein \emph{checkout} der Commits ist immer noch möglich.
 
+Anders ist das allerdings, wenn du einen Branch löschst, der
+\emph{nicht} in einen Merge verwickelt ist. Er existiert dann zwar
+anscheinend weiter, wird aber nach einier Zeit vom Garbage-Collector
+(GC) von \git endgültig entfernt. (Der Zeitrahmen ist einstellbar). Im
+Prinzip passiert das mit allen Commits, die nicht nicht mehr
+\emph{erreichbar} sind.
+
+\textbf{Beispiel}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{A} \AttributeTok{{-}}\NormalTok{ B }\AttributeTok{{-}}\NormalTok{ C }\AttributeTok{{-}}\NormalTok{ D  }\OperatorTok{\textless{}}\NormalTok{{-}{-} main }
+      \ExtensionTok{\textbackslash{} E} \AttributeTok{{-}}\NormalTok{ F }\AttributeTok{{-}}\NormalTok{ G  }\OperatorTok{\textless{}}\NormalTok{{-}{-} feature}
+\end{Highlighting}
+\end{Shaded}
+
+Wir der Branch \emph{feature} gelöscht, dann wird der Pointer auf G
+entfernt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{A} \AttributeTok{{-}}\NormalTok{ B }\AttributeTok{{-}}\NormalTok{ C }\AttributeTok{{-}}\NormalTok{ D  }\OperatorTok{\textless{}}\NormalTok{{-}{-} main }
+      \ExtensionTok{\textbackslash{} E} \AttributeTok{{-}}\NormalTok{ F }\AttributeTok{{-}}\NormalTok{ G }
+\end{Highlighting}
+\end{Shaded}
+
+Da jeder Commit nur seinen Vorgänger kennt, kommst du zwar von D nach A,
+aber nicht \emph{rückwärts} nach E, F oder G.
+
 \section{Rebase}\label{rebase}
 
 Neben dem \emph{Merge} trifft man auch oft auf den \emph{Rebase} um
@@ -3189,121 +3264,214 @@ und ist wegen seiner vielfältigen Möglichkeiten (z.B. Reihenfolge der
 Commits ändern, \ldots) ein Werkzeug für fortgeschrittene Benutzer. Mit
 seiner Hilfe können auch mehrere Commits zusammengefasst werden, um die
 Branches zu verkürzen. Gerade bei der Zusammenarbeit im Team kann das
-aber sehr problematisch werden, wenn man nicht genau weiß, was man
+aber sehr problematisch werden, wenn man nicht ganz genau weiß, was man
 macht. Das liegt daran, dass sich die Hashwerte von Commits ändern
 können und wenn sich ein anderer Mitarbeiter den früheren Stand auf den
-eigenen Rechner geholt hat, dann kann das zu großem Chaos führen.
+eigenen Rechner geholt hat, dann passt nichts mehr zusammen.
 
 https://www.youtube.com/watch?v=CtyLg10aHN0
 https://www.youtube.com/watch?v=1TNK-OkaelI
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/rebase_nach_branch_delete.png}}
-
 Bei einem Rebase wird der entsprechende Branch \emph{verpflanzt} -- d.h.
 gewissermaßen \emph{ausgerupft} und an anderer Stelle wieder
 \emph{angedockt}.\\
-Bei diesem Vorgang werden die Hashwerte aller Commits im Branch
+Bei diesem Vorgang können die Hashwerte aller Commits im Branch
 geändert.
 
+Betrachte nachfolgendes Script. Nach dem ersten Commit wird ein Branch
+\emph{arbeit} mit mehreren Commits erstellt und im Anschluss ein Commit
+wieder im \emph{main}-Branch, \textbf{der eine andere Datei betrifft}.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{*}\NormalTok{ 10f8d8d }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ arbeit}\KeywordTok{)} \ExtensionTok{Neuer}\NormalTok{ Inhalt 10}
-\ExtensionTok{*}\NormalTok{ e0ae3ce Neuer Inhalt 9}
-\ExtensionTok{*}\NormalTok{ 1eac6f3 Neuer Inhalt 8}
-\ExtensionTok{*}\NormalTok{ fa76537 Neuer Inhalt 7}
-\ExtensionTok{*}\NormalTok{ da22859 Neuer Inhalt 6}
-\ExtensionTok{*}\NormalTok{ 7903aaf Neuer Inhalt 5}
-\ExtensionTok{*}\NormalTok{ 33428f1 Neuer Inhalt 4}
-\ExtensionTok{*}\NormalTok{ 80db22a Neuer Inhalt 3}
-\ExtensionTok{*}\NormalTok{ 4a642a8 Neuer Inhalt 2}
-\ExtensionTok{*}\NormalTok{ a3645f3 Neuer Inhalt 1}
-\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 2c58be7 }\ErrorTok{(}\ExtensionTok{main}\KeywordTok{)} \ExtensionTok{Zwischenstopp}
+\BuiltInTok{cd}\NormalTok{ /tmp}
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ rebase\_lab}
+\FunctionTok{git}\NormalTok{ init rebase\_lab}
+\BuiltInTok{cd}\NormalTok{ rebase\_lab}
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
+
+\BuiltInTok{echo} \StringTok{"start"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt}
+\FunctionTok{git}\NormalTok{ add . }\KeywordTok{\&\&} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Start"}
+
+\CommentTok{\# Branch{-}Wechsel}
+\FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ arbeit}
+
+\ControlFlowTok{for}\NormalTok{ i }\KeywordTok{in} \DataTypeTok{\{}\DecValTok{1}\DataTypeTok{..}\DecValTok{10}\DataTypeTok{\}}\KeywordTok{;}\ControlFlowTok{do}
+  \BuiltInTok{echo} \StringTok{"inhalt }\VariableTok{$i}\StringTok{"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt}
+  \FunctionTok{git}\NormalTok{ add . }\KeywordTok{\&\&} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Inhalt }\VariableTok{$i}\StringTok{"}
+\ControlFlowTok{done}
+
+\CommentTok{\# Branch{-}Wechsel}
+\FunctionTok{git}\NormalTok{ switch main }
+
+
+\BuiltInTok{echo} \StringTok{"Zwischenstopp"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei2.txt}
+\FunctionTok{git}\NormalTok{ add . }\KeywordTok{\&\&} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Zwischenstopp"}
+\end{Highlighting}
+\end{Shaded}
+
+Ziel ist nun ein \emph{rebase} von \emph{arbeit} auf \emph{main}.
+
+Vor dem Rebase
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{*}\NormalTok{ 0834b9d }\ErrorTok{(}\ExtensionTok{arbeit}\KeywordTok{)} \ExtensionTok{Inhalt}\NormalTok{ 10}
+\ExtensionTok{*}\NormalTok{ 4cdd087 Inhalt 9}
+\ExtensionTok{*}\NormalTok{ ebfa1db Inhalt 8}
+\ExtensionTok{*}\NormalTok{ d078d5a Inhalt 7}
+\ExtensionTok{*}\NormalTok{ a65af00 Inhalt 6}
+\ExtensionTok{*}\NormalTok{ cfb81ab Inhalt 5}
+\ExtensionTok{*}\NormalTok{ 7fc30db Inhalt 4}
+\ExtensionTok{*}\NormalTok{ 493cb05 Inhalt 3}
+\ExtensionTok{*}\NormalTok{ 4648598 Inhalt 2}
+\ExtensionTok{*}\NormalTok{ cff48d7 Inhalt 1}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 1af4a22 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Zwischenstopp}
 \KeywordTok{|}\ExtensionTok{/}  
-\ExtensionTok{*}\NormalTok{ 7fea00c Start}
+\ExtensionTok{*}\NormalTok{ af7e60c Start}
 \end{Highlighting}
 \end{Shaded}
 
-Du siehst einen Branch \branch{arbeit} mit mehreren Commits und einen
-einzigen Commit im \branch{main}-Branch (Zwischenstopp).
-
-Wenn du nun vom Branch \branch{arbeit} aus einen Rebase auf den Branch
-\branch{main} ausführst:
+Nun der Rebase
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ switch arbeit }
-\FunctionTok{git}\NormalTok{ rebase main }
+\CommentTok{\# aktueller Branch ist arbeit}
+\FunctionTok{git}\NormalTok{ switch arbeit}
+\FunctionTok{git}\NormalTok{ rebase main}
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} \AttributeTok{{-}{-}decorate} \AttributeTok{{-}{-}graph} \AttributeTok{{-}{-}all}
+
+\CommentTok{\# Ausgabe }
+\ExtensionTok{*}\NormalTok{ 43add76 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ arbeit}\KeywordTok{)} \ExtensionTok{Inhalt}\NormalTok{ 10}
+\ExtensionTok{*}\NormalTok{ 117f222 Inhalt 9}
+\ExtensionTok{*}\NormalTok{ 9057374 Inhalt 8}
+\ExtensionTok{*}\NormalTok{ 71ec034 Inhalt 7}
+\ExtensionTok{*}\NormalTok{ 66852df Inhalt 6}
+\ExtensionTok{*}\NormalTok{ f144368 Inhalt 5}
+\ExtensionTok{*}\NormalTok{ cdba6cf Inhalt 4}
+\ExtensionTok{*}\NormalTok{ d059b1b Inhalt 3}
+\ExtensionTok{*}\NormalTok{ d1b3718 Inhalt 2}
+\ExtensionTok{*}\NormalTok{ c591dc2 Inhalt 1}
+\ExtensionTok{*}\NormalTok{ 1af4a22 }\ErrorTok{(}\ExtensionTok{main}\KeywordTok{)} \ExtensionTok{Zwischenstopp} \OperatorTok{\textless{}\textless{} Hash}\NormalTok{ unverändert }
+\StringTok{* af7e60c Start                \textless{}\textless{} Hash unverändert }
 \end{Highlighting}
 \end{Shaded}
 
-dann sieht das Ergebnis so aus:
+Nach dem \emph{rebase} befindet du dich immer noch auf dem Branch
+\emph{arbeit} (Siehe HEAD Pointer), die \emph{Abzweigung} nach Start ist
+verschwunden. Der Branch \branch{arbeit} hängt mit seinen Commits und
+neuen Hashwerten also direkt am Commit mit dem Hash 1af4a22 aus dem
+Branch \branch{main}.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{*}\NormalTok{ 1cad272 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ arbeit}\KeywordTok{)} \ExtensionTok{Neuer}\NormalTok{ Inhalt 10}
-\ExtensionTok{*}\NormalTok{ 130c5b0 Neuer Inhalt 9}
-\ExtensionTok{*}\NormalTok{ 5b84ab1 Neuer Inhalt 8}
-\ExtensionTok{*}\NormalTok{ 56d74ea Neuer Inhalt 7}
-\ExtensionTok{*}\NormalTok{ 9255c1d Neuer Inhalt 6}
-\ExtensionTok{*}\NormalTok{ 412fa37 Neuer Inhalt 5}
-\ExtensionTok{*}\NormalTok{ cb91e55 Neuer Inhalt 4}
-\ExtensionTok{*}\NormalTok{ 3ab37b7 Neuer Inhalt 3}
-\ExtensionTok{*}\NormalTok{ dc4b1b0 Neuer Inhalt 2}
-\ExtensionTok{*}\NormalTok{ 9591035 Neuer Inhalt 1}
-\ExtensionTok{*}\NormalTok{ 2c58be7 }\ErrorTok{(}\ExtensionTok{main}\KeywordTok{)} \ExtensionTok{Zwischenstopp}
-\ExtensionTok{*}\NormalTok{ 7fea00c Start}
-\end{Highlighting}
-\end{Shaded}
-
-Die Verzweigung ist verschwunden und der Branch \branch{arbeit} hängt
-mit seinen Commits und neuen Hashwerten\\
-am Commit mit dem Hash 2c58be7 aus dem Branch \branch{main}.
-
-Auch wenn es nicht so wirkt: Der Branch \branch{arbeit} ist immer noch
-vorhanden! Das kannst du auch einfach testen, indem du auf den
-\branch{main}-Branch und das Log betrachtest -- es sind immer noch zwei
-Commits! Du kannst im Main auch einen wechselst und dort einen neuen
-Commit erstellst:
+Damit der Rebase aber noch nicht abgeschlossen! Du musst nun in den
+\emph{main}-Branch wechseln und einen Merge ausführen
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{git}\NormalTok{ switch main }
-\BuiltInTok{echo} \StringTok{"kontrolle"} \OperatorTok{\textgreater{}}\NormalTok{ kontrolle.txt }
-\FunctionTok{git}\NormalTok{ add kontrolle.txt }
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Kontrolle"}
+\FunctionTok{git}\NormalTok{ merge arbeit }
+
+\CommentTok{\# Ausgabe }
+
+\FunctionTok{git}\NormalTok{ merge arbeit }
+\ExtensionTok{Aktualisiere}\NormalTok{ 1af4a22..43add76}
+\ExtensionTok{Fast{-}forward}
+ \ExtensionTok{datei.txt} \KeywordTok{|} \ExtensionTok{10}\NormalTok{ ++++++++++}
+ \ExtensionTok{1}\NormalTok{ file changed, 10 insertions}\ErrorTok{(}\ExtensionTok{+}\KeywordTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-Das Log zeigt dann
+Damit ist der HEAD wieder an der korrekten Stelle:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{*}\NormalTok{ 3508cce }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Kontrolle} 
-\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 1cad272 }\ErrorTok{(}\ExtensionTok{arbeit}\KeywordTok{)} \ExtensionTok{Neuer}\NormalTok{ Inhalt 10}
-\ExtensionTok{....}
-\KeywordTok{|} \ExtensionTok{*}\NormalTok{ dc4b1b0 Neuer Inhalt 2}
-\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 9591035 Neuer Inhalt 1}
-\KeywordTok{|}\ExtensionTok{/}  
-\ExtensionTok{*}\NormalTok{ 2c58be7 Zwischenstopp}
-\ExtensionTok{*}\NormalTok{ 7fea00c Start}
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} \AttributeTok{{-}{-}decorate} \AttributeTok{{-}{-}graph} \AttributeTok{{-}{-}all}
+
+\CommentTok{\# Ausgabe }
+\ExtensionTok{*}\NormalTok{ 43add76 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main, arbeit}\KeywordTok{)} \ExtensionTok{Inhalt}\NormalTok{ 10}
+\ExtensionTok{*}\NormalTok{ 117f222 Inhalt 9}
+\ExtensionTok{*}\NormalTok{ 9057374 Inhalt 8}
+\ExtensionTok{*}\NormalTok{ 71ec034 Inhalt 7}
+\ExtensionTok{*}\NormalTok{ 66852df Inhalt 6}
+\ExtensionTok{*}\NormalTok{ f144368 Inhalt 5}
+\ExtensionTok{*}\NormalTok{ cdba6cf Inhalt 4}
+\ExtensionTok{*}\NormalTok{ d059b1b Inhalt 3}
+\ExtensionTok{*}\NormalTok{ d1b3718 Inhalt 2}
+\ExtensionTok{*}\NormalTok{ c591dc2 Inhalt 1}
+\ExtensionTok{*}\NormalTok{ 1af4a22 Zwischenstopp}
+\ExtensionTok{*}\NormalTok{ af7e60c Start}
 \end{Highlighting}
 \end{Shaded}
 
-Die Branches laufen also wieder auseinander. Möchtest du den Branch
-\branch{arbeit} loswerden, dann würdest du hier eher den Rebase von
-\branch{main} auf \branch{arbeit} ausführen. \git versucht dann, den
-\branch{main}-Branch hinter den Branch \branch{arbeit} zu hängen. Aus
-dieser Situation heraus kannst du dann auch den Branch \branch{arbeit}
-löschen:
+Wie du siehst, ist der Branch \emph{arbeit} aber noch existent! Lösche
+ihn mit folgendem Befehl:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}d}\NormalTok{ arbeit }
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} \AttributeTok{{-}{-}decorate} \AttributeTok{{-}{-}graph} \AttributeTok{{-}{-}all}
+
+\CommentTok{\# Ausgabe}
+\ExtensionTok{*}\NormalTok{ 43add76 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Inhalt}\NormalTok{ 10}
+\ExtensionTok{*}\NormalTok{ 117f222 Inhalt 9}
+\ExtensionTok{*}\NormalTok{ 9057374 Inhalt 8}
+\ExtensionTok{*}\NormalTok{ 71ec034 Inhalt 7}
+\ExtensionTok{*}\NormalTok{ 66852df Inhalt 6}
+\ExtensionTok{*}\NormalTok{ f144368 Inhalt 5}
+\ExtensionTok{*}\NormalTok{ cdba6cf Inhalt 4}
+\ExtensionTok{*}\NormalTok{ d059b1b Inhalt 3}
+\ExtensionTok{*}\NormalTok{ d1b3718 Inhalt 2}
+\ExtensionTok{*}\NormalTok{ c591dc2 Inhalt 1}
+\ExtensionTok{*}\NormalTok{ 1af4a22 Zwischenstopp}
+\ExtensionTok{*}\NormalTok{ af7e60c Start}
 \end{Highlighting}
 \end{Shaded}
 
-Es ist aber unrealistische, derartige Szenarien wirklich im Unterricht
-nachzuspielen.
+Damit ist der Rebase komplett beendet und das Repository wieder
+aufgeräumt. Das lief so reibungslos, weil der Commit \emph{Zwischenstop}
+eine andere Datei betroffen hat (\datei{datei2.txt}). Hätten Änderungen
+an \datei{datei.txt} stattgefunden, so hätten wir einen Konflikt
+bekommen, den wir hätten lösen müssen.
+
+Führe der Script \datei{rebase\_mit\_konflikt.sh} aus und versuche dann
+einen Rebase:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ rebase main }
+\ExtensionTok{automatischer}\NormalTok{ Merge von datei.txt}
+\ExtensionTok{KONFLIKT} \ErrorTok{(}\ExtensionTok{Inhalt}\KeywordTok{)}\BuiltInTok{:}\NormalTok{ Merge{-}Konflikt in datei.txt}
+\ExtensionTok{error:}\NormalTok{ Konnte 2f5968f... }\ErrorTok{(}\ExtensionTok{Inhalt}\NormalTok{ 1}\KeywordTok{)} \ExtensionTok{nicht}\NormalTok{ anwenden}
+\ExtensionTok{Hinweis:}\NormalTok{ Resolve all conflicts manually, mark them as resolved with}
+\ExtensionTok{Hinweis:} \StringTok{"git add/rm \textless{}conflicted\_files\textgreater{}"}\NormalTok{, then run }\StringTok{"git rebase {-}{-}continue"}\NormalTok{.}
+\ExtensionTok{Hinweis:}\NormalTok{ You can instead skip this commit: run }\StringTok{"git rebase {-}{-}skip"}\NormalTok{.}
+\ExtensionTok{Hinweis:}\NormalTok{ To abort and get back to the state before }\StringTok{"git rebase"}\NormalTok{, run }\StringTok{"git rebase {-}{-}abort"}\NormalTok{.}
+\ExtensionTok{Konnte}\NormalTok{ 2f5968f... }\ErrorTok{(}\ExtensionTok{Inhalt}\NormalTok{ 1}\KeywordTok{)} \ExtensionTok{nicht}\NormalTok{ anwenden}
+\end{Highlighting}
+\end{Shaded}
+
+Die Hinweiszeilen beschreiben eigentlich sehr genau, was zu tun ist:
+
+\begin{itemize}
+\item
+  Konflikt manuell lösen
+\item
+  \cmd{git add datei.txt}
+\item
+  \cmd{git rebase --continue} ausführen
+\item
+  Commit-Nachricht anpassen
+\end{itemize}
+
+\subsection{Merge oder Rebase}\label{merge-oder-rebase}
+
+Bei \emph{merge} kann die History verzweigter aussehen, bei
+\emph{rebase} können sich Commit-Hashes ändern.
+
+Als Faustregel gilt, dass du die Finger vom Rebase lassen solltest, wenn
+irgendwer außer dir Zugriff auf den betroffen Branch hat (Team-Arbeit).
+Solange du nur auf deinen Rechner arbeitest gibt es (außer Konflikten)
+kein Problem.
 
 \section{Squash}\label{squash}
 
@@ -3508,7 +3676,7 @@ Willst du an dieser Stelle sicher gehen, so machst du zuerst
 \cmd{git fetch} und siehst dir die Änderungen an -- siehe weiter unten.
 Im Anschluss kannst du sie dann mit \cmd{git merge} übernehmen.
 
-\section{Hands on}\label{hands-on-1}
+\section{Hands on}\label{hands-on}
 
 In den nachfolgenden Abschnitten wird oft das Wort \emph{origin}
 auftreten. Wir sehen uns lieber gleich an, was es damit auf sich hat.
@@ -3736,7 +3904,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-117}%
+\phantomsection\label{annotated-cell-120}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -5247,7 +5415,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-177}%
+\phantomsection\label{annotated-cell-180}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -5307,7 +5475,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-179}%
+\phantomsection\label{annotated-cell-182}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -5341,7 +5509,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-180}%
+\phantomsection\label{annotated-cell-183}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -5413,7 +5581,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-182}%
+\phantomsection\label{annotated-cell-185}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -5800,8 +5968,10 @@ stabileren Schritten wachsen.
 Im Zusammenspiel mit Git entsteht so ein durchgängiger
 Entwicklungsfluss: Vom Commit über die automatische Prüfung bis hin zur
 bereitgestellten Anwendung. CI/CD bildet damit das Rückgrat moderner
-Entwicklungsprozesse -- und ist ein Schlüsselkonzept, das jede
-Git-Nutzerin und jeder Git-Nutzer verstehen sollte.
+Entwicklungsprozesse -- und ist ein Schlüsselkonzept, das jeder
+fortgeschrittene \git-Nutzer verstehen sollte.
+
+xxxxxxxxxxxxxxxxxxxxxxx Ausgliedern xxxxxxxxxxxxxxxxxxxxxxxx
 
 Wir werden dieses Konzept nur am Beispiel eines winzigen Java-Programms
 durchspielen, da bereits im Vorfeld neben \git diverse andere
@@ -5820,6 +5990,8 @@ Voraussetzungen klären müssen:
 \href{https://www.digitalocean.com/community/tutorials/install-maven-linux-ubuntu}{Tutorial
 auf digitalocean.com}
 
+xxxxxxxxxxxxxxxxxxxxxxx Ausgliedern ENDE xxxxxxxxxxxxxxxxxxxxxxxx
+
 \section{CI -- Einstieg}\label{ci-einstieg}
 
 Im Prinzip geht es um die Automatisierung von Abläufen, sobald ein
@@ -5828,12 +6000,12 @@ einem Minimalbeispiel durch und besprechen auch die Probleme, die (aus
 meiner Sicht) dabei auftreten.
 
 Um die Abläufe einfach zu halten, arbeiten wir direkt mit \gitlab auf
-der Weboberfläche -- das setzt einen Account voraus!
+der Weboberfläche -- das setzt allerdings einen Account voraus!
 
 \textbf{Schritt 1}\\
 Erstellen eines leeren Repositories auf \gitlab.\\
-Der Name ist aktuell egal. Beim Initialisieren kann eine Readme erstellt
-werden -- das stört nicht!
+Der Name ist aktuell egal. Beim Initialisieren kann eine Datei
+\datei{Readme.md} erstellt werden -- das stört nicht!
 
 \textbf{Schritt 2}\\
 Anlegen der folgenden Ordnerstruktur:
@@ -6052,6 +6224,44 @@ probeweise ausgeführt.
 
 Im nächsten Abschnitt werfen wir einen genaueren Blick auf \maven.
 
+\bookmarksetup{startatroot}
+
+\chapter{TDD - Test Driven
+Development}\label{tdd---test-driven-development}
+
+(Video mit Intellij: https://www.youtube.com/watch?v=eMU\_hninZAs)
+
+TDD ist eine sehr strenge Philosophie in Bezug auf den Ablauf bei der
+Software-Entwicklung. Puristen sprechen vom \emph{Red-Green-Refactor}
+Zyklus, der in jedem Fall eingehalten werden muss.
+
+\section{Was versteht man darunter?}\label{was-versteht-man-darunter}
+
+Grob geht es um einen Zyklus von Code schreiben, Code testen, Code
+optimieren, der die Entwicklung -- idealer Weise automatisiert --
+begleitet.
+
+Zum Beginn der Programmentwicklung wird dabei sofort der erste Test
+geschrieben -- einer von sehr sehr vielen im Verlauf der Entwicklung. Er
+testet einen Programmteil, \emph{der aktuell noch nicht existiert} und
+deshalb scheitern muss (Red-Phase). Nun wird die minimale Menge an Code
+geschrieben, damit der Test erfolgreich verläuft (Green-Phase).
+Neulingen beim TDD erscheint dieser Minimalimus in vielen Fällen
+komplett überzogen, es entspricht aber wirklich diesem Vorgehen. Nun
+wird das Programm optimiert (refactoring) -- soweit das zu diesem
+Zeitpunkt bereits möglich und sinnvoll ist. Weitere Tests erzwingen
+Ergänzungen und Änderungen am eigentlichen Programm, so dass das
+Programmieren ein ständiger Wechsel zwischen den Phasen Red, Green und
+Refactoring wird. Viele IDEs unterstützen diesen Ablauf aktiv, erstellen
+also Code zum Test (oder anders herum).
+
+Im Prinzip ist das Testen von Software -- oder Teilen davon -- auch ohne
+ein Buildsystem wie \maven möglich. Leider sind die Befehle für
+Compilieren, Testen und Ausführen von Java-Code auf den einzelnen
+Plattformen zumindest so unterschiedlich und komplex, dass ein manuelles
+Testen faktisch nicht sinnvoll ist. Aus diesem Grund werden wir hier
+gleich mit \maven arbeiten.
+
 \section{Maven}\label{maven}
 
 \subsection{Was ist Maven}\label{was-ist-maven}
@@ -6063,62 +6273,44 @@ viele lästige Kleinigkeiten im Entwicklungsprozess automatisiert werden
 CI/CD absolut üblich ist, brauchst du zumindest ein oberflächliches
 Grundverständnis.
 
-\subsection{Voraussetzungen}\label{voraussetzungen}
+\subsection{Vorbereitung}\label{vorbereitung}
 
 Dass ein JDK installiert sein muss, sollte klar sein, denn es soll ja
 mit Java programmiert werden. Natürlich gibt es wieder Unterschiede
 zwischen Linux, Apple und Windows.
 
-\subsection{Anleitung}\label{anleitung}
-
 \subsubsection*{Windows}\label{windows-1}
 \addcontentsline{toc}{subsubsection}{Windows}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \textbf{Java installieren}
-\end{enumerate}
+\emph{Java installieren}
 
 Installiere das gewünschte JDK (z.\,B. Oracle JDK, Temurin).
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
+\emph{JAVA\_HOME setzen}
+
+\begin{itemize}
 \item
-  \textbf{JAVA\_HOME setzen}
+  Öffne die Systemeinstellungen:\\
+  \texttt{Systemeigenschaften\ -\ Erweiterte\ Systemeinstellungen\ -\ Umgebungsvariablen}
+\item
+  Unter \textbf{Systemvariablen} auf \textbf{Neu\ldots{}} klicken
 
   \begin{itemize}
+  \tightlist
   \item
-    Öffne die Systemeinstellungen:
-    \texttt{Systemeigenschaften\ -\textgreater{}\ Erweiterte\ Systemeinstellungen\ -\textgreater{}\ Umgebungsvariablen}
+    Name: \texttt{JAVA\_HOME}
   \item
-    Unter \textbf{Systemvariablen} auf \textbf{Neu\ldots{}} klicken
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Name: \texttt{JAVA\_HOME}
-    \item
-      Wert: Pfad zum JDK, z.\,B.:
-      \datei{C:\\Program Files\\Java\\jdk-17.0.9}
-    \end{itemize}
+    Wert: Pfad zum JDK, z.B.:
+    \datei{C:\\Program Files\\Java\\jdk-17.0.9}
   \end{itemize}
-\item
-  \textbf{PATH anpassen}
-\end{enumerate}
+\end{itemize}
+
+\emph{PATH anpassen}
 
 Systemvariable \texttt{Path} bearbeiten und hinzufügen:
-\textbackslash datei\{\%JAVA\_HOME\%\textbackslash bin\}
+\datei{\%JAVA_HOME\%\\bin}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{3}
-\tightlist
-\item
-  \textbf{Überprüfen}
-\end{enumerate}
+\emph{Überprüfen}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6130,12 +6322,7 @@ Systemvariable \texttt{Path} bearbeiten und hinzufügen:
 \subsubsection*{Linux}\label{linux-1}
 \addcontentsline{toc}{subsubsection}{Linux}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \textbf{Java installieren}
-\end{enumerate}
+\emph{Java installieren}
 
 Installiere ein JDK über den Paketmanager (z.\,B. Ubuntu/Debian):
 
@@ -6146,13 +6333,7 @@ Installiere ein JDK über den Paketmanager (z.\,B. Ubuntu/Debian):
 \end{Highlighting}
 \end{Shaded}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  \textbf{JAVA\_HOME systemweit setzen}
-\end{enumerate}
+\emph{JAVA\_HOME systemweit setzen}
 
 Erstelle eine neue Datei \datei{/etc/profile.d/java.sh} mit folgendem
 Inhalt:
@@ -6164,11 +6345,7 @@ Inhalt:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{itemize}
-\tightlist
-\item
-  Datei ausführbar machen:
-\end{itemize}
+\emph{Datei ausführbar machen}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6176,17 +6353,19 @@ Inhalt:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\tightlist
-\item
-  \textbf{Überprüfen}
-\end{enumerate}
+\emph{Alternativ nur für den aktuellen Benutzer}
+
+Füge die gleichen beiden (export) Zeilen an das Ende der Datei folgenden
+Datei an
+
+\datei{/home/<benutzer>/.profile}
+
+\emph{Überprüfen}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{source}\NormalTok{ /etc/profile.d/java.sh}
+\CommentTok{\# bzw. source \textasciitilde{}/.profile }
 \ExtensionTok{java} \AttributeTok{{-}version}
 \BuiltInTok{echo} \VariableTok{$JAVA\_HOME}
 \end{Highlighting}
@@ -6195,22 +6374,18 @@ Inhalt:
 \subsubsection*{macOS}\label{macos-1}
 \addcontentsline{toc}{subsubsection}{macOS}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  \textbf{Java installieren}
+\emph{Java installieren}
 
-  \begin{itemize}
-  \tightlist
-  \item
-    Lade ein JDK herunter (z.\,B. Temurin, Oracle) und installiere es.
-  \item
-    Standard-Installationspfad:
-    \datei{/Library/Java/JavaVirtualMachines/}.
-  \end{itemize}
+\begin{itemize}
+\tightlist
 \item
-  \textbf{JAVA\_HOME systemweit setzen}
-\end{enumerate}
+  Lade ein JDK herunter (z.\,B. Temurin, Oracle) und installiere es.
+\item
+  Standard-Installationspfad:
+  \datei{/Library/Java/JavaVirtualMachines/}.
+\end{itemize}
+
+\emph{JAVA\_HOME systemweit setzen}
 
 Über \cmd{launchctl} für GUI-Apps und neue Terminalfenster:
 
@@ -6220,8 +6395,8 @@ Inhalt:
 \end{Highlighting}
 \end{Shaded}
 
-Optional für Shells, die beim Login starten (\datei{~/.zshrc} oder
-\datei{/etc/profile}):
+Optional für Shells, die beim Login starten\\
+(\datei{/home/<benutzer>/.zshrc} oder \datei{/etc/profile}):
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6230,13 +6405,7 @@ Optional für Shells, die beim Login starten (\datei{~/.zshrc} oder
 \end{Highlighting}
 \end{Shaded}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\tightlist
-\item
-  \textbf{Überprüfen}
-\end{enumerate}
+\emph{Überprüfen}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6277,7 +6446,7 @@ Zur Kontrolle genügt dann ein
 \end{Highlighting}
 \end{Shaded}
 
-(Tipp: \cmd{sdk list maven})
+(Tipp: Im Terminal eingeben: \cmd{sdk list maven})
 
 \subsubsection*{Windows}\label{windows-2}
 \addcontentsline{toc}{subsubsection}{Windows}
@@ -6292,6 +6461,8 @@ TODO
 \subsection{Erster Test}\label{erster-test}
 
 (Auf Linux)
+
+\blarge
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6309,6 +6480,14 @@ TODO
 \end{Highlighting}
 \end{Shaded}
 
+\elarge
+
+Hier wird die Ordnerstruktur automatisch von \maven erstellt und mit
+Demo-Dateien bestückt. Wir werden -- darauf aufbauend -- im nächsten
+Block ein TDD-Beispiel durchspielen.
+
+TODO: Wirklich? aktuell keine Warnungen!
+
 Wir sehen noch einige typische Warnungen, die auf eine falsche
 Parameterisierung in der \datei{pom.xml} hinweisen -- dazu später mehr.
 
@@ -6321,19 +6500,17 @@ Hilfs-Scripts!)
 \begin{Shaded}
 \begin{Highlighting}[]
 
-\ExtensionTok{TREE}
+\ExtensionTok{TODO:}\NormalTok{ Bild vom TREE}
 \end{Highlighting}
 \end{Shaded}
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht alle
-Ordner. Sie werden bei Bedarf dynmaisch von Maven angelegt.
+Ordner. Sie werden bei Bedarf dynmaisch von \maven angelegt.
 
 \subsection{Idee}\label{idee-1}
 
-Maven kennt sogenannte Livecyles. Damit sind bestimmte Abfolgen von
-Abläufen gemeint, die Maven ausführt.
-
-Es gibt folgende Befehle:
+\Maven kennt sogenannte LiveCyles. Damit sind bestimmte Abfolgen von
+Abläufen gemeint, die Maven ausführt, nämlich
 
 \begin{itemize}
 \tightlist
@@ -6351,397 +6528,36 @@ Es gibt folgende Befehle:
   deploy (macht nicht das, nach was es klingt!)
 \end{itemize}
 
-Beim ersten Aufruf werden alle Abhängigkeiten von einem Repo im Internet
-in einen Cache im Home des Benutzers geladen.
+Beim ersten Aufruf werden alle Abhängigkeiten (dependencies) von einem
+Repository (hat nichts mit \git zu tun!) im Internet in einen Cache im
+Home des Benutzers geladen.
 
-Beim ersten Aufruf von \emph{compile} wird auch das
-\emph{target}Verzeichnis erstellt.
+Wählst du als LiveCycle \emph{compile}, so wird auch das \emph{target}
+Verzeichnis erstellt.
 
-Beim Nachladen der Dependencies kann es passieren, dass das
-entsprechende JAR online nicht gefunden wurde (weil es nie hochgeladen
-wurde und deshalb einfach nicht existiert). Derartige (also eigene) jars
-muss man selbst in den Cache \emph{.m2} einpflegen, damit Maven sie
-verwenden kann.
+Beim Nachladen der Dependencies kann es passieren, dass die
+entsprechende \emph{jar}-Datei online nicht gefunden wird (weil sie nie
+hochgeladen wurde und deshalb einfach nicht existiert). Derartige (also
+eigene) \emph{jar}-Dateien musst du selbst in den Cache \ordner{.m2}
+einpflegen, damit Maven sie verwenden kann.
 
-Im Ordner liegt eine Ordnerstruktur vor, nach producktID, Version,
-\ldots, in der man selbst Ordner erstellen kann. Im Prinzip macht das
-auch Maven, wenn man \emph{install} aufruft.
+Im Ordner liegt eine Ordnerstruktur vor, geordnet nach productID,
+Version, \ldots, in der man selbst Ordner erstellen kann. Im Prinzip
+macht Maven genau das, wenn du \emph{install} aufrufst.
 
-(https://www.youtube.com/watch?v=T00NKLQvwYE) - Windows-lastig
-
-\bookmarksetup{startatroot}
-
-\chapter{TDD - Test Driven
-Development}\label{tdd---test-driven-development}
-
-(Video mit Intellij: https://www.youtube.com/watch?v=eMU\_hninZAs)
-
-TDD ist eine sehr strenge Philosophie in Bezug auf den Ablauf bei der
-Software-Entwicklung. Puristen sprechen vom \emph{Red-Green-Refactor}
-Zyklus, der in jedem Fall eingehalten werden muss.
-
-\section{Was versteht man darunter?}\label{was-versteht-man-darunter}
-
-Grob geht es um einen Zyklus von Code schreiben, Code testen, Code
-optimieren, der die Entwicklung -- idealer Weise automatisiert --
-begleitet.
-
-Zum Beginn der Programmentwicklung wird dabei sofort der erste Test
-geschrieben -- einer von sehr sehr vielen im Verlauf der Entwicklung. Er
-testet einen Programmteil, \emph{der aktuell noch nicht existiert} und
-deshalb scheitern muss (Red-Phase). Nun wird die minimale Menge an Code
-geschrieben, damit der Test erfolgreich verläuft (Green-Phase). Nun wird
-das Programm optimiert (refactoring) -- soweit das zu diesem Zeitpunkt
-bereits möglich und sinnvoll ist. Weitere Tests erzwingen Ergänzungen
-und Änderungen am eigentlichen Programm, so dass das Programmieren ein
-ständiger Wechsel zwischen den Phasen Red, Green und Refactoring wird.
-Viele IDEs unterstützen diesen Ablauf aktiv, erstellen also Code zum
-Test (oder anders herum).
-
-Das kann kann zu Situationen führen, die für den Einsteiger in TDD
-befremdlich wirken. Dazu aber nach der Grundkonfiguration.
-
-\section{Grundkonfiguration}\label{grundkonfiguration-1}
-
-Wir starten mit der einfachst möglichen Konfiguration, bestehend aus
-
-\begin{itemize}
-\tightlist
-\item
-  StringFlipper.java = Java-Klasse
-\item
-  StringFlipperTest.java = Testdatei
-\item
-  junit5.jar
-\end{itemize}
-
-Die drei Dateien befinden sich in einem Ordner und können für den
-Workshop aus dem \git-Repository, Ordner \datei{tdd} entnommen werden.
-Die Zip-Datei muss dafür entpackt werden! Es entstehen die oben
-angeführten Dateien. Bei der Datei \datei{junit5.jar} handelt es sich um
-die Version 1.10.0, die von der Maven-Seite geladen werden kann:
-
-\href{https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.0/junit-platform-console-standalone-1.10.0.jar}{maven-junit}
-
-Wir arbeiten nun aus dem Ordner heraus, in dem die Dateien enpackt
-wurden mit dem Terminal.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{javac} \AttributeTok{{-}d}\NormalTok{ . StringFlipper.java StringFlipperTest.java}
-\end{Highlighting}
-\end{Shaded}
-
-Dieser Befehl compiliert die beiden Dateien und erzeugt dabei die
-Ordnerstruktur, die das \emph{Package} repräsentiert:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{.}
-\ExtensionTok{├──}\NormalTok{ de}
-\ExtensionTok{│  }\NormalTok{ └── alp}
-\ExtensionTok{│  }\NormalTok{     └── kurs}
-\ExtensionTok{│  }\NormalTok{         ├── StringFlipper.class}
-\ExtensionTok{│  }\NormalTok{         └── StringFlipperTest.class}
-\end{Highlighting}
-\end{Shaded}
-
-Nun kann die Testklasse ausgeführt werden:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{java} \AttributeTok{{-}jar}\NormalTok{ junit5.jar }\AttributeTok{{-}{-}class{-}path}\NormalTok{ . }\AttributeTok{{-}{-}scan{-}class{-}path}
-\end{Highlighting}
-\end{Shaded}
-
-Die Ausgabe liefert einen (absichtlich) versagenden Test und etwas
-Statistik:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{Failures} \ErrorTok{(}\ExtensionTok{1}\KeywordTok{)}\BuiltInTok{:}
-  \ExtensionTok{JUnit}\NormalTok{ Jupiter:StringFlipperTest:testSwapLastChars}\ErrorTok{(}\KeywordTok{)}
-    \ExtensionTok{MethodSource}\NormalTok{ [className = }\StringTok{\textquotesingle{}de.alp.kurs.StringFlipperTest\textquotesingle{}}\NormalTok{, }
-    \ExtensionTok{methodName}\NormalTok{ = }\StringTok{\textquotesingle{}testSwapLastChars\textquotesingle{}}\NormalTok{, methodParameterTypes = }\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{]}
-    \ExtensionTok{=}\OperatorTok{\textgreater{}}\NormalTok{ org.opentest4j.AssertionFailedError: beabsichtigt}
-       \ExtensionTok{org.junit.jupiter.api.AssertionUtils.fail}\ErrorTok{(}\ExtensionTok{AssertionUtils}
-       \ExtensionTok{.java:38}\KeywordTok{)}
-       \ExtensionTok{org.junit.jupiter.api.Assertions.fail}\ErrorTok{(}\ExtensionTok{Assertions.java:134}\KeywordTok{)}
-       \ExtensionTok{de.alp.kurs.StringFlipperTest.testSwapLastChars}\ErrorTok{(}
-        \ExtensionTok{StringFlipperTest.java:11}\KeywordTok{)}
-       \ExtensionTok{java.base/java.lang.reflect.Method.invoke}\ErrorTok{(}\ExtensionTok{Method.java:580}\KeywordTok{)}
-       \ExtensionTok{java.base/java.util.ArrayList.forEach}\ErrorTok{(}\ExtensionTok{ArrayList.java:1596}\KeywordTok{)}
-       \ExtensionTok{java.base/java.util.ArrayList.forEach}\ErrorTok{(}\ExtensionTok{ArrayList.java:1596}\KeywordTok{)}
-
-\ExtensionTok{Test}\NormalTok{ run finished after 92 ms}
-\BuiltInTok{[}\NormalTok{         4 containers found      }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         0 containers skipped    }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         4 containers started    }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         0 containers aborted    }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         4 containers successful }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         0 containers failed     }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         1 tests found           }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         0 tests skipped         }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         1 tests started         }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         0 tests aborted         }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         0 tests successful      }\BuiltInTok{]}
-\BuiltInTok{[}\NormalTok{         1 tests failed          }\BuiltInTok{]}
-\end{Highlighting}
-\end{Shaded}
-
-In einem Produktionsumfeld sollte die Verzeichnisstruktur etwas
-\emph{aufgeräumter} aussehen, damit Tests und Produktionscode
-voneinander sauber getrennt sind, z.B. so (wir werden später aber mit
-einem anderen Layout arbeiten):
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{.}
-\ExtensionTok{├──}\NormalTok{ projekt}
-\ExtensionTok{│  }\NormalTok{ ├── pom.xml}
-\ExtensionTok{│  }\NormalTok{ └── src}
-\ExtensionTok{│  }\NormalTok{     ├── main}
-\ExtensionTok{│  }\NormalTok{     │   └── java}
-\ExtensionTok{│  }\NormalTok{     │       └── de}
-\ExtensionTok{│  }\NormalTok{     │           └── alp}
-\ExtensionTok{│  }\NormalTok{     │               └── kurs}
-\ExtensionTok{│  }\NormalTok{     │                   └── StringFlipper.java}
-\ExtensionTok{│  }\NormalTok{     └── test}
-\ExtensionTok{│  }\NormalTok{         └── java}
-\ExtensionTok{│  }\NormalTok{             └── de}
-\ExtensionTok{│  }\NormalTok{                 └── alp}
-\ExtensionTok{│  }\NormalTok{                     └── kurs}
-\ExtensionTok{│  }\NormalTok{                         └── StringFlipperTest.java}
-\end{Highlighting}
-\end{Shaded}
-
-Bleiben wir aber bei unserem einfachen Lauyout und sehen uns das Testen
-genauer an und zwar die Testklasse. Es geht um eine Funktion, die die
-letzten beiden Buchstaben eines Strings vertauschen soll. Das ist zwar
-relativ unsinnig, dafür aber übersichtlich. Wir können sofort
-identifizieren, welche Fälle als Tests geprüft werden müssen:
-
-\begin{itemize}
-\tightlist
-\item
-  Ein ganz normaler String wie Hallo
-\item
-  Strings der Längen 2, 1, 0
-\end{itemize}
-
-Da TDD von einer Minimalismus-Strategie ausgeht, beginnen wir mit dem
-leeren String. Werfen wir also einen Blick in die Testdatei:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{package}\NormalTok{ de.alp.kurs}\KeywordTok{;}
-
-
- \ExtensionTok{import}\NormalTok{ org.junit.jupiter.api.Test}\KeywordTok{;}
- \ExtensionTok{import}\NormalTok{ static org.junit.jupiter.api.Assertions.}\PreprocessorTok{*}\KeywordTok{;}
-
-
-\ExtensionTok{public}\NormalTok{ class StringFlipperTest\{}
-   \ExtensionTok{@Test} 
-   \ExtensionTok{public}\NormalTok{ void testSwapLastChars}\ErrorTok{(}\KeywordTok{)\{}
-      \ExtensionTok{fail}\ErrorTok{(}\StringTok{"beabsichtigt"}\KeywordTok{);}
-   \KeywordTok{\}}
-\ErrorTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Der Test soll (nach TDD-Philosophie) Code testen, den es noch nicht gibt
-und deshalb versagen. Wir entfernen die \emph{fail}-Zeile und ersetzen
-sie durch sinnvolleren Inhalt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{@Test}
-\ExtensionTok{public}\NormalTok{ void testSwapLastCcharsInEmptyString}\ErrorTok{(}\KeywordTok{)\{}
-    \ExtensionTok{StringFlipper}\NormalTok{ stringFlipper = new StringFlipper}\ErrorTok{(}\KeywordTok{);}
-    \ExtensionTok{res}\NormalTok{ = stringFlipper}\ErrorTok{(}\StringTok{""}\KeywordTok{);}
-    \ExtensionTok{assertEquals}\ErrorTok{(}\StringTok{""}\ExtensionTok{,}\NormalTok{ res}\KeywordTok{);}
-    \KeywordTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Die Ausführung des Test scheitert wie gewünscht, da die Funktion noch
-nicht existiert. Ändern wir das:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{public}\NormalTok{ String swapChars}\ErrorTok{(}\ExtensionTok{String}\NormalTok{ s}\KeywordTok{)} \KeywordTok{\{}
-        \ControlFlowTok{return} \StringTok{""}\KeywordTok{;}
-\end{Highlighting}
-\end{Shaded}
-
-Minimale Problemlösung -- und wirkt wie eine \emph{Veräppelung}. Dennoch
-ist das absolut ernst gemeint! Schreiben wir den nächsten Test!
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{@Test}
-\ExtensionTok{public}\NormalTok{ void testSwapLastTwoCharsOnSingleCharString}\ErrorTok{(}\KeywordTok{)\{}
-    \ExtensionTok{StringFlipper}\NormalTok{ stringFlipper = new StringFlipper}\ErrorTok{(}\KeywordTok{);}
-    \ExtensionTok{String}\NormalTok{ res = stringFlipper.swapChars}\ErrorTok{(}\StringTok{"A"}\KeywordTok{);}
-    \ExtensionTok{assertEquals}\ErrorTok{(}\StringTok{"A"}\ExtensionTok{,res}\KeywordTok{);}
-    \KeywordTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Wir können den Test laufen lassen und beobachten sein Scheitern. Die
-Funktion muss also verfeinert werden. Beim aktuellen Stand wäre das z.B.
-so möglich:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{public}\NormalTok{ String swapChars}\ErrorTok{(}\ExtensionTok{String}\NormalTok{ s}\KeywordTok{)} \KeywordTok{\{}
-    \ControlFlowTok{return} \ExtensionTok{s}\KeywordTok{;}
-\end{Highlighting}
-\end{Shaded}
-
-Beide Tests liefern grünen Status! Probieren wir einen String mit zwei
-Buchstaben.
-
-\begin{Shaded}
-\begin{Highlighting}[]
- \ExtensionTok{@Test}
- \ExtensionTok{public}\NormalTok{ void testSwapLastTwoCharsOnTwoCharString}\ErrorTok{(}\KeywordTok{)\{}
-    \ExtensionTok{StringFlipper}\NormalTok{ stringFlipper = new StringFlipper}\ErrorTok{(}\KeywordTok{);}
-    \ExtensionTok{String}\NormalTok{ res = stringFlipper.swapChars}\ErrorTok{(}\StringTok{"AB"}\KeywordTok{);}
-    \ExtensionTok{assertEquals}\ErrorTok{(}\StringTok{"BA"}\ExtensionTok{,res}\KeywordTok{);}
-    \KeywordTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Der Test scheitert und wir verfeinern die Funktion erneut. Da es sich um
-eine neue Situation handelt, trennen wir die Fälle:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{public}\NormalTok{ String swapChars}\ErrorTok{(}\ExtensionTok{String}\NormalTok{ s}\KeywordTok{)} \KeywordTok{\{}
-    \ExtensionTok{int}\NormalTok{ length = s.length}\ErrorTok{(}\KeywordTok{);}
-    \ControlFlowTok{if} \KeywordTok{(}\ExtensionTok{length} \OperatorTok{\textless{}}\NormalTok{ 2}\KeywordTok{)} \KeywordTok{\{}
-        \ControlFlowTok{return} \ExtensionTok{s}\KeywordTok{;}
-        \KeywordTok{\}}
-    \ExtensionTok{StringBuilder}\NormalTok{ sb = new StringBuilder}\ErrorTok{(}\KeywordTok{);}
-    \ExtensionTok{sb.append}\ErrorTok{(}\ExtensionTok{2}\KeywordTok{);}
-    \ExtensionTok{sb.append}\ErrorTok{(}\ExtensionTok{1}\KeywordTok{);}
-    \ControlFlowTok{return} \FunctionTok{sb.toString()}\KeywordTok{;}
-\end{Highlighting}
-\end{Shaded}
-
-Und wieder \emph{grün}! Nun wollen wir einen vollwertigen String
-probieren!
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{@Test}
-    \ExtensionTok{public}\NormalTok{ void testSwapLastTwoCharsOnNormalString}\ErrorTok{(}\KeywordTok{)\{}
-    \ExtensionTok{StringFlipper}\NormalTok{ stringFlipper = new StringFlipper}\ErrorTok{(}\KeywordTok{);}
-    \ExtensionTok{String}\NormalTok{ res = stringFlipper.swapChars}\ErrorTok{(}\StringTok{"Hallo"}\KeywordTok{);}
-    \ExtensionTok{assertEquals}\ErrorTok{(}\StringTok{"Halol"}\ExtensionTok{,res}\KeywordTok{);}
-    \KeywordTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Wieder zum Verfeinern:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{public}\NormalTok{ String swapChars}\ErrorTok{(}\ExtensionTok{String}\NormalTok{ s}\KeywordTok{)} \KeywordTok{\{}
-    \ExtensionTok{int}\NormalTok{ length = s.length}\ErrorTok{(}\KeywordTok{);}
-    \ControlFlowTok{if} \KeywordTok{(}\ExtensionTok{length} \OperatorTok{\textless{}}\NormalTok{ 2}\KeywordTok{)} \KeywordTok{\{}
-        \ControlFlowTok{return} \ExtensionTok{s}\KeywordTok{;}
-        \KeywordTok{\}}
-    \ExtensionTok{StringBuilder}\NormalTok{ sb = new StringBuilder}\ErrorTok{(}\KeywordTok{);}
-    \ControlFlowTok{for} \KeywordTok{(}\ExtensionTok{int}\NormalTok{ i=0}\KeywordTok{;} \ExtensionTok{i} \OperatorTok{\textless{}}\NormalTok{ length{-}2}\KeywordTok{;} \ExtensionTok{i++}\KeywordTok{)\{}
-        \ExtensionTok{sb.append}\ErrorTok{(}\ExtensionTok{s.charAt}\ErrorTok{(}\ExtensionTok{i}\KeywordTok{));}
-    \KeywordTok{\}}
-    \ExtensionTok{sb.append}\ErrorTok{(}\ExtensionTok{s.charAt}\ErrorTok{(}\ExtensionTok{length} \AttributeTok{{-}}\NormalTok{ 1}\KeywordTok{));}
-    \ExtensionTok{sb.append}\ErrorTok{(}\ExtensionTok{s.charAt}\ErrorTok{(}\ExtensionTok{length} \AttributeTok{{-}}\NormalTok{ 2}\KeywordTok{));}
-    \ExtensionTok{String}\NormalTok{ res = sb.toString}\ErrorTok{(}\KeywordTok{);}
-    \ControlFlowTok{return} \ExtensionTok{res}\KeywordTok{;}
-    \KeywordTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Damit haben wir alle Fälle abgehakt, die uns zum Testen eingefallen
-sind. Ja -- dieser Prozess ist langatmig und verführt zum Verwenden von
-Abkürzungen. Leider führen diese Abkürzungen am Ende zu schlecht
-programmierter Software! Ein Beispiel ist der Computer der Bosch-eBikes.
-Hier ist es möglich, dass negative Fahrzeiten auftreten, wenn man keine
-regelmäßigen Resets der Daten durchführt -- ein Fall, der bei gutem
-Testing aufgefallen wäre.
-
-Da Testing so wichtig ist, wird es mittlerweile von allen IDEs
-unterstützt und Build-Tools wie Maven haben es ebenfalls integriert. Für
-unser eigentliches Thema CI/CD werden wir aber gleich \emph{Maven}
-verwenden und uns deshalb vom manuellen Testen weitgehend verabschieden.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{public}\NormalTok{ class StringFlipperTest\{}
-   \ExtensionTok{@Test} 
-   \ExtensionTok{public}\NormalTok{ void testSwapLastChars}\ErrorTok{(}\KeywordTok{)\{}
-      \ExtensionTok{StringFlipper}\NormalTok{ stringflipper = new StringFlipper}\ErrorTok{(}\KeywordTok{);}
-      \ExtensionTok{assertEquals}\ErrorTok{(}\ExtensionTok{1,}\NormalTok{ 1}\KeywordTok{);}
-   \KeywordTok{\}}
-\ErrorTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Rerun -- definitiv Red, da es die Klasse noch nicht gibt -- also
-erstellen wir sie im Ordner \datei{src/java/de/alp/kurs}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{nano}\NormalTok{ ../java/de/alp/kurs/StringFlipper.java }
-\end{Highlighting}
-\end{Shaded}
-
-Der Aufruf zum Compilieren muss nun allerdings einen Level nach oben
-springen!
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{javac}\NormalTok{ ../java/de/alp/kurs/StringFlipper.java}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Gewohnheiten}\label{gewohnheiten}
-
-\begin{itemize}
-\tightlist
-\item
-  Zuerst das Kriteium formulieren und davon rückwärts arbeiten
-\item
-  Jeder Test muss zuerst gegen einen definierten Fail laufen.
-\item
-  Ein Test bekommt nur einen Grund zum Versagen
-\end{itemize}
+LINK-Tipp: \url{https://www.youtube.com/watch?v=T00NKLQvwYE} -
+Windows-lastig
 
 \section{Java}\label{java}
 
 \subsection{Idee}\label{idee-2}
 
-Im Zusammenhang mit \git könnte ein Projekt für den Unterricht die
-Entwicklung einer Krypto-Software sein, bei der der Benutzer mit
-verschiedenene Methoden (Cäsar, Vigenere, \ldots) Klartext in
-verschlüsselten Text transformieren kann. Zentral wird eine kleine GUI
-bereitgestellt oder entwickelt, in die die Module der Projektgruppen
-eingebunden werden können.
-
-Nachfolgend nur kurz das Vorgehen für einen einfachen Cäsar mit
-GUI-Anbindung. Wem dies eine zu geringe Anforderung ist, kann auch gerne
-eine andere Technik umsetzen -- schlussendlich geht es eigentlich um die
-Verwendung von Maven in diesem Zusammenhang.
-
-Natürlich kann jede aktuelle IDE auf Knopfdruck auch Maven-Projekte
-generieren, wir wollen es hier aber \emph{from scratch} durchführen, um
-die Vorgänge hinter den Kulissen besser zu verstehen. Das ist u.a.
-deshalb nötig, weil für CI/CD Konfigurationsschritt nötig sind, die
-diesen hier ziemlich genau entsprechen.
+Im Zusammenspiel von TDD und \git wäre ein Unterrichtsprojekt denkbar,
+wo Schüler alleine oder in Gruppen verschiedene Methoden der
+Verschlüsselung implementieren. Am Ende könnten dann die Einzelprogramme
+im \emph{main}-Branch zusammengeführt werden. Hier soll aber \git nicht
+im Fokus stehen, sondern der TDD-Zyklus. Exemplarisch implementieren wir
+eine minimale Cäsar-Verschlüsselung.
 
 \subsection{Erstellen des Projektes}\label{erstellen-des-projektes}
 
@@ -6754,13 +6570,14 @@ Ordnerstruktur initialisiert.
 \end{Highlighting}
 \end{Shaded}
 
-Es müssen einige Parameter eingetellt werden:
+Den Vorschlag 132 übernimmst du einfach. Nun müssen einige Parameter
+eingestellt werden:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{Version:}\NormalTok{ 1.5 }\ErrorTok{(}\ExtensionTok{Taste}\NormalTok{ 9}\KeywordTok{)}
 \ExtensionTok{groupID:}\NormalTok{ de.alp.kurs}
-\ExtensionTok{artifactID:}\NormalTok{ krypto }
+\ExtensionTok{artifactID:}\NormalTok{ caesar }
 \ExtensionTok{version:}\NormalTok{ 1.0{-}SNAPSHOT}
 \ExtensionTok{package:}\NormalTok{ de.alp.kurs}
 \ExtensionTok{Bestätigen:}\NormalTok{ Y }
@@ -6769,26 +6586,7 @@ Es müssen einige Parameter eingetellt werden:
 
 Das liefert folgende Struktur:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{.}
-\ExtensionTok{└──}\NormalTok{ krypto}
-    \ExtensionTok{├──}\NormalTok{ pom.xml}
-    \ExtensionTok{└──}\NormalTok{ src}
-        \ExtensionTok{├──}\NormalTok{ main}
-        \ExtensionTok{│  }\NormalTok{ └── java}
-        \ExtensionTok{│  }\NormalTok{     └── de}
-        \ExtensionTok{│  }\NormalTok{         └── alp}
-        \ExtensionTok{│  }\NormalTok{             └── kurs}
-        \ExtensionTok{│  }\NormalTok{                 └── App.java}
-        \ExtensionTok{└──}\NormalTok{ test}
-            \ExtensionTok{└──}\NormalTok{ java}
-                \ExtensionTok{└──}\NormalTok{ de}
-                    \ExtensionTok{└──}\NormalTok{ alp}
-                        \ExtensionTok{└──}\NormalTok{ kurs}
-                            \ExtensionTok{└──}\NormalTok{ AppTest.java}
-\end{Highlighting}
-\end{Shaded}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/tdd/tree_init.png}}
 
 Dieses Projekt kann bereits (fast) compiliert werden. Zuerst müssen wir
 allerdings noch einige Einträge in der \datei{pom.xml} angepasst werden:
@@ -6802,6 +6600,13 @@ allerdings noch einige Einträge in der \datei{pom.xml} angepasst werden:
   Konfiguration des \emph{jar}-Plugin:
 \end{itemize}
 
+\samplestart
+
+\textbf{Hinweis}\\
+Bei den letzten Tests für den Workshop war die Konfiguration des
+\emph{jar}-Plugin nicht mehr nötig. Ich lasse den Code hier aber dennoch
+stehen! \sampleend
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -6811,7 +6616,7 @@ allerdings noch einige Einträge in der \datei{pom.xml} angepasst werden:
     \OperatorTok{\textless{}}\NormalTok{configuration}\OperatorTok{\textgreater{}}
         \OperatorTok{\textless{}}\NormalTok{archive}\OperatorTok{\textgreater{}}
             \OperatorTok{\textless{}}\NormalTok{manifest}\OperatorTok{\textgreater{}}
-                \OperatorTok{\textless{}}\NormalTok{mainClass}\OperatorTok{\textgreater{}}\NormalTok{de.alp.kurs.App}\OperatorTok{\textless{}}\NormalTok{/mainClass}\OperatorTok{\textgreater{}}
+                \OperatorTok{\textless{}}\NormalTok{mainClass}\OperatorTok{\textgreater{}}\NormalTok{de.alp.kurs.Caesar}\OperatorTok{\textless{}}\NormalTok{/mainClass}\OperatorTok{\textgreater{}}
             \OperatorTok{\textless{}}\NormalTok{/manifest}\OperatorTok{\textgreater{}}
         \OperatorTok{\textless{}}\NormalTok{/archive}\OperatorTok{\textgreater{}}
     \OperatorTok{\textless{}}\NormalTok{/configuration}\OperatorTok{\textgreater{}}
@@ -6820,14 +6625,365 @@ allerdings noch einige Einträge in der \datei{pom.xml} angepasst werden:
 \end{Highlighting}
 \end{Shaded}
 
-Mit \cmd{mvn package} komplieren wir, führen einen Test aus und
-erstellen das passende jar-Archiv.
+Gib nun \cmd{mvn package}. \emph{package} ist ein relativ großer
+LiveCycle, der Compile, Test und Package umfasst. Am Ende entsteht ein
+\emph{jar}-Archiv, das ausgeführt werden kann..
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{java} \AttributeTok{{-}jar}\NormalTok{ target/krypto{-}1.0{-}SNAPSHOT.jar}
+\ExtensionTok{java} \AttributeTok{{-}jar}\NormalTok{ target/caesar{-}1.0{-}SNAPSHOT.jar}
 \end{Highlighting}
 \end{Shaded}
+
+Mit der bisherigen Befehlssequenz hast du überprüft, ob der Setup von
+\maven funktioniert. Sieh dir nun die Vorlagedateien an, die automatisch
+generiert wurden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// Inhalt von App.java}
+
+\KeywordTok{package}\ImportTok{ de}\OperatorTok{.}\ImportTok{alp}\OperatorTok{.}\ImportTok{kurs}\OperatorTok{;}
+
+\KeywordTok{public} \KeywordTok{class}\NormalTok{ App }\OperatorTok{\{}
+    \KeywordTok{public} \DataTypeTok{static} \DataTypeTok{void} \FunctionTok{main}\OperatorTok{(}\BuiltInTok{String}\OperatorTok{[]}\NormalTok{ args}\OperatorTok{)} \OperatorTok{\{}
+        \BuiltInTok{System}\OperatorTok{.}\FunctionTok{out}\OperatorTok{.}\FunctionTok{println}\OperatorTok{(}\StringTok{"Hello World!"}\OperatorTok{);}
+    \OperatorTok{\}}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Es handelt sich also um die übliche Startdatei.\\
+Die \datei{AppTest.java} ist umfangreicher:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{package}\ImportTok{ de}\OperatorTok{.}\ImportTok{alp}\OperatorTok{.}\ImportTok{kurs}\OperatorTok{;}
+
+\KeywordTok{import} \KeywordTok{static}\ImportTok{ org}\OperatorTok{.}\ImportTok{junit}\OperatorTok{.}\ImportTok{jupiter}\OperatorTok{.}\ImportTok{api}\OperatorTok{.}\ImportTok{Assertions}\OperatorTok{.}\ImportTok{assertTrue}\OperatorTok{;}
+\KeywordTok{import} \ImportTok{org}\OperatorTok{.}\ImportTok{junit}\OperatorTok{.}\ImportTok{jupiter}\OperatorTok{.}\ImportTok{api}\OperatorTok{.}\ImportTok{Test}\OperatorTok{;}
+
+\KeywordTok{public} \KeywordTok{class}\NormalTok{ AppTest }\OperatorTok{\{}
+    \AttributeTok{@Test}
+    \KeywordTok{public} \DataTypeTok{void} \FunctionTok{shouldAnswerWithTrue}\OperatorTok{()} \OperatorTok{\{}
+        \FunctionTok{assertTrue}\OperatorTok{(}\KeywordTok{true}\OperatorTok{);}
+    \OperatorTok{\}}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Genau an dieser Stelle steigen wir nun in TDD ein. Lies von hier an nun
+ganz genau und führe auch wirklich \emph{jeden} Schritt aus, egal wie
+sinnlos er aktuell für dich wirkt! Mir ist bewusst, dass es unendlich
+viele verschiedene Ansätze zur Implementierung eines Cäsar-Algorithmus
+gibt. Ich werde hier sicher nicht den elegantesten oder performantesten
+Ansatz verfolgen, denn ich will schließlich TDD demonstrieren und keine
+Programmierkurs halten! Aus diesem Grund wird auch nicht jeder Edge-Case
+abgefangen.
+
+Ich möchte allerdings als Hauptklasse nicht \emph{App}, sondern
+\emph{Caesar}. Das erreichst du einfach, indem du an folgenden Stellen
+Umbenennungen vornimmst:
+
+\begin{itemize}
+\tightlist
+\item
+  App.java -\textgreater{} Caesar.java
+\item
+  In dieser Datei den Klassennamen auf \emph{Caesar} ändern
+\item
+  AppTest.java -\textgreater{} CaesarTest.java
+\item
+  In dieser Datei den Klassennamen auf \emph{CaesarTest} ändern
+\item
+  In der Datei \datei{pom.xml} im \emph{jar}-Plugin die MainClass
+  umbenennen
+\end{itemize}
+
+Zur Kontrolle führst du gleich wieder ein \cmd{mvn package} aus. Wenn
+das ohne Fehler abgearbeitet wird, kannst du mit TDD beginnen.
+
+\subsection{Schrittweises TDD}\label{schrittweises-tdd}
+
+Es gibt viele Regeln beim TDD und eine davon ist, dass triviale Getter
+und Setter nicht getestet werden. Das einfache Setzen einer (privaten)
+Variablen stellt keinen kritischen Code dar. Beginne also mit einem
+Setter für den Klartext in der Datei \datei{Caesar.java}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{package}\ImportTok{ de}\OperatorTok{.}\ImportTok{alp}\OperatorTok{.}\ImportTok{kurs}\OperatorTok{;}
+
+\KeywordTok{public} \KeywordTok{class}\NormalTok{ Caesar }\OperatorTok{\{}
+    \KeywordTok{private} \BuiltInTok{String}\NormalTok{ cryptText }\OperatorTok{=} \StringTok{""}\OperatorTok{;}
+    \KeywordTok{private} \BuiltInTok{String}\NormalTok{ clearText }\OperatorTok{=} \StringTok{""}\OperatorTok{;}
+
+    \KeywordTok{public} \DataTypeTok{static} \DataTypeTok{void} \FunctionTok{main}\OperatorTok{(}\BuiltInTok{String}\OperatorTok{[]}\NormalTok{ args}\OperatorTok{)} \OperatorTok{\{}
+        \BuiltInTok{System}\OperatorTok{.}\FunctionTok{out}\OperatorTok{.}\FunctionTok{println}\OperatorTok{(}\StringTok{"Hello World!"}\OperatorTok{);}
+    \OperatorTok{\}}
+        
+    \KeywordTok{public} \DataTypeTok{void} \FunctionTok{set\_clearText}\OperatorTok{(}\BuiltInTok{String}\NormalTok{ clearText}\OperatorTok{)\{}
+        \KeywordTok{this}\OperatorTok{.}\FunctionTok{clearText} \OperatorTok{=}\NormalTok{ clearText}\OperatorTok{;}
+    \OperatorTok{\}}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Nun schreibst du in der Datei \datei{CaesarTest.java} den ersten Test
+für eine nicht existierende Funktion. Bei Hard-Core TDD würdest du
+bereits die reine Existenz der Funktion mit Hilfe von Reflections testen
+-- so weit möchte ich nicht gehen. Deshalb testen wir, ob die Funktion
+einen Text zurückliefert:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\AttributeTok{@Test} 
+\KeywordTok{public} \DataTypeTok{void} \FunctionTok{cryptLiefertEineRueckgabe}\OperatorTok{()\{}
+\NormalTok{    Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}
+    \BuiltInTok{String}\NormalTok{ res }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{crypt}\OperatorTok{();}
+    \FunctionTok{assertNotNull}\OperatorTok{(}\NormalTok{res}\OperatorTok{);}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Der Befehl \cmd{mvn test} scheitert, wegen der fehlenden Methode bereits
+beim Compilieren. Du schreibst zunächst folgende Variante der Methode:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{public} \BuiltInTok{String} \FunctionTok{crypt}\OperatorTok{()} \OperatorTok{\{}
+        \ControlFlowTok{return} \KeywordTok{null}\OperatorTok{;}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Der Test geht natürlich immer noch schief, aber das ist wichtig, denn du
+weißt nun, dass die Methode überhaupt überprüft wird.\\
+Nun änderst du die Rückgabe auf einen beliebigen String. Das ist der
+einfachst Weg, damit der Test nicht mehr scheitert.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{public} \BuiltInTok{String} \FunctionTok{crypt}\OperatorTok{()} \OperatorTok{\{}
+        \ControlFlowTok{return} \StringTok{"x;}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Nun beginnt der Denkprozess, was wir von der Methode an Edge-Cases
+erwarten. Wenn es keinen Klartext gibt, soll die Rückgabe ein leerer
+String sein. Liegt ein Klartext vor, so soll Text zurückgeliefert
+werden. Hier müssen wir bereits überlegen, wie wir mit Sonderzeichen
+umgehen, die mit Caesar nicht sinnvoll behandelt werden können. Das ist
+eine Design-Entscheidung noch vor der Implementierung. Wenn wir
+annehmen, dass alle solchen Zeichen durch Minuszeichen ersetzt werden,
+dann sollte der verschlüsselte Text die gleiche Länge wie der Klartext
+besitzen.
+
+Das sind gleich zwei Tests -- du solltest ein Blatt mitführen, was noch
+zu erledigen ist\footnote{Beim TDD sollte ein Test immer nur genau eine
+  Sache testen!}:
+
+\begin{itemize}
+\tightlist
+\item
+  cryptLiefertLeerWennKeinKlartext()
+\item
+  cryptLiefertTextKorrekterLaenge()
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\AttributeTok{@Test}
+    \KeywordTok{public} \DataTypeTok{void} \FunctionTok{cryptLiefertLeerWennKeinKlartext}\OperatorTok{()\{}
+\NormalTok{        Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}
+\NormalTok{        caesar}\OperatorTok{.}\FunctionTok{set\_clearText}\OperatorTok{(}\StringTok{""}\OperatorTok{);}
+        \BuiltInTok{String}\NormalTok{ res }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{crypt}\OperatorTok{();}
+        \FunctionTok{assertEquals}\OperatorTok{(}\DecValTok{0}\OperatorTok{,}\NormalTok{ res}\OperatorTok{.}\FunctionTok{length}\OperatorTok{());}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Der Test scheitert wie gewünscht, weil ja „x`` nicht die Länge Null
+besitzt. Wir brauchen also eine Rückgabe, die etwas sinnvoller ist.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{public} \BuiltInTok{String} \FunctionTok{crypt}\OperatorTok{()} \OperatorTok{\{}
+       \ControlFlowTok{return}\NormalTok{ cryptText}\OperatorTok{;}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Der Test läuft nun wieder auf grün -- passt alles! Probieren wir als
+Test einen längeren Text:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \AttributeTok{@Test} 
+    \KeywordTok{public} \DataTypeTok{void} \FunctionTok{cryptLiefertTextKorrekterLaenge}\OperatorTok{()\{}
+\NormalTok{        Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}
+\NormalTok{        caesar}\OperatorTok{.}\FunctionTok{set\_clearText}\OperatorTok{(}\StringTok{"hallo"}\OperatorTok{);}
+        \BuiltInTok{String}\NormalTok{ res }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{crypt}\OperatorTok{();}
+        \FunctionTok{assertEquals}\OperatorTok{(}\StringTok{"Hallo"}\OperatorTok{.}\FunctionTok{length}\OperatorTok{(),}\NormalTok{ res}\OperatorTok{.}\FunctionTok{length}\OperatorTok{());}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Da die Variable \emph{cryptText} ja leer ist, muss dieser Test wieder
+scheitern. Die nächste Änderung im Code steht an:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{public} \BuiltInTok{String} \FunctionTok{crypt}\OperatorTok{()} \OperatorTok{\{}
+\NormalTok{        cryptText }\OperatorTok{=}\NormalTok{ clearText}\OperatorTok{;}
+        \ControlFlowTok{return}\NormalTok{ cryptText}\OperatorTok{;}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Und wieder grün. Allerdings macht \emph{crypt()} immer noch keinen
+sinnvollen Job! Das kann auch gar nicht gehen, weil ja noch gar keine
+Verschiebung definiert wurde und der Klartext die Säuberung der
+Sonderzeichen noch nicht durchlaufen hat. Aus Zeitgründen verzichten wir
+auf die Säuberung und schreiben schnell einen Setter für die
+Verschiebung:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{public} \DataTypeTok{void} \FunctionTok{setVerschiebung}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ verschiebung}\OperatorTok{)\{}
+        \KeywordTok{this}\OperatorTok{.}\FunctionTok{verschiebung} \OperatorTok{=}\NormalTok{ verschiebung}\OperatorTok{;}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Das Kodieren ist ja eine Abfolge von Verschiebungen. Testen wir also
+zunächst die Verschiebung eines einzigen Buchstabens, bevor wir irgendwo
+eine Schleife basteln:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\AttributeTok{@Test}
+    \KeywordTok{public} \DataTypeTok{void} \FunctionTok{shiftCharInDerMitteUm1}\OperatorTok{()\{}
+\NormalTok{        Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}
+\NormalTok{        caesar}\OperatorTok{.}\FunctionTok{setVerschiebung}\OperatorTok{(}\DecValTok{1}\OperatorTok{);}
+        \DataTypeTok{char}\NormalTok{ c }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{shiftChar}\OperatorTok{(}\CharTok{\textquotesingle{}m\textquotesingle{}}\OperatorTok{);}
+        \FunctionTok{assertEquals}\OperatorTok{(}\CharTok{\textquotesingle{}n\textquotesingle{}}\OperatorTok{,}\NormalTok{ c}\OperatorTok{);}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Rot-Phase \ldots{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{public} \DataTypeTok{char} \FunctionTok{shiftChar}\OperatorTok{(}\DataTypeTok{char}\NormalTok{ buchstabe}\OperatorTok{)} \OperatorTok{\{}
+        \ControlFlowTok{return} \CharTok{\textquotesingle{}n\textquotesingle{}}\OperatorTok{;}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Grün-Phase -- alles gut, aber nicht funktional.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\AttributeTok{@Test}
+    \KeywordTok{public} \DataTypeTok{void} \FunctionTok{shiftCharInDerMitteUm\_n\_kleiner\_wert}\OperatorTok{()\{}
+\NormalTok{        Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}
+\NormalTok{        caesar}\OperatorTok{.}\FunctionTok{setVerschiebung}\OperatorTok{(}\DecValTok{5}\OperatorTok{);}
+        \DataTypeTok{char}\NormalTok{ c }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{shiftChar}\OperatorTok{(}\CharTok{\textquotesingle{}m\textquotesingle{}}\OperatorTok{);}
+        \FunctionTok{assertEquals}\OperatorTok{(}\CharTok{\textquotesingle{}r\textquotesingle{}}\OperatorTok{,}\NormalTok{ c}\OperatorTok{);}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Wir sind wieder bei \emph{rot}, weil wir nun echt arbeiten müssen!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{public} \DataTypeTok{char} \FunctionTok{shiftChar}\OperatorTok{(}\DataTypeTok{char}\NormalTok{ buchstabe}\OperatorTok{)} \OperatorTok{\{}
+        \DataTypeTok{int}\NormalTok{ ascii }\OperatorTok{=}\NormalTok{ buchstabe }\OperatorTok{+}\NormalTok{ verschiebung}\OperatorTok{;}
+        \ControlFlowTok{return} \OperatorTok{(}\DataTypeTok{char}\OperatorTok{)}\NormalTok{ascii}\OperatorTok{;}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Wieder haben wir \emph{grün} erreicht -- allerdings nur für kleine
+Verschiebungen im der Mitte des Alphabets. Wollen wir zum Beispiel „x``
+verschieben, so wird nicht „c`` entstehen. Aber dafür schreiben wir
+einen Test:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\AttributeTok{@Test}
+    \KeywordTok{public} \DataTypeTok{void} \FunctionTok{shiftCharAmRandUeberKante}\OperatorTok{()\{}
+\NormalTok{        Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}
+\NormalTok{        caesar}\OperatorTok{.}\FunctionTok{setVerschiebung}\OperatorTok{(}\DecValTok{5}\OperatorTok{);}
+        \DataTypeTok{char}\NormalTok{ res }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{shiftChar}\OperatorTok{(}\CharTok{\textquotesingle{}x\textquotesingle{}}\OperatorTok{);}
+        \FunctionTok{assertEquals}\OperatorTok{(}\CharTok{\textquotesingle{}c\textquotesingle{}}\OperatorTok{,}\NormalTok{ res}\OperatorTok{);}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Klarer Fall von \emph{rot}. Auf zum Ändern des Codes!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{public} \DataTypeTok{char} \FunctionTok{shiftChar}\OperatorTok{(}\DataTypeTok{char}\NormalTok{ buchstabe}\OperatorTok{)} \OperatorTok{\{}
+        \DataTypeTok{int}\NormalTok{ ascii }\OperatorTok{=}\NormalTok{ buchstabe }\OperatorTok{+}\NormalTok{ verschiebung}\OperatorTok{;}
+        \ControlFlowTok{if} \OperatorTok{(}\NormalTok{ascii }\OperatorTok{\textgreater{}} \DecValTok{122}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{            ascii }\OperatorTok{=}\NormalTok{ ascii }\OperatorTok{{-}} \DecValTok{26} \OperatorTok{;}
+        \OperatorTok{\}}
+        \ControlFlowTok{return} \OperatorTok{(}\DataTypeTok{char}\OperatorTok{)}\NormalTok{ascii}\OperatorTok{;}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Ja -- das geht eleganter, ist hier aber egal! Wir könnten nun auch noch
+um Verschiebungen in negative Richtung implementieren, aber das bringt
+uns thematisch nicht weiter.
+
+Was testen wir nun? Die Methode \emph{crypt} könnten wir nun weiter
+ausbauen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\AttributeTok{@Test}
+    \KeywordTok{public} \DataTypeTok{void} \FunctionTok{cryptCodiertStandardKorrekt}\OperatorTok{()\{}
+\NormalTok{        Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}
+\NormalTok{        caesar}\OperatorTok{.}\FunctionTok{setVerschiebung}\OperatorTok{(}\DecValTok{5}\OperatorTok{);}
+\NormalTok{        caesar}\OperatorTok{.}\FunctionTok{set\_clearText}\OperatorTok{(}\StringTok{"aaaa"}\OperatorTok{);}
+        \BuiltInTok{String}\NormalTok{ res }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{crypt}\OperatorTok{();}
+        \FunctionTok{assertEquals}\OperatorTok{(}\StringTok{"ffff"}\OperatorTok{,}\NormalTok{ res}\OperatorTok{);}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Eine Variante, um wieder nach grün zu kommen, wäre
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{public} \BuiltInTok{String} \FunctionTok{crypt}\OperatorTok{()} \OperatorTok{\{}
+        \BuiltInTok{StringBuilder}\NormalTok{ sb }\OperatorTok{=} \KeywordTok{new} \BuiltInTok{StringBuilder}\OperatorTok{();}
+        \ControlFlowTok{for} \OperatorTok{(}\DataTypeTok{int}\NormalTok{ i}\OperatorTok{=}\DecValTok{0}\OperatorTok{;}\NormalTok{ i }\OperatorTok{\textless{}}\NormalTok{ clearText}\OperatorTok{.}\FunctionTok{length}\OperatorTok{();}\NormalTok{ i}\OperatorTok{++)\{}
+            \DataTypeTok{char}\NormalTok{ c }\OperatorTok{=} \FunctionTok{shiftChar}\OperatorTok{(}\NormalTok{clearText}\OperatorTok{.}\FunctionTok{charAt}\OperatorTok{(}\NormalTok{i}\OperatorTok{));}
+\NormalTok{            sb}\OperatorTok{.}\FunctionTok{append}\OperatorTok{(}\NormalTok{c}\OperatorTok{);}
+        \OperatorTok{\}}
+        \ControlFlowTok{return}\NormalTok{ sb}\OperatorTok{.}\FunctionTok{toString}\OperatorTok{();}
+    \OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Und ja -- auch das geht anders. Ich glaube aber, dass mit den bisherigen
+Schritten zumindest die Idee des TDD so weit klar geworden ist. Damit
+ist man natürlich noch ewig weit von der Routinearbeit eines
+professionellen entwicklers entfernt! Es gibt neben TDD auch noch andere
+Ansätze wie BDD (Behaviour Driven Development), wie es gerne bei der
+Sprache Ruby on Rails mit Hilfe von Cucumber verwendet wird, nur da ist
+bei mir dann auch Ende, weil ich von diesem Weg irgendwann abgebogen
+bin. Man kann einfach nicht jeden Weg gehen und in diesen Sinne hoffe
+ich, dass dieser Workshop zumindest einige lehrreiche Aspekte beinhaltet
+hat.
 
 \bookmarksetup{startatroot}
 

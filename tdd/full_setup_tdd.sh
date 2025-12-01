@@ -1,6 +1,10 @@
 
 set -x
 
+cd /tmp
+rm -rf java
+mkdir java
+
 #https://www.baeldung.com/java-unit-testing-best-practices
 
 #SOURCE_FOLGER="projekt1/src/main/java/de/alp/kurs"
@@ -14,8 +18,8 @@ set -x
 cd /tmp/java
 rm -rf myproject
 
-
 mkdir -p myproject/{src/main/java/com/example,src/test/java/com/example,lib,out/classes,out/test-classes}
+
 #cd myproject
 
 cp Calculator.java myproject/src/main/java/com/example/Calculator.java

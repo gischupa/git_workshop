@@ -319,7 +319,7 @@ Datei betroffen hat (\datei{datei2.txt}). Hätten Änderungen an \datei{datei.tx
 stattgefunden, so hätten wir einen Konflikt bekommen, den wir hätten lösen müssen.
 
 
-Führe der Script \datei{rebase_mit_konflikt.sh} aus und versuche 
+Führe der Script \datei{rebase\_mit\_konflikt.sh} aus und versuche 
 dann einen Rebase:
 
 ```bash

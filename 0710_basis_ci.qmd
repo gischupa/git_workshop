@@ -6,12 +6,13 @@ das nun an einem Minimalbeispiel durch und besprechen auch die
 Probleme, die (aus meiner Sicht) dabei auftreten.
 
 Um die Abläufe einfach zu halten, arbeiten wir direkt mit 
-\gitlab auf der Weboberfläche -- das setzt einen Account voraus!
+\gitlab auf der Weboberfläche -- das setzt allerdings einen 
+Account voraus!
 
 **Schritt 1**  
 Erstellen eines leeren Repositories auf \gitlab.  
-Der Name ist aktuell egal. Beim Initialisieren kann eine Readme
-erstellt werden -- das stört nicht!
+Der Name ist aktuell egal. Beim Initialisieren kann eine Datei 
+\datei{Readme.md} erstellt werden -- das stört nicht!
 
 **Schritt 2**  
 Anlegen der folgenden Ordnerstruktur:

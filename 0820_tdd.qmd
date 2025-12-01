@@ -1,0 +1,35 @@
+# TDD - Test Driven Development
+
+(Video mit Intellij: https://www.youtube.com/watch?v=eMU_hninZAs)
+
+TDD ist eine sehr strenge Philosophie in Bezug auf den 
+Ablauf bei der Software-Entwicklung. Puristen sprechen 
+vom *Red-Green-Refactor* Zyklus, der in jedem Fall eingehalten 
+werden muss. 
+
+## Was versteht man darunter? 
+
+Grob geht es um einen Zyklus von Code schreiben, Code testen,
+Code optimieren, der die Entwicklung -- idealer Weise automatisiert -- begleitet.  
+
+Zum Beginn der Programmentwicklung wird dabei sofort der erste Test
+geschrieben -- einer von sehr sehr vielen im Verlauf der Entwicklung.
+Er testet einen Programmteil, *der aktuell noch nicht existiert* und 
+deshalb scheitern muss (Red-Phase). Nun wird die minimale Menge an Code 
+geschrieben, damit der Test erfolgreich verläuft (Green-Phase). 
+Neulingen beim TDD erscheint dieser Minimalimus in vielen Fällen 
+komplett überzogen, es entspricht aber wirklich diesem Vorgehen. 
+Nun wird das Programm optimiert (refactoring) -- soweit das zu diesem Zeitpunkt bereits 
+möglich und sinnvoll ist. Weitere Tests erzwingen Ergänzungen und 
+Änderungen am eigentlichen Programm, so dass das Programmieren ein 
+ständiger Wechsel zwischen den Phasen Red, Green und Refactoring wird.
+Viele IDEs unterstützen diesen Ablauf aktiv, erstellen also Code zum Test 
+(oder anders herum).
+
+Im Prinzip ist das Testen von Software -- oder Teilen davon -- auch ohne 
+ein Buildsystem wie \maven möglich. Leider sind die Befehle für Compilieren,
+Testen und Ausführen von Java-Code auf den einzelnen Plattformen zumindest 
+so unterschiedlich und komplex, dass ein manuelles Testen faktisch nicht 
+sinnvoll ist. Aus diesem Grund werden wir hier gleich mit \maven arbeiten. 
+
+
