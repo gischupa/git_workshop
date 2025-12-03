@@ -1,0 +1,8 @@
+# Runner
+
+Ein Runner ist ein Hilfsprogramm, das Aufträge von Gitlab entgegen nimmt 
+und ausführt. Solche Runner können auf unterschiedlichen Ebenen agieren,
+d.h. nur für einzelne Projekte, für Gruppen, für alle Repositories, ...
+Nicht alle Varianten sind für die freien Accounts auf Gitlab verfügbar!
+
+

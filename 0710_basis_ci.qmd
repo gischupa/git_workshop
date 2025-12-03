@@ -5,14 +5,39 @@ ein bestimmter Stand in der Entwicklung erreicht ist. Wir spielen
 das nun an einem Minimalbeispiel durch und besprechen auch die 
 Probleme, die (aus meiner Sicht) dabei auftreten.
 
-Um die Abläufe einfach zu halten, arbeiten wir direkt mit 
-\gitlab auf der Weboberfläche -- das setzt allerdings einen 
-Account voraus!
+Aus Zeitgründen verwenden wir als Beispiel hier das Erstellen 
+eines Buches, einer Dokumentation, ...^[Ich werde im Anhang 
+auch noch eine Version für das Compilieren von Java-Projekten mit 
+\maven ergänzen! ]
+
+Zunächst aber etwas Hintergrundwissen, gleich am Praxisbeispiel 
+auf dem offiziellen \gitlab -- du benötigst also einen 
+Account^[Natürlich geht das auch auf deiner selbst gehosteten 
+Version von \gitlab, die können aber viele Teilnehmer nicht 
+mit nachhause nehmen und deshalb verwenden wir die offizielle 
+Instanz].
+
 
 **Schritt 1**  
-Erstellen eines leeren Repositories auf \gitlab.  
+Erstelle dir ein Projekt auf \gitlab.  
 Der Name ist aktuell egal. Beim Initialisieren kann eine Datei 
-\datei{Readme.md} erstellt werden -- das stört nicht!
+\datei{Readme.md} erstellt werden -- das ist sinnvoll, da 
+beim Clonen von leeren Repositories Folgeprobleme entstehen 
+können.
+
+**Schritt 2**  
+Clone das Repository auf deinen Rechner 
+
+**Schritt 3**  
+Kopiere die Datei \datei{quarto_vorlage.zip} aus dem 
+Kursordner in das Repository und entpacke sie sie dort.
+
+TODO: quarto_vorlage.zip erstellen für CICD - incl gitignore
+
+**Schritt 4**  
+Erstelle einen ersten Commit und pushe das Repository wieder auf
+\gitlab.
+
 
 **Schritt 2**  
 Anlegen der folgenden Ordnerstruktur:
@@ -168,7 +193,7 @@ den Pipelines (rechter Rand) zum Dowmload gestellt.
 Sobald die Projekte umfangreicher werden, ist dieser eher 
 manuelle Kompilieransatz und das Testen auf diesem Weg 
 schnell zu komplex. Dafür gibt es Build-Tools wie Gradle oder \maven.
-Letzteres wollen wir näher betrachten. Für einen ersten 
+Letzteres wollen wir später noch näher betrachten. Für einen ersten 
 Vorgeschmack erstellst du die Datei \datei{pom.xml} im Haupt-Ordner
 (also oberhalb von \ordner{scr}):
 

@@ -40,17 +40,3 @@ Anwendung. CI/CD bildet damit das Rückgrat moderner Entwicklungsprozesse --
 und ist ein Schlüsselkonzept, das jeder fortgeschrittene \git-Nutzer 
 verstehen sollte.
 
-
-xxxxxxxxxxxxxxxxxxxxxxx Ausgliedern xxxxxxxxxxxxxxxxxxxxxxxx
-
-Wir werden dieses Konzept nur am Beispiel eines winzigen Java-Programms 
-durchspielen, da bereits im Vorfeld neben \git diverse andere Voraussetzungen 
-klären müssen:
-
-* TDD (Test-Driven-Development)
-* Arbeiten mit einem Build-System (Maven)
-* Anbinden an \git via Docker
-
-[Tutorial auf digitalocean.com](https://www.digitalocean.com/community/tutorials/install-maven-linux-ubuntu)
-
-xxxxxxxxxxxxxxxxxxxxxxx Ausgliedern ENDE xxxxxxxxxxxxxxxxxxxxxxxx

@@ -411,3 +411,21 @@ Wert zugewiesen wird. Das soll der nächste Test überprüfen. Da eine derartige
 Variable aber im Regelfall als *private* deklariert ist, kommen wir nicht so einfach 
 an sie ran. Ein Getter wäre eine Möglichkeit, besitzt aber im Kontext 
 des Programms keinen Sinn.
+
+
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxx Ausgliedern xxxxxxxxxxxxxxxxxxxxxxxx
+
+Wir werden dieses Konzept nur am Beispiel eines winzigen Java-Programms 
+durchspielen, da bereits im Vorfeld neben \git diverse andere Voraussetzungen 
+klären müssen:
+
+* TDD (Test-Driven-Development)
+* Arbeiten mit einem Build-System (Maven)
+* Anbinden an \git via Docker
+
+[Tutorial auf digitalocean.com](https://www.digitalocean.com/community/tutorials/install-maven-linux-ubuntu)
+
+xxxxxxxxxxxxxxxxxxxxxxx Ausgliedern ENDE xxxxxxxxxxxxxxxxxxxxxxxx
