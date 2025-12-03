@@ -17,6 +17,7 @@ Version von \gitlab, die können aber viele Teilnehmer nicht
 mit nachhause nehmen und deshalb verwenden wir die offizielle 
 Instanz].
 
+### Vorbereitung
 
 **Schritt 1**  
 Erstelle dir ein Projekt auf \gitlab.  
@@ -31,13 +32,90 @@ Clone das Repository auf deinen Rechner
 **Schritt 3**  
 Kopiere die Datei \datei{quarto_vorlage.zip} aus dem 
 Kursordner in das Repository und entpacke sie sie dort.
+Dateien, die auf *qmd* enden, sind einfach Markdowndateien 
+für Quarto.
 
 TODO: quarto_vorlage.zip erstellen für CICD - incl gitignore
+TODO: Mit mini Geschichten Setup
 
 **Schritt 4**  
 Erstelle einen ersten Commit und pushe das Repository wieder auf
 \gitlab.
 
+Du hast nun viele Dateien, die kannst du auch später noch genau unter 
+die Lupe nehmen. Aktuell geht es darum, einen Automatimus auf 
+\gitlab zu erstellen. Aus diesem Grund änderst du zunächst 
+nichts an den Dateien.
+
+### Hintergrund
+
+\Gitlab kann einen automatischen Prozess im Hintergrund starten,
+wenn es eine Datei mit dem Namen \datei{gitlab_ci.yml} auf der 
+obersten Ebene des Repositories findet.  
+Diese Datei definiert genauer, was dieser Prozess wie erledigen soll.
+Du wirst den genauen Aufbau in einen der nächsten Schritte kennenlernen, 
+aber aktuell geht es erst einmal um das Funktionsprinzip.
+
+Wenn das System richtig konfiguriert ist, wird dese Datei einem weiteren
+Programm übergeben, einem sogeannten *runner*. Dieses Programm kannn 
+auf \gitlab installiert (=shared runner und andere Varianten), aber auch auf 
+deinem eigenen Rechner oder Server, der dann eigenständig mit \gitlab 
+kommuniziert um die Befehle in der \datei{gitlab_ci.yml} abzuarbeiten.
+
+Aber beginnen wir mit der Version direkt auf \gitlab.
+
+In deinem Projekt gibt es (linker Rand) einen Menüpunkt  
+*Settings -> CI/CD -> Runner*  
+
+Hier kannst du einen Runner mit deinem Projekt verbinden. Die 
+Formulierung *create project runner* (rechts oben) ist also 
+eigentlich nicht korrekt. 
+
+Im Prinzip genügt es, wenn du bei *run untagged jos* einen Haken setzt 
+und auf *create runner* klickst.
+
+Die nachfolgende Seite ist nur dann wichtig, falls du einen eigenen 
+Runner auf deinem eigenen Computer laufen hast! Klick also unten auf der Seite
+*View runners*.
+
+Seltsamer Weise kann man diese Seite nur *mit Gewalt* verlassen, indem du 
+wieder auf Settings wechselst (Fehlermeldung wegklicken). Nun solltest 
+du im Abschnitt *CI/CD - > Runners* einen angekoppelten Runner sehen.
+
+TODO: SCREENSHOT Liste der Runner
+
+### Automatismus basteln
+
+Erstelle nun die Datei  \datei{gitlab_ci.yml} in deinem Repository. 
+Wir bauen sie nun Zeile für Zeile mit Erklärung auf.
+
+**Zeile 1 und 2**  
+
+```bash
+---
+variables:
+```
+
+Die Datei muss dem relativ strengen YML-Format genügen und da beginnt die 
+Datei eben mit "---". Die nächste Zeile definiert den Abschnitt, wo Variablen
+definiert werden dürfen, die später im Script benötigt werden.
+
+**Zeile 3**  
+```bash
+  LATEX_IMAGE: benfret/quarto-minimal
+```
+Diese Zeile **muss** um 2 Leerzeichen eingerückt sein, KEIN Tabulator.
+Diese Variable legt fest, mit welchem Docker-Image später aus den 
+Markdown-Dateien ein PDF erstellt werden soll. 
+
+**Zeile 4**
+```bash
+build:
+```
+
+Das ist ein möglicher Schritt in der Befehlskette. Im Prinzip kannst du
+beliebig viele derartige Schritte definieren, die du dann später (kommt gleich) 
+gezielt abarbeiten lassen kannst.
 
 **Schritt 2**  
 Anlegen der folgenden Ordnerstruktur:
