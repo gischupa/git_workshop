@@ -264,6 +264,7 @@
 \newcommand{\git}{\textit{git}\xspace}
 \newcommand{\gitserver}{\textit{git}-Server\xspace}
 \newcommand{\gitservers}{\textit{git}-Servers\xspace}
+\newcommand{\Gitlab}{\textit{GitLab}\xspace}
 \newcommand{\gitlab}{\textit{GitLab}\xspace}
 \newcommand{\gitbash}{\textit{git-Bash}\xspace}
 \newcommand{\maven}{\textit{Maven}\xspace}
@@ -331,7 +332,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, colback={codebgcolor}, enhanced, sharp corners, frame hidden, breakable]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, frame hidden, colback={codebgcolor}, sharp corners, breakable, enhanced]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -5971,27 +5972,6 @@ bereitgestellten Anwendung. CI/CD bildet damit das Rückgrat moderner
 Entwicklungsprozesse -- und ist ein Schlüsselkonzept, das jeder
 fortgeschrittene \git-Nutzer verstehen sollte.
 
-xxxxxxxxxxxxxxxxxxxxxxx Ausgliedern xxxxxxxxxxxxxxxxxxxxxxxx
-
-Wir werden dieses Konzept nur am Beispiel eines winzigen Java-Programms
-durchspielen, da bereits im Vorfeld neben \git diverse andere
-Voraussetzungen klären müssen:
-
-\begin{itemize}
-\tightlist
-\item
-  TDD (Test-Driven-Development)
-\item
-  Arbeiten mit einem Build-System (Maven)
-\item
-  Anbinden an \git via Docker
-\end{itemize}
-
-\href{https://www.digitalocean.com/community/tutorials/install-maven-linux-ubuntu}{Tutorial
-auf digitalocean.com}
-
-xxxxxxxxxxxxxxxxxxxxxxx Ausgliedern ENDE xxxxxxxxxxxxxxxxxxxxxxxx
-
 \section{CI -- Einstieg}\label{ci-einstieg}
 
 Im Prinzip geht es um die Automatisierung von Abläufen, sobald ein
@@ -5999,13 +5979,197 @@ bestimmter Stand in der Entwicklung erreicht ist. Wir spielen das nun an
 einem Minimalbeispiel durch und besprechen auch die Probleme, die (aus
 meiner Sicht) dabei auftreten.
 
-Um die Abläufe einfach zu halten, arbeiten wir direkt mit \gitlab auf
-der Weboberfläche -- das setzt allerdings einen Account voraus!
+Aus Zeitgründen verwenden wir als Beispiel hier das Erstellen eines
+Buches, einer Dokumentation, \ldots{}\footnote{Ich werde im Anhang auch
+  noch eine Version für das Compilieren von Java-Projekten mit
+  \maven ergänzen!}
+
+Zunächst aber etwas Hintergrundwissen, gleich am Praxisbeispiel auf dem
+offiziellen \gitlab{} -- du benötigst also einen Account\footnote{Natürlich
+  geht das auch auf deiner selbst gehosteten Version von \gitlab, die
+  können aber viele Teilnehmer nicht mit nachhause nehmen und deshalb
+  verwenden wir die offizielle Instanz}.
+
+\subsection{Vorbereitung}\label{vorbereitung}
 
 \textbf{Schritt 1}\\
-Erstellen eines leeren Repositories auf \gitlab.\\
+Erstelle dir ein Projekt auf \gitlab.\\
 Der Name ist aktuell egal. Beim Initialisieren kann eine Datei
-\datei{Readme.md} erstellt werden -- das stört nicht!
+\datei{Readme.md} erstellt werden -- das ist sinnvoll, da beim Clonen
+von leeren Repositories Folgeprobleme entstehen können.
+
+\textbf{Schritt 2}\\
+Clone das Repository auf deinen Rechner
+
+\textbf{Schritt 3}\\
+Kopiere die Datei \datei{quarto_vorlage.zip} aus dem Kursordner in das
+Repository und entpacke sie sie dort. Dateien, die auf \emph{qmd} enden,
+sind einfach Markdowndateien für Quarto.
+
+TODO: quarto\_vorlage.zip erstellen für CICD - incl gitignore TODO: Mit
+mini Geschichten Setup
+
+\textbf{Schritt 4}\\
+Erstelle einen ersten Commit und pushe das Repository wieder auf
+\gitlab.
+
+Du hast nun viele Dateien, die kannst du auch später noch genau unter
+die Lupe nehmen. Aktuell geht es darum, einen Automatimus auf \gitlab zu
+erstellen. Aus diesem Grund änderst du zunächst nichts an den Dateien.
+
+\subsection{Hintergrund}\label{hintergrund}
+
+\Gitlab kann einen automatischen Prozess im Hintergrund starten, wenn es
+eine Datei mit dem Namen \datei{.gitlab-ci.yml} auf der obersten Ebene
+des Repositories findet.\\
+Diese Datei definiert genauer, was dieser Prozess wie erledigen soll. Du
+wirst den genauen Aufbau in einem der nächsten Schritte kennenlernen,
+aber aktuell geht es erst einmal um das Funktionsprinzip.
+
+Wenn das System richtig konfiguriert ist, wird diese Datei einem
+weiteren Programm übergeben, einem sogenannten \emph{runner}. Dieses
+Programm kannn auf \gitlab installiert (=shared runner und andere
+Varianten), aber auch auf deinem eigenen Rechner oder Server, der dann
+eigenständig mit \gitlab  kommuniziert um die Befehle in der
+\datei{.gitlab-ci.yml} abzuarbeiten.
+
+Aber beginnen wir mit der Version direkt auf \gitlab.
+
+In deinem Projekt gibt es (linker Rand) einen Menüpunkt\\
+\emph{Settings -\textgreater{} CI/CD -\textgreater{} Runner}
+
+Hier kannst du einen Runner mit deinem Projekt verbinden. Die
+Formulierung \emph{create project runner} (rechts oben) ist also
+eigentlich nicht korrekt.
+
+Im Prinzip genügt es, wenn du bei \emph{run untagged jobs} einen Haken
+setzt und auf \emph{create runner} klickst.
+
+Die nachfolgende Seite ist nur dann wichtig, falls du einen eigenen
+Runner auf deinem eigenen Computer laufen hast! Klick also unten auf der
+Seite \emph{View runners}.
+
+Seltsamer Weise kann man diese Seite nur \emph{mit Gewalt} verlassen,
+indem du wieder auf Settings wechselst (Seite verlassen). Nun solltest
+du im Abschnitt \emph{CI/CD - \textgreater{} Runners} einen
+angekoppelten Runner sehen.
+
+TODO: SCREENSHOT Liste der Runner
+
+\subsection{Automatismus basteln}\label{automatismus-basteln}
+
+Erstelle nun die Datei \datei{.gitlab-ci.yml} in deinem Repository.
+Bevor wir unser Minibuch bauen, wollen wir uns einen minimalen
+Automatismus bauen.
+
+Übertrage folgende Zeilen in die Datei \datei{.gitlab-ci.yml}. Verwende
+für die Einrückungen unbedingt Leerzeichen und keine Tabulatoren!
+
+\phantomsection\label{annotated-cell-198}%
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
+  \ExtensionTok{{-}}\NormalTok{ build }\hspace*{\fill}\NormalTok{\circled{2}}
+
+\ExtensionTok{ausgabe\_1:} \hspace*{\fill}\NormalTok{\circled{3}}
+  \ExtensionTok{stage:}\NormalTok{ build }\hspace*{\fill}\NormalTok{\circled{4}}
+  \ExtensionTok{script:}\NormalTok{ echo }\StringTok{"Ich bin die erste Ausgabe"} \hspace*{\fill}\NormalTok{\circled{5}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{description}
+\tightlist
+\item[\circled{1}]
+Abschnitt für Verarbeitungsschritte einleiten
+\item[\circled{2}]
+Hier gibt es nur einen Schritt - nämlich \emph{build}
+\item[\circled{3}]
+Abschnitt für eine Aktion einleiten
+\item[\circled{4}]
+Angabe, zu welchem Schritt die Aktion gehört
+\item[\circled{5}]
+Auszuführender Befehl. Bei mehr Befehlen werden Spiegelstriche
+verwendet.
+\end{description}
+
+Wenn du das erledigt hast, erstellst du einen Commit und pushst das
+Repository. Auf \gitlab solltest du am linken Rand im Menü \emph{build}
+unter \emph{jobs} jetzt einen laufenden Job sehen. Wenn du ihn
+anklickst, kannst du direkt sehen was passiert.\\
+Von den vielen Meldungen sind nur wenige direkt interessant:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Running}\NormalTok{ with gitlab{-}runner 18.4.0\textasciitilde{}pre.246.g71914659 }\ErrorTok{(}\ExtensionTok{71914659}\KeywordTok{)}
+\ExtensionTok{Preparing}\NormalTok{ the }\StringTok{"docker+machine"}\NormalTok{ executor}
+\ExtensionTok{Using}\NormalTok{ default image}
+\ExtensionTok{Getting}\NormalTok{ source from Git repository}
+\ExtensionTok{Ich}\NormalTok{ bin die erste Ausgabe}
+\end{Highlighting}
+\end{Shaded}
+
+Du siehst,
+
+\begin{itemize}
+\tightlist
+\item
+  welcher Runner zum Einsatz kommt,
+\item
+  dass ein Docker-Image (default) zum Einsatz kommt,
+\item
+  dass der Runner dafür sorgt, dass dein Repository in den
+  Docker-Container geclont wird
+\item
+  Der Echo-Befehl ausgeführt wird
+\end{itemize}
+
+Für unser Minibuch brauchen wir ein anderes Docker-Image und noch ein
+paar Erweiterungen in der Datei:
+
+\phantomsection\label{annotated-cell-200}%
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
+  \ExtensionTok{DOCKER\_IMAGE:}\NormalTok{ benfret/quarto{-}minimal }\hspace*{\fill}\NormalTok{\circled{2}}
+
+\ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{3}}
+  \ExtensionTok{{-}}\NormalTok{ build }
+
+\ExtensionTok{projekt\_uebersetzen:}
+  \ExtensionTok{stage:}\NormalTok{ build}
+  \ExtensionTok{image:}\NormalTok{ DOCKER\_IMAGE }\hspace*{\fill}\NormalTok{\circled{4}}
+  \ExtensionTok{script:} 
+    \ExtensionTok{{-}}\NormalTok{ quarto render }\AttributeTok{{-}{-}to}\NormalTok{ pdf }\hspace*{\fill}\NormalTok{\circled{5}}
+  \ExtensionTok{artifacts:} \hspace*{\fill}\NormalTok{\circled{6}}
+    \ExtensionTok{paths:}
+      \ExtensionTok{{-}} \StringTok{"\_book/*pdf"} \hspace*{\fill}\NormalTok{\circled{7}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{description}
+\tightlist
+\item[\circled{1}]
+Nicht unbedingt nötg, aber praktisch
+\item[\circled{2}]
+Dieses Docker-Image kommt für Quarto zum Einsatz
+\item[\circled{3}]
+Kennen wir schon
+\item[\circled{4}]
+Hier wird das Image verwendet
+\item[\circled{5}]
+Aufruf zum Erstellen des PDF
+\item[\circled{6}]
+Das fertige PDF muss zurück zu \gitlab übertragen werden
+\item[\circled{7}]
+An dieser Stelle befindet sich das PDF
+\end{description}
+
+Leider scheitert diese Pipeline, da auf diesem Quarto-Image kein LaTeX
+installiert ist. Das kannst du ändern, indem du im
+\emph{script}-Abschnitt den Befehl \cmd{quarto install tinytex} an den
+Anfang stellst. Nach diesem Commit sollte der Job durchlaufen. Im
+Abschnitt \emph{Jobs} findest du nun eine Möglichkeit, die Zip-Datei mit
+dem Artifact herunterzuladen.
 
 \textbf{Schritt 2}\\
 Anlegen der folgenden Ordnerstruktur:
@@ -6182,9 +6346,9 @@ Pipelines (rechter Rand) zum Dowmload gestellt.
 
 Sobald die Projekte umfangreicher werden, ist dieser eher manuelle
 Kompilieransatz und das Testen auf diesem Weg schnell zu komplex. Dafür
-gibt es Build-Tools wie Gradle oder \maven. Letzteres wollen wir näher
-betrachten. Für einen ersten Vorgeschmack erstellst du die Datei
-\datei{pom.xml} im Haupt-Ordner (also oberhalb von \ordner{scr}):
+gibt es Build-Tools wie Gradle oder \maven. Letzteres wollen wir später
+noch näher betrachten. Für einen ersten Vorgeschmack erstellst du die
+Datei \datei{pom.xml} im Haupt-Ordner (also oberhalb von \ordner{scr}):
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6273,7 +6437,7 @@ viele lästige Kleinigkeiten im Entwicklungsprozess automatisiert werden
 CI/CD absolut üblich ist, brauchst du zumindest ein oberflächliches
 Grundverständnis.
 
-\subsection{Vorbereitung}\label{vorbereitung}
+\subsection{Vorbereitung}\label{vorbereitung-1}
 
 Dass ein JDK installiert sein muss, sollte klar sein, denn es soll ja
 mit Java programmiert werden. Natürlich gibt es wieder Unterschiede
@@ -7101,6 +7265,83 @@ Dieser Job kann nur (default) von Runnern ausgeführt werden, die
 ebenfalls die Tags \emph{windows} und \emph{staging} besitzen. Das kann
 in den Einstellungen eines Runners aber deaktiviert werden. (Vorsicht:
 Runner-Tags haben nichts mit Git-Tags zu tun)
+
+\bookmarksetup{startatroot}
+
+\chapter{Anhang XX CICD mit Java}\label{anhang-xx-cicd-mit-java}
+
+Im Prinzip folgst du wieder den üblichen Schritten:
+
+\begin{itemize}
+\tightlist
+\item
+  Online ein Repository mit README erstellen
+\item
+  Clonen des Repository auf den eigenen Rechner kopieren
+\item
+  Maven-Assistenten im lokalen Repository das Projekt erstellen lassen
+\item
+  \datei{pom.xml} anpassen
+\item
+  Probehalber mit \cmd{mvn package} das Projekt erstellen
+\item
+  Initialen Commit
+\item
+  Push
+\end{itemize}
+
+Nun kommt es darauf an, wie du weiter machst. Arbeiten alleine,
+entwicken im Team, \ldots{} Ich gehe aktuell von der Rolle als
+Solo-developer aus, um keine Aspekte der Teamarbeit (Gitflow, \ldots)
+behandeln zu müssen.
+
+Damit CI/CD im Prinzip funktionsfähig ist, musst du nun nur noch die
+Datei \datei{.gitlab-ci.yml} erstellen und passend füllen. Eine einfache
+Version könnte so aussehen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{image:}\NormalTok{ maven:3.9.6{-}eclipse{-}temurin{-}21}
+
+\ExtensionTok{variables:}
+  \ExtensionTok{MAVEN\_OPTS:} \StringTok{"{-}Dmaven.repo.local=.m2/repository"}
+
+\ExtensionTok{stages:}
+  \ExtensionTok{{-}}\NormalTok{ build}
+  \ExtensionTok{{-}}\NormalTok{ test}
+  \ExtensionTok{{-}}\NormalTok{ deploy}
+
+\ExtensionTok{cache:}
+  \ExtensionTok{key:} \StringTok{"}\VariableTok{$CI\_JOB\_NAME}\StringTok{"}
+  \ExtensionTok{paths:}
+    \ExtensionTok{{-}}\NormalTok{ .m2/repository}
+
+\ExtensionTok{build:}
+  \ExtensionTok{stage:}\NormalTok{ build}
+  \ExtensionTok{script:}
+    \ExtensionTok{{-}}\NormalTok{ mvn }\AttributeTok{{-}B} \AttributeTok{{-}DskipTests}\NormalTok{ clean package}
+  \ExtensionTok{artifacts:}
+    \ExtensionTok{paths:}
+      \ExtensionTok{{-}}\NormalTok{ target/}\PreprocessorTok{*}\NormalTok{.jar}
+    \ExtensionTok{expire\_in:}\NormalTok{ 1 week}
+
+\ExtensionTok{test:}
+  \ExtensionTok{stage:}\NormalTok{ test}
+  \ExtensionTok{script:}
+    \ExtensionTok{{-}}\NormalTok{ mvn }\AttributeTok{{-}B}\NormalTok{ test}
+  \ExtensionTok{artifacts:}
+    \ExtensionTok{when:}\NormalTok{ always}
+    \ExtensionTok{reports:}
+      \ExtensionTok{junit:}\NormalTok{ target/surefire{-}reports/}\PreprocessorTok{*}\NormalTok{.xml}
+
+\ExtensionTok{deploy:}
+  \ExtensionTok{stage:}\NormalTok{ deploy}
+  \ExtensionTok{only:}
+    \ExtensionTok{{-}}\NormalTok{ main}
+  \ExtensionTok{script:}
+    \ExtensionTok{{-}}\NormalTok{ echo }\StringTok{"Hier könntest du mvn deploy ausführen"}
+\end{Highlighting}
+\end{Shaded}
 
 ERLEDIGEN:
 

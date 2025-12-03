@@ -11,7 +11,7 @@ auch noch eine Version für das Compilieren von Java-Projekten mit
 \maven ergänzen! ]
 
 Zunächst aber etwas Hintergrundwissen, gleich am Praxisbeispiel 
-auf dem offiziellen \gitlab -- du benötigst also einen 
+auf dem offiziellen \gitlab{} -- du benötigst also einen 
 Account^[Natürlich geht das auch auf deiner selbst gehosteten 
 Version von \gitlab, die können aber viele Teilnehmer nicht 
 mit nachhause nehmen und deshalb verwenden wir die offizielle 
@@ -50,17 +50,17 @@ nichts an den Dateien.
 ### Hintergrund
 
 \Gitlab kann einen automatischen Prozess im Hintergrund starten,
-wenn es eine Datei mit dem Namen \datei{gitlab_ci.yml} auf der 
+wenn es eine Datei mit dem Namen \datei{.gitlab-ci.yml} auf der 
 obersten Ebene des Repositories findet.  
 Diese Datei definiert genauer, was dieser Prozess wie erledigen soll.
-Du wirst den genauen Aufbau in einen der nächsten Schritte kennenlernen, 
+Du wirst den genauen Aufbau in einem der nächsten Schritte kennenlernen, 
 aber aktuell geht es erst einmal um das Funktionsprinzip.
 
-Wenn das System richtig konfiguriert ist, wird dese Datei einem weiteren
-Programm übergeben, einem sogeannten *runner*. Dieses Programm kannn 
+Wenn das System richtig konfiguriert ist, wird diese Datei einem weiteren
+Programm übergeben, einem sogenannten *runner*. Dieses Programm kannn 
 auf \gitlab installiert (=shared runner und andere Varianten), aber auch auf 
 deinem eigenen Rechner oder Server, der dann eigenständig mit \gitlab 
-kommuniziert um die Befehle in der \datei{gitlab_ci.yml} abzuarbeiten.
+kommuniziert um die Befehle in der \datei{.gitlab-ci.yml} abzuarbeiten.
 
 Aber beginnen wir mit der Version direkt auf \gitlab.
 
@@ -71,7 +71,7 @@ Hier kannst du einen Runner mit deinem Projekt verbinden. Die
 Formulierung *create project runner* (rechts oben) ist also 
 eigentlich nicht korrekt. 
 
-Im Prinzip genügt es, wenn du bei *run untagged jos* einen Haken setzt 
+Im Prinzip genügt es, wenn du bei *run untagged jobs* einen Haken setzt 
 und auf *create runner* klickst.
 
 Die nachfolgende Seite ist nur dann wichtig, falls du einen eigenen 
@@ -79,43 +79,102 @@ Runner auf deinem eigenen Computer laufen hast! Klick also unten auf der Seite
 *View runners*.
 
 Seltsamer Weise kann man diese Seite nur *mit Gewalt* verlassen, indem du 
-wieder auf Settings wechselst (Fehlermeldung wegklicken). Nun solltest 
+wieder auf Settings wechselst (Seite verlassen). Nun solltest 
 du im Abschnitt *CI/CD - > Runners* einen angekoppelten Runner sehen.
 
 TODO: SCREENSHOT Liste der Runner
 
 ### Automatismus basteln
 
-Erstelle nun die Datei  \datei{gitlab_ci.yml} in deinem Repository. 
-Wir bauen sie nun Zeile für Zeile mit Erklärung auf.
+Erstelle nun die Datei  \datei{.gitlab-ci.yml} in deinem Repository. Bevor wir unser Minibuch bauen, 
+wollen wir uns einen minimalen Automatismus bauen.
 
-**Zeile 1 und 2**  
+Übertrage folgende Zeilen in die Datei \datei{.gitlab-ci.yml}. Verwende für die Einrückungen 
+unbedingt Leerzeichen und keine Tabulatoren!
 
 ```bash
----
-variables:
+stages:  #<1>
+  - build  #<2>
+
+ausgabe_1:  #<3>
+  stage: build  #<4>
+  script: echo "Ich bin die erste Ausgabe" #<5>
 ```
 
-Die Datei muss dem relativ strengen YML-Format genügen und da beginnt die 
-Datei eben mit "---". Die nächste Zeile definiert den Abschnitt, wo Variablen
-definiert werden dürfen, die später im Script benötigt werden.
+1. Abschnitt für Verarbeitungsschritte einleiten
+2. Hier gibt es nur einen Schritt - nämlich *build*
+3. Abschnitt für eine Aktion einleiten
+4. Angabe, zu welchem Schritt die Aktion gehört
+5. Auszuführender Befehl. Bei mehr Befehlen werden Spiegelstriche verwendet.
 
-**Zeile 3**  
+Wenn du das erledigt hast, erstellst du einen Commit  und pushst das Repository.
+Auf \gitlab solltest du am linken Rand im Menü *build* unter *jobs* jetzt einen 
+laufenden Job sehen. Wenn du ihn anklickst, kannst du direkt sehen was passiert.  
+Von den vielen Meldungen sind nur wenige direkt interessant:
+
 ```bash
-  LATEX_IMAGE: benfret/quarto-minimal
+Running with gitlab-runner 18.4.0~pre.246.g71914659 (71914659)
+Preparing the "docker+machine" executor
+Using default image
+Getting source from Git repository
+Ich bin die erste Ausgabe
 ```
-Diese Zeile **muss** um 2 Leerzeichen eingerückt sein, KEIN Tabulator.
-Diese Variable legt fest, mit welchem Docker-Image später aus den 
-Markdown-Dateien ein PDF erstellt werden soll. 
 
-**Zeile 4**
+Du siehst, 
+
+* welcher Runner zum Einsatz kommt, 
+* dass ein Docker-Image (default) zum Einsatz kommt,
+* dass der Runner dafür sorgt, dass dein Repository in den Docker-Container geclont wird 
+* Der Echo-Befehl ausgeführt wird
+
+
+Für unser Minibuch brauchen wir ein anderes Docker-Image und noch ein paar Erweiterungen 
+in der Datei:
+
 ```bash
-build:
-```
+variables:   #<1>
+  DOCKER_IMAGE: benfret/quarto-minimal #<2>
 
-Das ist ein möglicher Schritt in der Befehlskette. Im Prinzip kannst du
-beliebig viele derartige Schritte definieren, die du dann später (kommt gleich) 
-gezielt abarbeiten lassen kannst.
+stages: #<3>
+  - build 
+
+projekt_uebersetzen:
+  stage: build
+  image: DOCKER_IMAGE  #<4>
+  script: 
+    - quarto render --to pdf #<5>
+  artifacts:   #<6>
+    paths:
+      - "_book/*pdf"  #<7>
+```
+1. Nicht unbedingt nötg, aber praktisch
+2. Dieses Docker-Image kommt für Quarto zum Einsatz
+3. Kennen wir schon
+4. Hier wird das Image verwendet
+5. Aufruf zum Erstellen des PDF
+6. Das fertige PDF muss zurück zu \gitlab übertragen werden
+7. An dieser Stelle befindet sich das PDF
+
+Leider scheitert diese Pipeline, da auf diesem Quarto-Image kein 
+LaTeX installiert ist. Das kannst du ändern, indem du im *script*-Abschnitt
+den Befehl \cmd{quarto install tinytex} an den Anfang stellst.
+Nach diesem Commit sollte der Job durchlaufen. Im Abschnitt *Jobs* findest du 
+nun eine Möglichkeit, die Zip-Datei mit dem Artifact herunterzuladen.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 **Schritt 2**  
 Anlegen der folgenden Ordnerstruktur:

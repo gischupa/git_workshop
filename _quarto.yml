@@ -39,6 +39,7 @@ format:
         \newcommand{\git}{\textit{git}\xspace}
         \newcommand{\gitserver}{\textit{git}-Server\xspace}
         \newcommand{\gitservers}{\textit{git}-Servers\xspace}
+        \newcommand{\Gitlab}{\textit{GitLab}\xspace}
         \newcommand{\gitlab}{\textit{GitLab}\xspace}
         \newcommand{\gitbash}{\textit{git-Bash}\xspace}
         \newcommand{\maven}{\textit{Maven}\xspace}

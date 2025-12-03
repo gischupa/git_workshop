@@ -43,6 +43,8 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
  {{< include 0840_java_komplexer.qmd >}}
  {{< include 0850_cicdbuch.qmd >}}
 
+ {{< include 0900_anhang_java.qmd >}}
+
 ERLEDIGEN:  
 
 Man kann alles speichern - aber sollte man?
