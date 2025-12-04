@@ -17,7 +17,13 @@ behandeln zu müssen.
 
 Damit CI/CD im Prinzip funktionsfähig ist, musst du nun 
 nur noch die Datei \datei{.gitlab-ci.yml} erstellen und 
-passend füllen. Eine einfache Version könnte so aussehen:
+passend füllen. Bei der nachfolgenden Version werden Build-Produkte 
+zwischen Läufen gespeichert, bestimmte Schritte im *Batch-Mode* 
+ausgeführt, ... Du kannst aber mit den bisherigen Kenntnissen 
+aber sicher auch eine einfachere Datei erstellen, die im Wesentlichen
+\cmd{mvn package} oder auch nur \cmd{mvn test} ausführt.
+Das verwendete Docker-Image kannst du im Prinzip natürlich auch 
+durch ein eigenes Image ersetzen:
 
 ```bash
 image: maven:3.9.6-eclipse-temurin-21

@@ -161,93 +161,7 @@ den Befehl \cmd{quarto install tinytex} an den Anfang stellst.
 Nach diesem Commit sollte der Job durchlaufen. Im Abschnitt *Jobs* findest du 
 nun eine Möglichkeit, die Zip-Datei mit dem Artifact herunterzuladen.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-**Schritt 2**  
-Anlegen der folgenden Ordnerstruktur:
-
-```bash
-src/main/java/de/alp/kurs
-```
-
-**Schritt 3**  
-Erstellen der Datei \datei{Demo.java} mit folgendem Inhalt:
-
-```bash 
-package de.alp.kurs;
-class Demo {
-    public static void main(String [] args) {
-        System.out.println("Willkommen zum CI/CD - Workshop!");
-    }
-}
-```
-
-**Schritt 4**  
-Erstellen einer Datei mit einer Datei, die unbedingt den 
-Namen \datei{.gitlab-ci.yml} tragen muss.  
-Für den Anfang genügt folgender Inhalt:
-
-```bash 
-stages:
-    - build
-    - test 
-    - deploy 
-
-ausgabe_1:
-    stage: build 
-    script: echo "Ich bin die erste Ausgabe"
-```
-
-Ja -- das hat mit Java noch nichts zu tun, das kommt aber bald.
-Aktuell siehst du in der \datei{.gitlab-ci.yml} lediglich zwei 
-Abschnitte: 
-
-* stages 
-* ausgabe_1 
-
-(Beachte die Konventionen für *yml* Dateien in Bezug auf die Einrückung 
-mit Leerzeichen.)
-
-Der Abschnitt *stages* ist verbindlich und beschreibt mögliche Namen für 
-(Pipeline)Schritte, die abgearbeitet werden sollen. Die Namen sind 
-frei wählbar (im Sinne gültiger Variablennamen).
-
-Der Abschnitt *ausgabe\_1* stellt einen *Job* dar, der ausgeführt 
-wird, wenn sich das System im Pipline-Schritt *build* befindet. 
-Es können weitere Jobs angelegt werden, die duch das Schlüsselwort *stage* 
-den einzelnen Pipeline-Schritten zuordenbar sind.
-
-Das Schlüsselwort *script* leitet die auszuführenden Befehle ein.
-Bei mehr als einem Befehl lautet die Syntax:
-
-```bash 
-script:
-    - befehl 1
-    - befehl 2
-    - befehl 3
-```
-
-**Schritt 5**  
-Das Speichern der Datei entspricht einem Commit 
-und triggert dabei die Pipeline. Den Fortschritt
-siehst du im Menü am linken Rand im Abschnitt *Build*
-und dort *Pipelines*.
-
-Klickst du auf das Symbol des laufenden (oder beendeten) Jobs,
-so kannst du die Bildschirmausgabe des laufenden Docker-Containers sehen. 
+### Wie geht es weiter?
 
 Vorher habe ich von *Problemen* gesprochen. Je nachdem, wie 
 schnell du das entsprechende Menü gefunden hast, lief der Job 
@@ -264,107 +178,107 @@ Es gibt hierfür verschiedene Lösungsansätze:
 * \gitlab selbst hosten
 * Den Docker-Aspekt auf einen anderen Rechner auslagern.
 
-Wenn du vor dem selbst hosten zurückschreckst, bleibt dir nur 
+Wenn du vor dem selbst hosten oder kaufen zurückschreckst, bleibt dir nur 
 die dritte Option. Hierfür musst du einen sogenannten *Runner* 
-und den zugehörigen *Agent* auf deinem eigenen Rechner installieren 
-und dort auch die benötigte Infrastruktur (z.B. Docker oder die Build-Umgebung).
-Der Agent führt in konfigurierbaren Abständen Anfragen bei \gitlab aus um 
+und den zugehörigen *Agent* auf deinem eigenen Rechner (oder Server) installieren und dort auch die benötigte Infrastruktur (z.B. Docker oder die Build-Umgebung).
+Der Runner führt als Agent in konfigurierbaren Abständen Anfragen bei \gitlab aus um 
 auf das Vorhandensein von neuen Jobs zu testen. Das ist zwar etwas 
 unelegant, löst aber das Problem der Erreichbarakeit des eigenen Rechners 
-aus dem Internet -- also der Kontaktaufnahme von Seiten von \gitlab.
+aus dem Internet, falls er hinter deiner Firewall steht -- also bei der Kontaktaufnahme von Seiten von \gitlab.
 
-## Bezug zu Java 
+**Wie kannst du deinen Runner auslagern?**  
 
-Nun baust du die Datei \datei{.gitlab-ci.yml} so aus, dass 
+Der Runner ist ein Programm, das installiert werden muss.
+Das kann direkt im Prinzip auf jedem Rechner (nicht iPad) 
+gemacht werden, egal ob *native* oder in Form eines eigenen 
+Docker-Containers. Wenn der Runner einen Job bekommt, startet 
+er auf dem Zielrechner (muss nicht identisch mit dem Rechner 
+des Runners sein) einen Docker-Container, der die eigentliche 
+Arbeit erledigt. Da auf einem eigenen Server/Rechner das Image 
+im Regelfall bereits vorligt, dauert der Start nur extrem kurz 
+und die eigentliche Laufzeit des Jobs hängt von der Komplexität
+der Aufgabe ab. Wie du das einrichtest, erfährst du im nächsten 
+Abschnitt, wobei ich auf eine reine Docker-Lösung setze.
 
-* die Datei \datei{Demo.java} beim Commit automatisch 
-  übersetzt wird 
-* die fertige Klasse zum Download steht 
+### Vorbereiten der Container
 
-\samplestart
-**Hinweis**  
-Natürlich fragst du dich, wofür dieser Aufwand gerechtfertigt ist,
-wo du das Compilieren doch einfach auf deinem Rechner ausführen kannst.  
-Da hast du Recht!
-Allerdings nur bei unserem Mini-Projekt. Wenn es um große Projekte mit mehreren 
-Mitarbeitenden geht, die an verschiedenen Branches arbeiten, ... da geht es 
-beim Commit darum, ob z.B. das gesamte Projekt übersetzbar ist und zwar nicht
-in der kleines Welt des lokalen Entwicklungsrechners sondern auch auf der 
-Zielplattform. Das trifft im Besondern dann zu, wenn anschließend Tests 
-ausgeführt werden und eventuell sogar die Version des Kunden automatisch 
-ausgreollt werden soll.  
-
-Fazit: Für uns absolut überdimensioniert, im Praxiseinsatz aber 
-absolut üblich. 
-\sampleend
-
-
-Erweitere nun die \datei{.gitlab-ci.yml} so:
-
-```bash 
-stages:
-    - build
-
-compile-java-with-javac:
-    stage: build
-    image: eclipse-temurin:17-jdk
-    script:
-        - javac src/main/java/de/alp/kurs/*.java -d target/
-        - cd target
-        - java de.alp.kurs.Demo
-    artifacts:
-        paths: de/alp/kurs/Demo.class 
-
-```
-
-Das verwendete Dockerimage \datei{eclipse-temurin:17-jdk}
-hat einen etwas seltsamen Namen und dieser kann sich im Lauf der 
-Zeit auch ändern. Im Zweifelsfall musst du hier etwas auf DockerHub 
-recherchieren. 
-
-Die fertige Class-Datei wird dann als Zip-Archiv auf der Seite mit 
-den Pipelines (rechter Rand) zum Dowmload gestellt.
-
-## Komplexere Szenarien
-
-Sobald die Projekte umfangreicher werden, ist dieser eher 
-manuelle Kompilieransatz und das Testen auf diesem Weg 
-schnell zu komplex. Dafür gibt es Build-Tools wie Gradle oder \maven.
-Letzteres wollen wir später noch näher betrachten. Für einen ersten 
-Vorgeschmack erstellst du die Datei \datei{pom.xml} im Haupt-Ordner
-(also oberhalb von \ordner{scr}):
-
+Lege zunächst einen Ordner an, wo die Dateien für die 
+Erzeugung der Container ablegen willst:
 
 ```bash
-<project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>de.alp.kurs</groupId>
-  <artifactId>demo</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <properties>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-  </properties>
-</project>
+cd <wo auch immer>
+mkdir -p runner quarto java # 3 Ordner
 ```
 
-Für den Einsatz von \maven baust du die \datei{.gitlab-ci.yml}
-so um:
+In diesen Ordnern liegen dann Startdateien.
 
-```bash 
-stages:
-  - build
+**runner**  
 
-compile-java-with-maven:
-  stage: build
-  image: maven:latest
-  script:
-    - mvn compile
-    - ls target/classes/de/alp/kurs
-    - cd target/classes
-    - java de.alp.kurs.Demo
+```bash
+# Inhalt der docker-compose.yml 
+version: '3.8'
+
+services:
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: quarto_runner 
+    restart: always
+    volumes:
+      - ./config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
 ```
-Mit dem Speichern wird das *Projekt* durch \maven erstellt und 
-auch probeweise ausgeführt.  
 
-Im nächsten Abschnitt werfen wir einen genaueren Blick auf \maven.
+In dieser Version liegt der Konfigurationsordner \ordner{config}
+im Verzeichnis des Runners. Beim ersten Start -- vor dem Registrieren
+des Runners auf \gitlab -- wird ein Fehler gemeldet, dass die Datei
+\datei{config.toml} in diesem Ordner fehlt. Sie wird bei den 
+nächsten Schritten erst erstellt -- das ist also normal und kann ignoriert werden!
+
+Starte diesen Container noch **nicht**, denn wir wollen erst die 
+Vorbereitungsarbeiten abschließen. 
+
+**quarto**  
+Für diesen Container genügt ein Dockerfile, denn dieser Container
+wird komplett vom Runner verwaltet.
+
+```bash
+# Inhalt von Dockerfile 
+FROM ubuntu:24.04
+
+# Install basics
+RUN apt-get update && apt-get install -y \
+    wget xz-utils git pandoc texlive-full \
+    curl unzip \
+    && apt-get clean
+
+# Install Quarto
+RUN wget https://quarto.org/download/latest/quarto-linux-amd64.deb -O /tmp/quarto.deb \
+    && apt-get install -y /tmp/quarto.deb \
+    && rm /tmp/quarto.deb
+
+# Set workdir
+WORKDIR /work
+
+# Default command
+CMD ["bash"]
+```
+
+In dieser Datei wird die Installation eines kompletten Quarto/Latex
+Servers beschrieben. Das dauert dann einige Zeit, da der Container 
+am Ende etwa 10GB groß ist!
+
+Du kannst dieses Image mit folgendem Befehl auf deinem Server 
+verfügbar machen:
+
+```bash
+docker build -t quarto-git:latest -f Dockerfile .
+```
+
+**Java**  
+Auch für Java brauchst du ein lokales Image, wenn die 
+Geschwindigkeit stimmen soll. Ein mögliches Dockerfile
+sieht so aus:
+
+```bash
+# Inhalt von Dockerfile 
+```

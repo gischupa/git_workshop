@@ -32,4 +32,10 @@ Testen und Ausführen von Java-Code auf den einzelnen Plattformen zumindest
 so unterschiedlich und komplex, dass ein manuelles Testen faktisch nicht 
 sinnvoll ist. Aus diesem Grund werden wir hier gleich mit \maven arbeiten. 
 
-
+\samplestart
+**Hinweis**  
+TDD wird von verschiedenen Autoren unterschiedlich *streng* 
+gesehen. Wir verwenden dann im Java-Teil einen sehr kleinschrittigen 
+Ansatz. Das folgt eher dem Ansatz von [https://www.obeythetestinggoat.com/](https://www.obeythetestinggoat.com/) (Python), einen etwas 
+weniger kleinschrittigen Weg empfiehlt Allan Mellor in Test-Driven Development with Java, erschienen 2023 bei packtpub.com. Dies sind allerdings noch lange nicht alle Sichtweisen auf dieses Thema!
+\sampleend
