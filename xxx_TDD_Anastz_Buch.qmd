@@ -1,0 +1,39 @@
+# Alternative Sichtweise
+
+Bei TDD geht es um das Verhalten der Software und nicht um die 
+Implemantation.
+
+Ein häufiger Fehler von Programmierern ist, dass sie 
+wegen der Tests Dinge als publich dekaltieren, die private 
+bleiben sollten.
+
+Verzichte auf unnötige Getter zum zum Teste in die Klasse 
+zu kommen!
+
+Wenn die Situation nach vielen Gettern schreit, könnte ein
+*Value-Object* eine Lösung sein ... was das auch genau sein mag.
+Zum Testen müssen solche Objekte vergleichbar sein. Dafür muss 
+man eine *equals()* und eine *hashcode()* Funktion dazu programmieren.
+
+Apache Commons hilft hier ... 
+
+```bash
+@Override
+public boolean equals(Object other) {
+    return EqualsBuilder.reflectionEquals(this, other);
+}
+@Override
+public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this);
+}
+```
+
+Man erstellt hier ein Vergleichsobjekt mit den 
+erwarteten Daten und Reflections lösen den Rest.
+
+
+Einen schlampigen "act" Teil im Test erkennt man durch mehrere
+Aufrufe von Befehlen in einer verpflichtenden Reihenfolge. 
+Das ist Fehleranfällig und sollte durch einen Wrapper gekapselt werden.
+
+
