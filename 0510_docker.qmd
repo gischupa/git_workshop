@@ -1,14 +1,14 @@
 # Docker
 
 Docker ist eine besonders effiziente Art der Virtualisierung. Es ist
-möglich, auf einem physikalischen Server viele virtuelle Server zu erstellen, 
-diese miteinander kommunizieren und daten austauschen zu lassen und sie auch 
-über das Internet zugänglich zu machen. Es ist also kein
+möglich, auf einem physikalischen Server viele virtuelle Server zu erstellen. 
+Sie können dann miteinander kommunizieren und Daten austauschen, du kannst sie 
+aber auch über das Internet zugänglich. Es ist auf diese Weise also kein
 Problem, mehrere eigenständige Datenbankserver parallel zu betreiben
 und damit Übungssystem für Schüler bereit zu stellen. Wie groß
-der Server dimensioniert sein muss, hängt dann wieder von den 
+der Server dimensioniert sein muss, hängt von den 
 speziellen Anforderungen ab (mit 6 Cores und 16 GB RAM geht schon einiges, 
-aber sicher nicht alles!)
+aber sicher nicht alles!).
 
 ## Idee
 
@@ -36,7 +36,9 @@ In dieser gekürzten Ausgabe ist also anscheinend kein *offizielles* Image dabei
 [dockerhub](https://dockerhub.com) und dort ist [gitlab](https://hub.docker.com/r/gitlab/gitlab-ce)
 verlinkt, wo die Informationen stehen.
 
-Wir werden übrigens nicht *gitlab* sondern *gitea* verwenden!
+Ich habe in diesem Dokument sowohl Anleitungen für \gitlab, als auch für \gitea
+aufgenommen. Generell ist \gitea schlanker, erfordert bei CI/CD aber einige 
+Workarounds im Vergleich zu \gitlab.
 
 Von einem Image kann man dann beliebig viele Instanzen erzeugen, die auch 
 fast ohne Zeitverlust startbar sind. Der längste Teil ist der Download des Image.
@@ -52,7 +54,8 @@ Weise wird viel weniger Zeit benötigt, als bei einer komplett neuen Erstellung!
 
 Die Befehle befinden sich auch bei den Kursmaterialien!
 
-TODO - Docker install Script
+TODO - Docker install Script TESTEN auf 24.04
+TODO - Ist compose jetzt fest in Docker oder nicht?
 
 ```bash
 sudo -i
@@ -84,9 +87,12 @@ chmod +x /usr/local/bin/docker-compose
 
 Aktuell läuft Docker jetzt als Benutzer *root* (=Administrator),
 was man im professionellen Firmenumfeld lieber vermeidet. Es gibt 
-Anleitung, wie man das ändert -- ich selbst verwende es aber auch so.
+Anleitung, wie man das ändert. Im Prinzip muss nur ein weiterer
+Benutzer angelegt und den richtigen Gruppen zugeordnet werden.
 
 Teste die Installation durch folgende Befehle:
+
+TODO:  docker compose oder docker-compose?
 
 ```bash
 docker --version
@@ -97,14 +103,14 @@ docker-compose --version
 Es gibt sehr viele verschiedene Szenarien, wie Docker verwendet werden kann und entsprechend
 sind auch die Befehle zahlreich und unterschiedlich kompliziert.
 
-Nachfolgend ein kleines *Work-along*, wo einige Befehle verwendet und erklärt werden.
-Tipp einfach mal folgenden Befehl:
+Nachfolgend ein kleines *Work-along*, wo einige Befehle verwendet und erklärt werden. Gib folgenden Befehl im Terminal ein:
 
 ```bash
 docker run -d -p 8090:80 --name it-tools corentinth/it-tools
 ```
 
 Die Ausgabe (außer die Hashes) sollte dann so aussehen:
+
 ```bash
 Unable to find image 'corentinth/it-tools:latest' locally
 latest: Pulling from corentinth/it-tools
@@ -154,10 +160,8 @@ Mit nachfolgendem Befehl überprüft man den Status des Containers:
 
 ```bash
 docker ps 
-```
 
-Ausgabe (gekürzt)
-```bash
+# Ausgabe (gekürzt)
 CONTAINER ID   IMAGE                 COMMAND                  gekürzt ... NAMES 
 bd072e349cab   corentinth/it-tools   "/docker-entrypoint.…"   gekürzt ... it-tools
 ```
@@ -183,8 +187,8 @@ Man kann nun in zwei Stufen die Komplexität erhöhen:
 * Anlegen einer Datei *Dockerfile*, in der die Parameter für *docker run* stehen
 * Verwenden von *docker-compose* mit einer zusätzlichen Datei *docker-compose.yml*
   um z.B. mehrere Server im Verbund zu managen. Dieses Verfahren werden wir bei
-  der abschließenden, vollständigen Installation von Gitea verwenden.
+  der Installation von \gitea und \gitlab verwenden.
 
 Da sowohl Syntax als auch Varianten von beiden Stufen für eine schnelle
-Behandlung zu komplex sind, verweise ich auf entsprechende Tutorial auf youtube
+Behandlung zu komplex sind, verweise ich auf entsprechende Tutorials auf youtube
 oder eines der vielen Bücher zum Thema -- z.B. von Michale Kofler. 

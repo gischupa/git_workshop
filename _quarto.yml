@@ -41,6 +41,8 @@ format:
         \newcommand{\gitservers}{\textit{git}-Servers\xspace}
         \newcommand{\Gitlab}{\textit{GitLab}\xspace}
         \newcommand{\gitlab}{\textit{GitLab}\xspace}
+        \newcommand{\gitea}{\textit{Gitea}\xspace}
+        \newcommand{\Gitea}{\textit{Gitea}\xspace}
         \newcommand{\gitbash}{\textit{git-Bash}\xspace}
         \newcommand{\maven}{\textit{Maven}\xspace}
         \newcommand{\Maven}{\textit{Maven}\xspace}
