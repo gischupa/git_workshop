@@ -1,0 +1,87 @@
+# Gitlab
+
+Diese Software ist etwas schwergewichtiger als \gitea,
+aber ebenso problemlos zu installieren. Auch hier stellt 
+stellt sich allerdings die Frage nach dem zu verwendenden 
+ssh-Port z.B. zum Clonen. Auf dem Testsystem ist der ssh-Port 
+ja bereits auf 23 umgestellt, damit können wir den Dafault lassen.
+
+## Docker
+
+Erstelle einen Ordner für \gitlab 
+
+```bash
+mkdir -p /srv/docker/gitlab25
+cd /srv/docker/gitlab25
+```
+
+Erstelle hier eine \datei{docker-compose.yml} Datei:
+
+```bash
+version: '3.6'
+services:
+  web:
+    image: 'gitlab/gitlab-ce:latest'
+    container_name: 'gitlab'
+    restart: always
+    hostname: '192.168.3.181'  # im Netz auf gitlab.server.de stellem
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://182.168.3.181:443'   # im Netz ...
+        gitlab_rails['gitlab_shell_ssh_port'] = 22
+    ports:
+      - '25:22'  # DAS müssen wir noch testen
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /srv/docker/gitlab25/config:/etc/gitlab
+      - /srv/docker/gitlab25/logs:/var/log/gitlab
+      - /srv/docker/gitlab25/data:/var/opt/gitlab
+    shm_size: '256m'
+    networks:
+      - gitlab_net
+
+networks:
+  gitlab_net:
+    external: true
+```
+
+
+TODO: testen der Portkonfiguration für ssh
+TODO: Welches Netz verwenden?
+
+Aus dem Ordner heraus wie üblich ausführen 
+
+```bash
+docker compose up --build
+```
+
+Hier ist nun eine längere Kaffepause angebracht!
+
+Mit dem nachfolgenden Befehl kann das Erstkennwort 
+für \gitlab ausgelesen werden:
+
+```bash
+cat config/initial_root_password
+```
+
+Damit ist eine Anmeldung als *root* auf der 
+Weboberfläche möglich. Hier muss nun auch sofort 
+das Kennwort geändert werden!
+
+Mit diesem docker-compose File ist ssh-clonen 
+über Port 25 möglich:
+
+```bash
+git clone ssh://git@192.168.3.181:25/root/demo.git
+```
+
+... allerdings erst nach einigen Vorbereitungen!
+
+* Neues Kennwort setzen
+* Projekt demo.git erstellen
+* Den SSH-Key des Users in den eigenen Account eintragen
+
+Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über 
+Konsole, GitClients, ... Weboberfläche.
+

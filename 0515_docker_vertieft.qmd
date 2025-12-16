@@ -1,0 +1,13 @@
+# Docker etwas vertieft
+
+In diesem Abschnitt soll an einem sehr einfachen Beispiel 
+der Aufbau eines Dockerfiles und einer docker-compose.yml
+Datei besprochen werden. Dieser Setup deckt wohlgemerkt nicht 
+alle Sicherheitsaspekte ab, die in diesem Umfeld möglich sind.
+Weil es im Unterricht auch oft eine Rolle spielt, erstellen 
+wir einen Datenbankserver mit *MySQL* bzw. *MariaDB*.
+
+## Das Dockerfile
+
+Zunächst zeige ich dir das Dockerfile, danach erkläre ich es Zeile 
+für Zeile.

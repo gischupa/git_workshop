@@ -1,9 +1,9 @@
 # Docker
 
 Docker ist eine besonders effiziente Art der Virtualisierung. Es ist
-möglich, auf einem physikalischen Server viele virtuelle Server zu erstellen. 
-Sie können dann miteinander kommunizieren und Daten austauschen, du kannst sie 
-aber auch über das Internet zugänglich. Es ist auf diese Weise also kein
+möglich, auf einem physikalischen Server viele virtuelle Server zu erstellen^[Das können andere Systeme wie VirtualBox, ... auch. Allerdings mus hier immer ein komplettes Betriebssystem virtualisiert werden und das kostet Ressourcen!]. 
+Diese Server können dann miteinander kommunizieren und Daten austauschen, du kannst sie 
+aber auch über das Internet zugänglich machen. Es ist auf diese Weise also kein
 Problem, mehrere eigenständige Datenbankserver parallel zu betreiben
 und damit Übungssystem für Schüler bereit zu stellen. Wie groß
 der Server dimensioniert sein muss, hängt von den 
@@ -13,9 +13,10 @@ aber sicher nicht alles!).
 ## Idee
 
 Nachdem Docker auf dem Server installiert ist (s.u.), kann man sich
-einfach ein Betriebssystem-Image aus dem Netz herunterladen und als
+einfach die gewünschte Software als eine Art von Betriebssystem-Image 
+aus dem Netz herunterladen und als
 Container starten. Natürlich ist es eine Vertrauensfrage, welche
-Images man verwendet. Es gibt allerdings *offizielle* Images von 
+Images man verwenden möchte, aber es gibt *offizielle* Images von 
 Firmen und Organisationen, denen man vertrauen kann:
 
 ```bash
@@ -31,26 +32,27 @@ gitlab/gitlab-runner-helper                     50
 gitlab/gitlab-ee                 GitLab ...     549   
 ```
 
-In dieser gekürzten Ausgabe ist also anscheinend kein *offizielles* Image dabei.
-*gitlab/gitlab-ce* ist aber trotzdem offiziell. Dafür recherchiert man kurz auf 
+In dieser gekürzten Ausgabe ist also anscheinend kein *offizielles* Image dabei. Bei *gitlab/gitlab-ce* handelt es sich aber trotzdem um 
+eine offizielle Variante -- dafür recherchiert man kurz auf 
 [dockerhub](https://dockerhub.com) und dort ist [gitlab](https://hub.docker.com/r/gitlab/gitlab-ce)
-verlinkt, wo die Informationen stehen.
+verlinkt, wo die entsprechenden Informationen stehen.
 
 Ich habe in diesem Dokument sowohl Anleitungen für \gitlab, als auch für \gitea
 aufgenommen. Generell ist \gitea schlanker, erfordert bei CI/CD aber einige 
 Workarounds im Vergleich zu \gitlab.
 
-Von einem Image kann man dann beliebig viele Instanzen erzeugen, die auch 
-fast ohne Zeitverlust startbar sind. Der längste Teil ist der Download des Image.
+Von einem Image kann man dann beliebig viele Instanzen der Software 
+erstellen, die auch fast ohne Zeitverlust startbar sind. 
+Der zeitraubendste Teil ist der anfängliche Download des Images.
 
 **Hintergrund**  
-Images sind in Schichten konstruiert, die nacheinander heruntergeladen werden.
-Diese Schichtenstruktur ist wichtig, wenn man eigene Images erstellen möchte.
-Der Erstellungsprozess macht nämlich immer auf der Schicht weiter, ab der Änderungen
-am Image vorgenommen wurden (weitere Software, Dateiänderungen, ...). Auf diese 
-Weise wird viel weniger Zeit benötigt, als bei einer komplett neuen Erstellung!
+Images sind in Schichten organisiert, die nacheinander heruntergeladen werden. Dabei wird jeweils geprüft, welche Differenzen zum aktuellen 
+System benötigt werden, um arbeiten zu können.  
+Diese Schichtenstruktur ist wichtig, wenn man eigene Images erstellen möchte. Der Erstellungsprozess macht nämlich immer auf der Schicht weiter, ab der Änderungen am Image vorgenommen wurden (weitere Software, 
+Dateiänderungen, ...). Auf diese Weise wird viel weniger Zeit benötigt,
+als bei einer komplett neuen Erstellung!
 
-## Installation
+## Installation von Docker
 
 Die Befehle befinden sich auch bei den Kursmaterialien!
 
@@ -182,7 +184,7 @@ damit ein Image gelöscht werden kann, muss der Container gelöscht sein.
 ## Detaillierter
 
 Für komplexere Szenarien wird der *docker run* Befehl aber etwas unübersichtlich.
-Man kann nun in zwei Stufen die Komplexität erhöhen:
+Du kannst nun in zwei Stufen die Komplexität erhöhen:
 
 * Anlegen einer Datei *Dockerfile*, in der die Parameter für *docker run* stehen
 * Verwenden von *docker-compose* mit einer zusätzlichen Datei *docker-compose.yml*
