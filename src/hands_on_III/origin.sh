@@ -1,19 +1,18 @@
 #!/bin/bash
 
-# Putzen
-if [ -d labor1 ]
-then 
-  rm -rf labor1
-fi 
+# Putzen alter Versuche
+rm -rf labor1
 
-# Anlegen
+
+# Anlegen des Versuchsordner
 mkdir labor1
 cd labor1
 
-AKTUELL=$PWD  # Pfad merken
+AKTUELL=$PWD  # aktuellen Pfad merken
 
 # Repo "entfernt.git" anlegen
 git init --bare entfernt.git
+
 # branch auf main umbenennen
 cd entfernt.git
 git branch -m main

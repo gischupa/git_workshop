@@ -266,6 +266,8 @@
 \newcommand{\gitservers}{\textit{git}-Servers\xspace}
 \newcommand{\Gitlab}{\textit{GitLab}\xspace}
 \newcommand{\gitlab}{\textit{GitLab}\xspace}
+\newcommand{\gitea}{\textit{Gitea}\xspace}
+\newcommand{\Gitea}{\textit{Gitea}\xspace}
 \newcommand{\gitbash}{\textit{git-Bash}\xspace}
 \newcommand{\maven}{\textit{Maven}\xspace}
 \newcommand{\Maven}{\textit{Maven}\xspace}
@@ -332,7 +334,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, frame hidden, colback={codebgcolor}, sharp corners, breakable, enhanced]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, colback={codebgcolor}, enhanced, breakable, boxrule=0pt, frame hidden]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -3499,11 +3501,66 @@ ist der Squash beendet.
 
 \bookmarksetup{startatroot}
 
+\chapter{Cherry Picking}\label{cherry-picking}
+
+Dieser Befehl klingt nach hoher Expertise, ist aber im Vergleich zu
+anderen Techniken relativ leicht zu verstehen. Kurz gesagt ermöglicht es
+Cherry-Pick, sich Commits aus anderen Branches in den eigenen Branch zu
+kopieren. Das ist Hilfreich, wenn z.B. in einem Branch ein Bug behoben
+wird, der auch im eigenen Branch benötigt wird.
+
+\begin{tikzpicture}
+
+\draw(1,0) --++(8,0);
+
+\draw((3,0) --( 5,-2.5);
+\draw(5, -2.5) -- ++ (3.5,0);
+
+\draw[dashed, ->](7, -2.5) -- ( 11,0 );
+
+
+%obere Schiene
+\foreach \x in {1,3,...,9}{
+  \draw[fill=white] (\x, 0) circle(0.5);
+}
+
+
+%untere Schiene
+\foreach \x in {5,7,9}{
+  \draw[fill=white] (\x, -2.5) circle(0.5);
+}
+
+\draw [ fill=red] (7, -2.5) circle(0.5);
+
+
+\draw(9,1) node{HEAD};
+\draw(7, -3.5) node {534875};
+\end{tikzpicture}
+
+Der zugehörige Befehl würde -- ausgehend vom aktuellen Branch (HEAD)
+lauten:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ cherry{-}pick 534875}
+\end{Highlighting}
+\end{Shaded}
+
+Die Folge ist ein komplett neuer Commit im aktuellen Branch.
+
+\textbf{Beispiel}
+
+Hierfür clonst du das Repository \emph{Cherry}
+
+TODO: Repo Cherry
+
+\bookmarksetup{startatroot}
+
 \chapter{Arbeiten im Team}\label{arbeiten-im-team}
 
 \section{Herausforderungen}\label{herausforderungen}
 
-Das Arbeiten im Team stellt dich vor zwei Probleme
+Das Arbeiten im Team stellt dich vor zwei Probleme:
 
 \begin{itemize}
 \tightlist
@@ -3550,11 +3607,12 @@ Server (nicht empfohlen) oder der Einsatz von Docker (sinnvoll) möglich.
 Die Anleitungen für die einzelnen Varianten befinden sich weiter hinten
 im Script.
 
-\subsection{Überblick}\label{uxfcberblick}
+\subsection{Änderungen am Workflow}\label{uxe4nderungen-am-workflow}
 
-Bei der Arbeit im Team ändert sich beim lokalen Arbeiten zunächst wenig.
-Die Schritte \emph{branch, add, commit, \ldots{}} funktionieren wie auch
-bisher. Neu sind allerdings die folgenden Schritte
+Bei der Arbeit im Team ändert sich im Vergleich zum lokalen Arbeiten
+zunächst wenig. Die Schritte \emph{branch, add, commit, \ldots{}}
+funktionieren wie auch bisher. Neu sind allerdings die folgenden
+Schritte
 
 \begin{itemize}
 \tightlist
@@ -3573,10 +3631,10 @@ verbindliche -- Standards. Jede Firma stellt für \git ihre eigenen, fest
 vorgeschriebenenen Abläufe auf, an die sich die Mitarbeiter zu halten
 haben.
 
-\subsubsection{Gemeinsamkeiten}\label{gemeinsamkeiten}
+\subsection{Mögliche Vereinbarungen}\label{muxf6gliche-vereinbarungen}
 
-Auch die folgenden Gemeinsamkeiten müssen nicht in jeder Firma oder
-jedem Projekt umgesetzt werden!
+Auch die folgenden Vereinbarungen müssen nicht in jeder Firma oder jedem
+Projekt umgesetzt werden!
 
 \textbf{Verantwortung}\\
 Im Projekt gibt es einen \branch{main}, der aber durch entsprechende
@@ -3594,20 +3652,24 @@ Bugfix-Branches) ausgehen. Ist ihre Arbeit dort beendet, muss der Code
 getestet werden und dann erst erfolgt der Merge in den
 \branch{development}-Branch.
 
-\subsubsection{Details}\label{details}
+\subsubsection{Etwas mehr Details}\label{etwas-mehr-details}
 
-Da jetzt mehr Personen zu unvorhersehbaren Zeitpunkten Änderungen am
-Code vornehmen, muss jeder Mitarbeiter dafür sorgen, dass er immer die
-aktuellste Version vorliegen hat. Da er seine Entwicklung aber in seinem
-eigenen \branch{Feature}-Branch vorantreibt, müssen diese Änderungen
-dort aber erst ankommen -- dies geschieht durch Merges in die andere
-Richtung!
+Da im Team mehrere Personen zu unvorhersehbaren Zeitpunkten Änderungen
+am Code vornehmen, muss jeder Mitarbeiter dafür sorgen, dass er immer
+die aktuellste Version vorliegen hat. Da er seine Entwicklung aber in
+seinem eigenen \branch{Feature}-Branch vorantreibt, müssen diese
+Änderungen der Kollegen dort aber erst ankommen -- dies geschieht durch
+Merges in die andere Richtung -- also Merges \textbf{in} den eigenen
+Branch.
 
 \textbf{Beispiel}
 
-Aus Platzgründen zeichne ich das Branch-Diagramm hier waagrecht. Der
-\branch{feature}-Branch ist auch noch nicht so weit fortgeschritten, als
-dass ein Merge auf den \branch{development}-Branch erfolgt wäre.
+Aus Platzgründen zeichne ich das Branch-Diagramm hier waagrecht. Man
+sieht, dass beim Commit \(m_2\) der \branch{devlopment}-Branch abzweigt
+und dann vom Commit \(d_1\) sofort der \branch{feature}-Branch.\\
+Ab jetzt werden regelmäßig Änderungen am \branch{development}-Branch auf
+den eigenen \branch{feature}-Branch gezogen, um so immer den aktuellen
+Stand zu haben.
 
 
 
@@ -3640,8 +3702,8 @@ dass ein Merge auf den \branch{development}-Branch erfolgt wäre.
 
 
 \draw(3.2,1.45) -- ++ (60:1.25);
-\draw(5.2,1.45) -- ++ (60:1.25);
-\draw(7.2,1.45) -- ++ (60:1.25);
+%\draw(5.2,1.45) -- ++ (60:1.25);
+%\draw(7.2,1.45) -- ++ (60:1.25);
 
 
 
@@ -3662,9 +3724,9 @@ dass ein Merge auf den \branch{development}-Branch erfolgt wäre.
 
 \end{tikzpicture}
 
-Da noch keine wirklichen Fortschritte erzielt worden sind, dürfte der
-\branch{development}-Branch auch noch nicht wieder auf den Server
-veröffentlicht worden sein (=push).
+Merges in die Andere Richtung -- also vom \branch{feature}- auf den
+\branch{development}-Branch sieht man noch keine. Auch der
+\branch{main}-Branch wurde noch nie aktualisiert.
 
 \subsubsection{Pull und fetch}\label{pull-und-fetch}
 
@@ -3672,16 +3734,29 @@ Die Grundidee von \emph{holen} und \emph{veröffentlichen} ist relativ
 einfach und eventuell muss man den Schülern auch nicht mehr erzählen. Da
 aber Code von anderen Entwicklern auf deinen Rechner kommt, solltest du
 diesen eventuell nicht ungesehen in deine Entwicklung aufnehmen. Der
-BEfehl \cmd{git pull} macht aber genau das.\\
+Befehl \cmd{git pull} macht aber genau das.\\
 Willst du an dieser Stelle sicher gehen, so machst du zuerst
 \cmd{git fetch} und siehst dir die Änderungen an -- siehe weiter unten.
 Im Anschluss kannst du sie dann mit \cmd{git merge} übernehmen.
 
 \section{Hands on}\label{hands-on}
 
-In den nachfolgenden Abschnitten wird oft das Wort \emph{origin}
-auftreten. Wir sehen uns lieber gleich an, was es damit auf sich hat.
-Für die einzelnen Schritte gibt es Scripts in den Kursmaterialien!
+In dieser Praxiseinheit sollst du die Arbeit im Team auf deinem eigenen
+Rechner simulieren. Dafür brauchst du:
+
+\begin{itemize}
+\tightlist
+\item
+  Ein \emph{Server}-Repository
+\item
+  Ein Repository für einen Benutzer Max
+\item
+  Ein Repository für eine Benutzerin Susi
+\end{itemize}
+
+Bevor wir diesen Setup umsetzen, müssen wir kurz den Begripp
+\emph{origin} klären, der uns nun öfter begegnet! Für die einzelnen
+Schritte gibt es Scripts in den Kursmaterialien!
 
 \subsection{origin}\label{origin}
 
@@ -3691,20 +3766,19 @@ Für die einzelnen Schritte gibt es Scripts in den Kursmaterialien!
 \begin{Highlighting}[]
 \CommentTok{\#!/bin/bash}
 
-\CommentTok{\# Putzen}
-\ControlFlowTok{if} \BuiltInTok{[} \OtherTok{{-}d}\NormalTok{ labor1 }\BuiltInTok{]}
-\ControlFlowTok{then} 
-  \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ labor1}
-\ControlFlowTok{fi} 
+\CommentTok{\# Putzen alter Versuche}
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ labor1}
 
-\CommentTok{\# Anlegen}
+
+\CommentTok{\# Anlegen des Versuchsordner}
 \FunctionTok{mkdir}\NormalTok{ labor1}
 \BuiltInTok{cd}\NormalTok{ labor1}
 
-\VariableTok{AKTUELL}\OperatorTok{=}\VariableTok{$PWD}  \CommentTok{\# Pfad merken}
+\VariableTok{AKTUELL}\OperatorTok{=}\VariableTok{$PWD}  \CommentTok{\# aktuellen Pfad merken}
 
 \CommentTok{\# Repo "entfernt.git" anlegen}
 \FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ entfernt.git}
+
 \CommentTok{\# branch auf main umbenennen}
 \BuiltInTok{cd}\NormalTok{ entfernt.git}
 \FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
@@ -3724,10 +3798,11 @@ Das Script \script{origin.sh} erstellt dir
 \begin{itemize}
 \tightlist
 \item
-  Ein Repository \emph{entfernt}, das einen Server darstellt
+  Ein Repository mit dem Namen \emph{entfernt}, das einen Server
+  darstellt
 \item
-  Ein Repository \emph{lokal}, das deinen Rechner darstellt, indem es
-  eine Kopie von \emph{entfernt} erstellt (=clone).
+  Ein Repository mit dem Namen \emph{lokal}, das deinen Rechner
+  darstellt, indem es eine Kopie von \emph{entfernt} erstellt (=clone).
 \end{itemize}
 
 Öffne eine \git-Bash in einem Spielordner und führe das Script
@@ -3767,15 +3842,15 @@ anderer Pfad zu sehen!
 \end{Shaded}
 
 Wenn also in den folgenden Ausgaben und Befehlen \emph{origin}
-erscheint, dann ist dieser Pfad gemeint. \emph{Pfad} kann allerdings
-auch eine Netzwerkverbindung zu einem Server sein -- das ist sogar der
-Normalfall.
+erscheint, dann ist \textbf{dieser} Pfad gemeint. \emph{Pfad} kann
+allerdings auch eine Netzwerkverbindung zu einem Server sein -- das ist
+sogar der Normalfall.
 
 Mit \branch{origin/main} ist immer der Branch im entfernten Repository
-gemeint, \branch{main} alleine bezieht sich auf den Branch in deiner
-lokalen Kopie.
+(z.B. Server) gemeint, \branch{main} (ohne \emph{origin}) bezieht sich
+auf den Branch in deiner lokalen Kopie.
 
-\subsection{Zeiger}\label{zeiger}
+\subsection{Eigentliches Labor}\label{eigentliches-labor}
 
 Der nachfolgende Setup erstellt
 
@@ -3794,34 +3869,36 @@ Der nachfolgende Setup erstellt
 Öffen in einem geeigneten Ordner eine \git-Bash und führe das Script
 \script{susi\_und\_max.sh} aus.
 
-Beachte, dass aus in dem Script im oberen Teil etwas Overhead nötig ist,
-damit die Benutzer nicht mit einem leeren Repository konfrontiert werden
--- dort fehlt dann nämlich ein Branch!
+Beachte, dass in dem Script im oberen Teil etwas Overhead nötig ist,
+damit Susi und Max nicht einfach nur ein leeres Repository clonen,
+sondern die realistischere Situation mit zumindest einer Datei
+vorfinden:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#!/bin/bash}
 
-\CommentTok{\# Putzen}
-\ControlFlowTok{if} \BuiltInTok{[} \OtherTok{{-}d}\NormalTok{ labor2 }\BuiltInTok{]}
-\ControlFlowTok{then} 
+\CommentTok{\# Putzen früherer Versuche}
   \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ labor2}
-\ControlFlowTok{fi} 
 
-\CommentTok{\# Anlegen}
+\CommentTok{\# Anlegen des Labor{-}Ordners}
 \FunctionTok{mkdir}\NormalTok{ labor2}
 \BuiltInTok{cd}\NormalTok{ labor2}
 
+\CommentTok{\# "Server" Repository erstellen}
 \FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ entfernt.git}
 \BuiltInTok{cd}\NormalTok{ entfernt.git}
 \FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
 \BuiltInTok{cd}\NormalTok{ ..}
 
+\CommentTok{\# Nützliche Variablen}
 \VariableTok{ARBEIT}\OperatorTok{=}\VariableTok{$PWD}  \CommentTok{\# aktuellen Pfad merken }
 \VariableTok{SUSI}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/susi  }\CommentTok{\# Abkürzungen für den Überblick  }
 \VariableTok{MAX}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/max}
 
-\CommentTok{\# Overhead}
+\CommentTok{\#\#\#\#\#\#\# Vorbereitung}
+\CommentTok{\# Hier wird eine Datei ins Server{-}repo aufgenommen}
+\CommentTok{\# indem vorübergehend ein weiteres Repo erstellt wird.}
 \FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/entfernt vorbereitung}
 \BuiltInTok{cd}\NormalTok{ vorbereitung}
 \BuiltInTok{echo} \StringTok{"Hi"} \OperatorTok{\textgreater{}}\NormalTok{ README.md}
@@ -3830,17 +3907,11 @@ damit die Benutzer nicht mit einem leeren Repository konfrontiert werden
 \FunctionTok{git}\NormalTok{ push }\AttributeTok{{-}u}\NormalTok{ origin main}
 \BuiltInTok{cd}\NormalTok{ ..}
 \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ vorbereitung}
+\CommentTok{\#\#\#\#\#\# Ende Vorbereitung \#\#\#\#\#\#\#}
 
 \FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/entfernt susi }
 \FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/entfernt max   }
 
-\CommentTok{\#}
-\CommentTok{\#cd $SUSI }
-\CommentTok{\#echo "Hallo" \textgreater{} datei.txt }
-\CommentTok{\#git add datei.txt }
-\CommentTok{\#git commit {-}m "Hallo geschrieben"}
-
-\CommentTok{\#git branch {-}m main }
 \end{Highlighting}
 \end{Shaded}
 
@@ -3848,7 +3919,8 @@ damit die Benutzer nicht mit einem leeren Repository konfrontiert werden
 welches für \emph{Susi} und welches für \emph{Max} stehen soll. Wechsle
 jeweils in das Repository (\cmd{cd susi} und \cmd{cd max}).
 
-Lasse dir in beiden Repositories den Status ausgeben
+Wir betrachten nun das Repository von Susi und lassen uns den Status
+ausgeben:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3856,25 +3928,25 @@ Lasse dir in beiden Repositories den Status ausgeben
 \end{Highlighting}
 \end{Shaded}
 
-Es sollte jeweils erscheinen
+Es sollte erscheinen
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{Auf}\NormalTok{ Branch main}
-\ExtensionTok{Ihr}\NormalTok{ Branch ist auf demselben Stand wie }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{.}
+\ExtensionTok{Auf}\NormalTok{ Branch main    }\OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ das ist der von Susi}
+\ExtensionTok{Ihr}\NormalTok{ Branch ist auf demselben Stand wie }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{. }\OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ Server}
 
 \ExtensionTok{nichts}\NormalTok{ zu committen, Arbeitsverzeichnis unverändert}
 \end{Highlighting}
 \end{Shaded}
 
-Im Prinzip hat Susi jetzt eine identische Kopie des Repositories
-erstellt. Allerdings ist der \branch{main}-Branch jetzt \emph{Susis}
-\branch{main}-Branch in \emph{diesem} Repository. Die Statusmeldung sagt
-dir, beide Branches \emph{main} (Susis) und \emph{origin/main} (der im
-Original Repo) sind gleich.
+Im Prinzip hat Susi also eine identische Kopie des Repositories
+erstellt. Der \branch{main}-Branch gehört \emph{Susi} in \emph{diesem}
+Repository. Die Statusmeldung sagt dir, dass beide Branches, \emph{main}
+(Susis) und \emph{origin/main} (der im Original Repo) auf dem gleichen
+Stand sind..
 
-Nachfolgend stehen die Bezeichnungen \emph{Original} und \emph{SUSI}
-bzw. \emph{MAX} für die entsprechenden Repositories.
+Nachfolgend stehen die Bezeichnungen \emph{SERVER} und \emph{SUSI} für
+die entsprechenden Repositories (bei MAX ist das analog).
 
 Susi erstellt in \emph{SUSI} eine Datei und einen Commit:
 
@@ -3900,12 +3972,12 @@ und betrachtet den Status erneut:
 
 Der \git-Ordner führt also Buch über die Beziehung zwischen den
 Repositories und sagt ihr, dass \emph{SUSI} einen Commit weiter vorne
-ist, als das \emph{Original}.\\
+ist, als \emph{SERVER}.\\
 Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-120}%
+\phantomsection\label{annotated-cell-121}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -3929,9 +4001,9 @@ ist.)
 \begin{description}
 \tightlist
 \item[\circled{1}]
-Enthält den Hash vom letzten Commit in der lokalen Kopie
+Enthält den Hash vom letzten Commit in SUSI
 \item[\circled{2}]
-Enthält den Hash vom letzten Commit im Original
+Enthält den Hash vom letzten Commit von SERVER
 \item[\circled{3}]
 Siehe nachfolgender Text
 \end{description}
@@ -3940,8 +4012,8 @@ Ein \cmd{git log --oneline} zeigt dir:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{78db34e} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Begrüßung}
-\ExtensionTok{d46681d} \ErrorTok{(}\ExtensionTok{origin/main,}\NormalTok{ origin/HEAD}\KeywordTok{)} \ExtensionTok{Init}
+\ExtensionTok{78db34e} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Begrüßung}         \OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ SUSI}
+\ExtensionTok{d46681d} \ErrorTok{(}\ExtensionTok{origin/main,}\NormalTok{ origin/HEAD}\KeywordTok{)} \ExtensionTok{Init}  \OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ SERVER }
 \end{Highlighting}
 \end{Shaded}
 
@@ -3949,10 +4021,10 @@ Und ein Blick in die beiden Dateien liefert die Hashes -- zumindest
 fast, denn \git hat hier schon wieder optimiert und den Hash vom
 \emph{origin/master} in die Datei \emph{packed-refs} umgelagert.
 
-Das \emph{Original} weiß von diesem Commit noch nichts -- die
-Repositories haben ja auch noch nicht miteinander kommuniziert! Wenn Max
-in seinem Repository \emph{MAX} nachsieht kann er Susis Datei nicht
-sehen und daran würde auch ein \cmd{git pull} nichts ändern.
+Der \emph{SERVER} weiß vom SUSI Commit noch nichts -- die Repositories
+haben ja auch noch nicht miteinander kommuniziert! Wenn Max in seinem
+Repository \emph{MAX} nachsieht kann er Susis Datei nicht sehen und
+daran würde auch ein \cmd{git pull} nichts ändern.
 
 Susi führt nun einen Push aus:
 
@@ -3981,8 +4053,8 @@ und jetzt liefert der Status:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{Auf}\NormalTok{ Branch main}
-\ExtensionTok{Ihr}\NormalTok{ Branch ist auf demselben Stand wie }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{.}
+\ExtensionTok{Auf}\NormalTok{ Branch main                                        }\OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ SUSI}
+\ExtensionTok{Ihr}\NormalTok{ Branch ist auf demselben Stand wie }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{.  }\OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ SERVER }
 
 \ExtensionTok{nichts}\NormalTok{ zu committen, Arbeitsverzeichnis unverändert}
 \end{Highlighting}
@@ -3997,7 +4069,7 @@ Server prüfen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ fetch }
+\FunctionTok{git}\NormalTok{ fetch   }\CommentTok{\# pull würde gleich auch mergen}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4019,7 +4091,7 @@ Sein Status sagt ihm
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{Auf}\NormalTok{ Branch main}
+\ExtensionTok{Auf}\NormalTok{ Branch main     }\OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ MAX}
 \ExtensionTok{Ihr}\NormalTok{ Branch ist 1 Commit hinter }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{, und kann vorgespult werden.}
   \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git pull"}\NormalTok{, um Ihren lokalen Branch zu aktualisieren}\KeywordTok{)}
 
@@ -4027,12 +4099,12 @@ Sein Status sagt ihm
 \end{Highlighting}
 \end{Shaded}
 
-Mit \emph{vorspulen} ist ein Merge gemeint. Max will aber wissen
+Mit \emph{vorspulen} ist ein Merge gemeint. Max will aber zuerst wissen,
 \emph{was} sich geändert hat.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ log origin main}
+\FunctionTok{git}\NormalTok{ log origin/main}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4041,7 +4113,7 @@ Max sieht den Commit, der noch nicht in seinen Branch integriert ist.
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{commit}\NormalTok{ 78db34e3176c4b78d4b027eac06aa4dda5c50cdb }\ErrorTok{(}\ExtensionTok{origin/main,}\NormalTok{ origin/HEAD}\KeywordTok{)}
-\ExtensionTok{Author:}\NormalTok{ wolfgang }\OperatorTok{\textless{}}\NormalTok{susi@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Author:}\NormalTok{ susi }\OperatorTok{\textless{}}\NormalTok{susi@t{-}online.de}\OperatorTok{\textgreater{}}
 \ExtensionTok{Date:}\NormalTok{   Wed Jan 29 12:39:38 2025 +0100}
 
     \ExtensionTok{Begrüßung}
@@ -4054,7 +4126,7 @@ Max sieht den Commit, der noch nicht in seinen Branch integriert ist.
 \end{Highlighting}
 \end{Shaded}
 
-Schön sieht man das auch mit
+Schön sieht man den Hash auch mit
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4072,7 +4144,9 @@ Durch folgenden Befehl sieht Max die Differenz der Versionen:
 \end{Highlighting}
 \end{Shaded}
 
-Geht es einfach nur um den gesamten Inhalt:
+Dabei wird auch der Dateiname angezeigt und wenn dir die
+Diff-Darstellung zu verwirrend ist, kannst du auch einfach den Inhalt
+der Datei anzeigen lassen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4089,7 +4163,7 @@ seinen Branch:
 \end{Highlighting}
 \end{Shaded}
 
-Die Hashes ziegen, was passiert:
+Die Hashes zeigen, was passiert:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4107,9 +4181,10 @@ die direkte Nacheinanderausführung von \cmd{fetch} und \cmd{merge}.
 
 \subsection{Einige Fragen}\label{einige-fragen}
 
-\textbf{Wie starte ich from Scratch}\\
-Es geht hier nicht um den Schlüsseltausch, sondern nur das Handling der
-Repositories.
+\textbf{Wie starte ich from Scratch}
+
+Wie man vorgehen muss, hängt sehr stark von deiner Umgebung ab. Da es
+hier einige Varianten gibt, habe ich das in den Anhang ausgelagert!
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4191,6 +4266,16 @@ vorbei, dem dann ein Commit fehlt:
 \end{Highlighting}
 \end{Shaded}
 
+\samplestart
+
+\textbf{Hinweis}\\
+Du hast nun mehrfach \emph{origin main} aber auch \emph{origin/main}
+gesehen. Was ist der Unterschied? Die erste Variante meint wirklich den
+Branch \emph{main} auf dem Server, der sich hinter \emph{origin}
+verbirgt.\\
+Die zweite Variante ist eher wie eine Pfadangabe innerhalb von \Git  auf
+dem lokalen Rechner zu verstehen. \sampleend
+
 \textbf{Ist es egal, in welchem Branch ich fetch/pull/push ausführe?}\\
 Jein.\\
 Beim Pushen kann nicht viel schief gehen. Upstream-Branches laufen
@@ -4202,10 +4287,6 @@ lokalen Branch \emph{pullen} -- also \emph{mergen}. Ist der aktuelle
 Branch als Upstream konfiguriert, holt sich ein kurzes \cmd{git pull}
 die richtigen Daten. Ein \cmd{git pull <branch>} holt aber genau das,
 was du angegeben hast! Das ist eine Fehlerquelle!
-
-\textbf{Wie hängen lokale und remote Branches zusammen?}\\
-Zunächst sind Branches lokal und werden beim \cmd{git push} auch nicht
-auf den Server übertragen.
 
 \section{Zu klärende Fragen}\label{zu-kluxe4rende-fragen}
 
@@ -5127,21 +5208,25 @@ TODO: GPT shgt Team\_id statt Team\_name!
 
 Docker ist eine besonders effiziente Art der Virtualisierung. Es ist
 möglich, auf einem physikalischen Server viele virtuelle Server zu
-erstellen, diese miteinander kommunizieren und daten austauschen zu
-lassen und sie auch über das Internet zugänglich zu machen. Es ist also
+erstellen\footnote{Das können andere Systeme wie VirtualBox, \ldots{}
+  auch. Allerdings mus hier immer ein komplettes Betriebssystem
+  virtualisiert werden und das kostet Ressourcen!}. Diese Server können
+dann miteinander kommunizieren und Daten austauschen, du kannst sie aber
+auch über das Internet zugänglich machen. Es ist auf diese Weise also
 kein Problem, mehrere eigenständige Datenbankserver parallel zu
 betreiben und damit Übungssystem für Schüler bereit zu stellen. Wie groß
-der Server dimensioniert sein muss, hängt dann wieder von den speziellen
+der Server dimensioniert sein muss, hängt von den speziellen
 Anforderungen ab (mit 6 Cores und 16 GB RAM geht schon einiges, aber
-sicher nicht alles!)
+sicher nicht alles!).
 
 \section{Idee}\label{idee}
 
 Nachdem Docker auf dem Server installiert ist (s.u.), kann man sich
-einfach ein Betriebssystem-Image aus dem Netz herunterladen und als
-Container starten. Natürlich ist es eine Vertrauensfrage, welche Images
-man verwendet. Es gibt allerdings \emph{offizielle} Images von Firmen
-und Organisationen, denen man vertrauen kann:
+einfach die gewünschte Software als eine Art von Betriebssystem-Image
+aus dem Netz herunterladen und als Container starten. Natürlich ist es
+eine Vertrauensfrage, welche Images man verwenden möchte, aber es gibt
+\emph{offizielle} Images von Firmen und Organisationen, denen man
+vertrauen kann:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5159,30 +5244,36 @@ und Organisationen, denen man vertrauen kann:
 \end{Shaded}
 
 In dieser gekürzten Ausgabe ist also anscheinend kein \emph{offizielles}
-Image dabei. \emph{gitlab/gitlab-ce} ist aber trotzdem offiziell. Dafür
-recherchiert man kurz auf \href{https://dockerhub.com}{dockerhub} und
-dort ist \href{https://hub.docker.com/r/gitlab/gitlab-ce}{gitlab}
-verlinkt, wo die Informationen stehen.
+Image dabei. Bei \emph{gitlab/gitlab-ce} handelt es sich aber trotzdem
+um eine offizielle Variante -- dafür recherchiert man kurz auf
+\href{https://dockerhub.com}{dockerhub} und dort ist
+\href{https://hub.docker.com/r/gitlab/gitlab-ce}{gitlab} verlinkt, wo
+die entsprechenden Informationen stehen.
 
-Wir werden übrigens nicht \emph{gitlab} sondern \emph{gitea} verwenden!
+Ich habe in diesem Dokument sowohl Anleitungen für \gitlab, als auch für
+\gitea aufgenommen. Generell ist \gitea schlanker, erfordert bei CI/CD
+aber einige Workarounds im Vergleich zu \gitlab.
 
-Von einem Image kann man dann beliebig viele Instanzen erzeugen, die
-auch fast ohne Zeitverlust startbar sind. Der längste Teil ist der
-Download des Image.
+Von einem Image kann man dann beliebig viele Instanzen der Software
+erstellen, die auch fast ohne Zeitverlust startbar sind. Der
+zeitraubendste Teil ist der anfängliche Download des Images.
 
 \textbf{Hintergrund}\\
-Images sind in Schichten konstruiert, die nacheinander heruntergeladen
-werden. Diese Schichtenstruktur ist wichtig, wenn man eigene Images
-erstellen möchte. Der Erstellungsprozess macht nämlich immer auf der
-Schicht weiter, ab der Änderungen am Image vorgenommen wurden (weitere
-Software, Dateiänderungen, \ldots). Auf diese Weise wird viel weniger
-Zeit benötigt, als bei einer komplett neuen Erstellung!
+Images sind in Schichten organisiert, die nacheinander heruntergeladen
+werden. Dabei wird jeweils geprüft, welche Differenzen zum aktuellen
+System benötigt werden, um arbeiten zu können.\\
+Diese Schichtenstruktur ist wichtig, wenn man eigene Images erstellen
+möchte. Der Erstellungsprozess macht nämlich immer auf der Schicht
+weiter, ab der Änderungen am Image vorgenommen wurden (weitere Software,
+Dateiänderungen, \ldots). Auf diese Weise wird viel weniger Zeit
+benötigt, als bei einer komplett neuen Erstellung!
 
-\section{Installation}\label{installation-1}
+\section{Installation von Docker}\label{installation-von-docker}
 
 Die Befehle befinden sich auch bei den Kursmaterialien!
 
-TODO - Docker install Script
+TODO - Docker install Script TESTEN auf 24.04 TODO - Ist compose jetzt
+fest in Docker oder nicht?
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5216,9 +5307,12 @@ TODO - Docker install Script
 
 Aktuell läuft Docker jetzt als Benutzer \emph{root} (=Administrator),
 was man im professionellen Firmenumfeld lieber vermeidet. Es gibt
-Anleitung, wie man das ändert -- ich selbst verwende es aber auch so.
+Anleitung, wie man das ändert. Im Prinzip muss nur ein weiterer Benutzer
+angelegt und den richtigen Gruppen zugeordnet werden.
 
 Teste die Installation durch folgende Befehle:
+
+TODO: docker compose oder docker-compose?
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5234,7 +5328,7 @@ kann und entsprechend sind auch die Befehle zahlreich und
 unterschiedlich kompliziert.
 
 Nachfolgend ein kleines \emph{Work-along}, wo einige Befehle verwendet
-und erklärt werden. Tipp einfach mal folgenden Befehl:
+und erklärt werden. Gib folgenden Befehl im Terminal ein:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5308,13 +5402,8 @@ Mit nachfolgendem Befehl überprüft man den Status des Containers:
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{docker}\NormalTok{ ps }
-\end{Highlighting}
-\end{Shaded}
 
-Ausgabe (gekürzt)
-
-\begin{Shaded}
-\begin{Highlighting}[]
+\CommentTok{\# Ausgabe (gekürzt)}
 \ExtensionTok{CONTAINER}\NormalTok{ ID   IMAGE                 COMMAND                  gekürzt ... NAMES }
 \ExtensionTok{bd072e349cab}\NormalTok{   corentinth/it{-}tools   }\StringTok{"/docker{-}entrypoint.…"}\NormalTok{   gekürzt ... it{-}tools}
 \end{Highlighting}
@@ -5337,7 +5426,7 @@ ein Image gelöscht werden kann, muss der Container gelöscht sein.
 \section{Detaillierter}\label{detaillierter}
 
 Für komplexere Szenarien wird der \emph{docker run} Befehl aber etwas
-unübersichtlich. Man kann nun in zwei Stufen die Komplexität erhöhen:
+unübersichtlich. Du kannst nun in zwei Stufen die Komplexität erhöhen:
 
 \begin{itemize}
 \tightlist
@@ -5347,14 +5436,175 @@ unübersichtlich. Man kann nun in zwei Stufen die Komplexität erhöhen:
 \item
   Verwenden von \emph{docker-compose} mit einer zusätzlichen Datei
   \emph{docker-compose.yml} um z.B. mehrere Server im Verbund zu
-  managen. Dieses Verfahren werden wir bei der abschließenden,
-  vollständigen Installation von Gitea verwenden.
+  managen. Dieses Verfahren werden wir bei der Installation von
+  \gitea und \gitlab verwenden.
 \end{itemize}
 
 Da sowohl Syntax als auch Varianten von beiden Stufen für eine schnelle
-Behandlung zu komplex sind, verweise ich auf entsprechende Tutorial auf
+Behandlung zu komplex sind, verweise ich auf entsprechende Tutorials auf
 youtube oder eines der vielen Bücher zum Thema -- z.B. von Michale
 Kofler.
+
+\bookmarksetup{startatroot}
+
+\chapter{Docker etwas vertieft}\label{docker-etwas-vertieft}
+
+In diesem Abschnitt soll an einem sehr einfachen Beispiel der Aufbau
+eines Dockerfiles und einer docker-compose.yml Datei besprochen werden.
+Dieser Setup deckt wohlgemerkt nicht alle Sicherheitsaspekte ab, die in
+diesem Umfeld möglich sind. Weil es im Unterricht auch oft eine Rolle
+spielt, erstellen wir einen Datenbankserver mit \emph{MySQL} bzw.
+\emph{MariaDB}.
+
+\section{Das Dockerfile}\label{das-dockerfile}
+
+Im Grunde gibt es von MariaDB ein komplett vorkonfiguriertes Image, so
+dass ein Dockerfile eigentlich unnötig ist. Alle Zeilen, die mit einem
+Hash-Tag beginnen sind auskommentiert und könnten bei Änderungswünschen
+verwendet werden. Viel davon geht aber auch\\
+direkt über \emph{docker-compose} und deswegen ändern wir nichts.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Verwende das offizielle MariaDB{-}Image}
+\ExtensionTok{FROM}\NormalTok{ mariadb:latest}
+
+\CommentTok{\# Optionale Konfiguration}
+\CommentTok{\# Beispiel: Anpassung der Konfiguration von MariaDB, wenn nötig}
+\CommentTok{\# COPY ./my.cnf /etc/mysql/my.cnf}
+
+\CommentTok{\# Um ein Initialisierungs{-}Skript hinzuzufügen (z.B. zum Erstellen einer Datenbank)}
+\CommentTok{\# COPY ./init.sql /docker{-}entrypoint{-}initdb.d/}
+
+\CommentTok{\# Setze Umgebungsvariablen (optional, falls nicht im docker{-}compose)}
+\CommentTok{\# ENV MYSQL\_ROOT\_PASSWORD=my{-}secret{-}pw}
+\CommentTok{\# ENV MYSQL\_DATABASE=mydatabase}
+\CommentTok{\# ENV MYSQL\_USER=myuser}
+\CommentTok{\# ENV MYSQL\_PASSWORD=mypassword}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Docker Compose}\label{docker-compose}
+
+Docker-Compose ist gewissermaßen das Managementsystem für den
+Containerstart, wenn komplexere Szenarien abgebildet werden sollen. Die
+unsicheren Kennwörter müssen in dieser Datei angepasst werden!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{version:} \StringTok{\textquotesingle{}3.8\textquotesingle{}}
+
+\ExtensionTok{services:}
+  \ExtensionTok{db:}
+    \ExtensionTok{image:}\NormalTok{ mariadb:latest}
+    \ExtensionTok{container\_name:}\NormalTok{ mariadb\_1}
+    \ExtensionTok{environment:}
+      \ExtensionTok{MYSQL\_ROOT\_PASSWORD:}\NormalTok{ rootpassword}
+      \ExtensionTok{MYSQL\_DATABASE:}\NormalTok{ mydatabase}
+      \ExtensionTok{MYSQL\_USER:}\NormalTok{ myuser}
+      \ExtensionTok{MYSQL\_PASSWORD:}\NormalTok{ mypassword}
+    \ExtensionTok{ports:}
+      \ExtensionTok{{-}} \StringTok{"3306:3306"} \CommentTok{\# Host{-}Port:Container{-}Port}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ mariadb\_data:/var/lib/mysql}
+      \ExtensionTok{{-}}\NormalTok{ ./init.sql:/docker{-}entrypoint{-}initdb.d/init.sql }\CommentTok{\# Optional: SQL{-}Datei zum Initialisieren}
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ mariadb\_network}
+
+\ExtensionTok{volumes:}
+  \ExtensionTok{mariadb\_data:} \CommentTok{\# Persistente Volumes für Datenbankdaten}
+
+\ExtensionTok{networks:}
+  \ExtensionTok{mariadb\_network:}
+    \ExtensionTok{driver:}\NormalTok{ bridge}
+\end{Highlighting}
+\end{Shaded}
+
+Die Datei ist weitgehend selbsterkärend -- bis auf ein paar Stellen:
+
+\textbf{Ports}\\
+Wenn auf einem Server mehrere Container mit einem Webserver oder einer
+Datenbank laufen, dann kann der Port 80 oder 443 oder 3306 nur einmal
+verwendet werden. Aus diesem Grund kann man eine Art von Port-Forwarding
+in den Container definieren. Durch 3307:3306 kann von außen über Port
+3307 auf den Port 3306 im Container zugegriffen werden.
+
+\textbf{Volumes}\\
+Container sind flüchtig, die Nutzdaten sollten das aber nicht sein. Aus
+diesem Grund können Ordner des Servers in einen Container eingebunden
+werden. Das sind die Volumes. Wird ein Container gelöscht, so bleiben
+dieses Volumes erhalten und überleben damit z.B. Updates. Bei Volumes
+gibt es verschiedene Varianten, die den Umfang dieser Kurzdarstellung
+überschreiten.\\
+Wichtig ist aber, dass auch verschiedene Container das gleiche Volume
+verwenden können (geteilte Daten). In diesem Fall muss das Volume in der
+Datei \datei{docker-compose.yml} global angegeben werden. Das wird in
+diesem Szenario zwar nicht benötigt -- stört aber auch nicht.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# unten in der Datei }
+\ExtensionTok{volumes:}
+  \ExtensionTok{mariadb\_data:}
+\end{Highlighting}
+\end{Shaded}
+
+In den einzelnen Containern wird dann auf dieses zentrale Volume
+verwiesen.
+
+Die \texttt{docker-compose.yml} um PHPMyAdmin erweitert:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{version:} \StringTok{\textquotesingle{}3.8\textquotesingle{}}
+
+\ExtensionTok{services:}
+  \CommentTok{\# MariaDB Container}
+  \ExtensionTok{db:}
+    \ExtensionTok{image:}\NormalTok{ mariadb:latest}
+    \ExtensionTok{container\_name:}\NormalTok{ mariadb\_container}
+    \ExtensionTok{environment:}
+      \ExtensionTok{MYSQL\_ROOT\_PASSWORD:}\NormalTok{ rootpassword}
+      \ExtensionTok{MYSQL\_DATABASE:}\NormalTok{ mydatabase}
+      \ExtensionTok{MYSQL\_USER:}\NormalTok{ myuser}
+      \ExtensionTok{MYSQL\_PASSWORD:}\NormalTok{ mypassword}
+    \ExtensionTok{ports:}
+      \ExtensionTok{{-}} \StringTok{"3306:3306"} \CommentTok{\# Host{-}Port:Container{-}Port}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ mariadb\_data:/var/lib/mysql}
+      \ExtensionTok{{-}}\NormalTok{ ./init.sql:/docker{-}entrypoint{-}initdb.d/init.sql }\CommentTok{\# Optional: SQL{-}Datei zum Initialisieren}
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ mariadb\_network}
+
+  \CommentTok{\# phpMyAdmin Container}
+  \ExtensionTok{phpmyadmin:}
+    \ExtensionTok{image:}\NormalTok{ phpmyadmin/phpmyadmin:latest}
+    \ExtensionTok{container\_name:}\NormalTok{ phpmyadmin\_container}
+    \ExtensionTok{environment:}
+      \ExtensionTok{PMA\_HOST:}\NormalTok{ db            }\CommentTok{\# Der Name des MariaDB{-}Services (db) in docker{-}compose}
+      \ExtensionTok{PMA\_PORT:}\NormalTok{ 3306          }\CommentTok{\# Der Port, auf dem MariaDB läuft}
+      \ExtensionTok{MYSQL\_ROOT\_PASSWORD:}\NormalTok{ rootpassword  }\CommentTok{\# Das Passwort für den Root{-}Benutzer von MariaDB}
+    \ExtensionTok{ports:}
+      \ExtensionTok{{-}} \StringTok{"8080:80"}  \CommentTok{\# Webinterface auf Port 8080 zugänglich}
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ mariadb\_network}
+    \ExtensionTok{depends\_on:}
+      \ExtensionTok{{-}}\NormalTok{ db}
+
+\ExtensionTok{volumes:}
+  \ExtensionTok{mariadb\_data:}  \CommentTok{\# Persistente Volumes für MariaDB{-}Daten}
+
+\ExtensionTok{networks:}
+  \ExtensionTok{mariadb\_network:}
+    \ExtensionTok{driver:}\NormalTok{ bridge}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Networks}\\
+Immer wenn \emph{docker compse} einen Container (oder mehrere) startet,
+wird für diese ein eigenes Netzwerk erstellt. Es kann einen automatisch
+generierten Namen bekommen oder eben den aus dem
+\emph{docker-compose.yml}
 
 \bookmarksetup{startatroot}
 
@@ -5416,7 +5666,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-180}%
+\phantomsection\label{annotated-cell-184}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -5476,7 +5726,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-182}%
+\phantomsection\label{annotated-cell-186}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -5510,7 +5760,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-183}%
+\phantomsection\label{annotated-cell-187}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -5582,7 +5832,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-185}%
+\phantomsection\label{annotated-cell-189}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -5808,6 +6058,107 @@ ausgelagert werden. Damit sind auch die Rechner der Eltern problemlos
 benutzbar.
 
 \href{https://git-scm.com/downloads/win}{Portable Git}
+
+\bookmarksetup{startatroot}
+
+\chapter{Gitlab}\label{gitlab}
+
+Diese Software ist etwas schwergewichtiger als \gitea, aber ebenso
+problemlos zu installieren. Auch hier stellt stellt sich allerdings die
+Frage nach dem zu verwendenden ssh-Port z.B. zum Clonen. Auf dem
+Testsystem ist der ssh-Port ja bereits auf 23 umgestellt, damit können
+wir den Dafault lassen.
+
+\section{Docker}\label{docker-1}
+
+Erstelle einen Ordner für \gitlab 
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ /srv/docker/gitlab25}
+\BuiltInTok{cd}\NormalTok{ /srv/docker/gitlab25}
+\end{Highlighting}
+\end{Shaded}
+
+Erstelle hier eine \datei{docker-compose.yml} Datei:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{version:} \StringTok{\textquotesingle{}3.6\textquotesingle{}}
+\ExtensionTok{services:}
+  \ExtensionTok{web:}
+    \ExtensionTok{image:} \StringTok{\textquotesingle{}gitlab/gitlab{-}ce:latest\textquotesingle{}}
+    \ExtensionTok{container\_name:} \StringTok{\textquotesingle{}gitlab\textquotesingle{}}
+    \ExtensionTok{restart:}\NormalTok{ always}
+    \ExtensionTok{hostname:} \StringTok{\textquotesingle{}192.168.3.181\textquotesingle{}}  \CommentTok{\# im Netz auf gitlab.server.de stellem}
+    \ExtensionTok{environment:}
+      \ExtensionTok{GITLAB\_OMNIBUS\_CONFIG:} \KeywordTok{|}
+        \ExtensionTok{external\_url} \StringTok{\textquotesingle{}https://182.168.3.181:443\textquotesingle{}}   \CommentTok{\# im Netz ...}
+        \VariableTok{gitlab\_rails}\OperatorTok{[}\StringTok{\textquotesingle{}gitlab\_shell\_ssh\_port\textquotesingle{}}\OperatorTok{]} \ExtensionTok{=}\NormalTok{ 22}
+    \ExtensionTok{ports:}
+      \ExtensionTok{{-}} \StringTok{\textquotesingle{}25:22\textquotesingle{}}  \CommentTok{\# DAS müssen wir noch testen}
+      \ExtensionTok{{-}} \StringTok{\textquotesingle{}80:80\textquotesingle{}}
+      \ExtensionTok{{-}} \StringTok{\textquotesingle{}443:443\textquotesingle{}}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ /srv/docker/gitlab25/config:/etc/gitlab}
+      \ExtensionTok{{-}}\NormalTok{ /srv/docker/gitlab25/logs:/var/log/gitlab}
+      \ExtensionTok{{-}}\NormalTok{ /srv/docker/gitlab25/data:/var/opt/gitlab}
+    \ExtensionTok{shm\_size:} \StringTok{\textquotesingle{}256m\textquotesingle{}}
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ gitlab\_net}
+
+\ExtensionTok{networks:}
+  \ExtensionTok{gitlab\_net:}
+    \ExtensionTok{external:}\NormalTok{ true}
+\end{Highlighting}
+\end{Shaded}
+
+TODO: testen der Portkonfiguration für ssh TODO: Welches Netz verwenden?
+
+Aus dem Ordner heraus wie üblich ausführen
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ compose up }\AttributeTok{{-}{-}build}
+\end{Highlighting}
+\end{Shaded}
+
+Hier ist nun eine längere Kaffepause angebracht!
+
+Mit dem nachfolgenden Befehl kann das Erstkennwort für
+\gitlab ausgelesen werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{ config/initial\_root\_password}
+\end{Highlighting}
+\end{Shaded}
+
+Damit ist eine Anmeldung als \emph{root} auf der Weboberfläche möglich.
+Hier muss nun auch sofort das Kennwort geändert werden!
+
+Mit diesem docker-compose File ist ssh-clonen über Port 25 möglich:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ clone ssh://git@192.168.3.181:25/root/demo.git}
+\end{Highlighting}
+\end{Shaded}
+
+\ldots{} allerdings erst nach einigen Vorbereitungen!
+
+\begin{itemize}
+\tightlist
+\item
+  Neues Kennwort setzen
+\item
+  Projekt demo.git erstellen
+\item
+  Den SSH-Key des Users in den eigenen Account eintragen
+\end{itemize}
+
+Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über Konsole,
+GitClients, \ldots{} Weboberfläche.
 
 \bookmarksetup{startatroot}
 
@@ -6065,7 +6416,7 @@ Automatismus bauen.
 Übertrage folgende Zeilen in die Datei \datei{.gitlab-ci.yml}. Verwende
 für die Einrückungen unbedingt Leerzeichen und keine Tabulatoren!
 
-\phantomsection\label{annotated-cell-198}%
+\phantomsection\label{annotated-cell-207}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -6126,7 +6477,7 @@ Du siehst,
 Für unser Minibuch brauchen wir ein anderes Docker-Image und noch ein
 paar Erweiterungen in der Datei:
 
-\phantomsection\label{annotated-cell-200}%
+\phantomsection\label{annotated-cell-209}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -6171,90 +6522,7 @@ Anfang stellst. Nach diesem Commit sollte der Job durchlaufen. Im
 Abschnitt \emph{Jobs} findest du nun eine Möglichkeit, die Zip-Datei mit
 dem Artifact herunterzuladen.
 
-\textbf{Schritt 2}\\
-Anlegen der folgenden Ordnerstruktur:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{src/main/java/de/alp/kurs}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Schritt 3}\\
-Erstellen der Datei \datei{Demo.java} mit folgendem Inhalt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{package}\NormalTok{ de.alp.kurs}\KeywordTok{;}
-\ExtensionTok{class}\NormalTok{ Demo \{}
-    \ExtensionTok{public}\NormalTok{ static void main}\ErrorTok{(}\ExtensionTok{String}\NormalTok{ [] args}\KeywordTok{)} \KeywordTok{\{}
-        \ExtensionTok{System.out.println}\ErrorTok{(}\StringTok{"Willkommen zum CI/CD {-} Workshop!"}\KeywordTok{);}
-    \KeywordTok{\}}
-\ErrorTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Schritt 4}\\
-Erstellen einer Datei mit einer Datei, die unbedingt den Namen
-\datei{.gitlab-ci.yml} tragen muss.\\
-Für den Anfang genügt folgender Inhalt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{stages:}
-    \ExtensionTok{{-}}\NormalTok{ build}
-    \ExtensionTok{{-}}\NormalTok{ test }
-    \ExtensionTok{{-}}\NormalTok{ deploy }
-
-\ExtensionTok{ausgabe\_1:}
-    \ExtensionTok{stage:}\NormalTok{ build }
-    \ExtensionTok{script:}\NormalTok{ echo }\StringTok{"Ich bin die erste Ausgabe"}
-\end{Highlighting}
-\end{Shaded}
-
-Ja -- das hat mit Java noch nichts zu tun, das kommt aber bald. Aktuell
-siehst du in der \datei{.gitlab-ci.yml} lediglich zwei Abschnitte:
-
-\begin{itemize}
-\tightlist
-\item
-  stages
-\item
-  ausgabe\_1
-\end{itemize}
-
-(Beachte die Konventionen für \emph{yml} Dateien in Bezug auf die
-Einrückung mit Leerzeichen.)
-
-Der Abschnitt \emph{stages} ist verbindlich und beschreibt mögliche
-Namen für (Pipeline)Schritte, die abgearbeitet werden sollen. Die Namen
-sind frei wählbar (im Sinne gültiger Variablennamen).
-
-Der Abschnitt \emph{ausgabe\_1} stellt einen \emph{Job} dar, der
-ausgeführt wird, wenn sich das System im Pipline-Schritt \emph{build}
-befindet. Es können weitere Jobs angelegt werden, die duch das
-Schlüsselwort \emph{stage} den einzelnen Pipeline-Schritten zuordenbar
-sind.
-
-Das Schlüsselwort \emph{script} leitet die auszuführenden Befehle ein.
-Bei mehr als einem Befehl lautet die Syntax:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{script:}
-    \ExtensionTok{{-}}\NormalTok{ befehl 1}
-    \ExtensionTok{{-}}\NormalTok{ befehl 2}
-    \ExtensionTok{{-}}\NormalTok{ befehl 3}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Schritt 5}\\
-Das Speichern der Datei entspricht einem Commit und triggert dabei die
-Pipeline. Den Fortschritt siehst du im Menü am linken Rand im Abschnitt
-\emph{Build} und dort \emph{Pipelines}.
-
-Klickst du auf das Symbol des laufenden (oder beendeten) Jobs, so kannst
-du die Bildschirmausgabe des laufenden Docker-Containers sehen.
+\subsection{Wie geht es weiter?}\label{wie-geht-es-weiter}
 
 Vorher habe ich von \emph{Problemen} gesprochen. Je nachdem, wie schnell
 du das entsprechende Menü gefunden hast, lief der Job eventuell noch.
@@ -6277,116 +6545,160 @@ Es gibt hierfür verschiedene Lösungsansätze:
   Den Docker-Aspekt auf einen anderen Rechner auslagern.
 \end{itemize}
 
-Wenn du vor dem selbst hosten zurückschreckst, bleibt dir nur die dritte
-Option. Hierfür musst du einen sogenannten \emph{Runner} und den
-zugehörigen \emph{Agent} auf deinem eigenen Rechner installieren und
-dort auch die benötigte Infrastruktur (z.B. Docker oder die
-Build-Umgebung). Der Agent führt in konfigurierbaren Abständen Anfragen
-bei \gitlab aus um auf das Vorhandensein von neuen Jobs zu testen. Das
-ist zwar etwas unelegant, löst aber das Problem der Erreichbarakeit des
-eigenen Rechners aus dem Internet -- also der Kontaktaufnahme von Seiten
-von \gitlab.
+Wenn du vor dem selbst hosten oder kaufen zurückschreckst, bleibt dir
+nur die dritte Option. Hierfür musst du einen sogenannten \emph{Runner}
+und den zugehörigen \emph{Agent} auf deinem eigenen Rechner (oder
+Server) installieren und dort auch die benötigte Infrastruktur (z.B.
+Docker oder die Build-Umgebung). Der Runner führt als Agent in
+konfigurierbaren Abständen Anfragen bei \gitlab aus um auf das
+Vorhandensein von neuen Jobs zu testen. Das ist zwar etwas unelegant,
+löst aber das Problem der Erreichbarakeit des eigenen Rechners aus dem
+Internet, falls er hinter deiner Firewall steht -- also bei der
+Kontaktaufnahme von Seiten von \gitlab.
 
-\section{Bezug zu Java}\label{bezug-zu-java}
+\textbf{Wie kannst du deinen Runner auslagern?}
 
-Nun baust du die Datei \datei{.gitlab-ci.yml} so aus, dass
+Der Runner ist ein Programm, das installiert werden muss. Das kann
+direkt im Prinzip auf jedem Rechner (nicht iPad) gemacht werden, egal ob
+\emph{native} oder in Form eines eigenen Docker-Containers. Wenn der
+Runner einen Job bekommt, startet er auf dem Zielrechner (muss nicht
+identisch mit dem Rechner des Runners sein) einen Docker-Container, der
+die eigentliche Arbeit erledigt. Da auf einem eigenen Server/Rechner das
+Image im Regelfall bereits vorligt, dauert der Start nur extrem kurz und
+die eigentliche Laufzeit des Jobs hängt von der Komplexität der Aufgabe
+ab. Wie du das einrichtest, erfährst du im nächsten Abschnitt, wobei ich
+auf eine reine Docker-Lösung setze.
 
-\begin{itemize}
-\tightlist
-\item
-  die Datei \datei{Demo.java} beim Commit automatisch übersetzt wird
-\item
-  die fertige Klasse zum Download steht
-\end{itemize}
+\subsection{Vorbereiten der Container}\label{vorbereiten-der-container}
 
-\samplestart
-
-\textbf{Hinweis}\\
-Natürlich fragst du dich, wofür dieser Aufwand gerechtfertigt ist, wo du
-das Compilieren doch einfach auf deinem Rechner ausführen kannst.\\
-Da hast du Recht! Allerdings nur bei unserem Mini-Projekt. Wenn es um
-große Projekte mit mehreren Mitarbeitenden geht, die an verschiedenen
-Branches arbeiten, \ldots{} da geht es beim Commit darum, ob z.B. das
-gesamte Projekt übersetzbar ist und zwar nicht in der kleines Welt des
-lokalen Entwicklungsrechners sondern auch auf der Zielplattform. Das
-trifft im Besondern dann zu, wenn anschließend Tests ausgeführt werden
-und eventuell sogar die Version des Kunden automatisch ausgreollt werden
-soll.
-
-Fazit: Für uns absolut überdimensioniert, im Praxiseinsatz aber absolut
-üblich. \sampleend
-
-Erweitere nun die \datei{.gitlab-ci.yml} so:
+Lege zunächst einen Ordner an, wo die Dateien für die Erzeugung der
+Container ablegen willst:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{stages:}
-    \ExtensionTok{{-}}\NormalTok{ build}
-
-\ExtensionTok{compile{-}java{-}with{-}javac:}
-    \ExtensionTok{stage:}\NormalTok{ build}
-    \ExtensionTok{image:}\NormalTok{ eclipse{-}temurin:17{-}jdk}
-    \ExtensionTok{script:}
-        \ExtensionTok{{-}}\NormalTok{ javac src/main/java/de/alp/kurs/}\PreprocessorTok{*}\NormalTok{.java }\AttributeTok{{-}d}\NormalTok{ target/}
-        \ExtensionTok{{-}}\NormalTok{ cd target}
-        \ExtensionTok{{-}}\NormalTok{ java de.alp.kurs.Demo}
-    \ExtensionTok{artifacts:}
-        \ExtensionTok{paths:}\NormalTok{ de/alp/kurs/Demo.class }
+\BuiltInTok{cd} \OperatorTok{\textless{}}\NormalTok{wo auch immer}\OperatorTok{\textgreater{}}
+\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ runner quarto java }\CommentTok{\# 3 Ordner}
 \end{Highlighting}
 \end{Shaded}
 
-Das verwendete Dockerimage \datei{eclipse-temurin:17-jdk} hat einen
-etwas seltsamen Namen und dieser kann sich im Lauf der Zeit auch ändern.
-Im Zweifelsfall musst du hier etwas auf DockerHub recherchieren.
+In diesen Ordnern liegen dann Startdateien.
 
-Die fertige Class-Datei wird dann als Zip-Archiv auf der Seite mit den
-Pipelines (rechter Rand) zum Dowmload gestellt.
-
-\section{Komplexere Szenarien}\label{komplexere-szenarien}
-
-Sobald die Projekte umfangreicher werden, ist dieser eher manuelle
-Kompilieransatz und das Testen auf diesem Weg schnell zu komplex. Dafür
-gibt es Build-Tools wie Gradle oder \maven. Letzteres wollen wir später
-noch näher betrachten. Für einen ersten Vorgeschmack erstellst du die
-Datei \datei{pom.xml} im Haupt-Ordner (also oberhalb von \ordner{scr}):
+\textbf{runner}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\OperatorTok{\textless{}}\NormalTok{project}\OperatorTok{\textgreater{}}
-  \OperatorTok{\textless{}}\NormalTok{modelVersion}\OperatorTok{\textgreater{}}\NormalTok{4.0.0}\OperatorTok{\textless{}}\NormalTok{/modelVersion}\OperatorTok{\textgreater{}}
-  \OperatorTok{\textless{}}\NormalTok{groupId}\OperatorTok{\textgreater{}}\NormalTok{de.alp.kurs}\OperatorTok{\textless{}}\NormalTok{/groupId}\OperatorTok{\textgreater{}}
-  \OperatorTok{\textless{}}\NormalTok{artifactId}\OperatorTok{\textgreater{}}\NormalTok{demo}\OperatorTok{\textless{}}\NormalTok{/artifactId}\OperatorTok{\textgreater{}}
-  \OperatorTok{\textless{}}\NormalTok{version}\OperatorTok{\textgreater{}}\NormalTok{1.0{-}SNAPSHOT}\OperatorTok{\textless{}}\NormalTok{/version}\OperatorTok{\textgreater{}}
-  \OperatorTok{\textless{}}\NormalTok{properties}\OperatorTok{\textgreater{}}
-    \OperatorTok{\textless{}}\NormalTok{maven.compiler.source}\OperatorTok{\textgreater{}}\NormalTok{17}\OperatorTok{\textless{}}\NormalTok{/maven.compiler.source}\OperatorTok{\textgreater{}}
-    \OperatorTok{\textless{}}\NormalTok{maven.compiler.target}\OperatorTok{\textgreater{}}\NormalTok{17}\OperatorTok{\textless{}}\NormalTok{/maven.compiler.target}\OperatorTok{\textgreater{}}
-  \OperatorTok{\textless{}}\NormalTok{/properties}\OperatorTok{\textgreater{}}
-\OperatorTok{\textless{}}\NormalTok{/project}\OperatorTok{\textgreater{}}
+\CommentTok{\# Inhalt der docker{-}compose.yml }
+\ExtensionTok{version:} \StringTok{\textquotesingle{}3.8\textquotesingle{}}
+
+\ExtensionTok{services:}
+  \ExtensionTok{gitlab{-}runner:}
+    \ExtensionTok{image:}\NormalTok{ gitlab/gitlab{-}runner:latest}
+    \ExtensionTok{container\_name:}\NormalTok{ quarto\_runner }
+    \ExtensionTok{restart:}\NormalTok{ always}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ ./config:/etc/gitlab{-}runner}
+      \ExtensionTok{{-}}\NormalTok{ /var/run/docker.sock:/var/run/docker.sock}
 \end{Highlighting}
 \end{Shaded}
 
-Für den Einsatz von \maven baust du die \datei{.gitlab-ci.yml} so um:
+In dieser Version liegt der Konfigurationsordner \ordner{config} im
+Verzeichnis des Runners. Beim ersten Start -- vor dem Registrieren des
+Runners auf \gitlab -- wird ein Fehler gemeldet, dass die Datei
+\datei{config.toml} in diesem Ordner fehlt. Sie wird bei den nächsten
+Schritten erst erstellt -- das ist also normal und kann ignoriert
+werden!
+
+Starte diesen Container noch \textbf{nicht}, denn wir wollen erst die
+Vorbereitungsarbeiten abschließen.
+
+\textbf{quarto}\\
+Für diesen Container genügt ein Dockerfile, denn dieser Container wird
+komplett vom Runner verwaltet.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{stages:}
-  \ExtensionTok{{-}}\NormalTok{ build}
+\CommentTok{\# Inhalt von Dockerfile }
+\ExtensionTok{FROM}\NormalTok{ ubuntu:24.04}
 
-\ExtensionTok{compile{-}java{-}with{-}maven:}
-  \ExtensionTok{stage:}\NormalTok{ build}
-  \ExtensionTok{image:}\NormalTok{ maven:latest}
-  \ExtensionTok{script:}
-    \ExtensionTok{{-}}\NormalTok{ mvn compile}
-    \ExtensionTok{{-}}\NormalTok{ ls target/classes/de/alp/kurs}
-    \ExtensionTok{{-}}\NormalTok{ cd target/classes}
-    \ExtensionTok{{-}}\NormalTok{ java de.alp.kurs.Demo}
+\CommentTok{\# Install basics}
+\ExtensionTok{RUN}\NormalTok{ apt{-}get update }\KeywordTok{\&\&} \ExtensionTok{apt{-}get}\NormalTok{ install }\AttributeTok{{-}y} \DataTypeTok{\textbackslash{}}
+\NormalTok{    wget xz{-}utils git pandoc texlive{-}full }\DataTypeTok{\textbackslash{}}
+\NormalTok{    curl unzip }\DataTypeTok{\textbackslash{}}
+    \KeywordTok{\&\&} \ExtensionTok{apt{-}get}\NormalTok{ clean}
+
+\CommentTok{\# Install Quarto}
+\ExtensionTok{RUN}\NormalTok{ wget https://quarto.org/download/latest/quarto{-}linux{-}amd64.deb }\DataTypeTok{\textbackslash{}}
+    \AttributeTok{{-}O}\NormalTok{ /tmp/quarto.deb }\DataTypeTok{\textbackslash{}}
+    \KeywordTok{\&\&} \ExtensionTok{apt{-}get}\NormalTok{ install }\AttributeTok{{-}y}\NormalTok{ /tmp/quarto.deb }\DataTypeTok{\textbackslash{}}
+    \KeywordTok{\&\&} \FunctionTok{rm}\NormalTok{ /tmp/quarto.deb}
+
+\CommentTok{\# Set workdir}
+\ExtensionTok{WORKDIR}\NormalTok{ /work}
+
+\CommentTok{\# Default command}
+\ExtensionTok{CMD} \PreprocessorTok{[}\StringTok{"bash"}\PreprocessorTok{]}
 \end{Highlighting}
 \end{Shaded}
 
-Mit dem Speichern wird das \emph{Projekt} durch \maven erstellt und auch
-probeweise ausgeführt.
+In dieser Datei wird die Installation eines kompletten Quarto/Latex
+Servers beschrieben. Das dauert dann einige Zeit, da der Container am
+Ende etwa 10GB groß ist!
 
-Im nächsten Abschnitt werfen wir einen genaueren Blick auf \maven.
+Du kannst dieses Image mit folgendem Befehl auf deinem Server verfügbar
+machen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ build }\AttributeTok{{-}t}\NormalTok{ quarto{-}git:latest }\AttributeTok{{-}f}\NormalTok{ Dockerfile .}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Java}\\
+Auch für Java brauchst du ein lokales Image, wenn die Geschwindigkeit
+stimmen soll. Ein mögliches Dockerfile sieht so aus:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Inhalt von Dockerfile }
+\CommentTok{\# Basisimage mit Java 21 (Temurin JDK)}
+\ExtensionTok{FROM}\NormalTok{ eclipse{-}temurin:21{-}jdk}
+
+\CommentTok{\# Maven{-}Version festlegen}
+\ExtensionTok{ARG}\NormalTok{ MAVEN\_VERSION=3.9.11}
+\ExtensionTok{ARG}\NormalTok{ USER\_HOME\_DIR=}\StringTok{"/root"}
+\ExtensionTok{ARG}\NormalTok{ SHA=8d25376b58a36454bedc70ed87c1a507}
+
+\CommentTok{\# Installationsverzeichnisse}
+\ExtensionTok{ARG}\NormalTok{ BASE\_URL=https://downloads.apache.org/maven/maven{-}3/}\VariableTok{$\{MAVEN\_VERSION\}}\NormalTok{/binaries}
+
+\CommentTok{\# Maven installieren}
+\ExtensionTok{RUN}\NormalTok{ mkdir }\AttributeTok{{-}p}\NormalTok{ /opt/maven }\DataTypeTok{\textbackslash{}}
+    \KeywordTok{\&\&} \ExtensionTok{curl} \AttributeTok{{-}fsSL} \VariableTok{$\{BASE\_URL\}}\NormalTok{/apache{-}maven{-}}\VariableTok{$\{MAVEN\_VERSION\}}\NormalTok{{-}bin.tar.gz }\DataTypeTok{\textbackslash{} }
+    \ExtensionTok{{-}o}\NormalTok{ /tmp/maven.tar.gz }\DataTypeTok{\textbackslash{}}
+    \KeywordTok{\&\&} \FunctionTok{tar} \AttributeTok{{-}xzf}\NormalTok{ /tmp/maven.tar.gz }\AttributeTok{{-}C}\NormalTok{ /opt/maven }\AttributeTok{{-}{-}strip{-}components}\OperatorTok{=}\NormalTok{1 }\DataTypeTok{\textbackslash{}}
+    \KeywordTok{\&\&} \FunctionTok{rm}\NormalTok{ /tmp/maven.tar.gz}
+
+\CommentTok{\# Maven in PATH eintragen}
+\ExtensionTok{ENV}\NormalTok{ MAVEN\_HOME=/opt/maven}
+\ExtensionTok{ENV}\NormalTok{ PATH=}\StringTok{"}\VariableTok{$\{MAVEN\_HOME\}}\StringTok{/bin:}\VariableTok{$\{PATH\}}\StringTok{"}
+
+\CommentTok{\# Arbeitsverzeichnis setzen}
+\ExtensionTok{WORKDIR}\NormalTok{ /workspace}
+
+\CommentTok{\# Default{-}Command (optional)}
+\ExtensionTok{CMD}\NormalTok{ [}\StringTok{"mvn"}\NormalTok{, }\StringTok{"{-}{-}version"}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\bookmarksetup{startatroot}
+
+\chapter{Runner}\label{runner-1}
+
+Ein Runner ist ein Hilfsprogramm, das Aufträge von Gitlab entgegen nimmt
+und ausführt. Solche Runner können auf unterschiedlichen Ebenen agieren,
+d.h. nur für einzelne Projekte, für Gruppen, für alle Repositories,
+\ldots{} Nicht alle Varianten sind für die freien Accounts auf Gitlab
+verfügbar!
 
 \bookmarksetup{startatroot}
 
@@ -6425,6 +6737,17 @@ Compilieren, Testen und Ausführen von Java-Code auf den einzelnen
 Plattformen zumindest so unterschiedlich und komplex, dass ein manuelles
 Testen faktisch nicht sinnvoll ist. Aus diesem Grund werden wir hier
 gleich mit \maven arbeiten.
+
+\samplestart
+
+\textbf{Hinweis}\\
+TDD wird von verschiedenen Autoren unterschiedlich \emph{streng}
+gesehen. Wir verwenden dann im Java-Teil einen sehr kleinschrittigen
+Ansatz. Das folgt eher dem Ansatz von
+\url{https://www.obeythetestinggoat.com/} (Python), einen etwas weniger
+kleinschrittigen Weg empfiehlt Allan Mellor in Test-Driven Development
+with Java, erschienen 2023 bei packtpub.com. Dies sind allerdings noch
+lange nicht alle Sichtweisen auf dieses Thema! \sampleend
 
 \section{Maven}\label{maven}
 
@@ -7209,7 +7532,7 @@ There is never a charge to use your own group or specific runners.
 
 \subsection{Mögliche Executors}\label{muxf6gliche-executors}
 
-\subsubsection{Docker}\label{docker-1}
+\subsubsection{Docker}\label{docker-2}
 
 In diesem Fall muss Docker auf dem gleichen Rechner wie der GitLab
 Runner installiert sein. Meistgenutzter Typ auch bei den SaaS Runners
@@ -7296,8 +7619,13 @@ Solo-developer aus, um keine Aspekte der Teamarbeit (Gitflow, \ldots)
 behandeln zu müssen.
 
 Damit CI/CD im Prinzip funktionsfähig ist, musst du nun nur noch die
-Datei \datei{.gitlab-ci.yml} erstellen und passend füllen. Eine einfache
-Version könnte so aussehen:
+Datei \datei{.gitlab-ci.yml} erstellen und passend füllen. Bei der
+nachfolgenden Version werden Build-Produkte zwischen Läufen gespeichert,
+bestimmte Schritte im \emph{Batch-Mode} ausgeführt, \ldots{} Du kannst
+aber mit den bisherigen Kenntnissen aber sicher auch eine einfachere
+Datei erstellen, die im Wesentlichen \cmd{mvn package} oder auch nur
+\cmd{mvn test} ausführt. Das verwendete Docker-Image kannst du im
+Prinzip natürlich auch durch ein eigenes Image ersetzen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7342,6 +7670,116 @@ Version könnte so aussehen:
     \ExtensionTok{{-}}\NormalTok{ echo }\StringTok{"Hier könntest du mvn deploy ausführen"}
 \end{Highlighting}
 \end{Shaded}
+
+\section{Wie beginnt man mit einem neuen
+Repository}\label{wie-beginnt-man-mit-einem-neuen-repository}
+
+\subsection{Reiner Git-Server (nicht
+GitLab)}\label{reiner-git-server-nicht-gitlab}
+
+Auf dem Server kannst du auf zwei Varianten ein neues Server-Repository
+anlegen. In einem solchen Repository wirst du nie wirklich Dateien im
+Sinne eines Arbeitsordners sehen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ projekt.git }
+\end{Highlighting}
+\end{Shaded}
+
+oder länger
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mkdir}\NormalTok{ projekt.git}
+\BuiltInTok{cd}\NormalTok{ projekt }
+\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare} 
+\end{Highlighting}
+\end{Shaded}
+
+In beiden Fällen bekommst du einen Hinweis, dass du gleich den Branch
+umbenennen sollst:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
+\end{Highlighting}
+\end{Shaded}
+
+Dieses Repository ist noch leer und das kann auf Benutzerseite zu
+Irritationen führen. Aus diesem Gund solltest du selbst dafür sorgen,
+dass bereits (mindestens) eine Datei enthalten ist:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ clone ssh://server/../../projekt.git}
+\BuiltInTok{cd}\NormalTok{ projekt   }\CommentTok{\# kommt ohne .git an }
+\BuiltInTok{echo} \StringTok{"Welcome"} \OperatorTok{\textgreater{}}\NormalTok{ README.txt }
+\FunctionTok{git}\NormalTok{ add README.txt }
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Initial"}
+\FunctionTok{git}\NormalTok{ push }
+\end{Highlighting}
+\end{Shaded}
+
+Wenn nun ein Anwender das Repo clont, kann er sofort aktiv damit
+arbeiten
+
+\subsection{Gitlab}\label{gitlab-1}
+
+Hier erstellt das System beim Anlegen des Repositories auf Wunsch
+automatisch eine README.md und du hast die gleiche Situation wie oben.
+
+\subsection{Problemfälle}\label{problemfuxe4lle}
+
+Wovon ich dringend abrate, ist folgende Variante:
+
+\begin{itemize}
+\tightlist
+\item
+  Entwicklungsbeginn auf lokalen Rechner mit lokalem \git-Repository\\
+  (also nicht geclont, sondern selbst erstellt und verwaltet)
+\item
+  Dann erkennen, dass es auf dem Server doch besser aufgehoben wäre
+\item
+  Auf GitLab ein Reopsitory erstellen (mit README.md)
+\item
+  Das Server-Repository im lokalen Repository als \emph{remote}
+  eintragen
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ remote add origin ssh://server/../../projekt.git}
+\end{Highlighting}
+\end{Shaded}
+
+Natürlich geht das im Prinzip, hängt aber im Detail wieder von
+\emph{reinem} \git oder GitLab ab. Problematisch ist dabei, dass zwei
+\emph{main}-Zweige aufeinander treffen, die voneinander unabhängig sind.
+
+Bei einem ganz frischen Server-Repository -- also ohne \emph{wertvollen}
+Inhalt kann man vom lokalen Rechner aus den eigenen Stand als
+verbindlich kennzeichnen, indem man den Serverinhalt duch folgenden
+Befehl überschreibt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ push }\AttributeTok{{-}u}\NormalTok{ origin main }\AttributeTok{{-}{-}force}
+\end{Highlighting}
+\end{Shaded}
+
+Das Force kann entfallen, wenn das neu erzeugte Repository auf dem
+Server noch komplett neu und ohne Inhalt ist!
+
+Du siehst also, es gibt eine ganze Menge von Varianten mit
+untschiedlichem Vorgehensweise. In meinen Augen ist es am sinnvollsten,
+wenn man direkt mit einem Server-Repository beginnt und sich ein lokales
+Repository clont.
+
+Einen Fall möchte ich noch erwähnen, wenn man zwar schon einige Zeit mit
+\git lokal gearbeitet hat, aber keine wertvollen Commits oder Branches
+in seiner History vorliegen hat. Es ist dann eine Option, den kompletten
+Quellcode einfach in ein frisches Server-Repository zu kopieren.
 
 ERLEDIGEN:
 

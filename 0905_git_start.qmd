@@ -1,0 +1,87 @@
+## Wie beginnt man mit einem neuen Repository
+
+### Reiner Git-Server (nicht GitLab)
+
+Auf dem Server kannst du auf zwei Varianten ein 
+neues Server-Repository anlegen. In einem solchen
+Repository wirst du nie wirklich Dateien im Sinne 
+eines Arbeitsordners sehen.
+
+```bash
+git init --bare projekt.git 
+```
+
+oder länger
+
+```bash
+mkdir projekt.git
+cd projekt 
+git init --bare 
+```
+
+In beiden Fällen bekommst du einen Hinweis, dass du gleich den 
+Branch umbenennen sollst:
+
+```bash
+git branch -m main
+```
+
+Dieses Repository ist noch leer und das kann auf Benutzerseite 
+zu Irritationen führen. Aus diesem Gund solltest du selbst dafür 
+sorgen, dass bereits (mindestens) eine Datei enthalten ist:
+
+```bash
+git clone ssh://server/../../projekt.git
+cd projekt   # kommt ohne .git an 
+echo "Welcome" > README.txt 
+git add README.txt 
+git commit -m "Initial"
+git push 
+```
+
+Wenn nun ein Anwender das Repo clont, kann er sofort aktiv damit arbeiten
+
+### Gitlab
+Hier erstellt das System beim Anlegen des Repositories auf Wunsch automatisch eine 
+README.md und du hast die gleiche Situation wie oben.
+
+### Problemfälle
+
+Wovon ich dringend abrate, ist folgende Variante:
+
+* Entwicklungsbeginn auf lokalen Rechner mit lokalem \git-Repository  
+  (also nicht geclont, sondern selbst erstellt und verwaltet)
+* Dann erkennen, dass es auf dem Server doch besser aufgehoben wäre
+* Auf GitLab ein Reopsitory erstellen (mit README.md)
+* Das Server-Repository im lokalen Repository als *remote* eintragen
+
+```bash
+git remote add origin ssh://server/../../projekt.git
+```
+
+Natürlich geht das im Prinzip, hängt aber im Detail wieder von 
+*reinem* \git oder GitLab ab. Problematisch ist dabei, dass 
+zwei *main*-Zweige aufeinander treffen, die voneinander unabhängig sind.
+
+Bei einem ganz frischen Server-Repository -- also ohne *wertvollen*
+Inhalt kann man vom lokalen Rechner aus den eigenen Stand als verbindlich 
+kennzeichnen, indem man den Serverinhalt duch folgenden Befehl überschreibt:  
+
+```bash
+git push -u origin main --force
+```
+
+Das Force kann entfallen, wenn das neu erzeugte Repository auf dem Server 
+noch komplett neu und ohne Inhalt ist!
+
+Du siehst also, es gibt eine ganze Menge von Varianten mit 
+untschiedlichem Vorgehensweise. In meinen Augen ist es am sinnvollsten,
+wenn man direkt mit einem Server-Repository beginnt und sich ein 
+lokales Repository clont.
+
+Einen Fall möchte ich noch erwähnen, wenn man zwar schon einige Zeit mit 
+\git lokal gearbeitet hat, aber keine wertvollen Commits oder Branches 
+in seiner History vorliegen hat. Es ist dann eine Option, den kompletten Quellcode 
+einfach in ein frisches Server-Repository zu kopieren.
+
+
