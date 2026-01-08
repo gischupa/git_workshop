@@ -339,17 +339,19 @@ git revert 0d43a86
 
 # Ausgabe 
 KONFLIKT (ändern/löschen): file.txt gelöscht in (empty tree) und 
-geändert in HEAD. Stand HEAD von file.txt wurde im Arbeitsbereich gelassen.
+geändert in HEAD. Stand HEAD von file.txt wurde im Arbeitsbereich
+gelassen.
 
-error: Konnte "revert" nicht auf 0d43a86... (A: Add A-line) ausführen
+error: Konnte "revert" nicht auf 0d43a86... (A: Add A-line) 
+ausführen
 
-Hinweis: Lösen Sie alle Konflikte manuell auf, markieren Sie diese mit
-Hinweis: "git add/rm <Pfadspezifikation>" und führen Sie dann
-Hinweis: "git revert --continue" aus.
+Hinweis: Lösen Sie alle Konflikte manuell auf, markieren Sie 
+Hinweis: diese mit "git add/rm <Pfadspezifikation>" und führen 
+Hinweis: Sie dann "git revert --continue" aus.
 Hinweis: Sie können stattdessen auch diesen Commit auslassen, indem
 Hinweis: Sie "git revert --skip" ausführen.
-Hinweis: Um abzubrechen und zurück zum Zustand vor "git revert" zu gelangen,
-Hinweis: führen Sie "git revert --abort" aus.
+Hinweis: Um abzubrechen und zurück zum Zustand vor "git revert" 
+Hinweis: zu gelangen, führen Sie "git revert --abort" aus.
 ```
 
 Die Anleitung für das weitere Vorgehen steht komplett in den Hinweisen:

@@ -249,7 +249,8 @@ Server zu kopieren und sie dann durch ein kleines Script in die \datei{authorize
 **Schritt 1: Benutzer anlegen**  
 
 ```bash
-adduser --system --shell /usr/bin/git-shell --home /home/git --group --disabled-password git
+adduser --system --shell /usr/bin/git-shell --home /home/git \
+        --group --disabled-password git
 ```
 
 **Schritt 2: Dateien übertragen**  

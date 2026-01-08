@@ -1,5 +1,5 @@
 # Cherry Picking
-## Einfach und Problemlos
+## Einfach und problemlos
 Dieser Befehl klingt nach hoher Expertise, ist aber im Vergleich 
 zu anderen Techniken relativ leicht zu verstehen. Kurz gesagt 
 ermöglicht es Cherry-Pick, sich Commits aus anderen Branches 
@@ -46,12 +46,11 @@ git cherry-pick 534875
 Als Ergebnis entsteht dadurch am Ende ein komplett neuer Commit 
 mit neuem Hash im aktuellen Branch. 
 
-Das Script \script{cherry_pick.sh} liefert genau dieses problemlose 
+Das Script \script{cherry\_pick.sh} liefert genau dieses problemlose 
 Szenario. *Problemlos* deshalb, weil in beiden Branches komplett andere 
-Dateien bearbeitet werden. Dann ist es kein Problem die Änderungen 
-zu transferieren:
+Dateien bearbeitet werden. Damit können die Änderungen einfach übernommen werden:
 
-```{.bash include="src/cherry_pick/cherry_pick.sh"}}
+```{.bash include="src/cherry/cherry_pick.sh"}
 ```
 
 **Ergebnis**
@@ -92,17 +91,18 @@ git log --oneline --decorate --graph --all
 * 57085c3 initial
 ```
 
-## Weniger Problemlos
+## Weniger problemlos
 
 Wenn vom Cherry-Pick eine Datei (oder mehrere) betroffen sind,
 die in beiden Branches geändert wurden, dann wird die Situation 
-schnell unübersichtlich, weil wieder eine Art von Merge-Konflikt 
-auftritt, den wir auf ganz spezielle Weise auflösen müssen.  
+schnell unübersichtlich. Es ensteht wieder eine Art von Merge-Konflikt, 
+den wir auf ganz spezielle Weise auflösen müssen.  
 
 Für den Überblick: Das nachfolgende Script nimmt Änderungen
-an der gleichen Datei in zwei Branches vor:
+an der gleichen Datei in zwei Branches vor. Hier der ist der 
+Inhalt von Script \script{cherry\_pick\_2.sh}:
 
-```{.bash include="src/cherry_pick/cherry_pick_2.sh"}}
+```{.bash include="src/cherry/cherry_pick_2.sh"}
 ```
 
 ```bash
@@ -121,19 +121,20 @@ Mit Hilfe von
 git cherry-pick b287548 
 ```
 
-Bekommen wir folgenden Konfilkt:
+Bekommen wir folgenden Konflikt:
 
 ```bash
 automatischer Merge von index.html
 KONFLIKT (Inhalt): Merge-Konflikt in index.html
 error: Konnte b287548... (z3) nicht anwenden
-Hinweis: Lösen Sie alle Konflikte manuell auf, markieren Sie diese mit
-Hinweis: "git add/rm <Pfadspezifikation>" und führen Sie dann
+Hinweis: Lösen Sie alle Konflikte manuell auf, markieren Sie diese 
+Hinweis: mit "git add/rm <Pfadspezifikation>" und führen Sie dann
 Hinweis: "git cherry-pick --continue" aus.
 Hinweis: Sie können stattdessen auch diesen Commit auslassen, indem
 Hinweis: Sie "git cherry-pick --skip" ausführen.
-Hinweis: Um abzubrechen und zurück zum Zustand vor "git cherry-pick" zu
-Hinweis: gelangen, führen Sie "git cherry-pick --abort" aus.
+Hinweis: Um abzubrechen und zurück zum Zustand vor 
+Hinweis: "git cherry-pick" zu gelangen, führen Sie 
+Hinweis: "git cherry-pick --abort" aus.
 ```
 
 Nun muss die betroffen Datei per Hand korrigiert und neu gespeichert werden.
@@ -153,15 +154,20 @@ geführt wird und wir sie durch \cmd{git add} wieder stagen sollen:
 ```bash 
 Auf Branch main
 Sie führen gerade "cherry-pick" von Commit b287548 aus.
-  (beheben Sie die Konflikte und führen Sie dann "git cherry-pick --continue" aus)
-  (benutzen Sie "git cherry-pick --skip", um diesen Patch auszulassen)
-  (benutzen Sie "git cherry-pick --abort", um die Cherry-Pick-Operation abzubrechen)
+  (beheben Sie die Konflikte und führen Sie dann 
+  "git cherry-pick --continue" aus)
+  (benutzen Sie "git cherry-pick --skip", um diesen Patch 
+  auszulassen)
+  (benutzen Sie "git cherry-pick --abort", um die 
+  Cherry-Pick-Operation abzubrechen)
 
 Nicht zusammengeführte Pfade:
-  (benutzen Sie "git add/rm <Datei>...", um die Auflösung zu markieren)
+  (benutzen Sie "git add/rm <Datei>...", um die Auflösung 
+  zu markieren)
 	von beiden geändert:    index.html
 
-keine Änderungen zum Commit vorgemerkt (benutzen Sie "git add" und/oder "git commit -a")
+keine Änderungen zum Commit vorgemerkt 
+(benutzen Sie "git add" und/oder "git commit -a")
 ```
 
 Das machen wir
@@ -173,9 +179,12 @@ git status
 # Ausgabe
 Auf Branch main
 Sie führen gerade "cherry-pick" von Commit b287548 aus.
-  (alle Konflikte behoben: führen Sie "git cherry-pick --continue" aus)
-  (benutzen Sie "git cherry-pick --skip", um diesen Patch auszulassen)
-  (benutzen Sie "git cherry-pick --abort", um die Cherry-Pick-Operation abzubrechen)
+  (alle Konflikte behoben: führen Sie "git cherry-pick --continue" 
+  aus)
+  (benutzen Sie "git cherry-pick --skip", um diesen Patch 
+  auszulassen)
+  (benutzen Sie "git cherry-pick --abort", um die 
+  Cherry-Pick-Operation abzubrechen)
 
 Zum Commit vorgemerkte Änderungen:
 	geändert:       index.html
@@ -192,3 +201,166 @@ keine aktuell abgeänderten Dateien, was den Ablauf noch komplexer machen würde
 \sampleend 
 
 ## Noch unangenehmer ...
+
+Nun wollen wir 3 Dateien betrachten (datei\_1.html,datei\_2.html,datei\_3.html). Davon soll 
+nur \datei{datei\_1.html} im \branch{main}-Branch liegen. Die anderen beiden Dateien werden im 
+\branch{develop\-ment}-Branch abwechselnd bearbeitet. Wie wollen einen *späteren* Commit
+cherry-picken. Im Tree sieht das so aus:
+
+```bash
+* 177a8a6 (development) z3d2
+* d46d7bb z2d2     <<<<<<< wollen wir von hier ...
+* 1b07ddb z1d3
+* 8fa5974 z1d2
+| * a4cc92c (HEAD -> main) d1z3 <<<< ... nach da picken
+|/  
+* cc253e1 z2d1
+* 09a1330 z1d1
+```
+
+Erzeugen können wir die Situation mit dem Script \script{cherry\_pick\_3.sh}:
+
+```bash
+#!/bin/bash
+
+# Demo for Cherry without error
+
+rm -rf cherry_labor
+
+mkdir cherry_labor
+cd cherry_labor
+git init
+git branch -m main
+
+echo "Zeile 1" > datei_1.html
+git add datei_1.html
+git commit -m "z1d1"
+
+echo "Zeile 2" >> datei_1.html
+git add datei_1.html
+git commit -m "z2d1"
+
+git switch -c development  # branch wechsel
+
+echo "Zeile 1" >> datei_2.html
+git add datei_2.html
+git commit -m "z1d2"
+
+echo "Zeile 1" >> datei_3.html
+git add datei_3.html
+git commit -m "z1d3"
+
+echo "Zeile 2" >> datei_2.html
+git add datei_2.html
+git commit -m "z2d2"
+
+echo "Zeile 3" >> datei_2.html
+git add datei_2.html
+git commit -m "z3d2"
+
+git switch main  # wieder auf main
+
+echo "Zeile 3" >> datei_1.html
+git add datei_1.html
+git commit -m "d1z3"
+
+git log --oneline --decorate --graph --all
+```
+
+Der Befehl \cmd{git cherry-pick d46d7bb} liefert diese,
+etwas seltsame Meldung:
+
+```bash
+KONFLIKT (ändern/löschen): datei_2.html gelöscht in HEAD und 
+geändert in d46d7bb (z2d2). Stand d46d7bb (z2d2) von datei_2.html 
+wurde im Arbeitsbereich gelassen.
+error: Konnte d46d7bb... (z2d2) nicht anwenden
+Hinweis: Lösen Sie alle Konflikte manuell auf, markieren Sie diese 
+Hinweis: mit "git add/rm <Pfadspezifikation>" und führen Sie dann
+Hinweis: "git cherry-pick --continue" aus.
+Hinweis: Sie können stattdessen auch diesen Commit auslassen, indem
+Hinweis: Sie "git cherry-pick --skip" ausführen.
+Hinweis: Um abzubrechen und zurück zum Zustand vor 
+Hinweis: "git cherry-pick" zu gelangen, führen Sie
+Hinweis:  "git cherry-pick --abort" aus.
+```
+
+In der betroffenen Datei \datei{datei\_2.html} ist aber kein Konlikt zu erkennen:
+
+```bash
+Zeile 1
+Zeile 2
+```
+
+Ein \cmd{git status} zeigt eine gelöschte Datei (die aber vorhanden ist):
+
+```bash
+Auf Branch main
+Sie führen gerade "cherry-pick" von Commit d46d7bb aus.
+  (beheben Sie die Konflikte und führen Sie dann 
+  "git cherry-pick --continue" aus)
+  (benutzen Sie "git cherry-pick --skip", um diesen Patch 
+  auszulassen)
+  (benutzen Sie "git cherry-pick --abort", um die Cherry-Pick-
+  Operation abzubrechen)
+
+Nicht zusammengeführte Pfade:
+  (benutzen Sie "git add/rm <Datei>...", um die Auflösung 
+  entsprechend zu markieren)
+	von uns gelöscht:       datei_2.html
+
+keine Änderungen zum Commit vorgemerkt (benutzen Sie 
+"git add" und/oder "git commit -a")
+```
+
+Durch \cmd{git add datei\_2.html} bekommen wir dann
+
+```bash
+Auf Branch main
+Sie führen gerade "cherry-pick" von Commit d46d7bb aus.
+  (alle Konflikte behoben: führen Sie "git cherry-pick --continue" 
+  aus)
+  (benutzen Sie "git cherry-pick --skip", um diesen Patch 
+  auszulassen)
+  (benutzen Sie "git cherry-pick --abort", um die Cherry-Pick-
+  Operation abzubrechen)
+
+Zum Commit vorgemerkte Änderungen:
+	neue Datei:     datei_2.html
+```
+
+und \cmd{git cherry-pick --continue} beendet den Prozess nach Eingabe 
+der üblichen Commit-Message.
+
+```bash
+[main a908bef] Picken von z2d2
+ Date: Thu Jan 8 07:21:31 2026 +0100
+ 1 file changed, 2 insertions(+)
+ create mode 100644 datei_2.html
+```
+
+mit 
+
+```bash
+* a908bef (HEAD -> main) Picken von z2d2  <<<< Erfolg
+* a4cc92c d1z3
+| * 177a8a6 (development) z3d2
+| * d46d7bb z2d2
+| * 1b07ddb z1d3
+| * 8fa5974 z1d2
+|/  
+* cc253e1 z2d1
+* 09a1330 z1d1
+```
+
+Der Grund ist einfach, dass im betroffenen Commit *nur steht*:
+
+„Füge Zeile 2 in Datei 2 ein.“
+
+Diese Datei gibt es aber im \branch{main}-Branch aktuell gar nicht!
+Damit hat \git ein Problem, was mit den Inhalten passieren soll,
+die in früheren Commits in dieser Datei angelegt wurden.
+
+Du siehst also, dass das Picken durchaus seine komplexen Seiten 
+hat, weshalb ein Einsatz im Unterricht wohl auch nur sehr bedingt
+sinnvoll ist!

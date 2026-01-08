@@ -203,12 +203,15 @@ git Status
 # Ausgabe 
 Auf Branch main
 Änderungen, die nicht zum Commit vorgemerkt sind:
-  (benutzen Sie "git add <Datei>...", um die Änderungen zum Commit vorzumerken)
-  (benutzen Sie "git restore <Datei>...", um die Änderungen im Arbeitsverzeichnis zu verwerfen)
+  (benutzen Sie "git add <Datei>...", um die Änderungen zum Commit 
+  vorzumerken)
+  (benutzen Sie "git restore <Datei>...", um die Änderungen im 
+  Arbeitsverzeichnis zu verwerfen)
 	geändert:       datei1.txt
 	geändert:       datei2.txt
 
-keine Änderungen zum Commit vorgemerkt (benutzen Sie "git add" und/oder "git commit -a")
+keine Änderungen zum Commit vorgemerkt (benutzen Sie "git add" 
+und/oder "git commit -a")
 ```
 
 
@@ -226,7 +229,8 @@ git status
 
 Auf Branch main
 Zum Commit vorgemerkte Änderungen:
-  (benutzen Sie "git restore --staged <Datei>..." zum Entfernen aus der Staging-Area)
+  (benutzen Sie "git restore --staged <Datei>..." zum Entfernen aus 
+  der Staging-Area)
 	geändert:       datei1.txt
 	geändert:       datei2.txt
 ```
@@ -387,7 +391,7 @@ nächsten Befehls sehr kurz, der den Tree ausliest:
 git cat-file -p 94eed25c4ef6cfa1384df66f28308c09dc9bf28d
 
 # Ausgabe - normal deutlich länger!
-100644 blob ce1332fcf1795166c3c5cd0216b5e7dc2dce7998	homepage.html
+100644 blob ce1332fcf1795166c3c5cd0216b5e7dc2dce7998 homepage.html
 ```
 
 Abschließend sehen wir uns den Inhalt des Blob an

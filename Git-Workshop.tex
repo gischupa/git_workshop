@@ -334,7 +334,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, colback={codebgcolor}, enhanced, breakable, boxrule=0pt, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[colback={codebgcolor}, sharp corners, frame hidden, enhanced, breakable, boxrule=0pt]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -794,7 +794,8 @@ ein kleines Script in die \datei{authorized\_keys} zu übertragen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{adduser} \AttributeTok{{-}{-}system} \AttributeTok{{-}{-}shell}\NormalTok{ /usr/bin/git{-}shell }\AttributeTok{{-}{-}home}\NormalTok{ /home/git }\AttributeTok{{-}{-}group} \AttributeTok{{-}{-}disabled{-}password}\NormalTok{ git}
+\ExtensionTok{adduser} \AttributeTok{{-}{-}system} \AttributeTok{{-}{-}shell}\NormalTok{ /usr/bin/git{-}shell }\AttributeTok{{-}{-}home}\NormalTok{ /home/git }\DataTypeTok{\textbackslash{}}
+        \AttributeTok{{-}{-}group} \AttributeTok{{-}{-}disabled{-}password}\NormalTok{ git}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1486,12 +1487,15 @@ folgender Situation:
 \CommentTok{\# Ausgabe }
 \ExtensionTok{Auf}\NormalTok{ Branch main}
 \ExtensionTok{Änderungen,}\NormalTok{ die nicht zum Commit vorgemerkt sind:}
-  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git add \textless{}Datei\textgreater{}..."}\NormalTok{, um die Änderungen zum Commit vorzumerken}\KeywordTok{)}
-  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git restore \textless{}Datei\textgreater{}..."}\NormalTok{, um die Änderungen im Arbeitsverzeichnis zu verwerfen}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git add \textless{}Datei\textgreater{}..."}\NormalTok{, um die Änderungen zum Commit }
+  \ExtensionTok{vorzumerken}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git restore \textless{}Datei\textgreater{}..."}\NormalTok{, um die Änderungen im }
+  \ExtensionTok{Arbeitsverzeichnis}\NormalTok{ zu verwerfen}\KeywordTok{)}
     \ExtensionTok{geändert:}\NormalTok{       datei1.txt}
     \ExtensionTok{geändert:}\NormalTok{       datei2.txt}
 
-\ExtensionTok{keine}\NormalTok{ Änderungen zum Commit vorgemerkt }\ErrorTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git add"}\NormalTok{ und/oder }\StringTok{"git commit {-}a"}\KeywordTok{)}
+\ExtensionTok{keine}\NormalTok{ Änderungen zum Commit vorgemerkt }\ErrorTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git add"} 
+\ExtensionTok{und/oder} \StringTok{"git commit {-}a"}\KeywordTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1511,7 +1515,8 @@ vor im Arbeitsverzeichnis vorhanden sind, weil für sie noch kein
 
 \ExtensionTok{Auf}\NormalTok{ Branch main}
 \ExtensionTok{Zum}\NormalTok{ Commit vorgemerkte Änderungen:}
-  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git restore {-}{-}staged \textless{}Datei\textgreater{}..."}\NormalTok{ zum Entfernen aus der Staging{-}Area}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git restore {-}{-}staged \textless{}Datei\textgreater{}..."}\NormalTok{ zum Entfernen aus }
+  \ExtensionTok{der}\NormalTok{ Staging{-}Area}\KeywordTok{)}
     \ExtensionTok{geändert:}\NormalTok{       datei1.txt}
     \ExtensionTok{geändert:}\NormalTok{       datei2.txt}
 \end{Highlighting}
@@ -1696,7 +1701,7 @@ Befehls sehr kurz, der den Tree ausliest:
 \FunctionTok{git}\NormalTok{ cat{-}file }\AttributeTok{{-}p}\NormalTok{ 94eed25c4ef6cfa1384df66f28308c09dc9bf28d}
 
 \CommentTok{\# Ausgabe {-} normal deutlich länger!}
-\ExtensionTok{100644}\NormalTok{ blob ce1332fcf1795166c3c5cd0216b5e7dc2dce7998    homepage.html}
+\ExtensionTok{100644}\NormalTok{ blob ce1332fcf1795166c3c5cd0216b5e7dc2dce7998 homepage.html}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2115,17 +2120,19 @@ den HEAD handelt, sind Konflikte im Normalfall fast nicht zu vermeiden!
 
 \CommentTok{\# Ausgabe }
 \ExtensionTok{KONFLIKT} \ErrorTok{(}\ExtensionTok{ändern/löschen}\KeywordTok{)}\BuiltInTok{:}\NormalTok{ file.txt gelöscht in }\ErrorTok{(}\ExtensionTok{empty}\NormalTok{ tree}\KeywordTok{)} \ExtensionTok{und} 
-\ExtensionTok{geändert}\NormalTok{ in HEAD. Stand HEAD von file.txt wurde im Arbeitsbereich gelassen.}
+\ExtensionTok{geändert}\NormalTok{ in HEAD. Stand HEAD von file.txt wurde im Arbeitsbereich}
+\ExtensionTok{gelassen.}
 
-\ExtensionTok{error:}\NormalTok{ Konnte }\StringTok{"revert"}\NormalTok{ nicht auf 0d43a86... }\ErrorTok{(}\ExtensionTok{A:}\NormalTok{ Add A{-}line}\KeywordTok{)} \ExtensionTok{ausführen}
+\ExtensionTok{error:}\NormalTok{ Konnte }\StringTok{"revert"}\NormalTok{ nicht auf 0d43a86... }\ErrorTok{(}\ExtensionTok{A:}\NormalTok{ Add A{-}line}\KeywordTok{)} 
+\ExtensionTok{ausführen}
 
-\ExtensionTok{Hinweis:}\NormalTok{ Lösen Sie alle Konflikte manuell auf, markieren Sie diese mit}
-\ExtensionTok{Hinweis:} \StringTok{"git add/rm \textless{}Pfadspezifikation\textgreater{}"}\NormalTok{ und führen Sie dann}
-\ExtensionTok{Hinweis:} \StringTok{"git revert {-}{-}continue"}\NormalTok{ aus.}
+\ExtensionTok{Hinweis:}\NormalTok{ Lösen Sie alle Konflikte manuell auf, markieren Sie }
+\ExtensionTok{Hinweis:}\NormalTok{ diese mit }\StringTok{"git add/rm \textless{}Pfadspezifikation\textgreater{}"}\NormalTok{ und führen }
+\ExtensionTok{Hinweis:}\NormalTok{ Sie dann }\StringTok{"git revert {-}{-}continue"}\NormalTok{ aus.}
 \ExtensionTok{Hinweis:}\NormalTok{ Sie können stattdessen auch diesen Commit auslassen, indem}
 \ExtensionTok{Hinweis:}\NormalTok{ Sie }\StringTok{"git revert {-}{-}skip"}\NormalTok{ ausführen.}
-\ExtensionTok{Hinweis:}\NormalTok{ Um abzubrechen und zurück zum Zustand vor }\StringTok{"git revert"}\NormalTok{ zu gelangen,}
-\ExtensionTok{Hinweis:}\NormalTok{ führen Sie }\StringTok{"git revert {-}{-}abort"}\NormalTok{ aus.}
+\ExtensionTok{Hinweis:}\NormalTok{ Um abzubrechen und zurück zum Zustand vor }\StringTok{"git revert"} 
+\ExtensionTok{Hinweis:}\NormalTok{ zu gelangen, führen Sie }\StringTok{"git revert {-}{-}abort"}\NormalTok{ aus.}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3436,7 +3443,7 @@ eine andere Datei betroffen hat (\datei{datei2.txt}). Hätten Änderungen
 an \datei{datei.txt} stattgefunden, so hätten wir einen Konflikt
 bekommen, den wir hätten lösen müssen.
 
-Führe der Script \datei{rebase\_mit\_konflikt.sh} aus und versuche dann
+Führe das Script \datei{rebase\_mit\_konflikt.sh} aus und versuche dann
 einen Rebase:
 
 \begin{Shaded}
@@ -3447,8 +3454,10 @@ einen Rebase:
 \ExtensionTok{error:}\NormalTok{ Konnte 2f5968f... }\ErrorTok{(}\ExtensionTok{Inhalt}\NormalTok{ 1}\KeywordTok{)} \ExtensionTok{nicht}\NormalTok{ anwenden}
 \ExtensionTok{Hinweis:}\NormalTok{ Resolve all conflicts manually, mark them as resolved with}
 \ExtensionTok{Hinweis:} \StringTok{"git add/rm \textless{}conflicted\_files\textgreater{}"}\NormalTok{, then run }\StringTok{"git rebase {-}{-}continue"}\NormalTok{.}
+\ExtensionTok{Hinweis:}\NormalTok{ run }\StringTok{"git rebase {-}{-}continue"}\NormalTok{. }
 \ExtensionTok{Hinweis:}\NormalTok{ You can instead skip this commit: run }\StringTok{"git rebase {-}{-}skip"}\NormalTok{.}
-\ExtensionTok{Hinweis:}\NormalTok{ To abort and get back to the state before }\StringTok{"git rebase"}\NormalTok{, run }\StringTok{"git rebase {-}{-}abort"}\NormalTok{.}
+\ExtensionTok{Hinweis:}\NormalTok{ To abort and get back to the state before }\StringTok{"git rebase"}\NormalTok{, }
+\ExtensionTok{Hinweis:}\NormalTok{ run }\StringTok{"git rebase {-}{-}abort"}\NormalTok{.}
 \ExtensionTok{Konnte}\NormalTok{ 2f5968f... }\ErrorTok{(}\ExtensionTok{Inhalt}\NormalTok{ 1}\KeywordTok{)} \ExtensionTok{nicht}\NormalTok{ anwenden}
 \end{Highlighting}
 \end{Shaded}
@@ -3503,11 +3512,14 @@ ist der Squash beendet.
 
 \chapter{Cherry Picking}\label{cherry-picking}
 
+\section{Einfach und problemlos}\label{einfach-und-problemlos}
+
 Dieser Befehl klingt nach hoher Expertise, ist aber im Vergleich zu
 anderen Techniken relativ leicht zu verstehen. Kurz gesagt ermöglicht es
 Cherry-Pick, sich Commits aus anderen Branches in den eigenen Branch zu
-kopieren. Das ist Hilfreich, wenn z.B. in einem Branch ein Bug behoben
-wird, der auch im eigenen Branch benötigt wird.
+kopieren, d.h. die vorgenommenen Änderungen auf den eigenen anzuwenden.
+Das ist Hilfreich, wenn z.B. in einem Branch ein Bug behoben wird, der
+auch im eigenen Branch benötigt wird.
 
 \begin{tikzpicture}
 
@@ -3546,13 +3558,445 @@ lauten:
 \end{Highlighting}
 \end{Shaded}
 
-Die Folge ist ein komplett neuer Commit im aktuellen Branch.
+Als Ergebnis entsteht dadurch am Ende ein komplett neuer Commit mit
+neuem Hash im aktuellen Branch.
 
-\textbf{Beispiel}
+Das Script \script{cherry\_pick.sh} liefert genau dieses problemlose
+Szenario. \emph{Problemlos} deshalb, weil in beiden Branches komplett
+andere Dateien bearbeitet werden. Damit können die Änderungen einfach
+übernommen werden:
 
-Hierfür clonst du das Repository \emph{Cherry}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#!/bin/bash}
 
-TODO: Repo Cherry
+\CommentTok{\# Demo for Cherry without error}
+
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ cherry\_labor}
+
+\FunctionTok{mkdir}\NormalTok{ cherry\_labor}
+\BuiltInTok{cd}\NormalTok{ cherry\_labor}
+\FunctionTok{git}\NormalTok{ init}
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
+
+\BuiltInTok{echo} \StringTok{"\textless{}h1\textgreater{}Intro\textless{}/h1\textgreater{}"} \OperatorTok{\textgreater{}}\NormalTok{ index.html}
+\FunctionTok{git}\NormalTok{ add index.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"initial"}
+
+\BuiltInTok{echo} \StringTok{"\textless{}h2\textgreater{}Einleitung\textless{}/h2\textgreater{}"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
+\FunctionTok{git}\NormalTok{ add index.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Einleitung"}
+
+\FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ development}
+
+\BuiltInTok{echo} \StringTok{"\textless{}div class=\textquotesingle{}nav\textquotesingle{}\textgreater{} ... \textless{}/div\textgreater{} "} \OperatorTok{\textgreater{}}\NormalTok{ nav.html}
+\FunctionTok{git}\NormalTok{ add nav.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Nav Start"}
+
+\BuiltInTok{echo} \StringTok{"\textless{}script\textgreater{}...\textless{}/script\textgreater{} "} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ nav.html}
+\FunctionTok{git}\NormalTok{ add nav.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"javascript begonnen"}
+
+\FunctionTok{git}\NormalTok{ switch main}
+
+\BuiltInTok{echo} \StringTok{"\textless{}h2\textgreater{}Hauptteil\textless{}/h2\textgreater{}"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
+\FunctionTok{git}\NormalTok{ add index.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Hauptteil"}
+
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} \AttributeTok{{-}{-}decorate} \AttributeTok{{-}{-}graph} \AttributeTok{{-}{-}all}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Ergebnis}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{*}\NormalTok{ 0c10748 }\ErrorTok{(}\ExtensionTok{development}\KeywordTok{)} \ExtensionTok{javascript}\NormalTok{ begonnen}
+\ExtensionTok{*}\NormalTok{ e103d4b Nav Start     }\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ Das wollen wir}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 97bf335 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Hauptteil}  \OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{} an}\NormalTok{ dieser Stelle}
+\StringTok{|/  }
+\StringTok{* b2228f5 Einleitung}
+\StringTok{* 57085c3 initial}
+\end{Highlighting}
+\end{Shaded}
+
+Der benötigte Hash lautet e103d4b und damit geht ganz einfach
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ cherry{-}pick e103d4b}
+
+\CommentTok{\# Ausgabe}
+\ExtensionTok{[main}\NormalTok{ 2e5c343] Nav Start}
+ \ExtensionTok{Date:}\NormalTok{ Wed Jan 7 22:51:49 2026 +0100}
+ \ExtensionTok{1}\NormalTok{ file changed, 1 insertion}\ErrorTok{(}\ExtensionTok{+}\KeywordTok{)}
+ \ExtensionTok{create}\NormalTok{ mode 100644 nav.html}
+\end{Highlighting}
+\end{Shaded}
+
+Und zur Kontrolle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} \AttributeTok{{-}{-}decorate} \AttributeTok{{-}{-}graph} \AttributeTok{{-}{-}all}
+
+\CommentTok{\# Ausgabe}
+\ExtensionTok{*}\NormalTok{ 2e5c343 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Nav}\NormalTok{ Start    }\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ neuer Hash}
+\ExtensionTok{*}\NormalTok{ 97bf335 Hauptteil}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 0c10748 }\ErrorTok{(}\ExtensionTok{development}\KeywordTok{)} \ExtensionTok{javascript}\NormalTok{ begonnen}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ e103d4b Nav Start                 }\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ alter Hash}
+\KeywordTok{|}\ExtensionTok{/}  
+\ExtensionTok{*}\NormalTok{ b2228f5 Einleitung}
+\ExtensionTok{*}\NormalTok{ 57085c3 initial}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Weniger problemlos}\label{weniger-problemlos}
+
+Wenn vom Cherry-Pick eine Datei (oder mehrere) betroffen sind, die in
+beiden Branches geändert wurden, dann wird die Situation schnell
+unübersichtlich. Es ensteht wieder eine Art von Merge-Konflikt, den wir
+auf ganz spezielle Weise auflösen müssen.
+
+Für den Überblick: Das nachfolgende Script nimmt Änderungen an der
+gleichen Datei in zwei Branches vor. Hier der ist der Inhalt von Script
+\script{cherry\_pick\_2.sh}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#!/bin/bash}
+
+\CommentTok{\# Demo for Cherry without error}
+
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ cherry\_labor}
+
+\FunctionTok{mkdir}\NormalTok{ cherry\_labor}
+\BuiltInTok{cd}\NormalTok{ cherry\_labor}
+\FunctionTok{git}\NormalTok{ init}
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
+
+\BuiltInTok{echo} \StringTok{"Zeile 1"} \OperatorTok{\textgreater{}}\NormalTok{ index.html}
+\FunctionTok{git}\NormalTok{ add index.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1"}
+
+\BuiltInTok{echo} \StringTok{"Zeile 2"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
+\FunctionTok{git}\NormalTok{ add index.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z2"}
+
+\FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ development  }\CommentTok{\# branch wechsel}
+
+\BuiltInTok{echo} \StringTok{"Zeile 3"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
+\FunctionTok{git}\NormalTok{ add index.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z3"}
+
+\BuiltInTok{echo} \StringTok{"Zeile 4"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
+\FunctionTok{git}\NormalTok{ add index.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z4"}
+
+\FunctionTok{git}\NormalTok{ switch main  }\CommentTok{\# wieder auf main}
+
+\BuiltInTok{echo} \StringTok{"Zeile 5"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
+\FunctionTok{git}\NormalTok{ add index.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z5"}
+
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} \AttributeTok{{-}{-}decorate} \AttributeTok{{-}{-}graph} \AttributeTok{{-}{-}all}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Ausgabe }
+\ExtensionTok{*}\NormalTok{ 3aef088 }\ErrorTok{(}\ExtensionTok{development}\KeywordTok{)} \ExtensionTok{z4}
+\ExtensionTok{*}\NormalTok{ b287548 z3             }\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ der hier soll}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 69336b4 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{z5}   \OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ da her}
+\KeywordTok{|}\ExtensionTok{/}  
+\ExtensionTok{*}\NormalTok{ 896aefc z2}
+\ExtensionTok{*}\NormalTok{ 1fb21e9 z1}
+\end{Highlighting}
+\end{Shaded}
+
+Mit Hilfe von
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ cherry{-}pick b287548 }
+\end{Highlighting}
+\end{Shaded}
+
+Bekommen wir folgenden Konflikt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{automatischer}\NormalTok{ Merge von index.html}
+\ExtensionTok{KONFLIKT} \ErrorTok{(}\ExtensionTok{Inhalt}\KeywordTok{)}\BuiltInTok{:}\NormalTok{ Merge{-}Konflikt in index.html}
+\ExtensionTok{error:}\NormalTok{ Konnte b287548... }\ErrorTok{(}\ExtensionTok{z3}\KeywordTok{)} \ExtensionTok{nicht}\NormalTok{ anwenden}
+\ExtensionTok{Hinweis:}\NormalTok{ Lösen Sie alle Konflikte manuell auf, markieren Sie diese }
+\ExtensionTok{Hinweis:}\NormalTok{ mit }\StringTok{"git add/rm \textless{}Pfadspezifikation\textgreater{}"}\NormalTok{ und führen Sie dann}
+\ExtensionTok{Hinweis:} \StringTok{"git cherry{-}pick {-}{-}continue"}\NormalTok{ aus.}
+\ExtensionTok{Hinweis:}\NormalTok{ Sie können stattdessen auch diesen Commit auslassen, indem}
+\ExtensionTok{Hinweis:}\NormalTok{ Sie }\StringTok{"git cherry{-}pick {-}{-}skip"}\NormalTok{ ausführen.}
+\ExtensionTok{Hinweis:}\NormalTok{ Um abzubrechen und zurück zum Zustand vor }
+\ExtensionTok{Hinweis:} \StringTok{"git cherry{-}pick"}\NormalTok{ zu gelangen, führen Sie }
+\ExtensionTok{Hinweis:} \StringTok{"git cherry{-}pick {-}{-}abort"}\NormalTok{ aus.}
+\end{Highlighting}
+\end{Shaded}
+
+Nun muss die betroffen Datei per Hand korrigiert und neu gespeichert
+werden. Das Ziel soll für uns so aussehen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Zeile}\NormalTok{ 1}
+\ExtensionTok{Zeile}\NormalTok{ 2}
+\ExtensionTok{Zeile}\NormalTok{ 3}
+\ExtensionTok{Zeile}\NormalTok{ 5}
+\end{Highlighting}
+\end{Shaded}
+
+Eine Überprüfung zeigt uns, dass die Datei als \emph{von beiden
+geändert} geführt wird und wir sie durch \cmd{git add} wieder stagen
+sollen: (Umbrüche angepasst!)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Auf}\NormalTok{ Branch main}
+\ExtensionTok{Sie}\NormalTok{ führen gerade }\StringTok{"cherry{-}pick"}\NormalTok{ von Commit b287548 aus.}
+  \KeywordTok{(}\ExtensionTok{beheben}\NormalTok{ Sie die Konflikte und führen Sie dann }
+  \StringTok{"git cherry{-}pick {-}{-}continue"}\NormalTok{ aus}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git cherry{-}pick {-}{-}skip"}\NormalTok{, um diesen Patch }
+  \ExtensionTok{auszulassen}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git cherry{-}pick {-}{-}abort"}\NormalTok{, um die }
+  \ExtensionTok{Cherry{-}Pick{-}Operation}\NormalTok{ abzubrechen}\KeywordTok{)}
+
+\ExtensionTok{Nicht}\NormalTok{ zusammengeführte Pfade:}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git add/rm \textless{}Datei\textgreater{}..."}\NormalTok{, um die Auflösung }
+  \ExtensionTok{zu}\NormalTok{ markieren}\KeywordTok{)}
+    \ExtensionTok{von}\NormalTok{ beiden geändert:    index.html}
+
+\ExtensionTok{keine}\NormalTok{ Änderungen zum Commit vorgemerkt }
+\KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git add"}\NormalTok{ und/oder }\StringTok{"git commit {-}a"}\KeywordTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Das machen wir
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ add index.html}
+\FunctionTok{git}\NormalTok{ status}
+
+\CommentTok{\# Ausgabe}
+\ExtensionTok{Auf}\NormalTok{ Branch main}
+\ExtensionTok{Sie}\NormalTok{ führen gerade }\StringTok{"cherry{-}pick"}\NormalTok{ von Commit b287548 aus.}
+  \KeywordTok{(}\ExtensionTok{alle}\NormalTok{ Konflikte behoben: führen Sie }\StringTok{"git cherry{-}pick {-}{-}continue"} 
+  \ExtensionTok{aus}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git cherry{-}pick {-}{-}skip"}\NormalTok{, um diesen Patch }
+  \ExtensionTok{auszulassen}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git cherry{-}pick {-}{-}abort"}\NormalTok{, um die }
+  \ExtensionTok{Cherry{-}Pick{-}Operation}\NormalTok{ abzubrechen}\KeywordTok{)}
+
+\ExtensionTok{Zum}\NormalTok{ Commit vorgemerkte Änderungen:}
+    \ExtensionTok{geändert:}\NormalTok{       index.html}
+\end{Highlighting}
+\end{Shaded}
+
+Es folgt nun \textbf{KEIN} normaler Commit, sondern ein
+\cmd{git cherry-pick --continue}, das sich aber wie ein Commit verhält,
+d.h. wir müssen eine Message eingeben und abspeichern. Nun erst ist der
+Vorgang abgeschlossen.
+
+\samplestart
+
+\textbf{Hinweis}\\
+Beachte, dass in obigem Beispiel beie Branches komplett committet waren.
+Es gab also keine aktuell abgeänderten Dateien, was den Ablauf noch
+komplexer machen würde! \sampleend 
+
+\section{Noch unangenehmer \ldots{}}\label{noch-unangenehmer}
+
+Nun wollen wir 3 Dateien betrachten
+(datei\_1.html,datei\_2.html,datei\_3.html). Davon soll nur
+\datei{datei\_1.html} im \branch{main}-Branch liegen. Die anderen beiden
+Dateien werden im \branch{develop\-ment}-Branch abwechselnd bearbeitet.
+Wie wollen einen \emph{späteren} Commit cherry-picken. Im Tree sieht das
+so aus:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{*}\NormalTok{ 177a8a6 }\ErrorTok{(}\ExtensionTok{development}\KeywordTok{)} \ExtensionTok{z3d2}
+\ExtensionTok{*}\NormalTok{ d46d7bb z2d2     }\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ wollen wir von hier ...}
+\ExtensionTok{*}\NormalTok{ 1b07ddb z1d3}
+\ExtensionTok{*}\NormalTok{ 8fa5974 z1d2}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ a4cc92c }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{d1z3} \OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ ... nach da picken}
+\KeywordTok{|}\ExtensionTok{/}  
+\ExtensionTok{*}\NormalTok{ cc253e1 z2d1}
+\ExtensionTok{*}\NormalTok{ 09a1330 z1d1}
+\end{Highlighting}
+\end{Shaded}
+
+Erzeugen können wir die Situation mit dem Script
+\script{cherry\_pick\_3.sh}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#!/bin/bash}
+
+\CommentTok{\# Demo for Cherry without error}
+
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ cherry\_labor}
+
+\FunctionTok{mkdir}\NormalTok{ cherry\_labor}
+\BuiltInTok{cd}\NormalTok{ cherry\_labor}
+\FunctionTok{git}\NormalTok{ init}
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
+
+\BuiltInTok{echo} \StringTok{"Zeile 1"} \OperatorTok{\textgreater{}}\NormalTok{ datei\_1.html}
+\FunctionTok{git}\NormalTok{ add datei\_1.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1d1"}
+
+\BuiltInTok{echo} \StringTok{"Zeile 2"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_1.html}
+\FunctionTok{git}\NormalTok{ add datei\_1.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z2d1"}
+
+\FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ development  }\CommentTok{\# branch wechsel}
+
+\BuiltInTok{echo} \StringTok{"Zeile 1"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_2.html}
+\FunctionTok{git}\NormalTok{ add datei\_2.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1d2"}
+
+\BuiltInTok{echo} \StringTok{"Zeile 1"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_3.html}
+\FunctionTok{git}\NormalTok{ add datei\_3.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1d3"}
+
+\BuiltInTok{echo} \StringTok{"Zeile 2"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_2.html}
+\FunctionTok{git}\NormalTok{ add datei\_2.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z2d2"}
+
+\BuiltInTok{echo} \StringTok{"Zeile 3"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_2.html}
+\FunctionTok{git}\NormalTok{ add datei\_2.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z3d2"}
+
+\FunctionTok{git}\NormalTok{ switch main  }\CommentTok{\# wieder auf main}
+
+\BuiltInTok{echo} \StringTok{"Zeile 3"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_1.html}
+\FunctionTok{git}\NormalTok{ add datei\_1.html}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"d1z3"}
+
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} \AttributeTok{{-}{-}decorate} \AttributeTok{{-}{-}graph} \AttributeTok{{-}{-}all}
+\end{Highlighting}
+\end{Shaded}
+
+Der Befehl \cmd{git cherry-pick d46d7bb} liefert diese, etwas seltsame
+Meldung:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{KONFLIKT} \ErrorTok{(}\ExtensionTok{ändern/löschen}\KeywordTok{)}\BuiltInTok{:}\NormalTok{ datei\_2.html gelöscht in HEAD und }
+\ExtensionTok{geändert}\NormalTok{ in d46d7bb }\ErrorTok{(}\ExtensionTok{z2d2}\KeywordTok{)}\BuiltInTok{.}\NormalTok{ Stand d46d7bb }\ErrorTok{(}\ExtensionTok{z2d2}\KeywordTok{)} \ExtensionTok{von}\NormalTok{ datei\_2.html }
+\ExtensionTok{wurde}\NormalTok{ im Arbeitsbereich gelassen.}
+\ExtensionTok{error:}\NormalTok{ Konnte d46d7bb... }\ErrorTok{(}\ExtensionTok{z2d2}\KeywordTok{)} \ExtensionTok{nicht}\NormalTok{ anwenden}
+\ExtensionTok{Hinweis:}\NormalTok{ Lösen Sie alle Konflikte manuell auf, markieren Sie diese }
+\ExtensionTok{Hinweis:}\NormalTok{ mit }\StringTok{"git add/rm \textless{}Pfadspezifikation\textgreater{}"}\NormalTok{ und führen Sie dann}
+\ExtensionTok{Hinweis:} \StringTok{"git cherry{-}pick {-}{-}continue"}\NormalTok{ aus.}
+\ExtensionTok{Hinweis:}\NormalTok{ Sie können stattdessen auch diesen Commit auslassen, indem}
+\ExtensionTok{Hinweis:}\NormalTok{ Sie }\StringTok{"git cherry{-}pick {-}{-}skip"}\NormalTok{ ausführen.}
+\ExtensionTok{Hinweis:}\NormalTok{ Um abzubrechen und zurück zum Zustand vor }
+\ExtensionTok{Hinweis:} \StringTok{"git cherry{-}pick"}\NormalTok{ zu gelangen, führen Sie}
+\ExtensionTok{Hinweis:}  \StringTok{"git cherry{-}pick {-}{-}abort"}\NormalTok{ aus.}
+\end{Highlighting}
+\end{Shaded}
+
+In der betroffenen Datei \datei{datei\_2.html} ist aber kein Konlikt zu
+erkennen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Zeile}\NormalTok{ 1}
+\ExtensionTok{Zeile}\NormalTok{ 2}
+\end{Highlighting}
+\end{Shaded}
+
+Ein \cmd{git status} zeigt eine gelöschte Datei (die aber vorhanden
+ist):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Auf}\NormalTok{ Branch main}
+\ExtensionTok{Sie}\NormalTok{ führen gerade }\StringTok{"cherry{-}pick"}\NormalTok{ von Commit d46d7bb aus.}
+  \KeywordTok{(}\ExtensionTok{beheben}\NormalTok{ Sie die Konflikte und führen Sie dann }
+  \StringTok{"git cherry{-}pick {-}{-}continue"}\NormalTok{ aus}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git cherry{-}pick {-}{-}skip"}\NormalTok{, um diesen Patch }
+  \ExtensionTok{auszulassen}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git cherry{-}pick {-}{-}abort"}\NormalTok{, um die Cherry{-}Pick{-}}
+  \ExtensionTok{Operation}\NormalTok{ abzubrechen}\KeywordTok{)}
+
+\ExtensionTok{Nicht}\NormalTok{ zusammengeführte Pfade:}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git add/rm \textless{}Datei\textgreater{}..."}\NormalTok{, um die Auflösung }
+  \ExtensionTok{entsprechend}\NormalTok{ zu markieren}\KeywordTok{)}
+    \ExtensionTok{von}\NormalTok{ uns gelöscht:       datei\_2.html}
+
+\ExtensionTok{keine}\NormalTok{ Änderungen zum Commit vorgemerkt }\ErrorTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }
+\StringTok{"git add"}\NormalTok{ und/oder }\StringTok{"git commit {-}a"}\KeywordTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Durch \cmd{git add datei\_2.html} bekommen wir dann
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Auf}\NormalTok{ Branch main}
+\ExtensionTok{Sie}\NormalTok{ führen gerade }\StringTok{"cherry{-}pick"}\NormalTok{ von Commit d46d7bb aus.}
+  \KeywordTok{(}\ExtensionTok{alle}\NormalTok{ Konflikte behoben: führen Sie }\StringTok{"git cherry{-}pick {-}{-}continue"} 
+  \ExtensionTok{aus}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git cherry{-}pick {-}{-}skip"}\NormalTok{, um diesen Patch }
+  \ExtensionTok{auszulassen}\KeywordTok{)}
+  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git cherry{-}pick {-}{-}abort"}\NormalTok{, um die Cherry{-}Pick{-}}
+  \ExtensionTok{Operation}\NormalTok{ abzubrechen}\KeywordTok{)}
+
+\ExtensionTok{Zum}\NormalTok{ Commit vorgemerkte Änderungen:}
+    \ExtensionTok{neue}\NormalTok{ Datei:     datei\_2.html}
+\end{Highlighting}
+\end{Shaded}
+
+und \cmd{git cherry-pick --continue} beendet den Prozess nach Eingabe
+der üblichen Commit-Message.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{[main}\NormalTok{ a908bef] Picken von z2d2}
+ \ExtensionTok{Date:}\NormalTok{ Thu Jan 8 07:21:31 2026 +0100}
+ \ExtensionTok{1}\NormalTok{ file changed, 2 insertions}\ErrorTok{(}\ExtensionTok{+}\KeywordTok{)}
+ \ExtensionTok{create}\NormalTok{ mode 100644 datei\_2.html}
+\end{Highlighting}
+\end{Shaded}
+
+mit
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{*}\NormalTok{ a908bef }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Picken}\NormalTok{ von z2d2  }\OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ Erfolg}
+\ExtensionTok{*}\NormalTok{ a4cc92c d1z3}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 177a8a6 }\ErrorTok{(}\ExtensionTok{development}\KeywordTok{)} \ExtensionTok{z3d2}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ d46d7bb z2d2}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 1b07ddb z1d3}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 8fa5974 z1d2}
+\KeywordTok{|}\ExtensionTok{/}  
+\ExtensionTok{*}\NormalTok{ cc253e1 z2d1}
+\ExtensionTok{*}\NormalTok{ 09a1330 z1d1}
+\end{Highlighting}
+\end{Shaded}
+
+Der Grund ist einfach, dass im betroffenen Commit \emph{nur steht}:
+
+„Füge Zeile 2 in Datei 2 ein.``
+
+Diese Datei gibt es aber im \branch{main}-Branch aktuell gar nicht!
+Damit hat \git ein Problem, was mit den Inhalten passieren soll, die in
+früheren Commits in dieser Datei angelegt wurden.
+
+Du siehst also, dass das Picken durchaus seine komplexen Seiten hat,
+weshalb ein Einsatz im Unterricht wohl auch nur sehr bedingt sinnvoll
+ist!
 
 \bookmarksetup{startatroot}
 
@@ -3977,7 +4421,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-121}%
+\phantomsection\label{annotated-cell-140}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -4043,7 +4487,8 @@ Susi führt nun einen Push aus:
 \ExtensionTok{Delta{-}Kompression}\NormalTok{ verwendet bis zu 6 Threads.}
 \ExtensionTok{Komprimiere}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{2/2}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ fertig.}
 \ExtensionTok{Schreibe}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{3/3}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ 292 Bytes }\KeywordTok{|} \ExtensionTok{292.00}\NormalTok{ KiB/s, fertig.}
-\ExtensionTok{Gesamt}\NormalTok{ 3 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Wiederverwendet 0 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Pack wiederverwendet 0}
+\ExtensionTok{Gesamt}\NormalTok{ 3 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Wiederverwendet 0 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,} 
+\ExtensionTok{Pack}\NormalTok{ wiederverwendet 0}
 \ExtensionTok{To}\NormalTok{ /tmp/labor2/entfernt}
    \ExtensionTok{d46681d..78db34e}\NormalTok{  main }\AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}
 \end{Highlighting}
@@ -4704,6 +5149,7 @@ dient lediglich der Dokumentation. Die Scripte \script{setup\_gitea.sh}
 und \script{tune.sh} müssen als \emph{root} bzw. über \emph{sudo}
 ausgeführt werden.
 
+TODO: Einbinden und vorher Zeilenumbrüche anpassen
 \textbf{setup\_gitea.sh}
 
 \begin{Shaded}
@@ -4712,9 +5158,10 @@ ausgeführt werden.
 \CommentTok{\# Port 3000 muss für das Webinterface offen sein}
 \ExtensionTok{ufw}\NormalTok{ allow 3000/tcp}
 
-\CommentTok{\# Evtl. direkt auf der Seite https://dl.gitea.com/gitea die aktuelle}
-\CommentTok{\# Version checken  und hier anpassen.}
-\FunctionTok{wget} \AttributeTok{{-}O}\NormalTok{ gitea https://dl.gitea.com/gitea/1.22.6/gitea{-}1.22.6{-}linux{-}amd64}
+\CommentTok{\# Evtl. direkt auf der Seite https://dl.gitea.com/gitea die }
+\CommentTok{\# aktuelle Version checken  und hier anpassen.}
+\FunctionTok{wget} \AttributeTok{{-}O}\NormalTok{ gitea }\DataTypeTok{\textbackslash{}}
+\NormalTok{        https://dl.gitea.com/gitea/1.22.6/gitea{-}1.22.6{-}linux{-}amd64}
 
 \FunctionTok{chmod}\NormalTok{ +x gitea  }\CommentTok{\# ausführbar machen}
 
@@ -4774,7 +5221,8 @@ ausgeführt werden.
 \StringTok{\#Requires=gitea.main.socket}
 \StringTok{\#}
 \StringTok{\#\#\#}
-\StringTok{\# (You can also provide gitea an http fallback and/or ssh socket too)}
+\StringTok{\# (You can also provide gitea an http }
+\StringTok{\# fallback and/or ssh socket too)}
 \StringTok{\#}
 \StringTok{\# An example of /etc/systemd/system/gitea.main.socket}
 \StringTok{\#\#\#}
@@ -4953,7 +5401,8 @@ graphische Benutzeroberfläche in \emph{Gitea} eingefügt (s.u.).
      \ExtensionTok{Enter}\NormalTok{ file in which to save the key }
      \KeywordTok{(}\ExtensionTok{/home/linuxadmin/.ssh/id\_rsa}\KeywordTok{)}\BuiltInTok{:}
 \ExtensionTok{IN:}\NormalTok{  gitea\_rsa}
-\ExtensionTok{OUT:}\NormalTok{ Enter passphrase }\ErrorTok{(}\ExtensionTok{empty}\NormalTok{ for no passphrase}\KeywordTok{)}\BuiltInTok{:}\NormalTok{ ... leer lassen Enter}
+\ExtensionTok{OUT:}\NormalTok{ Enter passphrase }\ErrorTok{(}\ExtensionTok{empty}\NormalTok{ for no passphrase}\KeywordTok{)}\BuiltInTok{:} 
+     \CommentTok{\# leer lassen Enter}
 \ExtensionTok{OUT:}\NormalTok{ Enter same passphrase again: ... leer lassen Enter}
 \ExtensionTok{OUT:}\NormalTok{ Your identification has been saved in gitea\_rsa}
      \ExtensionTok{Your}\NormalTok{ public key has been saved in gitea\_rsa.pub}
@@ -4985,6 +5434,8 @@ Terminal angezeigt werden:
 
 Die mehrzeilige Ausgabe in einem Stück in die Oberfläche von Gitea
 kopieren:
+
+TODO: Bildergrößen
 
 \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/key1.png}}
 \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/key2.png}}
@@ -5113,7 +5564,7 @@ Probleme.
 
 Sinnvoller erscheint eine Namenskonvention beim Erstellen von Teams!
 
-\textbf{Organisation erstellen}
+\textbf{Organisation erstellen} \blarge 
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5130,6 +5581,8 @@ Sinnvoller erscheint eine Namenskonvention beim Erstellen von Teams!
 \StringTok{\}\textquotesingle{}}
 \end{Highlighting}
 \end{Shaded}
+
+\elarge
 
 \textbf{Benutzer hinzufügen}
 
@@ -5666,7 +6119,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-184}%
+\phantomsection\label{annotated-cell-203}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -5726,7 +6179,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-186}%
+\phantomsection\label{annotated-cell-205}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -5760,7 +6213,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-187}%
+\phantomsection\label{annotated-cell-206}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -5832,7 +6285,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-189}%
+\phantomsection\label{annotated-cell-208}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6416,7 +6869,7 @@ Automatismus bauen.
 Übertrage folgende Zeilen in die Datei \datei{.gitlab-ci.yml}. Verwende
 für die Einrückungen unbedingt Leerzeichen und keine Tabulatoren!
 
-\phantomsection\label{annotated-cell-207}%
+\phantomsection\label{annotated-cell-226}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -6477,7 +6930,7 @@ Du siehst,
 Für unser Minibuch brauchen wir ein anderes Docker-Image und noch ein
 paar Erweiterungen in der Datei:
 
-\phantomsection\label{annotated-cell-209}%
+\phantomsection\label{annotated-cell-228}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}

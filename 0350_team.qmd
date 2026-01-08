@@ -303,7 +303,8 @@ Zähle Objekte: 100% (4/4), fertig.
 Delta-Kompression verwendet bis zu 6 Threads.
 Komprimiere Objekte: 100% (2/2), fertig.
 Schreibe Objekte: 100% (3/3), 292 Bytes | 292.00 KiB/s, fertig.
-Gesamt 3 (Delta 0), Wiederverwendet 0 (Delta 0), Pack wiederverwendet 0
+Gesamt 3 (Delta 0), Wiederverwendet 0 (Delta 0), 
+Pack wiederverwendet 0
 To /tmp/labor2/entfernt
    d46681d..78db34e  main -> main
 ``` 
@@ -333,7 +334,8 @@ Als Ausgabe bekommt er
 remote: Objekte aufzählen: 4, fertig.
 remote: Zähle Objekte: 100% (4/4), fertig.
 remote: Komprimiere Objekte: 100% (2/2), fertig.
-remote: Gesamt 3 (Delta 0), Wiederverwendet 0 (Delta 0), Pack wiederverwendet 0
+remote: Gesamt 3 (Delta 0), Wiederverwendet 0 (Delta 0), 
+Pack wiederverwendet 0
 Entpacke Objekte: 100% (3/3), 272 Bytes | 272.00 KiB/s, fertig.
 Von /tmp/labor2/entfernt
    d46681d..78db34e  main       -> origin/main
@@ -343,8 +345,9 @@ Sein Status sagt ihm
 
 ```bash
 Auf Branch main     <<<< MAX
-Ihr Branch ist 1 Commit hinter 'origin/main', und kann vorgespult werden.
-  (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+Ihr Branch ist 1 Commit hinter 'origin/main', und kann vorgespult 
+werden.
+(benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
 
 nichts zu committen, Arbeitsverzeichnis unverändert
 ```
@@ -359,7 +362,7 @@ git log origin/main
 Max sieht den Commit, der noch nicht in seinen Branch integriert ist.
 
 ```bash
-commit 78db34e3176c4b78d4b027eac06aa4dda5c50cdb (origin/main, origin/HEAD)
+commit 78db34e31.....27eac06aa4dda5c50cdb (origin/main, origin/HEAD)
 Author: susi <susi@t-online.de>
 Date:   Wed Jan 29 12:39:38 2025 +0100
 

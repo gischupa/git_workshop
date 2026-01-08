@@ -15,15 +15,17 @@ Die Befehle müssen nicht per Hand eingegeben werden. Das dient lediglich der
 Dokumentation. Die Scripte \script{setup\_gitea.sh} 
 und \script{tune.sh} müssen als *root* bzw. über *sudo* ausgeführt werden.
 
+TODO: Einbinden und vorher Zeilenumbrüche anpassen
 **setup\_gitea.sh**  
 ```bash
 
 # Port 3000 muss für das Webinterface offen sein
 ufw allow 3000/tcp
 
-# Evtl. direkt auf der Seite https://dl.gitea.com/gitea die aktuelle
-# Version checken  und hier anpassen.
-wget -O gitea https://dl.gitea.com/gitea/1.22.6/gitea-1.22.6-linux-amd64
+# Evtl. direkt auf der Seite https://dl.gitea.com/gitea die 
+# aktuelle Version checken  und hier anpassen.
+wget -O gitea \
+        https://dl.gitea.com/gitea/1.22.6/gitea-1.22.6-linux-amd64
 
 chmod +x gitea  # ausführbar machen
 
@@ -83,7 +85,8 @@ After=network.target
 #Requires=gitea.main.socket
 #
 ###
-# (You can also provide gitea an http fallback and/or ssh socket too)
+# (You can also provide gitea an http 
+# fallback and/or ssh socket too)
 #
 # An example of /etc/systemd/system/gitea.main.socket
 ###
@@ -247,7 +250,8 @@ OUT: Generating public/private rsa key pair.
      Enter file in which to save the key 
      (/home/linuxadmin/.ssh/id_rsa):
 IN:  gitea_rsa
-OUT: Enter passphrase (empty for no passphrase): ... leer lassen Enter
+OUT: Enter passphrase (empty for no passphrase): 
+     # leer lassen Enter
 OUT: Enter same passphrase again: ... leer lassen Enter
 OUT: Your identification has been saved in gitea_rsa
      Your public key has been saved in gitea_rsa.pub
@@ -276,6 +280,8 @@ cat ~/.ssh/gitea_rsa.pub
 
 Die mehrzeilige Ausgabe in einem Stück in die Oberfläche 
 von Gitea kopieren:  
+
+TODO: Bildergrößen
 
 ![](bilder/inst/key1.png)
 ![](bilder/inst/key2.png)
@@ -377,6 +383,7 @@ bereits bei den eMail-Adressen Probleme.
 Sinnvoller erscheint eine Namenskonvention beim Erstellen von Teams!
 
 **Organisation erstellen**
+\blarge 
 ```bash
 token=1234
 name=G10a
@@ -390,6 +397,7 @@ curl -X POST "http://192.168.3.195:3000/api/v1/admin/organizations" \
   "visibility": "private"
 }'
 ```
+\elarge
 
 **Benutzer hinzufügen**
 
@@ -397,12 +405,14 @@ curl -X POST "http://192.168.3.195:3000/api/v1/admin/organizations" \
 token=1234
 name=G10a
 user=susi
-curl -X PUT "http://192.168.3.195:3000/api/v1/orgs/${name}$/members/${user}" \
+curl -X PUT \
+"http://192.168.3.195:3000/api/v1/orgs/${name}$/members/${user}" \
 -H "Authorization: token ${token}"
 ```
 
 **User löschen**  
 
+\blarge 
 ```bash
 token=1234
 user="susi"
@@ -412,13 +422,16 @@ curl -X GET "http://192.168.3.195:3000/api/v1/users/${user}/orgs" \
 
 # Einzeln austragen, sonst ist er nicht löschbar
 orga=organization1
-curl -X DELETE "http://192.168.3.195:3000/api/v1/orgs/${orga}/members/${user}" \
+curl -X DELETE  \
+"http://192.168.3.195:3000/api/v1/orgs/${orga}/members/${user}" \
 -H "Authorization: token ${token}"
 
 # Benutzer löschen 
-curl -X DELETE "http://192.168.3.195:3000/api/v1/admin/users/${user}" \
+curl -X DELETE \
+"http://192.168.3.195:3000/api/v1/admin/users/${user}" \
 -H "Authorization: token ${token}"
 ```
+\elarge
 
 ### Teams
 
@@ -427,6 +440,7 @@ Schule anlegen.
 
 **Team erstellen**  
 
+\blarge 
 ```bash
 schule="GGP"
 token=1234
@@ -440,16 +454,19 @@ curl -X POST "http://192.168.3.195:3000/api/v1/orgs/${schule}/teams" \
   "permission": "write"
 }'
 ```
+\elarge
 
 **Benutzer hinzufügen**
 
+\blarge
 ```bash
 schule=GGP
 token=1234
 team=G10a
 user=susi
-curl -X PUT "http://192.168.3.195:3000/api/v1/orgs/${schule}/teams/${team}/members/${user}" \
+curl -X PUT \
+"http://192.168.3.195:3000/api/v1/orgs/${schule}/teams/${team}/members/${user}" \
 -H "Authorization: token YOUR_ADMIN_TOKEN"
-```
+\elarge ```
 
-TODO: GPT shgt Team\_id statt Team\_name!
+TODO: GPT sagt Team\_id statt Team\_name!

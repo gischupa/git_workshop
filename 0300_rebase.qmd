@@ -319,7 +319,7 @@ Datei betroffen hat (\datei{datei2.txt}). Hätten Änderungen an \datei{datei.tx
 stattgefunden, so hätten wir einen Konflikt bekommen, den wir hätten lösen müssen.
 
 
-Führe der Script \datei{rebase\_mit\_konflikt.sh} aus und versuche 
+Führe das Script \datei{rebase\_mit\_konflikt.sh} aus und versuche 
 dann einen Rebase:
 
 ```bash
@@ -329,8 +329,10 @@ KONFLIKT (Inhalt): Merge-Konflikt in datei.txt
 error: Konnte 2f5968f... (Inhalt 1) nicht anwenden
 Hinweis: Resolve all conflicts manually, mark them as resolved with
 Hinweis: "git add/rm <conflicted_files>", then run "git rebase --continue".
+Hinweis: run "git rebase --continue". 
 Hinweis: You can instead skip this commit: run "git rebase --skip".
-Hinweis: To abort and get back to the state before "git rebase", run "git rebase --abort".
+Hinweis: To abort and get back to the state before "git rebase", 
+Hinweis: run "git rebase --abort".
 Konnte 2f5968f... (Inhalt 1) nicht anwenden
 ```
 
