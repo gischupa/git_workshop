@@ -35,7 +35,7 @@ Kursordner in das Repository und entpacke sie sie dort.
 Dateien, die auf *qmd* enden, sind einfach Markdowndateien 
 für Quarto.
 
-TODO: quarto_vorlage.zip erstellen für CICD - incl gitignore
+TODO: quarto_vorlage.zip erstellen für CICD - incl gitignore  
 TODO: Mit mini Geschichten Setup
 
 **Schritt 4**  
@@ -86,11 +86,12 @@ TODO: SCREENSHOT Liste der Runner
 
 ### Automatismus basteln
 
-Erstelle nun die Datei  \datei{.gitlab-ci.yml} in deinem Repository. Bevor wir unser Minibuch bauen, 
+Erstelle nun die Datei  \datei{.gitlab-ci.yml} in deinem Repository. Bevor wir unser Minibuch schreiben, 
 wollen wir uns einen minimalen Automatismus bauen.
 
-Übertrage folgende Zeilen in die Datei \datei{.gitlab-ci.yml}. Verwende für die Einrückungen 
-unbedingt Leerzeichen und keine Tabulatoren!
+Übertrage folgende Zeilen in die Datei \datei{.gitlab-ci.yml}.  
+**Verwende für die Einrückungen 
+unbedingt Leerzeichen und keine Tabulatoren!**
 
 ```bash
 stages:  #<1>
@@ -120,7 +121,7 @@ Getting source from Git repository
 Ich bin die erste Ausgabe
 ```
 
-Du siehst, 
+Du siehst: 
 
 * welcher Runner zum Einsatz kommt, 
 * dass ein Docker-Image (default) zum Einsatz kommt,
@@ -158,8 +159,8 @@ projekt_uebersetzen:
 Leider scheitert diese Pipeline, da auf diesem Quarto-Image kein 
 LaTeX installiert ist. Das kannst du ändern, indem du im *script*-Abschnitt
 den Befehl \cmd{quarto install tinytex} an den Anfang stellst.
-Nach diesem Commit sollte der Job durchlaufen. Im Abschnitt *Jobs* findest du 
-nun eine Möglichkeit, die Zip-Datei mit dem Artifact herunterzuladen.
+Nach diesem Commit sollte der Job durchlaufen. Auf \gitlab findest du im Menü (links) bai *Jobs* 
+nun die Möglichkeit, die Zip-Datei mit dem Artifact -- also der pdf-Datei --  herunterzuladen.
 
 ### Wie geht es weiter?
 
@@ -181,7 +182,7 @@ Es gibt hierfür verschiedene Lösungsansätze:
 Wenn du vor dem selbst hosten oder kaufen zurückschreckst, bleibt dir nur 
 die dritte Option. Hierfür musst du einen sogenannten *Runner* 
 und den zugehörigen *Agent* auf deinem eigenen Rechner (oder Server) installieren und dort auch die benötigte Infrastruktur (z.B. Docker oder die Build-Umgebung).
-Der Runner führt als Agent in konfigurierbaren Abständen Anfragen bei \gitlab aus um 
+Der Runner führt als Agent in konfigurierbaren Abständen Anfragen bei \gitlab aus, um 
 auf das Vorhandensein von neuen Jobs zu testen. Das ist zwar etwas 
 unelegant, löst aber das Problem der Erreichbarakeit des eigenen Rechners 
 aus dem Internet, falls er hinter deiner Firewall steht -- also bei der Kontaktaufnahme von Seiten von \gitlab.
@@ -215,7 +216,7 @@ In diesen Ordnern liegen dann Startdateien.
 **runner**  
 
 ```bash
-# Inhalt der docker-compose.yml 
+# Inhalt der docker-compose.yml im Ordner runner
 version: '3.8'
 
 services:
@@ -230,7 +231,7 @@ services:
 
 In dieser Version liegt der Konfigurationsordner \ordner{config}
 im Verzeichnis des Runners. Beim ersten Start -- vor dem Registrieren
-des Runners auf \gitlab -- wird ein Fehler gemeldet, dass die Datei
+des Runners auf \gitlab{}  -- wird ein Fehler gemeldet, dass die Datei
 \datei{config.toml} in diesem Ordner fehlt. Sie wird bei den 
 nächsten Schritten erst erstellt -- das ist also normal und kann ignoriert werden!
 
@@ -241,8 +242,9 @@ Vorbereitungsarbeiten abschließen.
 Für diesen Container genügt ein Dockerfile, denn dieser Container
 wird komplett vom Runner verwaltet.
 
+\blarge
 ```bash
-# Inhalt von Dockerfile 
+# Inhalt vom Dockerfile im Ordner quarto 
 FROM ubuntu:24.04
 
 # Install basics
@@ -263,6 +265,7 @@ WORKDIR /work
 # Default command
 CMD ["bash"]
 ```
+\elarge 
 
 In dieser Datei wird die Installation eines kompletten Quarto/Latex
 Servers beschrieben. Das dauert dann einige Zeit, da der Container 
@@ -278,25 +281,31 @@ docker build -t quarto-git:latest -f Dockerfile .
 **Java**  
 Auch für Java brauchst du ein lokales Image, wenn die 
 Geschwindigkeit stimmen soll. Ein mögliches Dockerfile
-sieht so aus:
+sieht so aus, allerdings musst du zuerst unter nachfolgender 
+Adresse die aktuelle Version in Efahrung bringen und in das
+Dockerfile eintragen (siehe Kommentar):
 
+[https://downloads.apache.org/maven/maven-3](https://downloads.apache.org/maven/maven-3)
+
+\blarge
 ```bash
 # Inhalt von Dockerfile 
 # Basisimage mit Java 21 (Temurin JDK)
 FROM eclipse-temurin:21-jdk
 
 # Maven-Version festlegen
-ARG MAVEN_VERSION=3.9.11
+ARG MAVEN_VERSION=3.9.12
 ARG USER_HOME_DIR="/root"
 ARG SHA=8d25376b58a36454bedc70ed87c1a507
 
 # Installationsverzeichnisse
-ARG BASE_URL=https://downloads.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries
+ARG BASE_URL=https://downloads.apache.org/
+ARG MAVEN_URL=${BASE_URL}maven/maven-3/${MAVEN_VERSION}/binaries
 
 # Maven installieren
 RUN mkdir -p /opt/maven \
-    && curl -fsSL ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \ 
-    -o /tmp/maven.tar.gz \
+    && curl -fsSL ${MAVEN_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+       -o /tmp/maven.tar.gz \
     && tar -xzf /tmp/maven.tar.gz -C /opt/maven --strip-components=1 \
     && rm /tmp/maven.tar.gz
 
@@ -309,5 +318,6 @@ WORKDIR /workspace
 
 # Default-Command (optional)
 CMD ["mvn", "--version"]
-```
 
+```
+\elarge

@@ -334,7 +334,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[colback={codebgcolor}, sharp corners, frame hidden, enhanced, breakable, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, colback={codebgcolor}, boxrule=0pt, sharp corners, enhanced, breakable]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -489,7 +489,13 @@ ToDo: Bilderstrecke
 \subsection{Linux}\label{linux}
 
 Hier hängt es etwas von der Distribution ab. Bei Ubuntu genügt der
-Befehl \cmd{apt install git -y}
+Befehl
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt}\NormalTok{ install git }\AttributeTok{{-}y}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{MacOS}\label{macos}
 
@@ -543,7 +549,7 @@ sprengt das den Rahmen dieses Workshops.
 
 \subsection{Anmelden auf dem Server}\label{anmelden-auf-dem-server}
 
-Damit du dich auf deinem Server anmedlden kannst, benötigst du folgende
+Damit du dich auf deinem Server anmelden kannst, benötigst du folgende
 Informationen:
 
 \begin{quote}
@@ -961,8 +967,8 @@ Terminals bzw. der \gitbash.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{mkdir}\NormalTok{ versuch1  }
-\BuiltInTok{cd}\NormalTok{ versuch1}
+\FunctionTok{mkdir}\NormalTok{ versuch\_1  }
+\BuiltInTok{cd}\NormalTok{ versuch\_1}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1005,8 +1011,6 @@ ausgeben \\
 \texttt{less\ \textless{}datei\textgreater{}} & Langsame Ausgabe, Ende
 mit \texttt{q} \\
 \end{longtable}
-
-TODO: Übungsblatt Shell-Befehle erstellen
 
 \samplestart
 
@@ -1257,8 +1261,9 @@ musst du eine Datei \datei{.gitkeep} im Ordner erstellen. \sampleend
 
 \section{Übung}\label{uxfcbung}
 
-Besonders bei komplexen Systemen wie \git gilt \emph{use it or lose it}!
-In diesem Sinne kommt hier nun ein winziger *Projektauftrag:
+Besonders bei komplexen Systemen wie \git gilt \emph{use it or lose
+it}!\\
+In diesem Sinne kommt hier nun ein \emph{winziger Projektauftrag}:
 
 \begin{quote}
 Erstelle in einem Repository ein Mini-Projekt in deiner üblichen
@@ -1273,8 +1278,8 @@ Anschluss einen Überblick über die Commit-History.
 
 \textbf{Hinweis}\\
 Um die nachfolgenden Erläuterungen praktisch vollziehen zu können,
-verwendest du bitte wieder das Repository \ordner{versuch\_2}.
-\sampleend
+verwendest du\\
+wieder das Repository \ordner{versuch\_1}. \sampleend
 
 Steht ein Ordner unter der Verwaltung von \git, so kann man von drei
 \emph{logischen} Bereichen sprechen:
@@ -1316,17 +1321,18 @@ Betrachten wir zunächst einen Entwicklungszyklus im Detail. Dabei wirst
 du im Wesentlichen die gleichen Befehle wie vorher verwenden, allerdings
 untersuchen wir einige Varianten, die für das Verständnis wichtig sind.
 
-Du bist immer noch im aktuellen Ordner \ordner{versuch\_3}. Er sollte
+Du bist immer noch im aktuellen Ordner \ordner{versuch\_1}. Er sollte
 akutell eine Datei und zwei Commits enthalten.\\
-Das kannst du mit folgendem Befehl überprüfen:
+Das kannst du mit folgenden Befehlen überprüfen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\FunctionTok{ls} 
 \FunctionTok{git}\NormalTok{ log}
 \end{Highlighting}
 \end{Shaded}
 
-liefert
+Neben dem Dateinamen liefert das folgende Ausgabe:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1784,20 +1790,20 @@ betroffenen Datei in der letzten lauffähigen Version. Solange kein
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ init beispiel\_1}
-\BuiltInTok{cd}\NormalTok{ beispiel\_1}
-\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
+  \FunctionTok{git}\NormalTok{ init beispiel\_1}
+  \BuiltInTok{cd}\NormalTok{ beispiel\_1}
+  \FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
 
-\CommentTok{\# alles funktioniert}
-\BuiltInTok{echo} \StringTok{"Alles gut"} \OperatorTok{\textgreater{}}\NormalTok{ datei.txt}
-\FunctionTok{git}\NormalTok{ add .}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"alles gut"}
+  \CommentTok{\# alles funktioniert}
+  \BuiltInTok{echo} \StringTok{"Alles gut"} \OperatorTok{\textgreater{}}\NormalTok{ datei.txt}
+  \FunctionTok{git}\NormalTok{ add .}
+  \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"alles gut"}
 
-\CommentTok{\# Hier kommt der Fehler}
-\BuiltInTok{echo} \StringTok{"Mist gebaut"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt}
+  \CommentTok{\# Hier kommt der Fehler}
+  \BuiltInTok{echo} \StringTok{"Mist gebaut"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt}
 
-\CommentTok{\#\#\#\#\#\# Alte Version vom Stage wieder herstellen}
-\FunctionTok{git}\NormalTok{ restore datei.txt  }
+  \CommentTok{\#\#\#\#\#\# Alte Version vom Stage wieder herstellen}
+  \FunctionTok{git}\NormalTok{ restore datei.txt  }
 \end{Highlighting}
 \end{Shaded}
 
@@ -1862,9 +1868,17 @@ Verluste geringer.
 \textbf{Zusatz}\\
 Mit \cmd{restore} können natürlich nicht nur Dateien aus dem direkt
 vorausgehenden Commit entnommen werden! Kennst du den Hash, so kannst du
-auf jeden Commit zugreifen. \sampleend
+auf jeden Commit zugreifen. Allerdings wird dann immer die aktuelle
+Datei dieses Namens überschrieben! Eine Alternative \emph{ohne} dieses
+Problem sieht so aus: \sampleend
 
-\subsection{Größerer Fehler 1}\label{gruxf6uxdferer-fehler-1}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ show }\OperatorTok{\textless{}}\NormalTok{HASH}\OperatorTok{\textgreater{}}\NormalTok{:datei.txt }\OperatorTok{\textgreater{}}\NormalTok{ datei\_alt.txt}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Größerer Fehler}\label{gruxf6uxdferer-fehler}
 
 Du hast nach dem letztem Commit viele Fehler in einer Vilezahl von
 Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. Hier
@@ -2003,7 +2017,8 @@ Script erzeugt das passende Szenario:
 
 Du weißt aus dem Script, dass Version 6 die Datei in der gewünschten
 Form enthält. Im Ernstfall weißt du das wahrscheinlich nicht. Du
-beginnst also mit der Suche:
+beginnst also mit der Suche\footnote{Natürlich gibt es auch Ansätze mit
+  \cmd{git show}}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2084,225 +2099,9 @@ Testzweige (Branches) bedeuten, was wir später noch besprechen.
 \textbf{Trick}\\
 Manchmal soll auch nur die Version gelöscht werden, die irrtümlich auf
 den Stage geschoben wurde. Dabei darf das \work nicht verändert werden.
-Das erreichst du mit
-\texttt{git\ restore\ \textless{}dateiname\textgreater{}\ -\/-staged}.\\
-Das braucht man eigentlich nur, wenn diese Datei doch nicht im nächsten
+Das erreichst du mit \cmd{git restore <dateiname> --staged}.\\
+Das brauchst du eigentlich nur, wenn diese Datei doch nicht im nächsten
 Commit enthalten sein soll. \sampleend
-
-\subsection{Was ist mit Revert?}\label{was-ist-mit-revert}
-
-Ja -- \cmd{revert} gibt es und es spielt bei der Arbeit im Team auch
-eine große Rolle. Bei der lokalen Arbeit wirst du diesen Befehl sehr
-selten brauchen -- \cmd{reset} und \cmd{checkout} sind hier meist
-einfacher und schneller. Du wirst im Abschnitt über die Teamarbeit aber
-noch mehr darüber hören!
-
-In der Theorie liest \git die Änderungen, die ein Commit vorgenommen
-hat, invertiert diese Änderungen und wendet sie auf den aktuellen Stand
-an. Dabei wird ein neuer Commit erstellt. Im Kern handelt es sich um
-eine Art von Merge. Wenn es sich bei dem aufzuhebenden Commit nicht um
-den HEAD handelt, sind Konflikte im Normalfall fast nicht zu vermeiden!
-
-\textbf{Typischer Ablauf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-
-\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} 
-
-\CommentTok{\# Ausgabe }
-\ExtensionTok{4353add} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ master}\KeywordTok{)} \ExtensionTok{C:}\NormalTok{ Modify B{-}line}
-\ExtensionTok{f9d333a}\NormalTok{ B: Add B{-}line}
-\ExtensionTok{0d43a86}\NormalTok{ A: Add A{-}line}
-\ExtensionTok{3954336}\NormalTok{ Initial }
-
-\FunctionTok{git}\NormalTok{ revert 0d43a86}
-
-\CommentTok{\# Ausgabe }
-\ExtensionTok{KONFLIKT} \ErrorTok{(}\ExtensionTok{ändern/löschen}\KeywordTok{)}\BuiltInTok{:}\NormalTok{ file.txt gelöscht in }\ErrorTok{(}\ExtensionTok{empty}\NormalTok{ tree}\KeywordTok{)} \ExtensionTok{und} 
-\ExtensionTok{geändert}\NormalTok{ in HEAD. Stand HEAD von file.txt wurde im Arbeitsbereich}
-\ExtensionTok{gelassen.}
-
-\ExtensionTok{error:}\NormalTok{ Konnte }\StringTok{"revert"}\NormalTok{ nicht auf 0d43a86... }\ErrorTok{(}\ExtensionTok{A:}\NormalTok{ Add A{-}line}\KeywordTok{)} 
-\ExtensionTok{ausführen}
-
-\ExtensionTok{Hinweis:}\NormalTok{ Lösen Sie alle Konflikte manuell auf, markieren Sie }
-\ExtensionTok{Hinweis:}\NormalTok{ diese mit }\StringTok{"git add/rm \textless{}Pfadspezifikation\textgreater{}"}\NormalTok{ und führen }
-\ExtensionTok{Hinweis:}\NormalTok{ Sie dann }\StringTok{"git revert {-}{-}continue"}\NormalTok{ aus.}
-\ExtensionTok{Hinweis:}\NormalTok{ Sie können stattdessen auch diesen Commit auslassen, indem}
-\ExtensionTok{Hinweis:}\NormalTok{ Sie }\StringTok{"git revert {-}{-}skip"}\NormalTok{ ausführen.}
-\ExtensionTok{Hinweis:}\NormalTok{ Um abzubrechen und zurück zum Zustand vor }\StringTok{"git revert"} 
-\ExtensionTok{Hinweis:}\NormalTok{ zu gelangen, führen Sie }\StringTok{"git revert {-}{-}abort"}\NormalTok{ aus.}
-\end{Highlighting}
-\end{Shaded}
-
-Die Anleitung für das weitere Vorgehen steht komplett in den Hinweisen:
-
-\begin{itemize}
-\item
-  Datei öffnen und Konflikt bereinigen
-\item
-  \cmd{git add .}
-\item
-  \cmd{git revert --continue}
-\end{itemize}
-
-xxxxxxxxxxxxxxxxxxxxxxxxxx AUSGLIEDERN xxxxxxxxxxxxxxxxxxxxxxxxx
-
-Zum Verständis der Problematik dennoch ein Beispiel. Angenommen, du
-erstellst ein Programm zur Berechnung des Body-Mass-Index und gehst
-extrem kleinschrittig mit den Commits um. Dein Ablauf wäre dann - jeder
-Punkt ist ein Commit (siehe Nummer):
-
-\begin{itemize}
-\tightlist
-\item
-  \begin{enumerate}
-  \def\labelenumi{(\arabic{enumi})}
-  \tightlist
-  \item
-    Java-Boilerplate
-  \end{enumerate}
-\item
-  \begin{enumerate}
-  \def\labelenumi{(\arabic{enumi})}
-  \setcounter{enumi}{1}
-  \tightlist
-  \item
-    Ausgabefunktion ohne Übergabeparameter und Blankotext
-  \end{enumerate}
-\item
-  \begin{enumerate}
-  \def\labelenumi{(\arabic{enumi})}
-  \setcounter{enumi}{2}
-  \tightlist
-  \item
-    Eingabefunktion für die Körpergröße
-  \end{enumerate}
-\item
-  \begin{enumerate}
-  \def\labelenumi{(\arabic{enumi})}
-  \setcounter{enumi}{3}
-  \tightlist
-  \item
-    Ändern der Ausgabefunktion für Übergabe von String\\
-    Das ist der Fehler, weil du später \emph{double} willst
-  \end{enumerate}
-\item
-  \begin{enumerate}
-  \def\labelenumi{(\arabic{enumi})}
-  \setcounter{enumi}{3}
-  \tightlist
-  \item
-    Eingabefunktion für die Körpermasse
-  \end{enumerate}
-\item
-  \begin{enumerate}
-  \def\labelenumi{(\arabic{enumi})}
-  \setcounter{enumi}{4}
-  \tightlist
-  \item
-    Berechnungsfunktion
-  \end{enumerate}
-\end{itemize}
-
-Nun verdrahtest du das alles in der \emph{main}-Funktion und stellst
-fest, dass der Übergabeparameter den falschen Typ besitzt.\\
-Aus desem Grund möchtest du diesen Commit -- der ja NUR diese Funktion
-betrifft -- rückgängig machen.
-
-In meinem System lauten die Hashes wie folgt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline}
-
-\CommentTok{\# Ausgabe}
-\ExtensionTok{a93cb87} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{kombi}
-\ExtensionTok{e676f14}\NormalTok{ berechnung}
-\ExtensionTok{d497b2f}\NormalTok{ eingabe 2}
-\ExtensionTok{4fe5b44}\NormalTok{ ERROR}
-\ExtensionTok{2c9c7f1}\NormalTok{ eingabe 1}
-\ExtensionTok{d051611}\NormalTok{ ausgabe}
-\ExtensionTok{9201570}\NormalTok{ initial}
-\end{Highlighting}
-\end{Shaded}
-
-Der Befehl \emph{revert} verläuft nun wie folgt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ revert 4fe5 }\CommentTok{\# 4 reichen}
-
-\CommentTok{\# Ausgabe}
-\ExtensionTok{automatischer}\NormalTok{ Merge von Main.java}
-\ExtensionTok{KONFLIKT} \ErrorTok{(}\ExtensionTok{Inhalt}\KeywordTok{)}\BuiltInTok{:}\NormalTok{ Merge{-}Konflikt in Main.java}
-\ExtensionTok{error:}\NormalTok{ Konnte }\StringTok{"revert"}\NormalTok{ nicht auf 4fe5b44... }\ErrorTok{(}\ExtensionTok{ERROR}\KeywordTok{)} \ExtensionTok{ausführen}
-\ExtensionTok{Hinweis:}\NormalTok{ Lösen Sie alle Konflikte manuell auf, }
-\ExtensionTok{Hinweis:}\NormalTok{ markieren Sie diese mit}
-\ExtensionTok{Hinweis:} \StringTok{"git add/rm \textless{}Pfadspezifikation\textgreater{}"}\NormalTok{ und führen Sie }
-\ExtensionTok{Hinweis:}\NormalTok{ dann }\StringTok{"git revert {-}{-}continue"}\NormalTok{ aus.}
-\ExtensionTok{Hinweis:}\NormalTok{ Sie können stattdessen auch diesen Commit }
-\ExtensionTok{Hinweis:}\NormalTok{ auslassen, indem Sie }
-\ExtensionTok{Hinweise:} \StringTok{"git revert {-}{-}skip"}\NormalTok{ ausführen.}
-\ExtensionTok{Hinweis:}\NormalTok{ Um abzubrechen und zurück zum Zustand }
-\ExtensionTok{Hinweise:}\NormalTok{ vor }\StringTok{"git revert"}\NormalTok{ zu gelangen,}
-\ExtensionTok{Hinweis:}\NormalTok{ führen Sie }\StringTok{"git revert {-}{-}abort"}\NormalTok{ aus.}
-\end{Highlighting}
-\end{Shaded}
-
-Es gibt also einen \emph{Konflikt}. Der Inhalt der Datei sieht aktuell
-so aus:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{cat}\NormalTok{ Main.java }
-
-\CommentTok{\# Ausgabe }
-\ExtensionTok{import}\NormalTok{ java.util.Scanner}\KeywordTok{;}
-
-\ExtensionTok{public}\NormalTok{ class Main\{}
-  \ExtensionTok{public}\NormalTok{ static void main}\ErrorTok{(}\KeywordTok{)\{}
-
-    \ExtensionTok{int}\NormalTok{ cm = eingabeCM}\ErrorTok{(}\KeywordTok{);}
-    \ExtensionTok{int}\NormalTok{ kg = eingabeKG}\ErrorTok{(}\KeywordTok{);}
-    \ExtensionTok{double}\NormalTok{ bmi = berechnung}\ErrorTok{(}\ExtensionTok{cm,}\NormalTok{ kg}\KeywordTok{);}
-    \ExtensionTok{ausgabe}\ErrorTok{(}\ExtensionTok{bmi}\KeywordTok{);}
-  \KeywordTok{\}}
-
-  \ExtensionTok{public}\NormalTok{ static void ausgabe}\ErrorTok{(}\KeywordTok{)\{}
-    \ExtensionTok{System.out.print}\ErrorTok{(}\StringTok{"Dein BMI beträgt: "}\KeywordTok{);}
-    \ExtensionTok{System.out.println}\ErrorTok{(}\ExtensionTok{42}\KeywordTok{);}
-  \KeywordTok{\}}
-
-  \ExtensionTok{public}\NormalTok{ static int eingabeCM}\ErrorTok{(}\KeywordTok{)\{}
-    \ExtensionTok{System.out.print}\ErrorTok{(}\StringTok{"CM:"}\KeywordTok{);}
-    \ExtensionTok{int}\NormalTok{ cm = new Scanner}\ErrorTok{(}\ExtensionTok{System.in}\KeywordTok{)}\FunctionTok{.nextInt()}\KeywordTok{;}
-   \ControlFlowTok{return} \ExtensionTok{cm}\KeywordTok{;}
-  \KeywordTok{\}}
-
-\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ HEAD}
-  \ExtensionTok{public}\NormalTok{ static int eingabeKG}\ErrorTok{(}\KeywordTok{)\{} \ExtensionTok{//Größe}\NormalTok{ in cm}
-        \ExtensionTok{System.out.print}\ErrorTok{(}\StringTok{"KG:"}\KeywordTok{);}
-        \ExtensionTok{int}\NormalTok{ kg = new Scanner}\ErrorTok{(}\ExtensionTok{System.in}\KeywordTok{)}\FunctionTok{.nextInt()}\KeywordTok{;}
-        \ControlFlowTok{return} \ExtensionTok{kg}\KeywordTok{;}
-    \KeywordTok{\}}
-
-  \ExtensionTok{public}\NormalTok{ static double berechnen}\ErrorTok{(}\ExtensionTok{int}\NormalTok{ cm, int kg}\KeywordTok{)\{}
-        \ExtensionTok{double}\NormalTok{ bmi = kg / Math.pow}\ErrorTok{(}\ExtensionTok{cm}\NormalTok{ /100.0, 2}\KeywordTok{);}
-        \ControlFlowTok{return} \ExtensionTok{bmi}\KeywordTok{;}
-    \KeywordTok{\}}
-
-\ExtensionTok{=======}
-\OperatorTok{\textgreater{}\textgreater{}\textgreater{}\textgreater{}\textgreater{}\textgreater{}\textgreater{}}\NormalTok{ parent }\ExtensionTok{of}\NormalTok{ 4fe5b44 }\ErrorTok{(}\ExtensionTok{ERROR}\KeywordTok{)}
-\ErrorTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Wie du erkennen kannst, wurde die \emph{relevante Funktion} korrekt
-zurückgesetzt. Der Konflikt tritt erst weiter unten in der Datei auf.
-
-Warum passiert das?
 
 \bookmarksetup{startatroot}
 
@@ -2333,7 +2132,6 @@ und gib ein:
 \FunctionTok{mkdir}\NormalTok{ fortbildung}
 \BuiltInTok{cd}\NormalTok{ fortbildung}
 \FunctionTok{git}\NormalTok{ clone https://TODO    storyvorlagen vorlage }\CommentTok{\# Ziel: vorlage.git }
-\BuiltInTok{cd}\NormalTok{ vorlage}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2374,10 +2172,9 @@ für das Buch.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingaben}
-\BuiltInTok{cd} 
-\BuiltInTok{cd}\NormalTok{ fortbildung}
 \FunctionTok{git}\NormalTok{ init buch }
 \BuiltInTok{cd}\NormalTok{ buch }
+\CommentTok{\# oder mkdir buch; cd buch; git init}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2416,9 +2213,9 @@ folgenden Befehl verwenden:
 \end{Highlighting}
 \end{Shaded}
 
-Wechsle in das Fortbildungsfenster
+Wechsle in das Buch-Fenster
 
-\phantomsection\label{annotated-cell-70}%
+\phantomsection\label{annotated-cell-68}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2451,7 +2248,7 @@ Empfohlener Befehl \cmd{git add story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-71}%
+\phantomsection\label{annotated-cell-69}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2506,7 +2303,7 @@ Für dich bedeutet das nun das Abarbeiten folgende Schritte:
   Checke den Status: \cmd{git status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-72}%
+\phantomsection\label{annotated-cell-70}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -2572,7 +2369,7 @@ erkennen:
 
 TODO: Neu aufbauen
 
-\phantomsection\label{annotated-cell-75}%
+\phantomsection\label{annotated-cell-73}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -2717,7 +2514,7 @@ Da wir nur kopieren und nicht schreiben, heißt das für dich:
 
 \begin{itemize}
 \item
-  Im Buch-Ordner: \cmd{git switch story\_2\_idee\_1}
+  Im Buch-Ordner: \cmd{git switch story2\_idee\_1}
 \item
   Wechsle in den Vorlagenordner
 \item
@@ -2737,7 +2534,7 @@ arbeitest auch Idee 2 aus.
 
 \begin{itemize}
 \item
-  Im Buch-Ordner: \cmd{git switch story\_2\_idee\_2}
+  Im Buch-Ordner: \cmd{git switch story2\_idee\_2}
 \item
   Wechsle in den Vorlagenordner
 \item
@@ -2813,6 +2610,7 @@ solltest du aktuell gerade sein, überprüfst das aber:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\# Kontrolle ob Entwichlungszweig}
 \FunctionTok{git}\NormalTok{ branch}
 \CommentTok{\# falls nötig}
 \FunctionTok{git}\NormalTok{ switch entwicklung\_story\_2}
@@ -2823,7 +2621,75 @@ Aus Sicherheitsgründen vergleichst du die Versionen kurz miteinander:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ diff}
+\end{Highlighting}
+\end{Shaded}
+
+Das ist ein Vergleich \work - Stage. Du siehst
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story2.md b/story2.md}
+\ExtensionTok{index}\NormalTok{ 1e193c3..bb2c446 100644}
+\ExtensionTok{{-}{-}{-}}\NormalTok{ a/story2.md}
+\ExtensionTok{+++}\NormalTok{ b/story2.md}
+\ExtensionTok{@@} \AttributeTok{{-}9,7}\NormalTok{ +9,7 @@ bereits am Horizont. Freddy liebte solche Abende,}
+ \ExtensionTok{denn}\NormalTok{ sie versprachen Abenteuer und Entdeckungen.}
+ 
+ \ExtensionTok{Freddy}\NormalTok{ war nicht allein. Seine beste Freundin,}
+\ExtensionTok{{-}Shelly,}\NormalTok{ die weiße Schildkröte, lebte ebenfalls am}
+\ExtensionTok{+Shelly,}\NormalTok{ die weise Schildkröte, lebte ebenfalls am}
+ \ExtensionTok{Teich.}\NormalTok{ Shelly war für ihre ruhige und besonnene}
+ \ExtensionTok{Art}\NormalTok{ bekannt, aber sie konnte auch sehr mutig sein,}
+ \ExtensionTok{wenn}\NormalTok{ es darauf ankam.}
+\end{Highlighting}
+\end{Shaded}
+
+Die Änderung ist also sichtbar. Der nachfolgende Befehl zeigt dir
+nichts, weil Commits verglichen werden!
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \FunctionTok{git}\NormalTok{ diff }\AttributeTok{{-}{-}color{-}words}\NormalTok{ entwicklung\_story\_2..story2\_idee\_1}
+\end{Highlighting}
+\end{Shaded}
+
+Mit den folgenden Befehlen übernimmst du die Änderung.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ add .}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"weiße {-} weise"}
+\end{Highlighting}
+\end{Shaded}
+
+Nun zeigt dir der Befehl
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ diff }\AttributeTok{{-}{-}color{-}words}\NormalTok{ entwicklung\_story\_2..story2\_idee\_1}
+\end{Highlighting}
+\end{Shaded}
+
+dass ein Austausch der Wörter vorgenommen wird (kenntlich gemacht):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story2.md b/story2.md}
+\ExtensionTok{index}\NormalTok{ bb2c446..dc1ed47 100644}
+\ExtensionTok{{-}{-}{-}}\NormalTok{ a/story2.md}
+\ExtensionTok{+++}\NormalTok{ b/story2.md}
+\ExtensionTok{@@} \AttributeTok{{-}9,7}\NormalTok{ +9,7 @@ bereits am Horizont. Freddy liebte solche Abende,}
+\ExtensionTok{denn}\NormalTok{ sie versprachen Abenteuer und Entdeckungen.}
+
+\ExtensionTok{Freddy}\NormalTok{ war nicht allein. Seine beste Freundin,}
+\ExtensionTok{Shelly,}\NormalTok{ die }\OperatorTok{\textgreater{}\textgreater{}\textgreater{}}\NormalTok{weise}\OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ ***weiße*** Schildkröte, lebte ebenfalls am}
+\ExtensionTok{Teich.}\NormalTok{ Shelly war für ihre ruhige und besonnene}
+\ExtensionTok{Art}\NormalTok{ bekannt, aber sie konnte auch sehr mutig sein,}
+\ExtensionTok{wenn}\NormalTok{ es darauf ankam.}
+\ExtensionTok{@@} \AttributeTok{{-}31,3}\NormalTok{ +31,59 @@ Asphalt war mit Moos und Gras überwuchert. Freddy}
+\ExtensionTok{und}\NormalTok{ Shelly schlängelten sich durch das dichte Grün}
+\ExtensionTok{und}\NormalTok{ genossen die friedliche Stille der Nacht.}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4421,7 +4287,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-140}%
+\phantomsection\label{annotated-cell-143}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -4525,7 +4391,8 @@ Als Ausgabe bekommt er
 \ExtensionTok{remote:}\NormalTok{ Objekte aufzählen: 4, fertig.}
 \ExtensionTok{remote:}\NormalTok{ Zähle Objekte: 100\% }\ErrorTok{(}\ExtensionTok{4/4}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ fertig.}
 \ExtensionTok{remote:}\NormalTok{ Komprimiere Objekte: 100\% }\ErrorTok{(}\ExtensionTok{2/2}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ fertig.}
-\ExtensionTok{remote:}\NormalTok{ Gesamt 3 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Wiederverwendet 0 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Pack wiederverwendet 0}
+\ExtensionTok{remote:}\NormalTok{ Gesamt 3 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Wiederverwendet 0 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,} 
+\ExtensionTok{Pack}\NormalTok{ wiederverwendet 0}
 \ExtensionTok{Entpacke}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{3/3}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ 272 Bytes }\KeywordTok{|} \ExtensionTok{272.00}\NormalTok{ KiB/s, fertig.}
 \ExtensionTok{Von}\NormalTok{ /tmp/labor2/entfernt}
    \ExtensionTok{d46681d..78db34e}\NormalTok{  main       }\AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ origin/main}
@@ -4537,8 +4404,9 @@ Sein Status sagt ihm
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{Auf}\NormalTok{ Branch main     }\OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ MAX}
-\ExtensionTok{Ihr}\NormalTok{ Branch ist 1 Commit hinter }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{, und kann vorgespult werden.}
-  \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git pull"}\NormalTok{, um Ihren lokalen Branch zu aktualisieren}\KeywordTok{)}
+\ExtensionTok{Ihr}\NormalTok{ Branch ist 1 Commit hinter }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{, und kann vorgespult }
+\ExtensionTok{werden.}
+\KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git pull"}\NormalTok{, um Ihren lokalen Branch zu aktualisieren}\KeywordTok{)}
 
 \ExtensionTok{nichts}\NormalTok{ zu committen, Arbeitsverzeichnis unverändert}
 \end{Highlighting}
@@ -4557,7 +4425,7 @@ Max sieht den Commit, der noch nicht in seinen Branch integriert ist.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{commit}\NormalTok{ 78db34e3176c4b78d4b027eac06aa4dda5c50cdb }\ErrorTok{(}\ExtensionTok{origin/main,}\NormalTok{ origin/HEAD}\KeywordTok{)}
+\ExtensionTok{commit}\NormalTok{ 78db34e31.....c06aa4dda5c50cdb }\ErrorTok{(}\ExtensionTok{origin/main,}\NormalTok{ origin/HEAD}\KeywordTok{)}
 \ExtensionTok{Author:}\NormalTok{ susi }\OperatorTok{\textless{}}\NormalTok{susi@t{-}online.de}\OperatorTok{\textgreater{}}
 \ExtensionTok{Date:}\NormalTok{   Wed Jan 29 12:39:38 2025 +0100}
 
@@ -5149,23 +5017,18 @@ dient lediglich der Dokumentation. Die Scripte \script{setup\_gitea.sh}
 und \script{tune.sh} müssen als \emph{root} bzw. über \emph{sudo}
 ausgeführt werden.
 
-TODO: Einbinden und vorher Zeilenumbrüche anpassen
 \textbf{setup\_gitea.sh}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-
+\CommentTok{\#!/bin/bash}
 \CommentTok{\# Port 3000 muss für das Webinterface offen sein}
 \ExtensionTok{ufw}\NormalTok{ allow 3000/tcp}
 
-\CommentTok{\# Evtl. direkt auf der Seite https://dl.gitea.com/gitea die }
-\CommentTok{\# aktuelle Version checken  und hier anpassen.}
-\FunctionTok{wget} \AttributeTok{{-}O}\NormalTok{ gitea }\DataTypeTok{\textbackslash{}}
-\NormalTok{        https://dl.gitea.com/gitea/1.22.6/gitea{-}1.22.6{-}linux{-}amd64}
+\FunctionTok{wget} \AttributeTok{{-}O}\NormalTok{ gitea  }\DataTypeTok{\textbackslash{}}
+\NormalTok{    https://dl.gitea.com/gitea/1.22.6/gitea{-}1.22.6{-}linux{-}amd64}
+\FunctionTok{chmod}\NormalTok{ +x gitea}
 
-\FunctionTok{chmod}\NormalTok{ +x gitea  }\CommentTok{\# ausführbar machen}
-
-\CommentTok{\# Benutzer git ohne Anmeldeerlaubnis}
 \ExtensionTok{adduser} \DataTypeTok{\textbackslash{}}
    \AttributeTok{{-}{-}system} \DataTypeTok{\textbackslash{}}
    \AttributeTok{{-}{-}shell}\NormalTok{ /bin/bash }\DataTypeTok{\textbackslash{}}
@@ -5175,7 +5038,6 @@ TODO: Einbinden und vorher Zeilenumbrüche anpassen
    \AttributeTok{{-}{-}home}\NormalTok{ /home/git }\DataTypeTok{\textbackslash{}}
 \NormalTok{   git}
 
-\CommentTok{\# nötige Verzeichnisse erstellen}
 \FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ /var/lib/gitea/}\DataTypeTok{\{custom}\OperatorTok{,}\DataTypeTok{data}\OperatorTok{,}\DataTypeTok{log\}}
 \FunctionTok{chown} \AttributeTok{{-}R}\NormalTok{ git:git /var/lib/gitea/}
 \FunctionTok{chmod} \AttributeTok{{-}R}\NormalTok{ 750 /var/lib/gitea/}
@@ -5183,111 +5045,50 @@ TODO: Einbinden und vorher Zeilenumbrüche anpassen
 \FunctionTok{chown}\NormalTok{ root:git /etc/gitea}
 \FunctionTok{chmod}\NormalTok{ 770 /etc/gitea}
 
-\CommentTok{\# Programm an richtigen Ort verschieben}
 \FunctionTok{mv}\NormalTok{ gitea /usr/local/bin/gitea}
 
-\CommentTok{\# Autostart einrichten }
-
-\CommentTok{\# Im richtigen Script minimiert!!!!!}
 \FunctionTok{cat} \OperatorTok{\textless{}\textless{} EOF} \OperatorTok{\textgreater{}}\NormalTok{ /etc/systemd/system/gitea.service}
-\StringTok{ }
 \StringTok{[Unit]}
 \StringTok{Description=Gitea (Git with a cup of tea)}
 \StringTok{After=network.target}
-\StringTok{\#\#\#}
-\StringTok{\# Don\textquotesingle{}t forget to add the database service dependencies}
-\StringTok{\#\#\#}
-\StringTok{\#}
-\StringTok{\#Wants=mysql.service}
-\StringTok{\#After=mysql.service}
-\StringTok{\#}
-\StringTok{\#Wants=mariadb.service}
-\StringTok{\#After=mariadb.service}
-\StringTok{\#}
-\StringTok{\#Wants=postgresql.service}
-\StringTok{\#After=postgresql.service}
-\StringTok{\#}
-\StringTok{\#Wants=memcached.service}
-\StringTok{\#After=memcached.service}
-\StringTok{\#}
-\StringTok{\#Wants=redis.service}
-\StringTok{\#After=redis.service}
-\StringTok{\#}
-\StringTok{\#\#\#}
-\StringTok{\# If using socket activation for main http/s}
-\StringTok{\#\#\#}
-\StringTok{\#}
-\StringTok{\#After=gitea.main.socket}
-\StringTok{\#Requires=gitea.main.socket}
-\StringTok{\#}
-\StringTok{\#\#\#}
-\StringTok{\# (You can also provide gitea an http }
-\StringTok{\# fallback and/or ssh socket too)}
-\StringTok{\#}
-\StringTok{\# An example of /etc/systemd/system/gitea.main.socket}
-\StringTok{\#\#\#}
-\StringTok{\#\#}
-\StringTok{\#\# [Unit]}
-\StringTok{\#\# Description=Gitea Web Socket}
-\StringTok{\#\# PartOf=gitea.service}
-\StringTok{\#\#}
-\StringTok{\#\# [Socket]}
-\StringTok{\#\# Service=gitea.service}
-\StringTok{\#\# ListenStream=\textless{}some\_port\textgreater{}}
-\StringTok{\#\# NoDelay=true}
-\StringTok{\#\#}
-\StringTok{\#\# [Install]}
-\StringTok{\#\# WantedBy=sockets.target}
-\StringTok{\#\#}
-\StringTok{\#\#\#}
 
 \StringTok{[Service]}
-\StringTok{\# Uncomment the next line if you have repos with lots of files and get a HTTP 500 error because of that}
-\StringTok{\# LimitNOFILE=524288:524288}
 \StringTok{RestartSec=2s}
 \StringTok{Type=simple}
 \StringTok{User=git}
 \StringTok{Group=git}
 \StringTok{WorkingDirectory=/var/lib/gitea/}
-\StringTok{\# If using Unix socket: tells systemd to create the /run/gitea folder, which will contain the gitea.sock file}
-\StringTok{\# (manually creating /run/gitea doesn\textquotesingle{}t work, because it would not persist across reboots)}
-\StringTok{\#RuntimeDirectory=gitea}
+
 \StringTok{ExecStart=/usr/local/bin/gitea web {-}{-}config /etc/gitea/app.ini}
 \StringTok{Restart=always}
 \StringTok{Environment=USER=git HOME=/home/git GITEA\_WORK\_DIR=/var/lib/gitea}
-\StringTok{\# If you install Git to directory prefix other than default PATH (which happens}
-\StringTok{\# for example if you install other versions of Git side{-}to{-}side with}
-\StringTok{\# distribution version), uncomment below line and add that prefix to PATH}
-\StringTok{\# Don\textquotesingle{}t forget to place git{-}lfs binary on the PATH below if you want to enable}
-\StringTok{\# Git LFS support}
-\StringTok{\#Environment=PATH=/path/to/git/bin:/bin:/sbin:/usr/bin:/usr/sbin}
-\StringTok{\# If you want to bind Gitea to a port below 1024, uncomment}
-\StringTok{\# the two values below, or use socket activation to pass Gitea its ports as above}
-\StringTok{\#\#\#}
-\StringTok{\#CapabilityBoundingSet=CAP\_NET\_BIND\_SERVICE}
-\StringTok{\#AmbientCapabilities=CAP\_NET\_BIND\_SERVICE}
-\StringTok{\#\#\#}
-\StringTok{\# In some cases, when using CapabilityBoundingSet and AmbientCapabilities option, you may want to}
-\StringTok{\# set the following value to false to allow capabilities to be applied on gitea process. The following}
-\StringTok{\# value if set to true sandboxes gitea service and prevent any processes from running with privileges}
-\StringTok{\# in the host user namespace.}
-\StringTok{\#\#\#}
-\StringTok{\#PrivateUsers=false}
-\StringTok{\#\#\#}
 
 \StringTok{[Install]}
 \StringTok{WantedBy=multi{-}user.target}
 \OperatorTok{EOF}
 
 \CommentTok{\# Autostart aktivieren}
-\FunctionTok{sudo}\NormalTok{ systemctl enable gitea}
+\ExtensionTok{systemctl}\NormalTok{ enable gitea}
 
-\CommentTok{\# Gitea einmalig per Hand starten}
-\FunctionTok{sudo}\NormalTok{ systemctl start gitea}
+\CommentTok{\# Einmalig per Hand starten}
+\ExtensionTok{systemctl}\NormalTok{ start gitea}
 
-\BuiltInTok{echo}\NormalTok{ Einrichten über Web  }\KeywordTok{\textasciigrave{}}\ExtensionTok{http://}\OperatorTok{\textless{}}\NormalTok{ip{-}adresse}\OperatorTok{\textgreater{}}\NormalTok{:3000}\KeywordTok{\textasciigrave{}}  
+
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\# Zusatz{-}Script um Selbstregistrierung}
+\CommentTok{\# von Benutzern zu de/aktivieren}
+
+\CommentTok{\# Kopieren Reg{-}script}
+\FunctionTok{cp}\NormalTok{ ./selfreg.sh /usr/local/sbin/}
+\FunctionTok{chmod}\NormalTok{ +x /usr/local/sbin/selfreg.sh}
+
+\CommentTok{\# Hinweis ausgeben}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\BuiltInTok{echo}\NormalTok{ Einrichten über Web  }\KeywordTok{\textasciigrave{}}\ExtensionTok{http://ip{-}adresse:3000}\KeywordTok{\textasciigrave{}}  
 \BuiltInTok{echo}\NormalTok{ SQLITE als Datenbank einstellen}
 \BuiltInTok{echo} \PreprocessorTok{**}\NormalTok{WICHTIG:}\PreprocessorTok{**}\NormalTok{ Administrator einrichten!}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\BuiltInTok{echo}\NormalTok{ Im Anschluss das Script }\StringTok{"tune.sh"}\NormalTok{ aufrufen}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5347,9 +5148,10 @@ Standardmäßig können sich die Benutzer selbst auf Gitea registrieren.
 Das vereinfacht die Arbeit für den Lehrer enorm, ist aber bei einer
 öffentlich zugänglichen Instanz problematisch. Es ist also sinnvoll,
 diese Einstellung nach dem erfassen der Benutzer zu deaktivieren (kann
-kederzeit wieder aktiviert werden).\\
-Dazu muss in der Datei \datei{/etc/gitea/app.ini} die folgende Zeile im
-Abschnitt \emph{{[}service{]}} angepasst werden:
+kederzeit wieder aktiviert werden).
+
+Per Hand müsste in der Datei \datei{/etc/gitea/app.ini} die folgende
+Zeile im Abschnitt \emph{{[}service{]}} angepasst werden:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5435,11 +5237,9 @@ Terminal angezeigt werden:
 Die mehrzeilige Ausgabe in einem Stück in die Oberfläche von Gitea
 kopieren:
 
-TODO: Bildergrößen
-
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/key1.png}}
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/key2.png}}
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/key3.png}}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key1.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key2.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key3.png}
 
 Damit ist die Grundkonfiguration beendet. Es sollte nun noch eingestellt
 werden, welche Anmelde- und Registrierungsvarianten erlaubt sind, um
@@ -5584,19 +5384,25 @@ Sinnvoller erscheint eine Namenskonvention beim Erstellen von Teams!
 
 \elarge
 
-\textbf{Benutzer hinzufügen}
+\textbf{Benutzer hinzufügen}\\
+(Die Variable url wurde nur wegen der begrenzten Zeilenlänge hier im
+Dokument eingeführt.)
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \VariableTok{token}\OperatorTok{=}\NormalTok{1234}
 \VariableTok{name}\OperatorTok{=}\NormalTok{G10a}
 \VariableTok{user}\OperatorTok{=}\NormalTok{susi}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ PUT }\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{name\}}\StringTok{$/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\VariableTok{url}\OperatorTok{=}\StringTok{"}\VariableTok{$\{name\}}\StringTok{$/members/}\VariableTok{$\{user\}}\StringTok{"}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ PUT }\DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.195:3000/api/v1/orgs/"}\VariableTok{$url} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
 \end{Highlighting}
 \end{Shaded}
 
 \textbf{User löschen}
+
+\blarge
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5608,14 +5414,18 @@ Sinnvoller erscheint eine Namenskonvention beim Erstellen von Teams!
 
 \CommentTok{\# Einzeln austragen, sonst ist er nicht löschbar}
 \VariableTok{orga}\OperatorTok{=}\NormalTok{organization1}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ DELETE }\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{orga\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ DELETE  }\DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{orga\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
 
 \CommentTok{\# Benutzer löschen }
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ DELETE }\StringTok{"http://192.168.3.195:3000/api/v1/admin/users/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ DELETE }\DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.195:3000/api/v1/admin/users/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
 \end{Highlighting}
 \end{Shaded}
+
+\elarge
 
 \subsection{Teams}\label{teams}
 
@@ -5623,6 +5433,8 @@ Auch ein Team erfordert eine Organisation -- hier würde ich einfach die
 Schule anlegen.
 
 \textbf{Team erstellen}
+
+\blarge
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5640,7 +5452,11 @@ Schule anlegen.
 \end{Highlighting}
 \end{Shaded}
 
+\elarge
+
 \textbf{Benutzer hinzufügen}
+
+\blarge
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5648,12 +5464,15 @@ Schule anlegen.
 \VariableTok{token}\OperatorTok{=}\NormalTok{1234}
 \VariableTok{team}\OperatorTok{=}\NormalTok{G10a}
 \VariableTok{user}\OperatorTok{=}\NormalTok{susi}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ PUT }\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{schule\}}\StringTok{/teams/}\VariableTok{$\{team\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ PUT }\DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{schule\}}\StringTok{/teams/}\VariableTok{$\{team\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Authorization: token YOUR\_ADMIN\_TOKEN"}
 \end{Highlighting}
 \end{Shaded}
 
-TODO: GPT shgt Team\_id statt Team\_name!
+\elarge
+
+TODO: GPT sagt Team\_id statt Team\_name!
 
 \bookmarksetup{startatroot}
 
@@ -5805,7 +5624,7 @@ Die Ausgabe (außer die Hashes) sollte dann so aussehen:
 \ExtensionTok{f4cab7bcfad1:}\NormalTok{ Pull complete }
 \ExtensionTok{65e7766bfa53:}\NormalTok{ Pull complete }
 \ExtensionTok{c5f5268086b8:}\NormalTok{ Pull complete }
-\ExtensionTok{Digest:}\NormalTok{ sha256:8b8128748339583ca951af03dfe02a9a4d7363f61a216226fc28030731a5a61f}
+\ExtensionTok{Digest:}\NormalTok{ sha256:8b8128748339583ca9...f61a216226fc28030731a5a61f}
 \ExtensionTok{Status:}\NormalTok{ Downloaded newer image for corentinth/it{-}tools:latest}
 \ExtensionTok{bd072e349cab6408a3b5f2d7040d586a9149107d68031089f846d0526c028f45}
 \end{Highlighting}
@@ -5843,6 +5662,8 @@ Server.
 
 Zeigt uns das heruntergeladene Image:
 
+\blarge
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{REPOSITORY}\NormalTok{             TAG       IMAGE ID       CREATED        SIZE}
@@ -5850,28 +5671,40 @@ Zeigt uns das heruntergeladene Image:
 \end{Highlighting}
 \end{Shaded}
 
+\elarge
+
 Mit nachfolgendem Befehl überprüft man den Status des Containers:
+
+\blarge
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{docker}\NormalTok{ ps }
 
-\CommentTok{\# Ausgabe (gekürzt)}
-\ExtensionTok{CONTAINER}\NormalTok{ ID   IMAGE                 COMMAND                  gekürzt ... NAMES }
-\ExtensionTok{bd072e349cab}\NormalTok{   corentinth/it{-}tools   }\StringTok{"/docker{-}entrypoint.…"}\NormalTok{   gekürzt ... it{-}tools}
+\CommentTok{\# Ausgabe (gekürzt, am Ende steht der Name des Containers!)}
+\ExtensionTok{CONTAINER}\NormalTok{ ID  IMAGE               COMMAND                gekürzt  }
+\ExtensionTok{bd072e349cab}\NormalTok{  corentinth/it{-}tools }\StringTok{"/docker{-}entrypoint.…"}\NormalTok{ gekürzt }
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Weitere Befehle}\\
-\textbar Befehl\textbar Wirkung\textbar{}
-\textbar------\textbar-------\textbar{} \textbar docker stop
-it-tools\textbar{} Container stoppen\textbar{} \textbar docker stop
-bd072e349cab\textbar{} geht auch\textbar{} \textbar docker start
-it-tools\textbar Container starten\textbar{} \textbar docker start
-bd072e349cab\textbar{} geht auch\textbar{} \textbar docker rm
-it-tools\textbar Container entfernen -- Image bleibt!\textbar{}
-\textbar docker rmi ``corentinth/it-tools''\textbar Entfernt auch das
-Image\textbar{}
+\elarge
+
+\textbf{Weitere Befehle}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Befehl & Wirkung \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+docker stop it-tools & Container stoppen \\
+docker stop bd072e349cab & geht auch \\
+docker start it-tools & Container starten \\
+docker start bd072e349cab & geht auch \\
+docker rm it-tools & Container entfernen -- Image bleibt! \\
+docker rmi ``corentinth/it-tools'' & Entfernt auch das Image \\
+\end{longtable}
 
 Damit ein Container gelöscht werden kann, muss er beendet sein, damit
 ein Image gelöscht werden kann, muss der Container gelöscht sein.
@@ -5926,7 +5759,8 @@ direkt über \emph{docker-compose} und deswegen ändern wir nichts.
 \CommentTok{\# Beispiel: Anpassung der Konfiguration von MariaDB, wenn nötig}
 \CommentTok{\# COPY ./my.cnf /etc/mysql/my.cnf}
 
-\CommentTok{\# Um ein Initialisierungs{-}Skript hinzuzufügen (z.B. zum Erstellen einer Datenbank)}
+\CommentTok{\# Um ein Initialisierungs{-}Skript hinzuzufügen }
+\CommentTok{\# (z.B. zum Erstellen einer Datenbank)}
 \CommentTok{\# COPY ./init.sql /docker{-}entrypoint{-}initdb.d/}
 
 \CommentTok{\# Setze Umgebungsvariablen (optional, falls nicht im docker{-}compose)}
@@ -5960,7 +5794,8 @@ unsicheren Kennwörter müssen in dieser Datei angepasst werden!
       \ExtensionTok{{-}} \StringTok{"3306:3306"} \CommentTok{\# Host{-}Port:Container{-}Port}
     \ExtensionTok{volumes:}
       \ExtensionTok{{-}}\NormalTok{ mariadb\_data:/var/lib/mysql}
-      \ExtensionTok{{-}}\NormalTok{ ./init.sql:/docker{-}entrypoint{-}initdb.d/init.sql }\CommentTok{\# Optional: SQL{-}Datei zum Initialisieren}
+      \ExtensionTok{{-}}\NormalTok{ ./init.sql:/docker{-}entrypoint{-}initdb.d/init.sql }
+      \CommentTok{\# Optional: SQL{-}Datei zum Initialisieren}
     \ExtensionTok{networks:}
       \ExtensionTok{{-}}\NormalTok{ mariadb\_network}
 
@@ -6025,7 +5860,8 @@ Die \texttt{docker-compose.yml} um PHPMyAdmin erweitert:
       \ExtensionTok{{-}} \StringTok{"3306:3306"} \CommentTok{\# Host{-}Port:Container{-}Port}
     \ExtensionTok{volumes:}
       \ExtensionTok{{-}}\NormalTok{ mariadb\_data:/var/lib/mysql}
-      \ExtensionTok{{-}}\NormalTok{ ./init.sql:/docker{-}entrypoint{-}initdb.d/init.sql }\CommentTok{\# Optional: SQL{-}Datei zum Initialisieren}
+      \ExtensionTok{{-}}\NormalTok{ ./init.sql:/docker{-}entrypoint{-}initdb.d/init.sql }
+      \CommentTok{\# Optional: SQL{-}Datei zum Initialisieren}
     \ExtensionTok{networks:}
       \ExtensionTok{{-}}\NormalTok{ mariadb\_network}
 
@@ -6034,9 +5870,10 @@ Die \texttt{docker-compose.yml} um PHPMyAdmin erweitert:
     \ExtensionTok{image:}\NormalTok{ phpmyadmin/phpmyadmin:latest}
     \ExtensionTok{container\_name:}\NormalTok{ phpmyadmin\_container}
     \ExtensionTok{environment:}
-      \ExtensionTok{PMA\_HOST:}\NormalTok{ db            }\CommentTok{\# Der Name des MariaDB{-}Services (db) in docker{-}compose}
-      \ExtensionTok{PMA\_PORT:}\NormalTok{ 3306          }\CommentTok{\# Der Port, auf dem MariaDB läuft}
-      \ExtensionTok{MYSQL\_ROOT\_PASSWORD:}\NormalTok{ rootpassword  }\CommentTok{\# Das Passwort für den Root{-}Benutzer von MariaDB}
+      \ExtensionTok{PMA\_HOST:}\NormalTok{ db     }\CommentTok{\# Name des MariaDB{-}Services (db) }
+      \ExtensionTok{PMA\_PORT:}\NormalTok{ 3306   }\CommentTok{\# Port von MiraiDB}
+      \ExtensionTok{MYSQL\_ROOT\_PASSWORD:}\NormalTok{ rootpassword  }
+      \CommentTok{\# Das Passwort für den Root{-}Benutzer von MariaDB}
     \ExtensionTok{ports:}
       \ExtensionTok{{-}} \StringTok{"8080:80"}  \CommentTok{\# Webinterface auf Port 8080 zugänglich}
     \ExtensionTok{networks:}
@@ -6119,7 +5956,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-203}%
+\phantomsection\label{annotated-cell-206}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -6179,7 +6016,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-205}%
+\phantomsection\label{annotated-cell-208}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -6213,7 +6050,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-206}%
+\phantomsection\label{annotated-cell-209}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -6285,7 +6122,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-208}%
+\phantomsection\label{annotated-cell-211}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6349,11 +6186,15 @@ eine frische Datei kann man folgenden Befehl aufrufen:
 
 oder direkt als Datei
 
+\blarge
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{docker}\NormalTok{ exec }\AttributeTok{{-}it}\NormalTok{ gitea\_runner act\_runner generate{-}config }\OperatorTok{\textgreater{}}\NormalTok{ config.yaml}
 \end{Highlighting}
 \end{Shaded}
+
+\elarge
 
 \samplestart
 
@@ -6543,7 +6384,7 @@ Erstelle hier eine \datei{docker-compose.yml} Datei:
     \ExtensionTok{image:} \StringTok{\textquotesingle{}gitlab/gitlab{-}ce:latest\textquotesingle{}}
     \ExtensionTok{container\_name:} \StringTok{\textquotesingle{}gitlab\textquotesingle{}}
     \ExtensionTok{restart:}\NormalTok{ always}
-    \ExtensionTok{hostname:} \StringTok{\textquotesingle{}192.168.3.181\textquotesingle{}}  \CommentTok{\# im Netz auf gitlab.server.de stellem}
+    \ExtensionTok{hostname:} \StringTok{\textquotesingle{}192.168.3.181\textquotesingle{}}  \CommentTok{\# Im Netz \textquotesingle{}gitlab.server.de\textquotesingle{}}
     \ExtensionTok{environment:}
       \ExtensionTok{GITLAB\_OMNIBUS\_CONFIG:} \KeywordTok{|}
         \ExtensionTok{external\_url} \StringTok{\textquotesingle{}https://182.168.3.181:443\textquotesingle{}}   \CommentTok{\# im Netz ...}
@@ -6613,122 +6454,7 @@ Mit diesem docker-compose File ist ssh-clonen über Port 25 möglich:
 Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über Konsole,
 GitClients, \ldots{} Weboberfläche.
 
-\bookmarksetup{startatroot}
-
-\chapter{Autograding}\label{autograding}
-
-Der Workflow für das Autograding von Schülerlösungen unterscheidet sich
-deutlich von der normalen Arbeit mit git/gitea, weil man den
-\emph{kreativen Wissenstransfer} doch möglichst vermeiden möchte.\\
-Beim Autograding geht es im Prinzip darum, dass die Schüler ihre
-Aufgaben / Prüfungen auf eine Art und Weise schreiben, dass sie mit
-automatisierten Test überprüft werden können. Hierbei können sichtbare
-Tests (der Schüler sieht sofort, ob seine Lösung passt) und versteckte
-Tests verwendet werden.\\
-Technisch gesehen führt der Schüler einen Commit aus, der die
-Überprüfung triggert. Es ist auch möglich, dass sich der Lehrer die
-Schülerlösungen holt und dann erst testet.
-
-\section{Vorarbeiten}\label{vorarbeiten}
-
-\begin{itemize}
-\tightlist
-\item
-  Die Schüler müssen im System sein.
-\item
-  Erstellen eines Teams
-\item
-  Schüler dem Team zuordnen
-\item
-  Ein Repository für Hausaufgaben oder spezielle Prüfungen erstellen und
-  die benötigten Materialien hinein kopieren.
-\end{itemize}
-
-Das Script aus den Kursmaterialien führt dann für alle Teammitglieder
-nachfolgende Schritte aus * Das Repository für den Schüler
-\emph{forken}, d.h. eine vollwertige Kopie erstellen * Die
-Berechtigungen so setzen, dass kein Schüler den Fork eines Mitschülers
-sehen kann
-
-\section{Workflow Schüler}\label{workflow-schuxfcler}
-
-Das hängt nun von der genauen Aubeitsweise ab. Im Prinzip muss der
-Schüler die Aufgabenstellung in der Aufgabendatei erledigen, die im
-Original-Repository erstellt wurde. Nach dem Erstellen der Lösung wird
-die Arbeit committet und auf den Server gepusht. Dort greifen dann die
-nachfolgende Automatismen.
-
-Da das gleiche Repo (Hausaufgaben) über einen längeren Zeitraum genutzt
-werden soll, muss der Schüler regelmäßig die Änderungen im Origina-Repo
-in seinen Fork übertragen. Der Lehrer har dafür zu sorgen (Anleitung,
-\ldots) dass es Dateien gibt (Namenskonvention), die der Schüler nicht
-anfasst. Auf diese Weise werden Merge-Konflikte vermieden, wenn
-Original-Repo und Fork zusammengeführt werden.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ pull }
-
-
-\CommentTok{\#\# Ablauf}
-
-\ExtensionTok{*}\NormalTok{ Schüler einrichten}
-\ExtensionTok{*}\NormalTok{ CI/CD System einrichten }\AttributeTok{{-}}\NormalTok{ hier wird auf jenkins verweisen}\PreprocessorTok{?}\NormalTok{ Geht auch otter{-}grader}\PreprocessorTok{?}
-\ExtensionTok{*}\NormalTok{ Vorlagen für verschiedene Aufgaben erstellen }\PreprocessorTok{?????}
-\ExtensionTok{*}\NormalTok{ Anleitung durch README.md}
-
-
-\CommentTok{\#\# Beginn des Kurses}
-
-\ExtensionTok{*}\NormalTok{ Der Lehrer erstellt ein Repo}
-\ExtensionTok{*}\NormalTok{ Die Schüler forken das über die GUI}
-\ExtensionTok{*}\NormalTok{ Die Schüler Clonen ihr eigenes Repo}
-\end{Highlighting}
-\end{Shaded}
-
-git clone https://gitea.example.com/student1/haupt-repository.git
-
-\begin{verbatim}
-* Jeden Tag wird das Repo gepullt
-\end{verbatim}
-
-cd haupt-repository git pull origin main
-
-\begin{verbatim}
-* Die Hausaufgaben werden committed und gepusht
-```bash
-git add . --all
-git commit -m "erledigt"
-\end{verbatim}
-
-\begin{itemize}
-\tightlist
-\item
-  Der Lehrer sammelt die Arbeien ein
-\end{itemize}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#!/bin/bash}
-
-\VariableTok{STUDENT\_REPOS}\OperatorTok{=}\VariableTok{(}\StringTok{"https://gitea.example.com/student1/hausaufgaben.git"} \StringTok{"https://gitea.example.com/student2/hausaufgaben.git"}\VariableTok{)}
-\VariableTok{LOCAL\_DIR}\OperatorTok{=}\StringTok{"student\_submissions"}
-
-\FunctionTok{mkdir} \AttributeTok{{-}p} \VariableTok{$LOCAL\_DIR}
-\BuiltInTok{cd} \VariableTok{$LOCAL\_DIR}
-
-\ControlFlowTok{for}\NormalTok{ REPO }\KeywordTok{in} \StringTok{"}\VariableTok{$\{STUDENT\_REPOS}\OperatorTok{[@]}\VariableTok{\}}\StringTok{"}\KeywordTok{;} \ControlFlowTok{do}
-  \VariableTok{REPO\_NAME}\OperatorTok{=}\VariableTok{$(}\FunctionTok{basename} \VariableTok{$REPO}\NormalTok{ .git}\VariableTok{)}
-  \ControlFlowTok{if} \BuiltInTok{[} \OtherTok{{-}d} \StringTok{"}\VariableTok{$REPO\_NAME}\StringTok{"} \BuiltInTok{]}\KeywordTok{;} \ControlFlowTok{then}
-    \BuiltInTok{cd} \VariableTok{$REPO\_NAME}
-    \FunctionTok{git}\NormalTok{ pull origin main}
-    \BuiltInTok{cd}\NormalTok{ ..}
-  \ControlFlowTok{else}
-    \FunctionTok{git}\NormalTok{ clone }\VariableTok{$REPO}
-  \ControlFlowTok{fi}
-\ControlFlowTok{done}
-\end{Highlighting}
-\end{Shaded}
+TODO: Noch detaillierter ausarbeiten
 
 \bookmarksetup{startatroot}
 
@@ -6810,8 +6536,8 @@ Kopiere die Datei \datei{quarto_vorlage.zip} aus dem Kursordner in das
 Repository und entpacke sie sie dort. Dateien, die auf \emph{qmd} enden,
 sind einfach Markdowndateien für Quarto.
 
-TODO: quarto\_vorlage.zip erstellen für CICD - incl gitignore TODO: Mit
-mini Geschichten Setup
+TODO: quarto\_vorlage.zip erstellen für CICD - incl gitignore\\
+TODO: Mit mini Geschichten Setup
 
 \textbf{Schritt 4}\\
 Erstelle einen ersten Commit und pushe das Repository wieder auf
@@ -6863,13 +6589,14 @@ TODO: SCREENSHOT Liste der Runner
 \subsection{Automatismus basteln}\label{automatismus-basteln}
 
 Erstelle nun die Datei \datei{.gitlab-ci.yml} in deinem Repository.
-Bevor wir unser Minibuch bauen, wollen wir uns einen minimalen
+Bevor wir unser Minibuch schreiben, wollen wir uns einen minimalen
 Automatismus bauen.
 
-Übertrage folgende Zeilen in die Datei \datei{.gitlab-ci.yml}. Verwende
-für die Einrückungen unbedingt Leerzeichen und keine Tabulatoren!
+Übertrage folgende Zeilen in die Datei \datei{.gitlab-ci.yml}.\\
+\textbf{Verwende für die Einrückungen unbedingt Leerzeichen und keine
+Tabulatoren!}
 
-\phantomsection\label{annotated-cell-226}%
+\phantomsection\label{annotated-cell-225}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -6912,7 +6639,7 @@ Von den vielen Meldungen sind nur wenige direkt interessant:
 \end{Highlighting}
 \end{Shaded}
 
-Du siehst,
+Du siehst:
 
 \begin{itemize}
 \tightlist
@@ -6930,7 +6657,7 @@ Du siehst,
 Für unser Minibuch brauchen wir ein anderes Docker-Image und noch ein
 paar Erweiterungen in der Datei:
 
-\phantomsection\label{annotated-cell-228}%
+\phantomsection\label{annotated-cell-227}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -6971,9 +6698,9 @@ An dieser Stelle befindet sich das PDF
 Leider scheitert diese Pipeline, da auf diesem Quarto-Image kein LaTeX
 installiert ist. Das kannst du ändern, indem du im
 \emph{script}-Abschnitt den Befehl \cmd{quarto install tinytex} an den
-Anfang stellst. Nach diesem Commit sollte der Job durchlaufen. Im
-Abschnitt \emph{Jobs} findest du nun eine Möglichkeit, die Zip-Datei mit
-dem Artifact herunterzuladen.
+Anfang stellst. Nach diesem Commit sollte der Job durchlaufen. Auf
+\gitlab findest du im Menü (links) bai \emph{Jobs} nun die Möglichkeit,
+die Zip-Datei mit dem Artifact -- also der pdf-Datei -- herunterzuladen.
 
 \subsection{Wie geht es weiter?}\label{wie-geht-es-weiter}
 
@@ -7003,7 +6730,7 @@ nur die dritte Option. Hierfür musst du einen sogenannten \emph{Runner}
 und den zugehörigen \emph{Agent} auf deinem eigenen Rechner (oder
 Server) installieren und dort auch die benötigte Infrastruktur (z.B.
 Docker oder die Build-Umgebung). Der Runner führt als Agent in
-konfigurierbaren Abständen Anfragen bei \gitlab aus um auf das
+konfigurierbaren Abständen Anfragen bei \gitlab aus, um auf das
 Vorhandensein von neuen Jobs zu testen. Das ist zwar etwas unelegant,
 löst aber das Problem der Erreichbarakeit des eigenen Rechners aus dem
 Internet, falls er hinter deiner Firewall steht -- also bei der
@@ -7040,7 +6767,7 @@ In diesen Ordnern liegen dann Startdateien.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Inhalt der docker{-}compose.yml }
+\CommentTok{\# Inhalt der docker{-}compose.yml im Ordner runner}
 \ExtensionTok{version:} \StringTok{\textquotesingle{}3.8\textquotesingle{}}
 
 \ExtensionTok{services:}
@@ -7056,7 +6783,7 @@ In diesen Ordnern liegen dann Startdateien.
 
 In dieser Version liegt der Konfigurationsordner \ordner{config} im
 Verzeichnis des Runners. Beim ersten Start -- vor dem Registrieren des
-Runners auf \gitlab -- wird ein Fehler gemeldet, dass die Datei
+Runners auf \gitlab{} -- wird ein Fehler gemeldet, dass die Datei
 \datei{config.toml} in diesem Ordner fehlt. Sie wird bei den nächsten
 Schritten erst erstellt -- das ist also normal und kann ignoriert
 werden!
@@ -7068,9 +6795,11 @@ Vorbereitungsarbeiten abschließen.
 Für diesen Container genügt ein Dockerfile, denn dieser Container wird
 komplett vom Runner verwaltet.
 
+\blarge
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Inhalt von Dockerfile }
+\CommentTok{\# Inhalt vom Dockerfile im Ordner quarto }
 \ExtensionTok{FROM}\NormalTok{ ubuntu:24.04}
 
 \CommentTok{\# Install basics}
@@ -7093,6 +6822,8 @@ komplett vom Runner verwaltet.
 \end{Highlighting}
 \end{Shaded}
 
+\elarge
+
 In dieser Datei wird die Installation eines kompletten Quarto/Latex
 Servers beschrieben. Das dauert dann einige Zeit, da der Container am
 Ende etwa 10GB groß ist!
@@ -7108,7 +6839,13 @@ machen:
 
 \textbf{Java}\\
 Auch für Java brauchst du ein lokales Image, wenn die Geschwindigkeit
-stimmen soll. Ein mögliches Dockerfile sieht so aus:
+stimmen soll. Ein mögliches Dockerfile sieht so aus, allerdings musst du
+zuerst unter nachfolgender Adresse die aktuelle Version in Efahrung
+bringen und in das Dockerfile eintragen (siehe Kommentar):
+
+\url{https://downloads.apache.org/maven/maven-3}
+
+\blarge
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7117,17 +6854,18 @@ stimmen soll. Ein mögliches Dockerfile sieht so aus:
 \ExtensionTok{FROM}\NormalTok{ eclipse{-}temurin:21{-}jdk}
 
 \CommentTok{\# Maven{-}Version festlegen}
-\ExtensionTok{ARG}\NormalTok{ MAVEN\_VERSION=3.9.11}
+\ExtensionTok{ARG}\NormalTok{ MAVEN\_VERSION=3.9.12}
 \ExtensionTok{ARG}\NormalTok{ USER\_HOME\_DIR=}\StringTok{"/root"}
 \ExtensionTok{ARG}\NormalTok{ SHA=8d25376b58a36454bedc70ed87c1a507}
 
 \CommentTok{\# Installationsverzeichnisse}
-\ExtensionTok{ARG}\NormalTok{ BASE\_URL=https://downloads.apache.org/maven/maven{-}3/}\VariableTok{$\{MAVEN\_VERSION\}}\NormalTok{/binaries}
+\ExtensionTok{ARG}\NormalTok{ BASE\_URL=https://downloads.apache.org/}
+\ExtensionTok{ARG}\NormalTok{ MAVEN\_URL=}\VariableTok{$\{BASE\_URL\}}\NormalTok{maven/maven{-}3/}\VariableTok{$\{MAVEN\_VERSION\}}\NormalTok{/binaries}
 
 \CommentTok{\# Maven installieren}
 \ExtensionTok{RUN}\NormalTok{ mkdir }\AttributeTok{{-}p}\NormalTok{ /opt/maven }\DataTypeTok{\textbackslash{}}
-    \KeywordTok{\&\&} \ExtensionTok{curl} \AttributeTok{{-}fsSL} \VariableTok{$\{BASE\_URL\}}\NormalTok{/apache{-}maven{-}}\VariableTok{$\{MAVEN\_VERSION\}}\NormalTok{{-}bin.tar.gz }\DataTypeTok{\textbackslash{} }
-    \ExtensionTok{{-}o}\NormalTok{ /tmp/maven.tar.gz }\DataTypeTok{\textbackslash{}}
+    \KeywordTok{\&\&} \ExtensionTok{curl} \AttributeTok{{-}fsSL} \VariableTok{$\{MAVEN\_URL\}}\NormalTok{/apache{-}maven{-}}\VariableTok{$\{MAVEN\_VERSION\}}\NormalTok{{-}bin.tar.gz }\DataTypeTok{\textbackslash{}}
+       \AttributeTok{{-}o}\NormalTok{ /tmp/maven.tar.gz }\DataTypeTok{\textbackslash{}}
     \KeywordTok{\&\&} \FunctionTok{tar} \AttributeTok{{-}xzf}\NormalTok{ /tmp/maven.tar.gz }\AttributeTok{{-}C}\NormalTok{ /opt/maven }\AttributeTok{{-}{-}strip{-}components}\OperatorTok{=}\NormalTok{1 }\DataTypeTok{\textbackslash{}}
     \KeywordTok{\&\&} \FunctionTok{rm}\NormalTok{ /tmp/maven.tar.gz}
 
@@ -7142,6 +6880,8 @@ stimmen soll. Ein mögliches Dockerfile sieht so aus:
 \ExtensionTok{CMD}\NormalTok{ [}\StringTok{"mvn"}\NormalTok{, }\StringTok{"{-}{-}version"}\NormalTok{]}
 \end{Highlighting}
 \end{Shaded}
+
+\elarge
 
 \bookmarksetup{startatroot}
 
@@ -7250,7 +6990,7 @@ Installiere das gewünschte JDK (z.\,B. Oracle JDK, Temurin).
 Systemvariable \texttt{Path} bearbeiten und hinzufügen:
 \datei{\%JAVA_HOME\%\\bin}
 
-\emph{Überprüfen}
+\emph{Überprüfen im cmd-Fenster}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7293,7 +7033,7 @@ Inhalt:
 \end{Highlighting}
 \end{Shaded}
 
-\emph{Alternativ nur für den aktuellen Benutzer}
+\textbf{Alternativ nur für den aktuellen Benutzer}
 
 Füge die gleichen beiden (export) Zeilen an das Ende der Datei folgenden
 Datei an
@@ -7304,8 +7044,8 @@ Datei an
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\BuiltInTok{source}\NormalTok{ /etc/profile.d/java.sh}
-\CommentTok{\# bzw. source \textasciitilde{}/.profile }
+\BuiltInTok{source}\NormalTok{ /etc/profile.d/java.sh }\CommentTok{\# bei Systemweit}
+\CommentTok{\# bzw. source \textasciitilde{}/.profile      \# bei EInzeluser}
 \ExtensionTok{java} \AttributeTok{{-}version}
 \BuiltInTok{echo} \VariableTok{$JAVA\_HOME}
 \end{Highlighting}
@@ -7391,12 +7131,12 @@ Zur Kontrolle genügt dann ein
 \subsubsection*{Windows}\label{windows-2}
 \addcontentsline{toc}{subsubsection}{Windows}
 
-TODO
+TODO: Maven auf Windows installieren
 
 \subsubsection*{Apple}\label{apple}
 \addcontentsline{toc}{subsubsection}{Apple}
 
-TODO
+TODO: Maven auf Apple installieren
 
 \subsection{Erster Test}\label{erster-test}
 
@@ -7482,7 +7222,7 @@ eigene) \emph{jar}-Dateien musst du selbst in den Cache \ordner{.m2}
 einpflegen, damit Maven sie verwenden kann.
 
 Im Ordner liegt eine Ordnerstruktur vor, geordnet nach productID,
-Version, \ldots, in der man selbst Ordner erstellen kann. Im Prinzip
+Version, \ldots, in der du selbst Ordner erstellen kannst. Im Prinzip
 macht Maven genau das, wenn du \emph{install} aufrufst.
 
 LINK-Tipp: \url{https://www.youtube.com/watch?v=T00NKLQvwYE} -
@@ -7495,7 +7235,7 @@ Windows-lastig
 Im Zusammenspiel von TDD und \git wäre ein Unterrichtsprojekt denkbar,
 wo Schüler alleine oder in Gruppen verschiedene Methoden der
 Verschlüsselung implementieren. Am Ende könnten dann die Einzelprogramme
-im \emph{main}-Branch zusammengeführt werden. Hier soll aber \git nicht
+im \emph{main}-Branch zusammengeführt werden. Hier soll aber nicht \git
 im Fokus stehen, sondern der TDD-Zyklus. Exemplarisch implementieren wir
 eine minimale Cäsar-Verschlüsselung.
 
@@ -7534,7 +7274,8 @@ allerdings noch einige Einträge in der \datei{pom.xml} angepasst werden:
 \begin{itemize}
 \tightlist
 \item
-  die lokal installierte Java-Version in die \datei{pom.xml} eintragen.
+  Die lokal installierte Java-Version in die \datei{pom.xml}
+  eintragen.\\
   Default ist 17, ich verwende 21.
 \item
   Konfiguration des \emph{jar}-Plugin:
@@ -7565,9 +7306,17 @@ stehen! \sampleend
 \end{Highlighting}
 \end{Shaded}
 
-Gib nun \cmd{mvn package}. \emph{package} ist ein relativ großer
-LiveCycle, der Compile, Test und Package umfasst. Am Ende entsteht ein
-\emph{jar}-Archiv, das ausgeführt werden kann..
+Gib nun ein:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{mvn}\NormalTok{ package}
+\end{Highlighting}
+\end{Shaded}
+
+\emph{package} ist ein relativ großer LiveCycle, der Compile, Test und
+Package umfasst. Am Ende entsteht ein \emph{jar}-Archiv, das ausgeführt
+werden kann..
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7679,15 +7428,16 @@ einen Text zurückliefert:
 \begin{Highlighting}[]
 \AttributeTok{@Test} 
 \KeywordTok{public} \DataTypeTok{void} \FunctionTok{cryptLiefertEineRueckgabe}\OperatorTok{()\{}
-\NormalTok{    Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}
-    \BuiltInTok{String}\NormalTok{ res }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{crypt}\OperatorTok{();}
-    \FunctionTok{assertNotNull}\OperatorTok{(}\NormalTok{res}\OperatorTok{);}
+\NormalTok{    Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}  \CommentTok{// Objekt erstellen}
+    \BuiltInTok{String}\NormalTok{ res }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{crypt}\OperatorTok{();}   \CommentTok{// Das gibt es noch nicht}
+    \FunctionTok{assertNotNull}\OperatorTok{(}\NormalTok{res}\OperatorTok{);}            \CommentTok{// Greift, wenn es klappt}
 \OperatorTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
 Der Befehl \cmd{mvn test} scheitert, wegen der fehlenden Methode bereits
-beim Compilieren. Du schreibst zunächst folgende Variante der Methode:
+beim Compilieren. Du schreibst zunächst folgende, minimal
+funktionierende, Variante der Methode:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7697,8 +7447,9 @@ beim Compilieren. Du schreibst zunächst folgende Variante der Methode:
 \end{Highlighting}
 \end{Shaded}
 
-Der Test geht natürlich immer noch schief, aber das ist wichtig, denn du
-weißt nun, dass die Methode überhaupt überprüft wird.\\
+Der Test geht natürlich immer noch schief, denn es wird ja auf
+\texttt{NotNull} getestet. Dieses Versagen des Tests ist aber wichtig,
+denn du weißt nun, dass die Methode überhaupt überprüft wird.\\
 Nun änderst du die Rückgabe auf einen beliebigen String. Das ist der
 einfachst Weg, damit der Test nicht mehr scheitert.
 
@@ -7739,7 +7490,7 @@ zu erledigen ist\footnote{Beim TDD sollte ein Test immer nur genau eine
 \NormalTok{        Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}
 \NormalTok{        caesar}\OperatorTok{.}\FunctionTok{set\_clearText}\OperatorTok{(}\StringTok{""}\OperatorTok{);}
         \BuiltInTok{String}\NormalTok{ res }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{crypt}\OperatorTok{();}
-        \FunctionTok{assertEquals}\OperatorTok{(}\DecValTok{0}\OperatorTok{,}\NormalTok{ res}\OperatorTok{.}\FunctionTok{length}\OperatorTok{());}
+        \FunctionTok{assertEquals}\OperatorTok{(}\DecValTok{0}\OperatorTok{,}\NormalTok{ res}\OperatorTok{.}\FunctionTok{length}\OperatorTok{());} \CommentTok{// Scheitert wegen "x"}
     \OperatorTok{\}}
 \end{Highlighting}
 \end{Shaded}
@@ -7750,7 +7501,7 @@ besitzt. Wir brauchen also eine Rückgabe, die etwas sinnvoller ist.
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{public} \BuiltInTok{String} \FunctionTok{crypt}\OperatorTok{()} \OperatorTok{\{}
-       \ControlFlowTok{return}\NormalTok{ cryptText}\OperatorTok{;}
+       \ControlFlowTok{return}\NormalTok{ cryptText}\OperatorTok{;} \CommentTok{//aktuell noch ""}
     \OperatorTok{\}}
 \end{Highlighting}
 \end{Shaded}
@@ -7764,8 +7515,8 @@ Test einen längeren Text:
     \KeywordTok{public} \DataTypeTok{void} \FunctionTok{cryptLiefertTextKorrekterLaenge}\OperatorTok{()\{}
 \NormalTok{        Caesar caesar }\OperatorTok{=} \KeywordTok{new} \FunctionTok{Caesar}\OperatorTok{();}
 \NormalTok{        caesar}\OperatorTok{.}\FunctionTok{set\_clearText}\OperatorTok{(}\StringTok{"hallo"}\OperatorTok{);}
-        \BuiltInTok{String}\NormalTok{ res }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{crypt}\OperatorTok{();}
-        \FunctionTok{assertEquals}\OperatorTok{(}\StringTok{"Hallo"}\OperatorTok{.}\FunctionTok{length}\OperatorTok{(),}\NormalTok{ res}\OperatorTok{.}\FunctionTok{length}\OperatorTok{());}
+        \BuiltInTok{String}\NormalTok{ res }\OperatorTok{=}\NormalTok{ caesar}\OperatorTok{.}\FunctionTok{crypt}\OperatorTok{();}  \CommentTok{// also ""}
+        \FunctionTok{assertEquals}\OperatorTok{(}\StringTok{"hallo"}\OperatorTok{.}\FunctionTok{length}\OperatorTok{(),}\NormalTok{ res}\OperatorTok{.}\FunctionTok{length}\OperatorTok{());}
     \OperatorTok{\}}
 \end{Highlighting}
 \end{Shaded}
@@ -7813,7 +7564,7 @@ eine Schleife basteln:
 \end{Highlighting}
 \end{Shaded}
 
-Rot-Phase \ldots{}
+Rot-Phase \ldots{} Minimal funktionierende Funktion schreiben
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7880,10 +7631,10 @@ Klarer Fall von \emph{rot}. Auf zum Ändern des Codes!
 \end{Shaded}
 
 Ja -- das geht eleganter, ist hier aber egal! Wir könnten nun auch noch
-um Verschiebungen in negative Richtung implementieren, aber das bringt
+die Verschiebungen in negative Richtung implementieren, aber das bringt
 uns thematisch nicht weiter.
 
-Was testen wir nun? Die Methode \emph{crypt} könnten wir nun weiter
+Was testen wir nun? Die Methode \emph{crypt} könnten wir noch weiter
 ausbauen.
 
 \begin{Shaded}
@@ -7917,13 +7668,13 @@ Eine Variante, um wieder nach grün zu kommen, wäre
 Und ja -- auch das geht anders. Ich glaube aber, dass mit den bisherigen
 Schritten zumindest die Idee des TDD so weit klar geworden ist. Damit
 ist man natürlich noch ewig weit von der Routinearbeit eines
-professionellen entwicklers entfernt! Es gibt neben TDD auch noch andere
+professionellen Entwicklers entfernt! Es gibt neben TDD auch noch andere
 Ansätze wie BDD (Behaviour Driven Development), wie es gerne bei der
-Sprache Ruby on Rails mit Hilfe von Cucumber verwendet wird, nur da ist
-bei mir dann auch Ende, weil ich von diesem Weg irgendwann abgebogen
-bin. Man kann einfach nicht jeden Weg gehen und in diesen Sinne hoffe
-ich, dass dieser Workshop zumindest einige lehrreiche Aspekte beinhaltet
-hat.
+Sprache Ruby on Rails mit Hilfe von Cucumber verwendet wird. Hier ist da
+bei mir dann auch das Ende erreicht, weil ich von diesem Weg irgendwann
+abgebogen bin. Man kann einfach nicht jeden Weg gehen und in diesen
+Sinne hoffe ich, dass dieser Workshop zumindest einige lehrreiche
+Aspekte beinhaltet hat.
 
 \bookmarksetup{startatroot}
 
@@ -8044,7 +7795,9 @@ Runner-Tags haben nichts mit Git-Tags zu tun)
 
 \bookmarksetup{startatroot}
 
-\chapter{Anhang XX CICD mit Java}\label{anhang-xx-cicd-mit-java}
+\chapter{Anhang}\label{anhang}
+
+\section{CICD mit Java}\label{cicd-mit-java}
 
 Im Prinzip folgst du wieder den üblichen Schritten:
 
@@ -8233,6 +7986,33 @@ Einen Fall möchte ich noch erwähnen, wenn man zwar schon einige Zeit mit
 \git lokal gearbeitet hat, aber keine wertvollen Commits oder Branches
 in seiner History vorliegen hat. Es ist dann eine Option, den kompletten
 Quellcode einfach in ein frisches Server-Repository zu kopieren.
+
+\section{Installation von Tree}\label{installation-von-tree}
+
+\begin{itemize}
+\item
+  Geh auf die Seite
+  \url{http://gnuwin32.sourceforge.net/packages/tree.htm} und lade dir
+  das \emph{zip} des Binaries herunter.
+\item
+  Entpacke die zip-Datei und kopiere die Datei \emph{tree} im Ordner
+  \emph{bin} in die Zwischenablage
+\item
+  Lege im Home deines Benutzers einen Ordner \emph{bin} an und kopiere
+  die Datei \emph{tree} hinein.
+\end{itemize}
+
+\samplestart
+
+Der bin-Ordner muss an folgender Stelle erzeugt werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{c:\textbackslash{}benutzer\textbackslash{}name\textbackslash{}bin} 
+\end{Highlighting}
+\end{Shaded}
+
+\sampleend
 
 ERLEDIGEN:
 

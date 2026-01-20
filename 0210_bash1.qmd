@@ -1,6 +1,7 @@
 # Hands On I
 ## Übung
-Besonders bei komplexen Systemen wie \git gilt *use it or lose it*! In diesem Sinne kommt hier nun ein winziger *Projektauftrag:
+Besonders bei komplexen Systemen wie \git gilt *use it or lose it*!   
+In diesem Sinne kommt hier nun ein *winziger Projektauftrag*:
 
 > Erstelle in einem Repository ein Mini-Projekt in deiner 
 > üblichen Programmiersprache. Idealer Weise besteht es aus 
@@ -14,7 +15,8 @@ Besonders bei komplexen Systemen wie \git gilt *use it or lose it*! In diesem Si
 \samplestart
 **Hinweis**  
 Um die nachfolgenden Erläuterungen praktisch vollziehen zu können,
-verwendest du bitte wieder das Repository \ordner{versuch\_2}.
+verwendest du     
+wieder das Repository \ordner{versuch\_1}.
 \sampleend
 
 Steht ein Ordner unter der Verwaltung von \git, so kann 
@@ -51,15 +53,16 @@ wirst du im Wesentlichen die gleichen Befehle wie vorher verwenden,
 allerdings untersuchen wir einige Varianten, die für das Verständnis 
 wichtig sind.
 
-Du bist immer noch im aktuellen Ordner \ordner{versuch\_3}. 
+Du bist immer noch im aktuellen Ordner \ordner{versuch\_1}. 
 Er sollte akutell eine Datei und zwei Commits enthalten.  
-Das kannst du mit folgendem Befehl überprüfen:
+Das kannst du mit folgenden Befehlen überprüfen:
 
 ```bash
+ls 
 git log
 ```
 
-liefert 
+Neben dem Dateinamen liefert das folgende Ausgabe:
 
 ```bash
 commit 6db4f3383512a7f3aaaf3b050334d7fd2c474688 (HEAD -> main)

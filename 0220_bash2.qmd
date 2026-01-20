@@ -25,7 +25,6 @@ Aus diesem Grund wird zum Clonen auch *https* und nicht *ssh* verwendet.
 mkdir fortbildung
 cd fortbildung
 git clone https://TODO    storyvorlagen vorlage # Ziel: vorlage.git 
-cd vorlage
 ```
 
 Es entsteht ein Ordner *storyvorlagen*, in dem die 
@@ -58,10 +57,9 @@ ein Repository für das Buch.
 
 ```bash
 # Eingaben
-cd 
-cd fortbildung
 git init buch 
 cd buch 
+# oder mkdir buch; cd buch; git init
 ```   
 
 Falls du nicht die globalen Einstellungen geändert hat:
@@ -93,7 +91,7 @@ Befehl verwenden:
 cp story1.md  ../buch/ 
 ```
 
-Wechsle in das Fortbildungsfenster
+Wechsle in das Buch-Fenster
 ```bash
 # Eingabe
 git status
@@ -319,7 +317,7 @@ probierst du einen alternativen Verlauf.
 
 Da wir nur kopieren und nicht schreiben, heißt das für dich:  
 
-* Im Buch-Ordner: \cmd{git switch story\_2\_idee\_1}
+* Im Buch-Ordner: \cmd{git switch story2\_idee\_1}
 * Wechsle in den Vorlagenordner
 * Checke den richtigen Stand aus: \cmd{git checkout Step\_4}
 * Kopiere die Datei: \cmd{cp story2.md ../buch/}
@@ -330,7 +328,7 @@ Da wir nur kopieren und nicht schreiben, heißt das für dich:
 Da du aber noch nicht sicher bist, ob diese Version
 verwenden willst, arbeitest auch Idee 2 aus.
 
-* Im Buch-Ordner: \cmd{git switch story\_2\_idee\_2}
+* Im Buch-Ordner: \cmd{git switch story2\_idee\_2}
 * Wechsle in den Vorlagenordner
 * Checke den richtigen Stand aus: \cmd{git checkout Step\_5}
 * Kopiere die Datei: \cmd{cp story2.md ../buch/}
@@ -382,6 +380,7 @@ willst und möchtest sie in den Entwicklungszweig
 gerade sein, überprüfst das aber:
 
 ```bash
+# Kontrolle ob Entwicklungszweig
 git branch
 # falls nötig
 git switch entwicklung_story_2
@@ -390,7 +389,64 @@ Aus Sicherheitsgründen vergleichst du die Versionen
 kurz miteinander:
 
 ```bash
+git diff
+```
+
+Das ist ein Vergleich \work - Stage. Du siehst 
+
+```bash
+diff --git a/story2.md b/story2.md
+index 1e193c3..bb2c446 100644
+--- a/story2.md
++++ b/story2.md
+@@ -9,7 +9,7 @@ bereits am Horizont. Freddy liebte solche Abende,
+ denn sie versprachen Abenteuer und Entdeckungen.
+ 
+ Freddy war nicht allein. Seine beste Freundin,
+-Shelly, die weiße Schildkröte, lebte ebenfalls am
++Shelly, die weise Schildkröte, lebte ebenfalls am
+ Teich. Shelly war für ihre ruhige und besonnene
+ Art bekannt, aber sie konnte auch sehr mutig sein,
+ wenn es darauf ankam.
+```
+Die Änderung ist also sichtbar. Der nachfolgende 
+Befehl zeigt dir nichts, weil Commits verglichen werden!
+
+```bash
 git diff --color-words entwicklung_story_2..story2_idee_1
+```
+
+Mit den folgenden Befehlen übernimmst du die Änderung.
+
+```bash
+git add .
+git commit -m "weiße - weise"
+```
+
+Nun zeigt dir der Befehl
+
+```bash
+git diff --color-words entwicklung_story_2..story2_idee_1
+```
+
+dass ein Austausch der Wörter vorgenommen wird (kenntlich gemacht):
+
+```bash
+diff --git a/story2.md b/story2.md
+index bb2c446..dc1ed47 100644
+--- a/story2.md
++++ b/story2.md
+@@ -9,7 +9,7 @@ bereits am Horizont. Freddy liebte solche Abende,
+denn sie versprachen Abenteuer und Entdeckungen.
+
+Freddy war nicht allein. Seine beste Freundin,
+Shelly, die >>>weise<<< ***weiße*** Schildkröte, lebte ebenfalls am
+Teich. Shelly war für ihre ruhige und besonnene
+Art bekannt, aber sie konnte auch sehr mutig sein,
+wenn es darauf ankam.
+@@ -31,3 +31,59 @@ Asphalt war mit Moos und Gras überwuchert. Freddy
+und Shelly schlängelten sich durch das dichte Grün
+und genossen die friedliche Stille der Nacht.
 ```
 
 Du siehst den Austausch des Wortes und den neu 

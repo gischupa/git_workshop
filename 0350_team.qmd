@@ -362,7 +362,7 @@ git log origin/main
 Max sieht den Commit, der noch nicht in seinen Branch integriert ist.
 
 ```bash
-commit 78db34e31.....27eac06aa4dda5c50cdb (origin/main, origin/HEAD)
+commit 78db34e31.....c06aa4dda5c50cdb (origin/main, origin/HEAD)
 Author: susi <susi@t-online.de>
 Date:   Wed Jan 29 12:39:38 2025 +0100
 

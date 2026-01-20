@@ -1,0 +1,150 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{courier}
+
+\geometry{margin=2.5cm}
+
+\newcommand{\cmd}[1]{\texttt{#1}}
+
+\title{Übungsblatt: Erste Schritte mit der Bash}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Ziel}
+In diesem Übungsblatt lernst du grundlegende Konzepte der Bash kennen.
+Du arbeitest in der \textbf{git-bash unter Windows}.  
+Nicht alle benötigten Befehle werden vorgegeben – nutze Hilfe-Funktionen,
+Internetrecherche oder probiere aus.
+
+\section*{Hinweise}
+\begin{itemize}
+  \item Groß- und Kleinschreibung ist in der Bash wichtig.
+  \item Befehle werden mit der \texttt{Enter}-Taste ausgeführt.
+  \item Nutze bei Bedarf die Hilfe eines Befehls (z.\,B. mit \texttt{-\,-help}).
+  \item Frühere Befehle sind über „Pfeil oben“ erreichbar. 
+\end{itemize}
+ 
+\section{Orientierung in der Bash}
+
+\begin{enumerate}[label=\arabic*.]
+  \item Starte die \textbf{git-bash}.
+  \item Finde heraus, in welchem Verzeichnis du dich gerade befindest.
+  \item Liste den Inhalt dieses Verzeichnisses auf.
+  \item Wechsle in dein Home-Verzeichnis.
+\end{enumerate}
+
+\section{Arbeiten mit Verzeichnissen}
+
+\begin{enumerate}[label=\arabic*.]
+  \item Erstelle ein neues Verzeichnis mit dem Namen \texttt{bash-uebung}.
+  \item Wechsle in dieses Verzeichnis.
+  \item Erstelle darin die folgenden Unterverzeichnisse:
+  \begin{itemize}
+    \item \texttt{texte}
+    \item \texttt{bilder}
+    \item \texttt{backup}
+  \end{itemize}
+  \item Überprüfe, ob die Verzeichnisse korrekt erstellt wurden.
+\end{enumerate}
+
+\section{Arbeiten mit Dateien}
+
+\begin{enumerate}[label=\arabic*.]
+  \item Wechsle in das Verzeichnis \texttt{texte}.
+  \item Erstelle eine leere Datei namens \texttt{notizen.txt}.
+  \item Schreibe eine kurze Textzeile in diese Datei (z.\,B. deinen Namen).
+  \item Zeige den Inhalt der Datei im Terminal an.
+  \item Erstelle eine Kopie der Datei im Verzeichnis \texttt{backup} und nenne sie \texttt{notizen.txt.sik}.
+\end{enumerate}
+
+\section{Verschieben und Löschen}
+
+\begin{enumerate}[label=\arabic*.]
+  \item Verschiebe die Datei \texttt{notizen.txt} in das Verzeichnis \texttt{backup}.
+  \item Benenne die Datei dort in \texttt{notizen\_alt.txt} um.
+  \item Lösche die Datei mit der Endung \texttt{sik}.
+  \item Lösche das Verzeichnis \texttt{bilder}.
+  \item Was passiert, wenn ein Verzeichnis nicht leer ist?
+\end{enumerate}
+
+\section{Hilfe und Exploration}
+
+\begin{enumerate}[label=\arabic*.]
+  \item Finde heraus, wie du dir eine Kurzbeschreibung eines Befehls anzeigen lassen kannst.
+  \item Suche einen Befehl, der dir den Inhalt eines Verzeichnisses detaillierter anzeigt.
+  \item Probiere aus, was passiert, wenn du die \texttt{Tab}-Taste beim Tippen eines Befehls drückst.
+  \item Beende die git-bash.
+\end{enumerate}
+
+\newpage
+
+\section*{Lösungen}
+
+\setcounter{section}{1}
+
+\section{Orientierung in der Bash}
+\begin{enumerate}[label=\arabic*.]
+  \item Rechte Maustaste im Ordner oder Menü.
+  \item \cmd {pwd}
+  \item \cmd {ls}
+  \item \cmd {cd}  (oder \cmd {cd} $\sim$ ) 
+\end{enumerate}
+
+
+\section{Arbeiten mit Verzeichnissen}
+\begin{enumerate}[label=\arabic*.]
+  \item \cmd {mkdir bash-uebung}
+  \item \cmd {cd bash-uebung}
+  \item \cmd {mkdir texte bilder backup}
+  \item \cmd {ls}
+\end{enumerate}
+
+
+\section{Arbeiten mit Dateien}
+\begin{enumerate}[label=\arabic*.]
+  \item \cmd {cd texte}
+  \item \cmd {touch notizen.txt}
+  \item \cmd {echo "BlaFoo" $>>$ notizen.txt} \\ 
+        (oder mit \cmd {nano notizen.txt}, Speichern strg+o, verlassen strg+x ) 
+  \item \cmd {cat notizen.txt} \\
+  (oder \cmd {less notizen.txt}, verlassen mit „q“)
+  \item \cmd {cp notizen.txt ../backup/notizen.txt.sik} \\[-0.2cm]
+  
+  Geht auch in Einzelschritten: \\
+  \cmd {cp notizen.txt ../backup/} \\
+  \cmd {cd ../backup} \\ 
+  \cmd {mv notizen.txt notizen.txt.sik}
+\end{enumerate}
+
+
+\section{Verschieben und löschen}
+\begin{enumerate}[label=\arabic*.]
+  \item \cmd {mv notizen.txt ../backup/notizen.txt}
+  \item \cmd {mv notizen.txt notizen\_alt.txt}
+  \item \cmd {rm notizen.txt.sik}
+  \item \cmd {cd ..} \\
+  \cmd {rm bilder}
+  \item Testen an backup: Fehlermeldung\\
+  Lösung: \cmd {rm -r backup} (oder \cmd {rm -rf backup})
+\end{enumerate}
+
+
+\section{Hilfe und Exploration}
+
+\begin{enumerate}[label=\arabic*.]
+  \item \cmd {ls -\,-help}
+  \item \cmd {ls -lah}
+  \item Ergänzung eines Befehls oder Dateinamens, falls möglich.\\
+  „TabTab“ ist auch hilfreich!
+  \item \cmd {exit} oder \cmd {strg+d}
+\end{enumerate}
+\end{document}

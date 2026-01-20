@@ -38,7 +38,7 @@ den Rahmen dieses Workshops.
 
 ### Anmelden auf dem Server
 
-Damit du dich auf deinem Server anmedlden kannst, benötigst du 
+Damit du dich auf deinem Server anmelden kannst, benötigst du 
 folgende Informationen:
 
 > IP-Adresse des Servers

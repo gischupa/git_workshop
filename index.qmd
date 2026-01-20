@@ -41,7 +41,6 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
 
    {{< include 0560_gitlab.qmd >}}
 
- {{< include 0600_autograde.qmd >}}
  {{< include 0700_cicd.qmd >}}
  
  {{< include 0710_basis_ci.qmd >}}
@@ -55,6 +54,7 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
 
  {{< include 0900_anhang_java.qmd >}}
  {{< include 0905_git_start.qmd >}}
+ {{< include 0910_install_tree.qmd >}}
 
 ERLEDIGEN:  
 

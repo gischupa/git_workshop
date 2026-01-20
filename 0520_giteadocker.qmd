@@ -230,9 +230,12 @@ Für eine frische Datei kann man folgenden Befehl aufrufen:
 docker exec -it gitea_runner act_runner generate-config
 ```
 oder direkt als Datei
+
+\blarge
 ```bash
 docker exec -it gitea_runner act_runner generate-config > config.yaml
 ```
+\elarge
 
 \samplestart
 **Hinweis**  

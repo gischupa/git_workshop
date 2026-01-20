@@ -81,8 +81,8 @@ mit dem üblichen Werkzeugen kein Problem darstellt und
 zeige es hier mit Hilfe des Terminals bzw. der \gitbash.
 
 ```bash
-mkdir versuch1  
-cd versuch1
+mkdir versuch_1  
+cd versuch_1
 ```
 
 Um den Ordner auch später einfach wiederfinden zu können,
@@ -111,7 +111,6 @@ Es sinnvoll, wenn du dir diese Liste bereit legst (oder die Befehle lernst).
 |`cat <datei>`|Inhalt der Datei komplett ausgeben|
 |`less <datei>`|Langsame Ausgabe, Ende mit `q`|
 
-TODO: Übungsblatt Shell-Befehle erstellen
 
 \samplestart
 **TIPP**  

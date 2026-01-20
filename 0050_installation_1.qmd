@@ -58,7 +58,11 @@ ToDo: Bilderstrecke
 ### Linux
 
 Hier hängt es etwas von der Distribution ab. Bei Ubuntu genügt der 
-Befehl \cmd{apt install git -y}
+Befehl 
+
+```bash
+apt install git -y
+```
 
 ### MacOS
 

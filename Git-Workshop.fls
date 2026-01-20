@@ -1,9 +1,9 @@
-PWD /home/linuxadmin/entwicklung/git_workshop
+PWD /home/linuxadmin/nfs/daten/NEU/Fortbildungsentwicklung_25/eigene_baustellen/GIT/local_git_workshop
 INPUT /etc/texmf/web2c/texmf.cnf
 INPUT /usr/share/texmf/web2c/texmf.cnf
 INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT /home/linuxadmin/entwicklung/git_workshop/Git-Workshop.tex
+INPUT /home/linuxadmin/nfs/daten/NEU/Fortbildungsentwicklung_25/eigene_baustellen/GIT/local_git_workshop/Git-Workshop.tex
 OUTPUT Git-Workshop.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/url/url.sty

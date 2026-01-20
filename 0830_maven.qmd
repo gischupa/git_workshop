@@ -36,7 +36,7 @@ Installiere das gewünschte JDK (z. B. Oracle JDK, Temurin).
 Systemvariable `Path` bearbeiten und hinzufügen: \datei{\%JAVA_HOME\%\\bin}
 
 
-*Überprüfen*  
+*Überprüfen im cmd-Fenster*  
 
 ```bash
 java -version
@@ -71,7 +71,7 @@ sudo chmod +x /etc/profile.d/java.sh
 ```
 
 
-*Alternativ nur für den aktuellen Benutzer*  
+**Alternativ nur für den aktuellen Benutzer**  
 
 Füge die gleichen beiden (export) Zeilen an das Ende der Datei folgenden Datei an  
 
@@ -81,8 +81,8 @@ Füge die gleichen beiden (export) Zeilen an das Ende der Datei folgenden Datei 
 *Überprüfen*  
 
 ```bash
-source /etc/profile.d/java.sh
-# bzw. source ~/.profile 
+source /etc/profile.d/java.sh # bei Systemweit
+# bzw. source ~/.profile      # bei EInzeluser
 java -version
 echo $JAVA_HOME
 ```
@@ -145,11 +145,11 @@ mvn --version
 
 #### Windows{.unnumbered}
 
-TODO
+TODO: Maven auf Windows installieren
 
 #### Apple{.unnumbered}
 
-TODO
+TODO: Maven auf Apple installieren
 
 ### Erster Test
 
@@ -220,7 +220,7 @@ online nicht gefunden wird (weil sie nie hochgeladen wurde und deshalb einfach n
 existiert). Derartige (also eigene) *jar*-Dateien musst du selbst in den Cache \ordner{.m2} einpflegen, damit Maven sie verwenden kann.
 
 Im Ordner liegt eine Ordnerstruktur vor, geordnet nach productID, Version, ...,
-in der man selbst Ordner erstellen kann. Im Prinzip macht Maven genau das,
+in der du selbst Ordner erstellen kannst. Im Prinzip macht Maven genau das,
 wenn du *install* aufrufst.
 
 LINK-Tipp: [https://www.youtube.com/watch?v=T00NKLQvwYE](https://www.youtube.com/watch?v=T00NKLQvwYE) - Windows-lastig

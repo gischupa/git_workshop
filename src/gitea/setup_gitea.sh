@@ -2,7 +2,8 @@
 # Port 3000 muss für das Webinterface offen sein
 ufw allow 3000/tcp
 
-wget -O gitea https://dl.gitea.com/gitea/1.22.6/gitea-1.22.6-linux-amd64
+wget -O gitea  \
+    https://dl.gitea.com/gitea/1.22.6/gitea-1.22.6-linux-amd64
 chmod +x gitea
 
 adduser \
@@ -27,6 +28,7 @@ cat << EOF > /etc/systemd/system/gitea.service
 [Unit]
 Description=Gitea (Git with a cup of tea)
 After=network.target
+
 [Service]
 RestartSec=2s
 Type=simple
@@ -42,20 +44,22 @@ Environment=USER=git HOME=/home/git GITEA_WORK_DIR=/var/lib/gitea
 WantedBy=multi-user.target
 EOF
 
+# Autostart aktivieren
 systemctl enable gitea
+
+# Einmalig per Hand starten
 systemctl start gitea
 
 
-
-
 ##############
-# Zusatz-Tasks
+# Zusatz-Script um Selbstregistrierung
+# von Benutzern zu de/aktivieren
 
 # Kopieren Reg-script
 cp ./selfreg.sh /usr/local/sbin/
 chmod +x /usr/local/sbin/selfreg.sh
 
-
+# Hinweis ausgeben
 echo "---------------------------------------"
 echo Einrichten über Web  `http://ip-adresse:3000`  
 echo SQLITE als Datenbank einstellen

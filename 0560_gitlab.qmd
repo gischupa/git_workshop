@@ -24,7 +24,7 @@ services:
     image: 'gitlab/gitlab-ce:latest'
     container_name: 'gitlab'
     restart: always
-    hostname: '192.168.3.181'  # im Netz auf gitlab.server.de stellem
+    hostname: '192.168.3.181'  # Im Netz 'gitlab.server.de'
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'https://182.168.3.181:443'   # im Netz ...
@@ -84,4 +84,6 @@ git clone ssh://git@192.168.3.181:25/root/demo.git
 
 Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über 
 Konsole, GitClients, ... Weboberfläche.
+
+TODO: Noch detaillierter ausarbeiten
 

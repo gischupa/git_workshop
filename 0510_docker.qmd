@@ -126,7 +126,7 @@ d3b17590914c: Pull complete
 f4cab7bcfad1: Pull complete 
 65e7766bfa53: Pull complete 
 c5f5268086b8: Pull complete 
-Digest: sha256:8b8128748339583ca951af03dfe02a9a4d7363f61a216226fc28030731a5a61f
+Digest: sha256:8b8128748339583ca9...f61a216226fc28030731a5a61f
 Status: Downloaded newer image for corentinth/it-tools:latest
 bd072e349cab6408a3b5f2d7040d586a9149107d68031089f846d0526c028f45
 ```
@@ -153,22 +153,27 @@ docker image ls
 
 Zeigt uns das heruntergeladene Image:
 
+\blarge
 ```bash
 REPOSITORY             TAG       IMAGE ID       CREATED        SIZE
 corentinth/it-tools    latest    bb7ba9626731   2 months ago   56.2MB
 ```
+\elarge
 
 Mit nachfolgendem Befehl überprüft man den Status des Containers:
 
+\blarge
 ```bash
 docker ps 
 
-# Ausgabe (gekürzt)
-CONTAINER ID   IMAGE                 COMMAND                  gekürzt ... NAMES 
-bd072e349cab   corentinth/it-tools   "/docker-entrypoint.…"   gekürzt ... it-tools
+# Ausgabe (gekürzt, am Ende steht der Name des Containers!)
+CONTAINER ID  IMAGE               COMMAND                gekürzt  
+bd072e349cab  corentinth/it-tools "/docker-entrypoint.…" gekürzt 
 ```
+\elarge
 
 **Weitere Befehle**  
+
 |Befehl|Wirkung|
 |------|-------|
 |docker stop it-tools| Container stoppen|

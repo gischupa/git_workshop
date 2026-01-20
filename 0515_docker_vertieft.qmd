@@ -23,7 +23,8 @@ FROM mariadb:latest
 # Beispiel: Anpassung der Konfiguration von MariaDB, wenn nötig
 # COPY ./my.cnf /etc/mysql/my.cnf
 
-# Um ein Initialisierungs-Skript hinzuzufügen (z.B. zum Erstellen einer Datenbank)
+# Um ein Initialisierungs-Skript hinzuzufügen 
+# (z.B. zum Erstellen einer Datenbank)
 # COPY ./init.sql /docker-entrypoint-initdb.d/
 
 # Setze Umgebungsvariablen (optional, falls nicht im docker-compose)
@@ -57,7 +58,8 @@ services:
       - "3306:3306" # Host-Port:Container-Port
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Optional: SQL-Datei zum Initialisieren
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
+      # Optional: SQL-Datei zum Initialisieren
     networks:
       - mariadb_network
 
@@ -118,7 +120,8 @@ services:
       - "3306:3306" # Host-Port:Container-Port
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Optional: SQL-Datei zum Initialisieren
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
+      # Optional: SQL-Datei zum Initialisieren
     networks:
       - mariadb_network
 
@@ -127,9 +130,10 @@ services:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin_container
     environment:
-      PMA_HOST: db            # Der Name des MariaDB-Services (db) in docker-compose
-      PMA_PORT: 3306          # Der Port, auf dem MariaDB läuft
-      MYSQL_ROOT_PASSWORD: rootpassword  # Das Passwort für den Root-Benutzer von MariaDB
+      PMA_HOST: db     # Name des MariaDB-Services (db) 
+      PMA_PORT: 3306   # Port von MiraiDB
+      MYSQL_ROOT_PASSWORD: rootpassword  
+      # Das Passwort für den Root-Benutzer von MariaDB
     ports:
       - "8080:80"  # Webinterface auf Port 8080 zugänglich
     networks:

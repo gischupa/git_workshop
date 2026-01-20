@@ -29,21 +29,22 @@ aufwändig ist. Die einfachere Lösung ist die Wiederherstellung der betroffenen
 Datei in der letzten lauffähigen Version. Solange kein *add* erfolgt ist, kannst 
 du die Datei aus dem Stage wieder in das \work kopieren (siehe Hinweis unter dem Code!). 
 
+<!-- src/klein_1.sh -->
 ```bash
-git init beispiel_1
-cd beispiel_1
-git branch -m main
+  git init beispiel_1
+  cd beispiel_1
+  git branch -m main
 
-# alles funktioniert
-echo "Alles gut" > datei.txt
-git add .
-git commit -m "alles gut"
+  # alles funktioniert
+  echo "Alles gut" > datei.txt
+  git add .
+  git commit -m "alles gut"
 
-# Hier kommt der Fehler
-echo "Mist gebaut" >> datei.txt
+  # Hier kommt der Fehler
+  echo "Mist gebaut" >> datei.txt
 
-###### Alte Version vom Stage wieder herstellen
-git restore datei.txt  
+  ###### Alte Version vom Stage wieder herstellen
+  git restore datei.txt  
 ```
 
 \samplestart
@@ -65,6 +66,7 @@ Der Fehler wurde bereits ge-add-et. Damit gibt es im
 Stage keine Version zum Rückkopieren. Du musst also einen 
 weiteren Schritt rückwärts gehen.
 
+<!-- src/klein_2.sh -->
 ```bash
 ########### IRRWEG !!!!!!!!! #########
 git init beispiel_2
@@ -103,10 +105,16 @@ committet, so wären die Verluste geringer.
 **Zusatz**  
 Mit \cmd{restore} können natürlich nicht nur Dateien aus dem direkt 
 vorausgehenden Commit entnommen werden! Kennst du den Hash, so kannst 
-du auf jeden Commit zugreifen.
+du auf jeden Commit zugreifen. Allerdings wird dann immer die 
+aktuelle Datei dieses Namens überschrieben! Eine Alternative *ohne* 
+dieses Problem sieht so aus:
 \sampleend
 
-### Größerer Fehler 1
+```bash
+git show <HASH>:datei.txt > datei_alt.txt
+```
+
+### Größerer Fehler
 
 Du hast nach dem letztem Commit viele Fehler in einer Vilezahl 
 von Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. 
@@ -116,6 +124,7 @@ Hier hilft \cmd{reset}. Diesen Befehl gibt es in 3 Versionen
 * mixed
 * soft
 
+<!-- src/reset.sh -->
 #### Hard
 ```bash
 git init beispiel_3
@@ -204,7 +213,7 @@ sich die Version versteckt. Hier wird es nötig, sich rückwärts durch die ensp
 Commits zu arbeiten. Dabei gibt es allerdings eine Besonderheit, die du kennen musst.
 Nachfolgendes Script erzeugt das passende Szenario:
 
-
+<!-- src/suche.sh -->
 ```bash
 git init suche
 cd suche
@@ -228,7 +237,8 @@ done
 ```
 
 Du weißt aus dem Script, dass Version 6 die Datei in der gewünschten Form enthält.
-Im Ernstfall weißt du das wahrscheinlich nicht. Du beginnst also mit der Suche:
+Im Ernstfall weißt du das wahrscheinlich nicht. 
+Du beginnst also mit der Suche^[Natürlich gibt es auch Ansätze mit \cmd{git show}]:
 
 ```bash
 git log --oneline
@@ -301,177 +311,8 @@ was wir später noch besprechen.
 Manchmal soll auch nur die Version gelöscht werden,
   die irrtümlich auf den Stage geschoben wurde. Dabei darf das 
   \work nicht verändert werden. Das erreichst du mit
-   `git restore <dateiname> --staged`.  
-  Das braucht man eigentlich nur, wenn diese Datei doch nicht im 
+   \cmd{git restore <dateiname> --staged}.  
+  Das brauchst du eigentlich nur, wenn diese Datei doch nicht im 
   nächsten Commit enthalten sein soll.
 \sampleend
-
-### Was ist mit Revert?
-
-Ja -- \cmd{revert} gibt es und es spielt bei der Arbeit im 
-Team auch eine große Rolle. Bei der lokalen Arbeit wirst 
-du diesen Befehl sehr selten brauchen -- \cmd{reset}
-und \cmd{checkout} sind hier meist einfacher und schneller.
-Du wirst im Abschnitt über die Teamarbeit aber noch mehr 
-darüber hören! 
-
-In der Theorie liest \git die Änderungen, die ein 
-Commit vorgenommen hat, invertiert diese Änderungen 
-und wendet sie auf den aktuellen Stand an. Dabei wird 
-ein neuer Commit erstellt. Im Kern handelt es sich um 
-eine Art von Merge. Wenn es sich bei dem aufzuhebenden
-Commit nicht um den HEAD handelt, sind Konflikte im 
-Normalfall fast nicht zu vermeiden! 
-
-**Typischer Ablauf**  
-
-```bash
-
-git log --oneline 
-
-# Ausgabe 
-4353add (HEAD -> master) C: Modify B-line
-f9d333a B: Add B-line
-0d43a86 A: Add A-line
-3954336 Initial 
-
-git revert 0d43a86
-
-# Ausgabe 
-KONFLIKT (ändern/löschen): file.txt gelöscht in (empty tree) und 
-geändert in HEAD. Stand HEAD von file.txt wurde im Arbeitsbereich
-gelassen.
-
-error: Konnte "revert" nicht auf 0d43a86... (A: Add A-line) 
-ausführen
-
-Hinweis: Lösen Sie alle Konflikte manuell auf, markieren Sie 
-Hinweis: diese mit "git add/rm <Pfadspezifikation>" und führen 
-Hinweis: Sie dann "git revert --continue" aus.
-Hinweis: Sie können stattdessen auch diesen Commit auslassen, indem
-Hinweis: Sie "git revert --skip" ausführen.
-Hinweis: Um abzubrechen und zurück zum Zustand vor "git revert" 
-Hinweis: zu gelangen, führen Sie "git revert --abort" aus.
-```
-
-Die Anleitung für das weitere Vorgehen steht komplett in den Hinweisen:
-
-* Datei öffnen und Konflikt bereinigen
-* \cmd{git add .}
-* \cmd{git revert --continue}
-
-
-
-
-
-
-xxxxxxxxxxxxxxxxxxxxxxxxxx AUSGLIEDERN xxxxxxxxxxxxxxxxxxxxxxxxx
-
-Zum Verständis der Problematik dennoch ein Beispiel.
-Angenommen, du erstellst ein Programm zur Berechnung 
-des Body-Mass-Index und gehst extrem kleinschrittig 
-mit den Commits um. Dein Ablauf wäre dann - jeder Punkt 
-ist ein Commit (siehe Nummer):
-
-* (1) Java-Boilerplate
-* (2) Ausgabefunktion ohne Übergabeparameter und Blankotext
-* (3) Eingabefunktion für die Körpergröße
-* (4) Ändern der Ausgabefunktion für Übergabe von String  
-  Das ist der Fehler, weil du später *double* willst
-* (4) Eingabefunktion für die Körpermasse
-* (5) Berechnungsfunktion
-
-Nun verdrahtest du das alles in der *main*-Funktion
-und stellst fest, dass der Übergabeparameter den 
-falschen Typ besitzt.  
-Aus desem Grund möchtest du diesen Commit -- der ja NUR diese 
-Funktion betrifft -- rückgängig machen.
-
-In meinem System lauten die Hashes wie folgt:
-
-```bash
-git log --oneline
-
-# Ausgabe
-a93cb87 (HEAD -> main) kombi
-e676f14 berechnung
-d497b2f eingabe 2
-4fe5b44 ERROR
-2c9c7f1 eingabe 1
-d051611 ausgabe
-9201570 initial
-```
-
-Der Befehl *revert* verläuft nun wie folgt:
-
-```bash
-git revert 4fe5 # 4 reichen
-
-# Ausgabe
-automatischer Merge von Main.java
-KONFLIKT (Inhalt): Merge-Konflikt in Main.java
-error: Konnte "revert" nicht auf 4fe5b44... (ERROR) ausführen
-Hinweis: Lösen Sie alle Konflikte manuell auf, 
-Hinweis: markieren Sie diese mit
-Hinweis: "git add/rm <Pfadspezifikation>" und führen Sie 
-Hinweis: dann "git revert --continue" aus.
-Hinweis: Sie können stattdessen auch diesen Commit 
-Hinweis: auslassen, indem Sie 
-Hinweise: "git revert --skip" ausführen.
-Hinweis: Um abzubrechen und zurück zum Zustand 
-Hinweise: vor "git revert" zu gelangen,
-Hinweis: führen Sie "git revert --abort" aus.
-```
-
-Es gibt also einen *Konflikt*. Der Inhalt der Datei sieht 
-aktuell so aus:
-
-```bash
-cat Main.java 
-
-# Ausgabe 
-import java.util.Scanner;
-
-public class Main{
-  public static void main(){
-
-    int cm = eingabeCM();
-    int kg = eingabeKG();
-    double bmi = berechnung(cm, kg);
-    ausgabe(bmi);
-  }
-
-  public static void ausgabe(){
-    System.out.print("Dein BMI beträgt: ");
-    System.out.println(42);
-  }
-
-  public static int eingabeCM(){
-    System.out.print("CM:");
-    int cm = new Scanner(System.in).nextInt();
-   return cm;
-  }
-
-<<<<<<< HEAD
-  public static int eingabeKG(){ //Größe in cm
-        System.out.print("KG:");
-        int kg = new Scanner(System.in).nextInt();
-        return kg;
-    }
-
-  public static double berechnen(int cm, int kg){
-        double bmi = kg / Math.pow(cm /100.0, 2);
-        return bmi;
-    }
-
-=======
->>>>>>> parent of 4fe5b44 (ERROR)
-}
-```
-
-Wie du erkennen kannst, wurde die *relevante Funktion* korrekt 
-zurückgesetzt. Der Konflikt tritt erst weiter unten in der 
-Datei auf.  
-
-Warum passiert das?  
 

@@ -15,143 +15,8 @@ Die Befehle müssen nicht per Hand eingegeben werden. Das dient lediglich der
 Dokumentation. Die Scripte \script{setup\_gitea.sh} 
 und \script{tune.sh} müssen als *root* bzw. über *sudo* ausgeführt werden.
 
-TODO: Einbinden und vorher Zeilenumbrüche anpassen
 **setup\_gitea.sh**  
-```bash
-
-# Port 3000 muss für das Webinterface offen sein
-ufw allow 3000/tcp
-
-# Evtl. direkt auf der Seite https://dl.gitea.com/gitea die 
-# aktuelle Version checken  und hier anpassen.
-wget -O gitea \
-        https://dl.gitea.com/gitea/1.22.6/gitea-1.22.6-linux-amd64
-
-chmod +x gitea  # ausführbar machen
-
-# Benutzer git ohne Anmeldeerlaubnis
-adduser \
-   --system \
-   --shell /bin/bash \
-   --gecos 'Git Version Control' \
-   --group \
-   --disabled-password \
-   --home /home/git \
-   git
-
-# nötige Verzeichnisse erstellen
-mkdir -p /var/lib/gitea/{custom,data,log}
-chown -R git:git /var/lib/gitea/
-chmod -R 750 /var/lib/gitea/
-mkdir /etc/gitea
-chown root:git /etc/gitea
-chmod 770 /etc/gitea
-
-# Programm an richtigen Ort verschieben
-mv gitea /usr/local/bin/gitea
-
-# Autostart einrichten 
-
-# Im richtigen Script minimiert!!!!!
-cat << EOF > /etc/systemd/system/gitea.service
- 
-[Unit]
-Description=Gitea (Git with a cup of tea)
-After=network.target
-###
-# Don't forget to add the database service dependencies
-###
-#
-#Wants=mysql.service
-#After=mysql.service
-#
-#Wants=mariadb.service
-#After=mariadb.service
-#
-#Wants=postgresql.service
-#After=postgresql.service
-#
-#Wants=memcached.service
-#After=memcached.service
-#
-#Wants=redis.service
-#After=redis.service
-#
-###
-# If using socket activation for main http/s
-###
-#
-#After=gitea.main.socket
-#Requires=gitea.main.socket
-#
-###
-# (You can also provide gitea an http 
-# fallback and/or ssh socket too)
-#
-# An example of /etc/systemd/system/gitea.main.socket
-###
-##
-## [Unit]
-## Description=Gitea Web Socket
-## PartOf=gitea.service
-##
-## [Socket]
-## Service=gitea.service
-## ListenStream=<some_port>
-## NoDelay=true
-##
-## [Install]
-## WantedBy=sockets.target
-##
-###
-
-[Service]
-# Uncomment the next line if you have repos with lots of files and get a HTTP 500 error because of that
-# LimitNOFILE=524288:524288
-RestartSec=2s
-Type=simple
-User=git
-Group=git
-WorkingDirectory=/var/lib/gitea/
-# If using Unix socket: tells systemd to create the /run/gitea folder, which will contain the gitea.sock file
-# (manually creating /run/gitea doesn't work, because it would not persist across reboots)
-#RuntimeDirectory=gitea
-ExecStart=/usr/local/bin/gitea web --config /etc/gitea/app.ini
-Restart=always
-Environment=USER=git HOME=/home/git GITEA_WORK_DIR=/var/lib/gitea
-# If you install Git to directory prefix other than default PATH (which happens
-# for example if you install other versions of Git side-to-side with
-# distribution version), uncomment below line and add that prefix to PATH
-# Don't forget to place git-lfs binary on the PATH below if you want to enable
-# Git LFS support
-#Environment=PATH=/path/to/git/bin:/bin:/sbin:/usr/bin:/usr/sbin
-# If you want to bind Gitea to a port below 1024, uncomment
-# the two values below, or use socket activation to pass Gitea its ports as above
-###
-#CapabilityBoundingSet=CAP_NET_BIND_SERVICE
-#AmbientCapabilities=CAP_NET_BIND_SERVICE
-###
-# In some cases, when using CapabilityBoundingSet and AmbientCapabilities option, you may want to
-# set the following value to false to allow capabilities to be applied on gitea process. The following
-# value if set to true sandboxes gitea service and prevent any processes from running with privileges
-# in the host user namespace.
-###
-#PrivateUsers=false
-###
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# Autostart aktivieren
-sudo systemctl enable gitea
-
-# Gitea einmalig per Hand starten
-sudo systemctl start gitea
-
-echo Einrichten über Web  `http://<ip-adresse>:3000`  
-echo SQLITE als Datenbank einstellen
-echo **WICHTIG:** Administrator einrichten!
+```{.bash include=src/gitea/setup_gitea.sh}
 ```
 
 ## Nacharbeiten
@@ -204,8 +69,9 @@ Standardmäßig können sich die Benutzer selbst auf Gitea registrieren.
 Das vereinfacht die Arbeit für den Lehrer enorm, ist aber bei einer
 öffentlich zugänglichen Instanz problematisch. Es ist also sinnvoll,
 diese Einstellung nach dem erfassen der Benutzer zu deaktivieren (kann
-kederzeit wieder aktiviert werden).  
-Dazu muss in der Datei \datei{/etc/gitea/app.ini} die folgende Zeile 
+kederzeit wieder aktiviert werden). 
+
+Per Hand müsste in der Datei \datei{/etc/gitea/app.ini} die folgende Zeile 
 im Abschnitt *[service]* angepasst werden:
 
 ```bash
@@ -281,11 +147,9 @@ cat ~/.ssh/gitea_rsa.pub
 Die mehrzeilige Ausgabe in einem Stück in die Oberfläche 
 von Gitea kopieren:  
 
-TODO: Bildergrößen
-
-![](bilder/inst/key1.png)
-![](bilder/inst/key2.png)
-![](bilder/inst/key3.png)
+![](bilder/inst/key1.png){width=30%}
+![](bilder/inst/key2.png){width=30%}
+![](bilder/inst/key3.png){width=30%}
 
 Damit ist die Grundkonfiguration beendet. Es sollte nun noch 
 eingestellt werden, welche Anmelde- und Registrierungsvarianten
@@ -399,14 +263,17 @@ curl -X POST "http://192.168.3.195:3000/api/v1/admin/organizations" \
 ```
 \elarge
 
-**Benutzer hinzufügen**
+**Benutzer hinzufügen**  
+(Die Variable url wurde nur wegen der begrenzten Zeilenlänge hier im 
+Dokument eingeführt.)
 
 ```bash
 token=1234
 name=G10a
 user=susi
+url="${name}$/members/${user}"
 curl -X PUT \
-"http://192.168.3.195:3000/api/v1/orgs/${name}$/members/${user}" \
+"http://192.168.3.195:3000/api/v1/orgs/"$url \
 -H "Authorization: token ${token}"
 ```
 
@@ -467,6 +334,6 @@ user=susi
 curl -X PUT \
 "http://192.168.3.195:3000/api/v1/orgs/${schule}/teams/${team}/members/${user}" \
 -H "Authorization: token YOUR_ADMIN_TOKEN"
-\elarge ```
-
+ ```
+\elarge
 TODO: GPT sagt Team\_id statt Team\_name!

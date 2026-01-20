@@ -1,4 +1,4 @@
-# Installation von Tree
+## Installation von Tree
 
 * Geh auf die Seite [http://gnuwin32.sourceforge.net/packages/tree.htm](http://gnuwin32.sourceforge.net/packages/tree.htm) und lade dir das *zip* des Binaries herunter.  
 
@@ -9,7 +9,9 @@
 \samplestart
 Der bin-Ordner muss an folgender Stelle erzeugt werden:
 
-    c:\benutzer\name\bin 
+```bash
+c:\benutzer\name\bin 
+```
 
 \sampleend
 
