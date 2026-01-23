@@ -1,3 +1,4 @@
+########### Veraltet ?????? #######
 cd /tmp
 git init branchlabor
 cd branchlabor
