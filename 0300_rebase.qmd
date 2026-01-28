@@ -25,7 +25,7 @@ in der Regel alleine entwickle:
 
 ### Fast-Forward 
 Befindest du dich auf dem (unveränderten) *main*-Branch
-und holst den Entwicklungsbranch mit Merge, so wird dieser  
+und holst den Entwicklungsbranch mit Merge, so wird dieser
 einfach vor den letzten Commit des *main*-Branch gesetzt. 
 In dieser Situation wird der Branch im Diagramm nicht 
 einmal als visuelle Abzweigung dargestellt:
@@ -36,7 +36,7 @@ Erkennbar sind die grünen Rechtecke, die
 die Enden der Branches kennzeichnen.
 Im Bild links sind die Branches getrennt, 
 im Bild rechts sind beide Branch-Enden nach 
-dem Merge an der gleichen Stelle.  
+dem Merge an der gleichen Stelle. 
 Wie du siehst, hat sich beim Merge die 
 Anzahl Commits nicht verändert.
 
@@ -47,8 +47,10 @@ sieht die Sitation ganz anders aus!
 
 ![](bilder/bash/drei_wege.png)
 
-Du siehst, dass sich der *main*-Branch 
-zu *Schritt 7* weiterentwickelt hat (neuer Commit). 
+Du siehst, dass sich der *main*-Branch noch *Schritt 3*
+zu *Schritt 7* weiterentwickelt hat (neuer Commit).
+Denk immer daran, dir die Branchnamen wie Etiketten
+am jeweils letzten Commit des Branchs vorzustellen!   
 Beim Merge entsteht ein neuer Commit, der 
 die Spitze beider Branches darstellt.
 Du erkennst auch, dass im Diagramm 
@@ -138,7 +140,7 @@ A - B - C - D  <-- main
       \ E - F - G  <-- feature
 ```
 
-Wir der Branch *feature* gelöscht, dann wird der Pointer auf G 
+Wird der Branch *feature* gelöscht, dann wird der Pointer auf G 
 entfernt:
 
 ```bash
@@ -171,7 +173,7 @@ https://www.youtube.com/watch?v=1TNK-OkaelI
 Bei einem Rebase wird der entsprechende Branch 
 *verpflanzt* -- d.h. gewissermaßen *ausgerupft* 
 und an anderer Stelle wieder *angedockt*.  
-Bei diesem Vorgang können die Hashwerte aller 
+Bei diesem Vorgang werden die Hashwerte aller 
 Commits im Branch geändert.
 
 Betrachte nachfolgendes Script. 

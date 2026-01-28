@@ -166,7 +166,7 @@ dort arbeitet und danach das Ergebnis direkt wieder in den Branch \branch{main}
 eigentlich gar nichts passiert, außer dass die Pointer passend umgeschrieben werden.
 
 
-BILD, wann welcher Pointer wo ist
+TODO: BILD, wann welcher Pointer wo ist
 
 Eine typische Fehlvorstellung ist es, dass *Branchig* sofort eine Abzweigung
 erzeugt. Korrekt ist aber, dass einfach nur ein Zeiger (also eine Datei,

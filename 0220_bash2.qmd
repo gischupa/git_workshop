@@ -452,11 +452,16 @@ und genossen die friedliche Stille der Nacht.
 Du siehst den Austausch des Wortes und den neu 
 geschriebenen Text. Für \git ist das problemlos!
 
-Nun führst du die Zweige zusammen:
+Nun möchtest du die beiden Branches zusammenführen.
 
 ```bash
 git merge story2_idee_1  # erster Merge
 ```
+
+Beachte, dass jetzt ein Fast-Forward-Merge nicht möglich ist, das 
+sich beide Branches von ihrem gemeinsamen Vorfahren weg 
+entwickelt haben! Es wird also einen *Merge-Commit* geben, der 
+beide Branches zusammenführt.
 
 \git erwartet von dir eine Begründung für den Merge.
 Gib also *Vorläufig ok* ein, speichere und schließe 
