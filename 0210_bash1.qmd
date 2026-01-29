@@ -384,7 +384,7 @@ committer wolfgang <hoeferwolf@t-online.de> 1737919210 +0100
 homepage.html added
 ```
 
-Am Commit verweist also auf den *tree* mit dem Hash 94ee...   
+Der Commit verweist also auf den *tree* mit dem Hash 94ee...   
 Da wir aktuell nur eine Datei haben, ist die Ausgabe des 
 nächsten Befehls sehr kurz, der den Tree ausliest:
 
