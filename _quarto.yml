@@ -54,4 +54,5 @@ format:
         \newcommand{\work}{\textit{Working-Directory}\xspace}
         \newcommand{\blarge}{\begin{adjustwidth}{0cm}{-1.3cm}}
         \newcommand{\elarge}{\end{adjustwidth}}
-
+        \newcommand{\bcenter}{\begin{center}}
+        \newcommand{\ecenter}{\end{center}}

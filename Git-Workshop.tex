@@ -1,26 +1,29 @@
 % Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
+  ngerman,
   letterpaper,
   DIV=11]{scrreprt}
-
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else  
-    % xetex/luatex font selection
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -38,9 +41,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{xcolor}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -106,8 +106,7 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -132,6 +131,8 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
+
+
 % definitions for citeproc citations
 \NewDocumentCommand\citeproctext{}{}
 \NewDocumentCommand\citeproc{mm}{%
@@ -165,6 +166,29 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage[german]{selnolig} % disable illegal ligatures
+\fi
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
 
 % load packages
 \usepackage{geometry}
@@ -279,6 +303,8 @@
 \newcommand{\work}{\textit{Working-Directory}\xspace}
 \newcommand{\blarge}{\begin{adjustwidth}{0cm}{-1.3cm}}
 \newcommand{\elarge}{\end{adjustwidth}}
+\newcommand{\bcenter}{\begin{center}}
+\newcommand{\ecenter}{\end{center}}
 \KOMAoption{captions}{tableheading}
 \makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
@@ -334,7 +360,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, colback={codebgcolor}, boxrule=0pt, sharp corners, enhanced, breakable]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, breakable, colback={codebgcolor}, enhanced, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -342,23 +368,9 @@
         \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
           \node[shape=circle,draw,inner sep=1pt] (char) {{\scriptsize#1}};}}  
                   
-
-\ifLuaTeX
-\usepackage[bidi=basic]{babel}
-\else
-\usepackage[bidi=default]{babel}
-\fi
-\babelprovide[main,import]{ngerman}
-% get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
-\def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage[german]{selnolig} % disable illegal ligatures
-\fi
 \usepackage{bookmark}
-
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same} % disable monospaced font for URLs
+\urlstyle{same}
 \hypersetup{
   pdftitle={Git Workshop},
   pdfauthor={Wolfgang Höfer},
@@ -374,7 +386,6 @@
 \title{Git Workshop}
 \author{Wolfgang Höfer}
 \date{2025-10-04}
-
 \begin{document}
 \maketitle
 
@@ -1697,7 +1708,7 @@ bekommst du weitere Details:
 \end{Highlighting}
 \end{Shaded}
 
-Am Commit verweist also auf den \emph{tree} mit dem Hash 94ee\ldots{}\\
+Der Commit verweist also auf den \emph{tree} mit dem Hash 94ee\ldots{}\\
 Da wir aktuell nur eine Datei haben, ist die Ausgabe des nächsten
 Befehls sehr kurz, der den Tree ausliest:
 
@@ -1757,7 +1768,231 @@ Dateinamen stehen.
 
 Tiefer will ich an dieser Stelle in dieses Thema nicht einsteigen!
 
-\section{Fehlerbehebung}\label{fehlerbehebung}
+\bookmarksetup{startatroot}
+
+\chapter{Branches}\label{branches}
+
+Einen \emph{Branch} kannst du dir als \emph{Entwicklungszweig} übersetzt
+vorstellen. Das beschreibt allerdings nur einen Teil seiner Funktion.
+Für mich selbst sind Branches ganz wichtig, wenn ich Dinge ausprobieren
+will -- gerade bei Themen, wo ich nicht so fit bin. Dann nehme ich ein
+vorhandenes Projekt (dann muss ich weniger Boilerplate erzeugen) und
+erstelle beim aktuellen Stand eine Abzweigung mit dem Namen \emph{Labor}
+oder \emph{Spielplatz} und probiere Dinge aus. Wenn ich scheitere (keine
+Ausnahme), dann lösche ich diesen Branch einfach wieder und es ist kein
+Schaden entstanden.
+
+Branches sind in Projekten aber auch wichtig, um die Entwicklungen
+verschiedener Mitarbeiter voneinander zu trennen -- sei es auf dem
+Server (dazu später mehr) oder auf den individuellen
+Entwicklungsrechnern.
+
+Im nachfolgenden \emph{Hands On} werden wir uns das etwas genauer
+ansehen, hier kommen zunächst die Grundlagen.
+
+\section{Erstellen von Branches}\label{erstellen-von-branches}
+
+Im Internet findest du viele Seiten, die noch die alten Befehle von
+\git  verwenden. Sie funktionieren immer noch, ich würde dir aber
+folgende Variante empfehlen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c} \OperatorTok{\textless{}}\NormalTok{branch\_name}\OperatorTok{\textgreater{}}
+\end{Highlighting}
+\end{Shaded}
+
+Es ist wichtig zu verstehen, was ein Branch ist und vor allem was er
+\emph{nicht} ist! Dafür machen wir einige kleine Codebeispiele, die
+unabhängig von vorhergehenden Experimenten sind. Wie üblich richten wir
+uns zunächst ein Repository ein:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ init branch\_lab}
+\BuiltInTok{cd}\NormalTok{ branch\_lab }
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main }
+\end{Highlighting}
+\end{Shaded}
+
+Für einen ersten Commit erstellen wir eine (sinnfreie) Datei:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{echo} \StringTok{"Zeile 1"} \OperatorTok{\textgreater{}}\NormalTok{ datei.txt }
+\FunctionTok{git}\NormalTok{ add .}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Datei 1 erstellt"}
+\end{Highlighting}
+\end{Shaded}
+
+Das Log zeigt uns:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ log}
+
+\CommentTok{\# Ausgabe}
+\ExtensionTok{commit}\NormalTok{ 70eaef36a87aeb8a1e2eba93577a01329aff34d8 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)}
+\ExtensionTok{Author:}\NormalTok{ Wolfgang }\OperatorTok{\textless{}}\NormalTok{hoeferwolf@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Date:}\NormalTok{   Fri Jan 23 12:57:41 2026 +0100}
+
+    \ExtensionTok{Datei}\NormalTok{ 1 erstellt}
+\end{Highlighting}
+\end{Shaded}
+
+In der ersten Zeile sehen, dass es um den Branch \branch{main} geht und
+dass es einen \texttt{HEAD} gibt, der auf \texttt{main} zeigt. Das ist
+wichtig, denn \emph{zeigen} ist genau das benötigte Verb. Bei
+\texttt{HEAD} handelt es sich um einen Zeiger (Pointer), der auf
+\texttt{main} zeigt. Das hast du im Prinzip bereits bei unserem Blick
+hinter die Kulissen gesehen. Im Ordner \ordner{.git} gibt es eine Datei
+mit Namen \datei{HEAD}, deren Inhalt (über eine Ecke) aus dem Hash
+besteht, den wir in der Ausgabe des Log sehen.
+
+\bcenter
+
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/branch_lab/mainbranch.png}
+\ecenter
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{ .git/refs/heads/main }
+
+\CommentTok{\# Ausgabe}
+\ExtensionTok{70eaef36a87aeb8a1e2eba93577a01329aff34d8}
+\end{Highlighting}
+\end{Shaded}
+
+Wir haben also eine \emph{doppelte Verlinkung}. Der Inhalt von
+\datei{.git/HEAD} zeigt auf eine Datei \datei{.git/refs/heads/main}, die
+den aktuell Hash enthält. Kommen weitere Commits hinzu, so ändert sich
+der Inhalt von \texttt{HEAD} nicht, aber der Inhalt der
+\datei{.git/refs/heads/main} wird aktualisiert.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{echo} \StringTok{"Zeile 2"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt }
+\FunctionTok{git}\NormalTok{ add . }\KeywordTok{\&\&} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Zeile 2"}
+
+\BuiltInTok{echo} \StringTok{"Zeile 3"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei.txt }
+\FunctionTok{git}\NormalTok{ add . }\KeywordTok{\&\&} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Zeile 3"}
+
+\FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} 
+
+\CommentTok{\# Ausgabe }
+\ExtensionTok{7c5a585} \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{Zeile}\NormalTok{ 3}
+\ExtensionTok{1d4966e}\NormalTok{ Zeile 2}
+\ExtensionTok{70eaef3}\NormalTok{ Datei 1 erstellt}
+\end{Highlighting}
+\end{Shaded}
+
+In der Datei steht nun:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{ .git/refs/heads/main }
+
+\CommentTok{\# Ausgabe}
+\ExtensionTok{7c5a5851fcb062c07a9b99195e33b97ee5353ab0}
+\end{Highlighting}
+\end{Shaded}
+
+BILD Pointer auf Pointer
+
+Der Pointer \emph{main} wird also von Commit zu Commit geschoben und der
+Pointer \emph{HEAD} zeigt ständig auf \emph{main}.
+
+Wenn wir nun einen Branch erstellen und auch gleich in diesen wechseln
+-- das macht \cmd{git switch -c}, dann könne wir das auch in den Dateien
+nachverfolgen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ spielplatz }
+
+\FunctionTok{git}\NormalTok{ log}
+
+\CommentTok{\# Ausgabe }
+\ExtensionTok{Zu}\NormalTok{ neuem Branch }\StringTok{\textquotesingle{}spielplatz\textquotesingle{}}\NormalTok{ gewechselt}
+\ExtensionTok{commit}\NormalTok{ 7c5a585...b99195e33b97ee5353ab0 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ spielplatz, main}\KeywordTok{)}
+\ExtensionTok{Author:}\NormalTok{ Wolfgang }\OperatorTok{\textless{}}\NormalTok{hoeferwolf@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Date:}\NormalTok{   Fri Jan 23 13:38:07 2026 +0100}
+\end{Highlighting}
+\end{Shaded}
+
+Die erste Zeile gibt an, dass es zwei Branches gibt, die auf gleichem
+Stand sind. Allerdings steht nun in der Datei \datei{Head} nicht mehr
+\emph{ref: refs/heads/main} , sondern
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{ .git/HEAD}
+
+\CommentTok{\#Ausgabe}
+\ExtensionTok{ref:}\NormalTok{ refs/heads/spielplatz}
+\end{Highlighting}
+\end{Shaded}
+
+Da \emph{spielplatz} und \emph{main} aber auf gleichem Stand -- dem
+aktuellen Commit sind, erhalten wir:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{ .git/refs/heads/spielplatz}
+\ExtensionTok{7c5a5851fcb062c07a9b99195e33b97ee5353ab0}
+
+\FunctionTok{cat}\NormalTok{ .git/refs/heads/main}
+\ExtensionTok{7c5a5851fcb062c07a9b99195e33b97ee5353ab0}
+\end{Highlighting}
+\end{Shaded}
+
+Erst wenn im Branch \branch{spielplatz} neue Commits entstehen, wird der
+Inhalt der Datei \datei{.git/refs/heads/spielplatz} entsprechend mit dem
+aktualisierten Hash gefüllt.
+
+Ein neuerlicher Wechsel des Branches zurück auf \branch{main} bewirkt
+dann also nur noch eine Änderung der Verlinkung in der Datei
+\datei{.git/HEAD}.
+
+\section{Zusammenführen von Branches
+(merge)}\label{zusammenfuxfchren-von-branches-merge}
+
+Dazu kommen weiter hinten im Script noch Varianten, deshalb möchte ich
+hier nur die Grundlagen thematisieren. Merges dienen dem Abgleich
+verschiedener Branches. Das ist nötig, wenn Änderungen am Code nicht nur
+in einem Branch verfügbar sein dürfen.
+
+Der unkomplizierteste Fall ist es, wenn man in einen Branch wechselt,
+dort arbeitet und danach das Ergebnis direkt wieder in den Branch
+\branch{main} übernimmt. Dieser Vorgang wird \emph{fast Forward (ff)}
+genannt, weil hier eigentlich gar nichts passiert, außer dass die
+Pointer passend umgeschrieben werden.
+
+TODO: BILD, wann welcher Pointer wo ist
+
+Eine typische Fehlvorstellung ist es, dass \emph{Branchig} sofort eine
+Abzweigung erzeugt. Korrekt ist aber, dass einfach nur ein Zeiger (also
+eine Datei, die einen Hash enthält) erzeugt wird, der auf den aktuellen
+Commit zeigt.
+
+BILD vorher - BILD nachher
+
+Der Befehl zur Zusammenführung wird vom Zielbranch aus gegeben. Du holst
+dir also einen Branch an deinen aktuellen Ort:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ switch main }
+\FunctionTok{git}\NormalTok{ merge spielplatz }
+\end{Highlighting}
+\end{Shaded}
+
+Komplizierter werden die Dinge, wenn in beiden Branches Änderungen an
+den Dateien vorgenommen werden -- dazu aber etwas später.
+
+\bookmarksetup{startatroot}
+
+\chapter{Fehlerbehebung}\label{fehlerbehebung}
 
 Ein Versionsverwaltungsprogramm hat unter anderem die Aufgabe, ein
 Projekt in gewissem Umfang \emph{revisionssicher} zu protokollieren. Aus
@@ -1780,7 +2015,7 @@ behandelt haben, ist der Schritt zur Teamarbeit nur sehr kurz.
 Im Netz findet man statt \cmd{restore} oft noch die Variante mit
 \cmd{checkout}, die früher üblich war. \sampleend
 
-\subsection{Kleiner Fehler 1}\label{kleiner-fehler-1}
+\section{Kleiner Fehler 1}\label{kleiner-fehler-1}
 
 Beim Programmieren entsteht ein Fehler, bei dem eine manuelle Behebung
 zu aufwändig ist. Die einfachere Lösung ist die Wiederherstellung der
@@ -1820,7 +2055,7 @@ Datei nicht geleert, die Hashes bleiben also verfügbar. Dass
 daran, dass der Befehl eigentlich nur ein \emph{diff} zwischen
 \emph{index} und aktuellem \emph{tree} ausführt. \sampleend
 
-\subsection{Kleiner Fehler 2}\label{kleiner-fehler-2}
+\section{Kleiner Fehler 2}\label{kleiner-fehler-2}
 
 Der Fehler wurde bereits ge-add-et. Damit gibt es im Stage keine Version
 zum Rückkopieren. Du musst also einen weiteren Schritt rückwärts gehen.
@@ -1878,7 +2113,7 @@ Problem sieht so aus: \sampleend
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Größerer Fehler}\label{gruxf6uxdferer-fehler}
+\section{Größerer Fehler}\label{gruxf6uxdferer-fehler}
 
 Du hast nach dem letztem Commit viele Fehler in einer Vilezahl von
 Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. Hier
@@ -1894,7 +2129,7 @@ hilft \cmd{reset}. Diesen Befehl gibt es in 3 Versionen
   soft
 \end{itemize}
 
-\subsubsection{Hard}\label{hard}
+\subsection{Hard}\label{hard}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1930,7 +2165,7 @@ die letzten Commits verwerfen. Das ist völlig problemlos, solange du
 alleine, lokal auf deinem Rechner arbeitest. Im Team oder auch nur mit
 Serverabgleich wird das extrem problematisch! \sampleend
 
-\subsubsection{Mixed}\label{mixed}
+\subsection{Mixed}\label{mixed}
 
 Das ist so ziemlich die gebräuchlichste Variante.
 
@@ -1974,14 +2209,14 @@ Commits deinen Rechner vorher noch nicht verlassen hatten!
 \end{Highlighting}
 \end{Shaded}
 
-\subsubsection{Soft}\label{soft}
+\subsection{Soft}\label{soft}
 
 Wenn du in obigem Script das \cmd{--mixed} durch \cmd{--soft} ersetzt,
 dann passiert auf den ersten Blick nichts anderes als bei \cmd{--mixed}.
 Beim \cmd{status} erscheint die Datei mit den 10 Zeile aber nun bereits
 im Stage und könnte sofort commitet werden.
 
-\subsection{Da war doch mal was}\label{da-war-doch-mal-was}
+\section{Da war doch mal was}\label{da-war-doch-mal-was}
 
 Manchmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man
 gerne die Version zurück, die man vor einigen Tagen gelöscht hat. Bei
@@ -2215,7 +2450,7 @@ folgenden Befehl verwenden:
 
 Wechsle in das Buch-Fenster
 
-\phantomsection\label{annotated-cell-68}%
+\phantomsection\label{annotated-cell-79}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2248,7 +2483,7 @@ Empfohlener Befehl \cmd{git add story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-69}%
+\phantomsection\label{annotated-cell-80}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2303,7 +2538,7 @@ Für dich bedeutet das nun das Abarbeiten folgende Schritte:
   Checke den Status: \cmd{git status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-70}%
+\phantomsection\label{annotated-cell-81}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -2369,7 +2604,7 @@ erkennen:
 
 TODO: Neu aufbauen
 
-\phantomsection\label{annotated-cell-73}%
+\phantomsection\label{annotated-cell-84}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -2610,7 +2845,7 @@ solltest du aktuell gerade sein, überprüfst das aber:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Kontrolle ob Entwichlungszweig}
+\CommentTok{\# Kontrolle ob Entwicklungszweig}
 \FunctionTok{git}\NormalTok{ branch}
 \CommentTok{\# falls nötig}
 \FunctionTok{git}\NormalTok{ switch entwicklung\_story\_2}
@@ -2696,13 +2931,18 @@ dass ein Austausch der Wörter vorgenommen wird (kenntlich gemacht):
 Du siehst den Austausch des Wortes und den neu geschriebenen Text. Für
 \git ist das problemlos!
 
-Nun führst du die Zweige zusammen:
+Nun möchtest du die beiden Branches zusammenführen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{git}\NormalTok{ merge story2\_idee\_1  }\CommentTok{\# erster Merge}
 \end{Highlighting}
 \end{Shaded}
+
+Beachte, dass jetzt ein Fast-Forward-Merge nicht möglich ist, das sich
+beide Branches von ihrem gemeinsamen Vorfahren weg entwickelt haben! Es
+wird also einen \emph{Merge-Commit} geben, der beide Branches
+zusammenführt.
 
 \git erwartet von dir eine Begründung für den Merge. Gib also
 \emph{Vorläufig ok} ein, speichere und schließe den Editor.
@@ -2985,26 +3225,24 @@ uns jetzt genauer ansehen. Offen geblieben sind folgende Fragen:
 
 \section{Verschiedene Merges}\label{verschiedene-merges}
 
-In der Praxis treten\footnote{Bei mir} meist zwei Fälle auf, da ich in
-der Regel alleine entwickle:
+In meinem Alltag treten meist drei Fälle auf, da ich in der Regel
+alleine entwickle:
 
 \begin{itemize}
 \tightlist
 \item
   Während ich am Entwicklungs-Branch arbeite, passiert auf dem
-  Auslieferungsbranch (hier \emph{main}) nichts.
+  Auslieferungsbranch (hier \emph{main}) nichts, außer Bug-Fixes.
 \item
   Ich entwickle an einem völlig anderen Feature, das den
-  \emph{main}-Branch gar nicht betrifft. Weil das oft aus Zeitgründen
-  länger dauert, kann es im \emph{main}-Branch Änderungen geben, die im
-  Entwicklungsbranch nicht interessieren.
+  \emph{main}-Branch aktuell gar nicht betrifft.
 \end{itemize}
 
 \subsection{Fast-Forward}\label{fast-forward}
 
 Befindest du dich auf dem (unveränderten) \emph{main}-Branch und holst
-den Entwicklungsbranch mit Merge, so wird dieser\\
-einfach vor den letzten Commit des \emph{main}-Branch gesetzt. In dieser
+den Entwicklungsbranch mit Merge, so wird der Pointer \emph{main} auf
+den letzten Commit des Entwicklungs-Branch geschoben. In dieser
 Situation wird der Branch im Diagramm nicht einmal als visuelle
 Abzweigung dargestellt:
 
@@ -3012,8 +3250,8 @@ Abzweigung dargestellt:
 
 Erkennbar sind die grünen Rechtecke, die die Enden der Branches
 kennzeichnen. Im Bild links sind die Branches getrennt, im Bild rechts
-sind beide Branch-Enden nach dem Merge an der gleichen Stelle.\\
-Wie du siehst, hat sich beim Merge die Anzahl Commits nicht verändert.
+sind beide Branch-Enden nach dem Merge an der gleichen Stelle. Wie du
+siehst, hat sich beim Merge die Anzahl Commits nicht verändert.
 
 \subsection{Drei-Wege Merge}\label{drei-wege-merge}
 
@@ -3022,11 +3260,13 @@ weiterentwickelt, sieht die Sitation ganz anders aus!
 
 \pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/drei_wege.png}}
 
-Du siehst, dass sich der \emph{main}-Branch zu \emph{Schritt 7}
-weiterentwickelt hat (neuer Commit). Beim Merge entsteht ein neuer
-Commit, der die Spitze beider Branches darstellt. Du erkennst auch, dass
-im Diagramm die grünen Spitzen der Branches nicht am gleichen Commit
-sitzen!
+Du siehst, dass sich der \emph{main}-Branch noch \emph{Schritt 3} zu
+\emph{Schritt 7} weiterentwickelt hat (neuer Commit). Denk immer daran,
+dir die Branchnamen wie Etiketten am jeweils letzten Commit des Branchs
+vorzustellen!\\
+Beim Merge entsteht ein neuer Commit, der die Spitze beider Branches
+darstellt. Du erkennst auch, dass im Diagramm die grünen Spitzen der
+Branches nicht am gleichen Commit sitzen!
 
 Durch \cmd{git log --oneline --decorate --graph} (merken als „git log
 dog``) wird diese Sitation auch passend dargestellt:
@@ -3119,7 +3359,7 @@ Prinzip passiert das mit allen Commits, die nicht nicht mehr
 \end{Highlighting}
 \end{Shaded}
 
-Wir der Branch \emph{feature} gelöscht, dann wird der Pointer auf G
+Wird der Branch \emph{feature} gelöscht, dann wird der Pointer auf G
 entfernt:
 
 \begin{Shaded}
@@ -3151,7 +3391,7 @@ https://www.youtube.com/watch?v=1TNK-OkaelI
 Bei einem Rebase wird der entsprechende Branch \emph{verpflanzt} -- d.h.
 gewissermaßen \emph{ausgerupft} und an anderer Stelle wieder
 \emph{angedockt}.\\
-Bei diesem Vorgang können die Hashwerte aller Commits im Branch
+Bei diesem Vorgang werden die Hashwerte aller Commits im Branch
 geändert.
 
 Betrachte nachfolgendes Script. Nach dem ersten Commit wird ein Branch
@@ -4287,7 +4527,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-143}%
+\phantomsection\label{annotated-cell-154}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -5956,7 +6196,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-206}%
+\phantomsection\label{annotated-cell-217}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -6016,7 +6256,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-208}%
+\phantomsection\label{annotated-cell-219}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -6050,7 +6290,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-209}%
+\phantomsection\label{annotated-cell-220}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -6122,7 +6362,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-211}%
+\phantomsection\label{annotated-cell-222}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6596,7 +6836,7 @@ Automatismus bauen.
 \textbf{Verwende für die Einrückungen unbedingt Leerzeichen und keine
 Tabulatoren!}
 
-\phantomsection\label{annotated-cell-225}%
+\phantomsection\label{annotated-cell-236}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -6657,7 +6897,7 @@ Du siehst:
 Für unser Minibuch brauchen wir ein anderes Docker-Image und noch ein
 paar Erweiterungen in der Datei:
 
-\phantomsection\label{annotated-cell-227}%
+\phantomsection\label{annotated-cell-238}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}

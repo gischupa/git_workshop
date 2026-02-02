@@ -12,21 +12,20 @@ Offen geblieben sind folgende Fragen:
 
 
 ## Verschiedene Merges
-In der Praxis treten^[Bei mir] meist zwei Fälle auf, da ich 
+In meinem Alltag treten meist drei Fälle auf, da ich 
 in der Regel alleine entwickle:
 
 * Während ich am Entwicklungs-Branch arbeite, 
-  passiert auf dem Auslieferungsbranch (hier *main*) nichts.
+  passiert auf dem Auslieferungsbranch (hier *main*) nichts,
+  außer Bug-Fixes.
 * Ich entwickle an einem völlig anderen Feature,
-  das den *main*-Branch gar nicht betrifft.
-  Weil das oft aus Zeitgründen länger dauert, kann
-  es im *main*-Branch Änderungen geben, die im
-  Entwicklungsbranch nicht interessieren.
+  das den *main*-Branch aktuell gar nicht betrifft.
+  
 
 ### Fast-Forward 
 Befindest du dich auf dem (unveränderten) *main*-Branch
-und holst den Entwicklungsbranch mit Merge, so wird dieser
-einfach vor den letzten Commit des *main*-Branch gesetzt. 
+und holst den Entwicklungsbranch mit Merge, so wird der Pointer *main*
+auf den letzten Commit des Entwicklungs-Branch geschoben.
 In dieser Situation wird der Branch im Diagramm nicht 
 einmal als visuelle Abzweigung dargestellt:
 

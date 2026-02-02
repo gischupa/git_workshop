@@ -1,4 +1,4 @@
-## Fehlerbehebung
+# Fehlerbehebung
 Ein Versionsverwaltungsprogramm hat unter anderem 
 die Aufgabe, ein Projekt in gewissem Umfang *revisionssicher*
 zu protokollieren. Aus diesem Grund müssen bestimmte 
@@ -22,7 +22,7 @@ Im Netz findet man statt \cmd{restore} oft noch die Variante mit
 
 
 
-### Kleiner Fehler 1 
+## Kleiner Fehler 1 
 
 Beim Programmieren entsteht ein Fehler, bei dem eine manuelle Behebung zu 
 aufwändig ist. Die einfachere Lösung ist die Wiederherstellung der betroffenen 
@@ -60,7 +60,7 @@ der Befehl eigentlich nur ein *diff* zwischen *index* und aktuellem *tree*
 ausführt. 
 \sampleend
 
-### Kleiner Fehler 2
+## Kleiner Fehler 2
 
 Der Fehler wurde bereits ge-add-et. Damit gibt es im 
 Stage keine Version zum Rückkopieren. Du musst also einen 
@@ -114,7 +114,7 @@ dieses Problem sieht so aus:
 git show <HASH>:datei.txt > datei_alt.txt
 ```
 
-### Größerer Fehler
+## Größerer Fehler
 
 Du hast nach dem letztem Commit viele Fehler in einer Vilezahl 
 von Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. 
@@ -125,7 +125,7 @@ Hier hilft \cmd{reset}. Diesen Befehl gibt es in 3 Versionen
 * soft
 
 <!-- src/reset.sh -->
-#### Hard
+### Hard
 ```bash
 git init beispiel_3
 cd beispiel_3
@@ -158,7 +158,7 @@ solange du alleine, lokal auf deinem Rechner arbeitest. Im Team
 oder auch nur mit Serverabgleich wird das extrem problematisch!
 \sampleend
 
-#### Mixed
+### Mixed
 Das ist so ziemlich die gebräuchlichste Variante.
 
 ```bash
@@ -198,14 +198,14 @@ git log --oneline # liefert 4 Zeilen
 git status # zeigt eine geänderte, versionierte Datei 
 ```
 
-#### Soft
+### Soft
 
 Wenn du in obigem Script das \cmd{--mixed} durch \cmd{--soft}
 ersetzt, dann passiert auf den ersten Blick nichts anderes als bei \cmd{--mixed}. Beim \cmd{status} erscheint die Datei mit den 10 Zeile 
 aber nun bereits im Stage und könnte sofort commitet werden.
 
 
-### Da war doch mal was
+## Da war doch mal was
 Manchmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man gerne 
 die Version zurück, die man vor einigen Tagen gelöscht hat. Bei \git hast du 
 Zugriff auf alle alten Versionen! Allerdings ist oft die Frage, in welchem Commit 

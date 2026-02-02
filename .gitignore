@@ -7,3 +7,5 @@ index.pdf
 /.quarto/
 szenarios/stories/story1_files/
 0200_bash1_files/
+
+**/*.quarto_ipynb
