@@ -438,7 +438,7 @@ git branch -m main
 # auf dem Client
 # Besondere Schritte NUR auf dem ersten Client nötig
 git clone gituser@server:port/pfad/zu/repo.git 
-git switch -c main 
+git branch -m main
 echo "Welcome" > Readme.txt 
 git add Readme.txt 
 git commit -m "initial"
@@ -450,7 +450,7 @@ Jeder weitere Benutzer clont nun ein funktionsfähiges Repostory.
 **Muss ich das 'origin main' immer angeben?**  
 
 Auch wenn der Branch \branch{main} besonders klingt, 
-ist er doch ein ganz normaler Branch. Seine Besonderheit  
+ist er doch ein ganz normaler Branch. Seine Besonderheit 
 ist lediglich, dass er durch das Clonen auch gleichzeitig 
 als *upstream-branch* definiert wurde -- deshalb funktioniert
 statt \cmd{git pull origin main} auch die kurze Version \cmd{git pull}
@@ -499,11 +499,11 @@ git push origin probe:main
 \samplestart
 **Hinweis**  
 Du hast nun mehrfach *origin main* aber auch *origin/main* 
-gesehen. Was ist der Unterschied? Die erste Variante meint 
-wirklich den Branch *main* auf dem Server, der sich hinter *origin*
-verbirgt.  
-Die zweite Variante ist eher wie eine Pfadangabe innerhalb von \Git 
-auf dem lokalen Rechner zu verstehen.
+gesehen. Was ist der Unterschied? Die erste Variante sind Argumente
+für die git-Befehle. *Origin* ist die Adresse des Servers, *main* ist 
+der betroffene Branch.  
+Bei der zweiten Variante handelt es sich um eine Referenz auf dem 
+Client, die den Branch auf dem Server beschreibt.  
 \sampleend
 
 

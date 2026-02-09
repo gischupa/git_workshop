@@ -127,7 +127,7 @@ d.h. ein *checkout* der Commits ist immer noch möglich.
 
 Anders ist das allerdings, wenn du einen Branch löschst, der 
 *nicht* in einen Merge verwickelt ist. Er existiert dann 
-zwar anscheinend weiter, wird aber nach einier Zeit vom 
+zwar anscheinend weiter, wird aber nach einiger Zeit vom 
 Garbage-Collector (GC) von \git endgültig entfernt.
 (Der Zeitrahmen ist einstellbar). Im Prinzip passiert 
 das mit allen Commits, die nicht nicht mehr *erreichbar* sind.

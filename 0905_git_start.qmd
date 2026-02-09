@@ -9,37 +9,53 @@ eines Arbeitsordners sehen.
 
 ```bash
 git init --bare projekt.git 
+cd projekt.git
+git branch -m main  # WICHTIG
 ```
 
 oder länger
 
 ```bash
+rm -rf projekt
 mkdir projekt.git
-cd projekt 
+cd projekt.git
 git init --bare 
-```
-
-In beiden Fällen bekommst du einen Hinweis, dass du gleich den 
-Branch umbenennen sollst:
-
-```bash
-git branch -m main
+git branch -m main  # WICHTIG
 ```
 
 Dieses Repository ist noch leer und das kann auf Benutzerseite 
-zu Irritationen führen. Aus diesem Gund solltest du selbst dafür 
-sorgen, dass bereits (mindestens) eine Datei enthalten ist:
+zu Irritatationen führen. Aus diesem Grund solltest du selbst dafür 
+sorgen, dass bereits (mindestens) eine Datei enthalten ist. 
+Das geht aber nur vom Client aus:
 
 ```bash
-git clone ssh://server/../../projekt.git
+rm -rf projekt
+git clone <IP>:/tmp/projekt.git
 cd projekt   # kommt ohne .git an 
+```
+
+\samplestart
+**Hinweis**  
+Sollte der git-Server nicht auf Port 22 laufen, so ist der 
+Aufruf etwas anders:
+
+    git clone ssh:<ip>:port/tmp/projekt.git
+
+\sampleend
+
+Ein \cmd{git status} zeigt dir, dass du (trotz Umbenennung auf dem Server)
+auf dem Branch \branch{master} bist. Das ist also eine Client-Einstellung!
+
+```bash
+git branch -m main  # WICHTIG
 echo "Welcome" > README.txt 
 git add README.txt 
 git commit -m "Initial"
-git push 
+git push -u origin main
 ```
 
-Wenn nun ein Anwender das Repo clont, kann er sofort aktiv damit arbeiten
+Wenn nun ein Anwender das Repository clont, kann er sofort aktiv 
+mit dem richtigen Banch arbeiten.
 
 ### Gitlab
 Hier erstellt das System beim Anlegen des Repositories auf Wunsch automatisch eine 

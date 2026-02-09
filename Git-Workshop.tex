@@ -360,7 +360,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, breakable, colback={codebgcolor}, enhanced, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, colback={codebgcolor}, enhanced, frame hidden, sharp corners, breakable]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -1921,8 +1921,9 @@ nachverfolgen:
 \end{Shaded}
 
 Die erste Zeile gibt an, dass es zwei Branches gibt, die auf gleichem
-Stand sind. Allerdings steht nun in der Datei \datei{Head} nicht mehr
-\emph{ref: refs/heads/main} , sondern
+Stand sind.\\
+Allerdings steht nun in der Datei \datei{Head} nicht mehr \emph{ref:
+refs/heads/main} , sondern
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3345,7 +3346,7 @@ vorhanden, d.h. ein \emph{checkout} der Commits ist immer noch möglich.
 
 Anders ist das allerdings, wenn du einen Branch löschst, der
 \emph{nicht} in einen Merge verwickelt ist. Er existiert dann zwar
-anscheinend weiter, wird aber nach einier Zeit vom Garbage-Collector
+anscheinend weiter, wird aber nach einiger Zeit vom Garbage-Collector
 (GC) von \git endgültig entfernt. (Der Zeitrahmen ist einstellbar). Im
 Prinzip passiert das mit allen Commits, die nicht nicht mehr
 \emph{erreichbar} sind.
@@ -4753,7 +4754,7 @@ hier einige Varianten gibt, habe ich das in den Anhang ausgelagert!
 \CommentTok{\# auf dem Client}
 \CommentTok{\# Besondere Schritte NUR auf dem ersten Client nötig}
 \FunctionTok{git}\NormalTok{ clone gituser@server:port/pfad/zu/repo.git }
-\FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ main }
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
 \BuiltInTok{echo} \StringTok{"Welcome"} \OperatorTok{\textgreater{}}\NormalTok{ Readme.txt }
 \FunctionTok{git}\NormalTok{ add Readme.txt }
 \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"initial"}
@@ -4766,11 +4767,10 @@ Jeder weitere Benutzer clont nun ein funktionsfähiges Repostory.
 \textbf{Muss ich das `origin main' immer angeben?}
 
 Auch wenn der Branch \branch{main} besonders klingt, ist er doch ein
-ganz normaler Branch. Seine Besonderheit\\
-ist lediglich, dass er durch das Clonen auch gleichzeitig als
-\emph{upstream-branch} definiert wurde -- deshalb funktioniert statt
-\cmd{git pull origin main} auch die kurze Version \cmd{git pull} (analog
-für \cmd{git push}).
+ganz normaler Branch. Seine Besonderheit ist lediglich, dass er durch
+das Clonen auch gleichzeitig als \emph{upstream-branch} definiert wurde
+-- deshalb funktioniert statt \cmd{git pull origin main} auch die kurze
+Version \cmd{git pull} (analog für \cmd{git push}).
 
 Wenn du einen neuen Branch anlegst und einen commit pushen willst:
 
@@ -4823,11 +4823,12 @@ vorbei, dem dann ein Commit fehlt:
 
 \textbf{Hinweis}\\
 Du hast nun mehrfach \emph{origin main} aber auch \emph{origin/main}
-gesehen. Was ist der Unterschied? Die erste Variante meint wirklich den
-Branch \emph{main} auf dem Server, der sich hinter \emph{origin}
-verbirgt.\\
-Die zweite Variante ist eher wie eine Pfadangabe innerhalb von \Git  auf
-dem lokalen Rechner zu verstehen. \sampleend
+gesehen. Was ist der Unterschied? Die erste Variante sind Argumente für
+die git-Befehle. \emph{Origin} ist die Adresse des Servers, \emph{main}
+ist der betroffene Branch.\\
+Bei der zweiten Variante handelt es sich um eine Referenz auf dem
+Client, die den Branch auf dem Server beschreibt.\\
+\sampleend
 
 \textbf{Ist es egal, in welchem Branch ich fetch/pull/push ausführe?}\\
 Jein.\\
@@ -4841,7 +4842,11 @@ Branch als Upstream konfiguriert, holt sich ein kurzes \cmd{git pull}
 die richtigen Daten. Ein \cmd{git pull <branch>} holt aber genau das,
 was du angegeben hast! Das ist eine Fehlerquelle!
 
-\section{Zu klärende Fragen}\label{zu-kluxe4rende-fragen}
+\bookmarksetup{startatroot}
+
+\chapter{Installation}\label{installation-1}
+
+\section{Überlegungen allgemein}\label{uxfcberlegungen-allgemein}
 
 Ein einfacher \git-Server ist lediglich ein Server mit einer
 rudimentären Installation von \git und einer Erreichbarkeit über das
@@ -4860,7 +4865,7 @@ Bunutzer -- z.B. \git.
 \textbf{Zweck des Servers}\\
 Geht es nur um \git oder sollen noch Wordpress, VPN-Server, \ldots{}
 dazu kommen. Für jedes Szenario wird die endgültige Konfiguration anders
-aussehen \ldots{}
+aussehen.
 
 \textbf{Wer nutzt den Server}\\
 Müssen auch andere Lehrkräfte (administrativen) Zugriff auf den Server
@@ -4896,13 +4901,244 @@ Zuordnung zum echten Schüler.
 
 Hierfür gibt es keine perfekte Lösung.
 
-\section{Nur git}\label{nur-git}
+\section{Vorbereitung des Systems}\label{vorbereitung-des-systems}
 
-Wenn ein Schüler nur \git verwenden soll, dann braucht er kein
+Nachfolgend wird die Installation eines funktionsfähigen \gitservers
+beschrieben. Bevor Du dich an die Installation auf einem Server im
+Internet machst, ist etwas \emph{Training} in einer virtuellen Umgebung
+ganz sinnvoll. Nach der Installation und Konfiguration eines
+Übungsservers in VirtualBox sind die Schritte identisch mit der realen
+Situation.\\
+Die Anleitung zur Installation von VirtualBox und dem entsprechenden
+Gastsystems \emph{Ubuntu-24.04} befindet sich am Ende des Handouts.
+Gegebenenfalls also zuerst dort fortfahren und dann erst hierher
+zurückkehren.
+
+TODO: VirtualBox Anleitung erstellen
+
+\subsection{Grundkonfiguration}\label{grundkonfiguration}
+
+Alle erforderlichen Konfigurationsschritte erfolgen über ssh im Terminal
+auf dem Server. In der virtuellen Maschine kann dies zwar auch direkt
+aus VirtualBox heraus erfolgen, zum \emph{üben} ist es aber auch hier
+sinnvoll, sich mit ssh auf die VM zu verbinden.
+
+\subsubsection{SSH-Verbindung}\label{ssh-verbindung}
+
+\paragraph{Windows}\label{windows-1}
+
+Seit einiger Zeit kann auch Windows auch ohne Zusatzsoftware
+SSH-Verbindungen aufbauen. Allerdings unterliegt die \texttt{cmd.exe}
+einigen Einschränkungen (z.B. kopieren von Textinhalten), die bei der
+Verbindung mit Putty oder der git-Bash besser gelöst sind.
+
+Putty kann unter
+\url{https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html} als
+einzelne Datei heruntergeladen werden und erlaubt die Erstellung von
+Verbindungsprofilen. Ich gehe davon aus, dass du mit diesem Tool selbst
+klar kommst.
+
+TODO: Bild Putty-Anmeldung
+
+\textbf{Windows direkt}\\
+Starte die Commandozeile \texttt{cmd.exe} und gib folgenden Befehl ein
+(Benutzer und IP-Adresse müssen bekannt sein, ebenso das Kennwort):
+
+TODO: Unterschied cmd und putty
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh}\NormalTok{ benutzer@ip{-}adresse }
+\end{Highlighting}
+\end{Shaded}
+
+Es erscheint eine Sicherheitsabfrage, die mit \texttt{yes} und
+\texttt{enter} bestätigt werden muss:
+
+TODO: Als Bild einbinden
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{The}\NormalTok{ authenticity of host }\StringTok{\textquotesingle{}try.example.com (38.243.220.195)\textquotesingle{}}\NormalTok{ can}\StringTok{\textquotesingle{}t be established.}
+\StringTok{ED25519 key fingerprint is SHA256:DSeSsfXDL2PkSlLYCt64krg9xa2vNr3og5SBJzZ/WNk.}
+\StringTok{This key is not known by any other names.}
+\StringTok{Are you sure you want to continue connecting (yes/no/[fingerprint])?}
+\end{Highlighting}
+\end{Shaded}
+
+\samplestart
+
+\textbf{Hintergrund}\\
+Der Rechner merkt sich den Fingerabruck des Servers, zu dem die
+Verbindung aufgebaut wurde. Sollte später ein anderer Server diese
+IP-Adresse übernehmen (z.B. Man in the middle), so stimmt der
+Fingerabdruck nicht und es gibt eine Warnung. \sampleend
+
+\textbf{Git-Bash} Da das eine abgespeckte Linux-Umgebung ist, kannst du
+im nächsten Abschnitt weiterlesen.
+
+\paragraph{Apple und Linux}\label{apple-und-linux}
+
+Auch hier erfolgt der Verbindungsaufbau in gleicher Weise direkt aus dem
+Terminal.
+
+Die Eingabe des Kennworts kann je nach Installationsvariante auch ohne
+sichtbare Zeichen erfolgen!
+
+Eine ssh-Verbindung kann auf verschieden Weise wieder abgebaut werden:
+
+\begin{itemize}
+\item
+  brutal, geht aber: Fenster schließen
+\item
+  \texttt{exit()}
+\item
+  \texttt{logout}
+\item
+  \strg{d}
+\end{itemize}
+
+\subsubsection{Software installieren}\label{software-installieren}
+
+Bei \emph{Ubuntu-24.04} ist in der Standard-Installation die
+Versionsverwaltung \git bereits vorinstalliert und auch der ssh-Server
+sollte bereits funktionieren. Bei gemieteten Installationen muss das
+nicht so sein, ssh sollte aber funktionieren. Für die Verbindung mit ssh
+benötigt man die IP-Adresse. Von einem Mietserver kennt man die Adresse
+im Regelfall, in VirtualBox muss man sie erst im Terminal ermitteln, da
+sie vom DHCP-Server zugewiesen wird.
+
+\samplestart
+
+\textbf{Hinweis}\\
+Falls man \git im Klassenzimmer betreibt (was nicht besonders sinnvoll
+ist) und eine gewisse \emph{Konstanz} in den Unterrichtsverlauf bringen
+möchte, dann sollte der Systemadministrator diese virtuellen Maschine in
+den DHCP-Server eintragen, damit sie immer die gleiche IP-Adresse
+bekommt! \sampleend
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{ip}\NormalTok{ addr show}
+\end{Highlighting}
+\end{Shaded}
+
+Je nach Anbieter des Systems kann die Bildschirmausgabe etwas anders
+aussehen!
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/interfaces.png}}
+
+}
+
+\caption{Interfaces}
+
+\end{figure}%
+
+Der veraltete Befehl \texttt{ifconfig} kann jederzeit nachinstalliert
+werden durch
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo} \AttributeTok{{-}i}           \CommentTok{\# Admin werden}
+\ExtensionTok{apt{-}get}\NormalTok{ update    }\CommentTok{\# Software{-}DB aktualisieren {-} dauert!}
+\ExtensionTok{apt{-}get}\NormalTok{ install net{-}tools  }\CommentTok{\# mit y oder J bestätigen}
+\end{Highlighting}
+\end{Shaded}
+
+\samplestart
+
+\textbf{Hinweis}\\
+Zum Installieren von Software gibt es auf Linux verschiedene Programme:
+\emph{apt, apt-get, aptitude, snap, flatpak, appimages, \ldots{}}. Eine
+detaillierte Beschreibung ginge hier zu weit. In diesem Workshop wird
+nur mit \emph{apt, apt-get} und \texttt{aptitude} gearbeitet. Diese drei
+Programme verwenden die gleiche Datenbank für verfügbare Software und
+sind somit weitgehend identisch. \emph{Aptitude} verfügt über eine --
+für mich -- schönere Suchfunktion. Aus diesem Grund installieren wir es
+hier gleich nach. \sampleend
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt{-}get}\NormalTok{ install aptitude }\AttributeTok{{-}y}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Check auf installiertes git}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git} \AttributeTok{{-}{-}version}
+\end{Highlighting}
+\end{Shaded}
+
+Falls eine Fehlermeldung erscheint, muss \git noch installiert werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt}\NormalTok{ update }
+\ExtensionTok{apt}\NormalTok{ get install git }\AttributeTok{{-}y}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Firewall}\label{firewall-1}
+
+Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
+Den Status erfragt man mit \texttt{ufw\ status}. Hierbei steht
+\texttt{ufw} für \emph{uncomplicated firewall}. Bei Änderungen an der
+Firewall immer Vorsicht walten lassen! Man kann sich aussperren!
+
+\textbf{Ablauf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{IN:}\NormalTok{   ufw status}
+\ExtensionTok{OUT:}\NormalTok{  Status: inactive}
+
+\ExtensionTok{IN:}\NormalTok{   ufw allow ssh }
+\ExtensionTok{OUT:}\NormalTok{  Rules updated}
+      \ExtensionTok{Rules}\NormalTok{ updated }\ErrorTok{(}\ExtensionTok{v6}\KeywordTok{)}
+
+\ExtensionTok{IN:}\NormalTok{   ufw enable}
+\ExtensionTok{OUT:}\NormalTok{  Command may disrupt existing ssh connections. }
+      \ExtensionTok{Proceed}\NormalTok{ with operation }\ErrorTok{(}\ExtensionTok{y}\KeywordTok{|}\ExtensionTok{n}\KeywordTok{)}\ExtensionTok{?}
+\ExtensionTok{IN:}\NormalTok{   y}
+\ExtensionTok{OUT:}\NormalTok{  Firewall is active and enabled on system startup}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Ordner für Repository}\label{ordner-fuxfcr-repository}
+
+Wo man diesen im Verzeichnisbaum von Linux anlegt, ist im Prinzip
+unwichtig -- es gibt aber bessere und schlechtere Orte. Der Home-Ordner
+ist keine gute Idee -- besser ist z.B. der Ordner \texttt{/srv}. Dort
+erstellen wir auch gleich ein Demo-Repository:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo} \AttributeTok{{-}i}
+\BuiltInTok{cd}\NormalTok{ /srv }
+\FunctionTok{mkdir}\NormalTok{ repositories}
+\FunctionTok{chown}\NormalTok{ git:git repositories }
+\ExtensionTok{*strg}\NormalTok{ + d}\PreprocessorTok{*}
+\BuiltInTok{cd}\NormalTok{ /srv/repositories}
+\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ demo.git}
+\BuiltInTok{cd}\NormalTok{ demo.git }
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main }
+\end{Highlighting}
+\end{Shaded}
+
+Dieses Repositoriy ist nun bereit zum Clonen.
+
+\subsection{Benutzer für Git}\label{benutzer-fuxfcr-git}
+
+Wenn ein Schüler nur \git verwenden soll, dann braucht er dafür kein
 vollwertiges Benutzerkonto, an dem er sich auch für andere Arbeiten
 anmelden kann. Für die Verwendung von \git genügt es bereits, wenn man
 einen einzigen Benutzer mit dem Namen \git (als Beispiel) erstellt.
-Nachfolgend sind dann diese Schritte nötig:
+
+Nötige Schritte:
 
 \begin{itemize}
 \tightlist
@@ -4916,8 +5152,6 @@ Nachfolgend sind dann diese Schritte nötig:
   Der Lehrer fügt den Schlüssel in die Datei
   \texttt{/home/git/.ssh/authorized\_keys} ein.
 \end{itemize}
-
-\subsection{Detaillierte Anleitung}\label{detaillierte-anleitung}
 
 \textbf{Benutzer anlegen}
 
@@ -5018,218 +5252,6 @@ Hier muss entschieden werden, wer für die Schlüssel zuständig ist.
   Schlüsselpaare. In diesem Fall müssen beide Schlüssel auf dem Server
   als gültig eingetragen werden.
 \end{itemize}
-
-\section{Vorbereitung des Systems}\label{vorbereitung-des-systems}
-
-Nachfolgend wird die Installation eines funktionsfähigen \gitservers
-beschrieben. Bevor man sich an die Installation auf einem Server im
-Internet macht, ist etwas \emph{Training} in einer virtuellen Umgebung
-ganz sinnvoll. Nach Installation und Konfiguration eines Übungsservers
-in VirtualBox sind die Schritte identisch. Die Anleitung zur
-Installation von VirtualBox und dem entsprechenden Gastsystems
-\emph{Ubuntu-24.04} befindet sich am Ende des Handouts. Gegebenenfalls
-also zuerst dort fortfahren und dann erst hierher zurückkehren.
-
-\section{Grundkonfiguration}\label{grundkonfiguration}
-
-Alle erforderlichen Konfigurationsschritte erfolgen über ssh im Terminal
-auf dem Server. In der virtuellen Maschine kann dies zwar auch direkt
-aus VirtualBox heraus erfolgen, zum \emph{üben} ist es aber auch hier
-sinnvoll, sich mit ssh auf die VM zu verbinden.
-
-\subsection{SSH-Verbindung}\label{ssh-verbindung}
-
-\textbf{Windows}\\
-Seit einiger Zeit kann auch Windows auch ohne Zusatzsoftware
-SSH-Verbindungen aufbauen. Allerdings unterliegt die \texttt{cmd.exe}
-einigen Einschränkungen (z.B. kopieren von Textinhalten), die bei der
-Verbindung mit Putty besser gelöst sind. Putty kann \href{TODO}{HIER}
-als einzelne Datei heruntergeladen werden. Starten Sie dafür die
-Commandozeile \texttt{cmd.exe} und geben Sie folgenden Befehl ein
-(Benutzer und IP-Adresse müssen bekannt sein, ebenso das Kennwort):
-
-TODO: Unterschied cmd und putty
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ssh}\NormalTok{ benutzer@ip{-}adresse }
-\end{Highlighting}
-\end{Shaded}
-
-Es erscheint eine Sicherheitsabfrage, die mit \texttt{yes} und
-\texttt{enter} bestätigt werden muss:
-
-TODO: Als Bild einbinden
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{The}\NormalTok{ authenticity of host }\StringTok{\textquotesingle{}try.example.com (38.243.220.195)\textquotesingle{}}\NormalTok{ can}\StringTok{\textquotesingle{}t be established.}
-\StringTok{ED25519 key fingerprint is SHA256:DSeSsfXDL2PkSlLYCt64krg9xa2vNr3og5SBJzZ/WNk.}
-\StringTok{This key is not known by any other names.}
-\StringTok{Are you sure you want to continue connecting (yes/no/[fingerprint])?}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hintergrund}\\
-Der Rechner merkt sich den Fingerabruck des Servers, zu dem die
-Verbindung aufgebaut wurde. Sollte später ein anderer Server diese
-IP-Adresse übernehmen (z.B. Man in the middle), so stimmt der
-Fingerabdruck nicht und es gibt eine Warnung. \sampleend
-
-\textbf{Apple und Linux}\\
-Auch hier erfolgt der Verbindungsaufbau in gleicher Weise direkt aus dem
-Terminal.
-
-Die Eingabe des Kennworts kann je nach Installationsvariante auch ohne
-sichtbare Zeichen erfolgen!
-
-Eine ssh-Verbindung kann auf verschieden Weise wieder abgebaut werden:
-
-\begin{itemize}
-\item
-  brutal, geht aber: Fenster schließen
-\item
-  \texttt{exit()}
-\item
-  \texttt{logout}
-\item
-  \strg{d}
-\end{itemize}
-
-\subsection{Software installieren}\label{software-installieren}
-
-Bei \emph{Ubuntu-24.04} ist in der Standard-Installation die
-Versionsverwaltung \git bereits vorinstalliert und auch der ssh-Server
-sollte bereits funktionieren. Bei gemieteten Installationen muss das
-nicht so sein, ssh sollte aber funktionieren. Für die Verbindung mit ssh
-benötigt man die IP-Adresse. Von einem Mietserver kennt man die Adresse
-im Regelfall, in VirtualBox muss man sie erst im Terminal ermitteln, da
-sie vom DHCP-Server zugewiesen wird.
-
-\samplestart
-
-\textbf{Hinweis}\\
-Falls man \git im Klassenzimmer betreibt (was nicht besonders sinnvoll
-ist) und eine gewisse \emph{Konstanz} in den Unterrichtsverlauf bringen
-möchte, dann sollte der Systemadministrator diese virtuellen Maschine in
-den DHCP-Server eintragen, damit sie immer die gleiche IP-Adresse
-bekommt! \sampleend
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{ip}\NormalTok{ addr show}
-\end{Highlighting}
-\end{Shaded}
-
-Je nach Anbieter des Systems kann die Bildschirmausgabe etwas anders
-aussehen!
-
-\begin{figure}[H]
-
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/interfaces.png}}
-
-}
-
-\caption{Interfaces}
-
-\end{figure}%
-
-Der veraltete Befehl \texttt{ifconfig} kann jederzeit nachinstalliert
-werden durch
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{sudo} \AttributeTok{{-}i}           \CommentTok{\# Admin werden}
-\ExtensionTok{apt{-}get}\NormalTok{ update    }\CommentTok{\# Software{-}DB aktualisieren {-} dauert!}
-\ExtensionTok{apt{-}get}\NormalTok{ install net{-}tools  }\CommentTok{\# mit y oder J bestätigen}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hinweis}\\
-Zum Installieren von Software gibt es auf Linux verschiedene Programme:
-\emph{apt, apt-get, aptitude, snap, flatpak, appimages, \ldots{}}. Eine
-detaillierte Beschreibung ginge hier zu weit. In diesem Workshop wird
-nur mit \emph{apt, apt-get} und \texttt{aptitude} gearbeitet. Diese drei
-Programme verwenden die gleiche Datenbank für verfügbare Software und
-sind somit weitgehend identisch. \emph{Aptitude} verfügt über eine --
-für mich -- schönere Suchfunktion. Aus diesem Grund installieren wir es
-hier gleich nach. \sampleend
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{apt{-}get}\NormalTok{ install aptitude }\AttributeTok{{-}y}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Check auf installiertes git}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git} \AttributeTok{{-}{-}version}
-\end{Highlighting}
-\end{Shaded}
-
-Falls eine Fehlermeldung erscheint, muss \git noch installiert werden:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{apt}\NormalTok{ update }
-\ExtensionTok{apt}\NormalTok{ get install git }\AttributeTok{{-}y}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Firewall}\label{firewall-1}
-
-Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
-Den Status erfragt man mit \texttt{ufw\ status}. Hierbei steht
-\texttt{ufw} für \emph{uncomplicated firewall}. Bei Änderungen an der
-Firewall immer Vorsicht walten lassen! Man kann sich aussperren!
-
-\textbf{Ablauf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{IN:}\NormalTok{   ufw status}
-\ExtensionTok{OUT:}\NormalTok{  Status: inactive}
-
-\ExtensionTok{IN:}\NormalTok{   ufw allow ssh }
-\ExtensionTok{OUT:}\NormalTok{  Rules updated}
-      \ExtensionTok{Rules}\NormalTok{ updated }\ErrorTok{(}\ExtensionTok{v6}\KeywordTok{)}
-
-\ExtensionTok{IN:}\NormalTok{   ufw enable}
-\ExtensionTok{OUT:}\NormalTok{  Command may disrupt existing ssh connections. }
-      \ExtensionTok{Proceed}\NormalTok{ with operation }\ErrorTok{(}\ExtensionTok{y}\KeywordTok{|}\ExtensionTok{n}\KeywordTok{)}\ExtensionTok{?}
-\ExtensionTok{IN:}\NormalTok{   y}
-\ExtensionTok{OUT:}\NormalTok{  Firewall is active and enabled on system startup}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Ordner für Repository}\label{ordner-fuxfcr-repository}
-
-Wo man diesen im Verzeichnisbaum von Linux anlegt, ist im Prinzip
-unwichtig -- es gibt aber bessere und schlechtere Orte. Der Home-Ordner
-ist keine gute Idee -- besser ist z.B. der Ordner \texttt{/srv}. Dort
-erstellen wir auch gleich ein Demo-Repository:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{sudo} \AttributeTok{{-}i}
-\BuiltInTok{cd}\NormalTok{ /srv }
-\FunctionTok{mkdir}\NormalTok{ repositories}
-\FunctionTok{chown}\NormalTok{ git:git repositories }
-\ExtensionTok{*strg}\NormalTok{ + d}\PreprocessorTok{*}
-\BuiltInTok{cd}\NormalTok{ /srv/repositories}
-\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ demo.git}
-\BuiltInTok{cd}\NormalTok{ demo.git }
-\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main }
-\end{Highlighting}
-\end{Shaded}
-
-Dieses Repositoriy ist nun bereit zum Clonen.
 
 \bookmarksetup{startatroot}
 
@@ -7199,7 +7221,7 @@ Dass ein JDK installiert sein muss, sollte klar sein, denn es soll ja
 mit Java programmiert werden. Natürlich gibt es wieder Unterschiede
 zwischen Linux, Apple und Windows.
 
-\subsubsection*{Windows}\label{windows-1}
+\subsubsection*{Windows}\label{windows-2}
 \addcontentsline{toc}{subsubsection}{Windows}
 
 \emph{Java installieren}
@@ -7368,7 +7390,7 @@ Zur Kontrolle genügt dann ein
 
 (Tipp: Im Terminal eingeben: \cmd{sdk list maven})
 
-\subsubsection*{Windows}\label{windows-2}
+\subsubsection*{Windows}\label{windows-3}
 \addcontentsline{toc}{subsubsection}{Windows}
 
 TODO: Maven auf Windows installieren
@@ -8130,6 +8152,8 @@ Sinne eines Arbeitsordners sehen.
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ projekt.git }
+\BuiltInTok{cd}\NormalTok{ projekt.git}
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main  }\CommentTok{\# WICHTIG}
 \end{Highlighting}
 \end{Shaded}
 
@@ -8137,38 +8161,55 @@ oder länger
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ projekt}
 \FunctionTok{mkdir}\NormalTok{ projekt.git}
-\BuiltInTok{cd}\NormalTok{ projekt }
+\BuiltInTok{cd}\NormalTok{ projekt.git}
 \FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare} 
-\end{Highlighting}
-\end{Shaded}
-
-In beiden Fällen bekommst du einen Hinweis, dass du gleich den Branch
-umbenennen sollst:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main  }\CommentTok{\# WICHTIG}
 \end{Highlighting}
 \end{Shaded}
 
 Dieses Repository ist noch leer und das kann auf Benutzerseite zu
-Irritationen führen. Aus diesem Gund solltest du selbst dafür sorgen,
-dass bereits (mindestens) eine Datei enthalten ist:
+Irritatationen führen. Aus diesem Grund solltest du selbst dafür sorgen,
+dass bereits (mindestens) eine Datei enthalten ist. Das geht aber nur
+vom Client aus:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ clone ssh://server/../../projekt.git}
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ projekt}
+\FunctionTok{git}\NormalTok{ clone }\OperatorTok{\textless{}}\NormalTok{IP}\OperatorTok{\textgreater{}}\NormalTok{:/tmp/projekt.git}
 \BuiltInTok{cd}\NormalTok{ projekt   }\CommentTok{\# kommt ohne .git an }
-\BuiltInTok{echo} \StringTok{"Welcome"} \OperatorTok{\textgreater{}}\NormalTok{ README.txt }
-\FunctionTok{git}\NormalTok{ add README.txt }
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Initial"}
-\FunctionTok{git}\NormalTok{ push }
 \end{Highlighting}
 \end{Shaded}
 
-Wenn nun ein Anwender das Repo clont, kann er sofort aktiv damit
-arbeiten
+\samplestart
+
+\textbf{Hinweis}\\
+Sollte der git-Server nicht auf Port 22 laufen, so ist der Aufruf etwas
+anders:
+
+\begin{verbatim}
+git clone ssh:<ip>:port/tmp/projekt.git
+\end{verbatim}
+
+\sampleend
+
+Ein \cmd{git status} zeigt dir, dass du (trotz Umbenennung auf dem
+Server) auf dem Branch \branch{master} bist. Das ist also eine
+Client-Einstellung!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main  }\CommentTok{\# WICHTIG}
+\BuiltInTok{echo} \StringTok{"Welcome"} \OperatorTok{\textgreater{}}\NormalTok{ README.txt }
+\FunctionTok{git}\NormalTok{ add README.txt }
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Initial"}
+\FunctionTok{git}\NormalTok{ push }\AttributeTok{{-}u}\NormalTok{ origin main}
+\end{Highlighting}
+\end{Shaded}
+
+Wenn nun ein Anwender das Repository clont, kann er sofort aktiv mit dem
+richtigen Banch arbeiten.
 
 \subsection{Gitlab}\label{gitlab-1}
 

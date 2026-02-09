@@ -1,0 +1,55 @@
+## Überlegungen allgemein
+Ein einfacher \git-Server ist lediglich ein Server mit 
+einer rudimentären Installation von \git und einer 
+Erreichbarkeit über das Netz. Da gerade diese Erreichbarkeit
+bei Windows ein Problem darstellt, handelt es sich
+im Regelfall um einen Linux-Server. Als solcher besitzt 
+er üblicherweise kein grafisches Benutzerinterface (GUI).
+
+Je nach Szenario müssen auf dem Server Benutzer angelegt 
+und verwaltet werden. Das kann ziemlich aufwändig sein 
+und ist bei größeren Benutzerzahlen ohne Scripting kaum
+machbar. Es gibt Hilfsmittel in Form von Weboberflächen,
+die hier aber nicht weiter thematisiert werden.
+
+Für einen reinen \gitserver genügt allerdings bereits ein 
+einziger Bunutzer -- z.B. \git.
+
+
+**Zweck des Servers**  
+Geht es nur um \git oder sollen noch Wordpress, VPN-Server, ... 
+dazu kommen. Für jedes Szenario wird die endgültige Konfiguration anders
+aussehen.
+
+**Wer nutzt den Server**  
+Müssen auch andere Lehrkräfte (administrativen) Zugriff 
+auf den Server besitzen? Werden Gruppen benötigt?
+
+**Rolle der Benutzer**  
+Sollen die Benutzer nur für die Verwendung von \git angelegt und
+konfiguriert werden, oder sollen sie *vollwertige* 
+Benutzer sein, die den Server auch in anderen Szenarien
+sinnvoll nutzen dürfen?
+
+**Benennung der Benutzer**  
+Sollen die Schüler mit Zugangsdaten versehen werden, 
+die ihren Namen widerspiegeln -- Probleme siehe unten --
+oder sollen Zugänge im Sinne von `user1` bis `user20`
+verwendet werden?
+
+Bei Verwendung von richtigen Namen entstehen folgende Probleme:
+
+* Sonderzeichen in den richtigen Namen erschweren das automatische 
+  Erstellen von Benutzernamen.
+* Verschiedene Namen können den gleichen Login ergeben.
+* Behandlung von Schülern mit gleichen Namen in 
+  gleichen / verschiedenen Klassen
+
+Die Variante mit `user1` bis `user20` ist unpersönlich, leichter 
+einzurichten, erschwert dem Lehrer aber eventuell eine Zuordnung 
+zum echten Schüler.
+
+Hierfür gibt es keine perfekte Lösung.
+
+
+

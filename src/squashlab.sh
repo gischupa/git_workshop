@@ -7,6 +7,8 @@ fi
 
 git init squashlab
 cd squashlab
+git branch -m main
+
 
 echo "start" > hauptdatei.txt
 git add . hauptdatei.txt
