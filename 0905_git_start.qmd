@@ -1,5 +1,15 @@
 ## Wie beginnt man mit einem neuen Repository
 
+Ganz allgemein kann man sagen, dass hier immer noch Inkonsistenzen 
+zwischen verschiedenen Versionen von \git existieren. In manchen 
+Fällen müssen Branches umbenannt werden, in anderen nicht.  
+Ich habe diese Anleitung bereits mehrfach umgeschrieben, weil 
+sich das Verhalten zwischenzeitlich minimal geändert hat.  
+
+Das nachfolgende Verfahren sollte aber in jedem Fall 
+funktionieren, auch wenn manche Schritte überflüssig sein 
+können.
+
 ### Reiner Git-Server (nicht GitLab)
 
 Auf dem Server kannst du auf zwei Varianten ein 
@@ -39,7 +49,12 @@ cd projekt   # kommt ohne .git an
 Sollte der git-Server nicht auf Port 22 laufen, so ist der 
 Aufruf etwas anders:
 
-    git clone ssh:<ip>:port/tmp/projekt.git
+```bash
+git clone ssh://<ip>:port/tmp/projekt.git
+
+# oder 
+git clone ssh://benutzer@<ip>:port/tmp/projekt.git
+```
 
 \sampleend
 
@@ -72,7 +87,10 @@ Wovon ich dringend abrate, ist folgende Variante:
 * Das Server-Repository im lokalen Repository als *remote* eintragen
 
 ```bash
-git remote add origin ssh://server/../../projekt.git
+git remote add origin benutzer@<ip>:/pfad/zum/projekt.git
+
+# bei abweichendem Port 
+git remote add origin ssh://benutzer@<ip>:25/pfad/zum/projekt.git
 ```
 
 Natürlich geht das im Prinzip, hängt aber im Detail wieder von 
@@ -91,13 +109,17 @@ Das Force kann entfallen, wenn das neu erzeugte Repository auf dem Server
 noch komplett neu und ohne Inhalt ist!
 
 Du siehst also, es gibt eine ganze Menge von Varianten mit 
-untschiedlichem Vorgehensweise. In meinen Augen ist es am sinnvollsten,
+untschiedlichen Vorgehensweise. In meinen Augen ist es am sinnvollsten,
 wenn man direkt mit einem Server-Repository beginnt und sich ein 
 lokales Repository clont.
 
 Einen Fall möchte ich noch erwähnen, wenn man zwar schon einige Zeit mit 
 \git lokal gearbeitet hat, aber keine wertvollen Commits oder Branches 
 in seiner History vorliegen hat. Es ist dann eine Option, den kompletten Quellcode 
-einfach in ein frisches Server-Repository zu kopieren.
+einfach in ein frisch geclontes Server-Repository zu kopieren.
 
+### GitLab / GitHub
 
+Wenn du ein Repository auf einer dieser Plattformen erstellst, dann 
+kannst du sofort mit der geclonten Version arbeiten, falls du dort 
+automatisch eine README erstellen lässt.

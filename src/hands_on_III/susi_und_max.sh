@@ -1,29 +1,27 @@
 #!/bin/bash
 
+IP=192.168.3.154
 # Putzen früherer Versuche
-  rm -rf labor2
+ssh benutzer@$IP '
+rm -rf entfernt.git
 
-# Anlegen des Labor-Ordners
-mkdir labor2
-cd labor2
-
-# "Server" Repository erstellen
 git init --bare entfernt.git
 cd entfernt.git
 git branch -m main
-cd ..
+'
 
 # Nützliche Variablen
-ARBEIT=$PWD  # aktuellen Pfad merken 
+ARBEIT=/tmp  # aktuellen Pfad merken 
 SUSI=$ARBEIT/susi  # Abkürzungen für den Überblick  
 MAX=$ARBEIT/max
 
 ####### Vorbereitung
 # Hier wird eine Datei ins Server-repo aufgenommen
 # indem vorübergehend ein weiteres Repo erstellt wird.
-git clone $ARBEIT/entfernt vorbereitung
+git clone benutzer@${IP}/entfernt.git vorbereitung
 cd vorbereitung
-echo "Hi" > README.md
+git branch -m main
+echo "Welcome" > README.md
 git add README.md
 git commit -m "Init"
 git push -u origin main
@@ -31,6 +29,8 @@ cd ..
 rm -rf vorbereitung
 ###### Ende Vorbereitung #######
 
-git clone $ARBEIT/entfernt susi 
-git clone $ARBEIT/entfernt max   
+cd /tmp
+rm -rf susi max
+git clone benutzer@$IP/entfernt.git susi 
+git clone benutzer@$IP/entfernt.git max   
 

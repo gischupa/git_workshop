@@ -1,29 +1,26 @@
 % Options for packages loaded elsewhere
-% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
-  ngerman,
   letterpaper,
   DIV=11]{scrreprt}
-\usepackage{xcolor}
+
 \usepackage{amsmath,amssymb}
-\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
+\ifPDFTeX\else  
+    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -41,6 +38,9 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -106,7 +106,8 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
-\usepackage{longtable,booktabs,array}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -131,8 +132,6 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
-
-
 % definitions for citeproc citations
 \NewDocumentCommand\citeproctext{}{}
 \NewDocumentCommand\citeproc{mm}{%
@@ -166,29 +165,6 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
-
-\ifLuaTeX
-\usepackage[bidi=basic]{babel}
-\else
-\usepackage[bidi=default]{babel}
-\fi
-% get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
-\def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage[german]{selnolig} % disable illegal ligatures
-\fi
-
-
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-
-
- 
-
 
 % load packages
 \usepackage{geometry}
@@ -305,6 +281,12 @@
 \newcommand{\elarge}{\end{adjustwidth}}
 \newcommand{\bcenter}{\begin{center}}
 \newcommand{\ecenter}{\end{center}}
+\usepackage{titlesec}
+\titleformat{\paragraph}
+  {\normalfont\normalsize\bfseries}
+  {\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+  {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 \KOMAoption{captions}{tableheading}
 \makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
@@ -360,7 +342,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, colback={codebgcolor}, enhanced, frame hidden, sharp corners, breakable]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, breakable, boxrule=0pt, frame hidden, colback={codebgcolor}, enhanced]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -368,9 +350,23 @@
         \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
           \node[shape=circle,draw,inner sep=1pt] (char) {{\scriptsize#1}};}}  
                   
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{ngerman}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage[german]{selnolig} % disable illegal ligatures
+\fi
 \usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
+\urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Git Workshop},
   pdfauthor={Wolfgang Höfer},
@@ -386,6 +382,7 @@
 \title{Git Workshop}
 \author{Wolfgang Höfer}
 \date{2025-10-04}
+
 \begin{document}
 \maketitle
 
@@ -597,7 +594,7 @@ dem Server begrüßt:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{benutzer\#}\OperatorTok{\textgreater{}}
+\ExtensionTok{benutzer@ubu:\textasciitilde{}$}
 \end{Highlighting}
 \end{Shaded}
 
@@ -623,12 +620,12 @@ sich. Nun kannst du administrative Arbeiten erledigen.
 \end{Highlighting}
 \end{Shaded}
 
-In regelmäßigen Abständen sollte auch ein Komplettupgrade des Systems
-laufen, um z.B. Sicherheitslücken zu schließen und \emph{alle} Programme
-zu aktualisieren\footnote{vgl. Windows \ldots{} hier muss jedes Programm
-  einzeln aktualisiert werden!} Da auf deinem Server eine komplett neue
-Installation von DVD ist, kann einiges veraltet sein -- also führst du
-aus:
+In regelmäßigen Abständen sollte auch ein Komplett-Upgrade des Systems
+laufen, um zum Beispiel Sicherheitslücken zu schließen und \emph{alle}
+Programme zu aktualisieren\footnote{vgl. Windows \ldots{} hier muss
+  jedes Programm einzeln aktualisiert werden!} Da auf deinem Server eine
+komplett neue Installation von DVD ist, kann einiges veraltet sein --
+also führst du aus:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -719,26 +716,29 @@ mit den Schülern \git verwenden willst, müssen die Schüler auch Zugriff
 auf den Server haben. Es ist zwar generell möglich, Daten anonym vom
 Server abzuholen (=clone, pull), aber ein Speichern ist dann nicht
 möglich (push). Aus diesem Grund muss für die Schüler eine
-Zugriffsmöglichkeit geschaffen werden. Wenn wir später mit GitLab
-arbeiten, dann ist das komplett anders!
+Zugriffsmöglichkeit geschaffen werden\footnote{Wenn wir später mit
+  GitLab arbeiten, dann ist das komplett anders!}.
 
 Der einfachste -- aber für alle Beteiligten unkomfortabelste -- Weg ist
-für alle Beteiligten das anlegen eines echten Benutzeraccounts mit
-Kennwort\footnote{Das ist durchaus sinnvoll, wenn mit den Schülern auch
-  andere Techniken als \git geübt werden sollen!}.
+das Anlegen von vollwertigen Benutzeraccounts mit Kennwort\footnote{Das
+  ist durchaus sinnvoll, wenn mit den Schülern auch andere Techniken als
+  \git geübt werden sollen!}.
+
+\subsubsection{Ein einziger Benutzer
+git}\label{ein-einziger-benutzer-git}
 
 Wir werden das System so einrichten, dass alle Benutzer mit dem gleichen
 Login arbeiten. Das klingt auf den ersten Blick gefährlich oder
 fahrlässig, aber wir sichern das natürlich ab!
 
-An dieser Stelle trifft Theorie auf Praxis. Damit die Schüler einen
-Zugriff auf den Server bekommen (eigentlich nur auf \git) ohne das
-Kennwort des gemeinsamen Benutzers kennen zu müssen, verwenden wir RSA,
-d.h. jeder Schlüssel braucht einen privaten und einen öffentlichen
-Schlüssel. Die öffentlichen Schlüssel der Schüler werden vom Lehrer als
-Berechtigt eingetragen.
+An dieser Stelle trifft Theorie (Thema Codierung und Verschlüsselung)
+auf Praxis. Damit die Schüler einen Zugriff auf den Server bekommen
+(eigentlich nur auf \git) ohne das Kennwort des gemeinsamen Benutzers
+kennen zu müssen, verwenden wir RSA, d.h. jeder Schlüssel braucht einen
+privaten und einen öffentlichen Schlüssel. Die öffentlichen Schlüssel
+der Schüler werden vom Lehrer als berechtigt eingetragen.
 
-\subsubsection{Schlüssel erzeugen}\label{schluxfcssel-erzeugen}
+\paragraph{Schlüssel erzeugen}\label{schluxfcssel-erzeugen}
 
 Das dürfte in dem gesamten Prozess die Schlüsselstelle sein, da hier die
 Schüler eigenständig tätig werden müssen. Ein zusätzliches Problem ist,
@@ -790,18 +790,19 @@ Dateiendungen ausgeblendet sein können!
 
 Im Prinzip genügt in vielen Fällen ein kürzerer Schlüssel, aber einige
 Plattformen (z.B. Gitea) erwarten diese Schlüssellänge.\\
-Je nach perönlichem Vertrauen kann auch ein Online-Schlüsselgenerator
+Je nach persönlichem Vertrauen kann auch ein Online-Schlüsselgenerator
 verwendet werden:
 
 \url{https://cryptotools.net/rsagen}\strut \\
 (Die \emph{einige Sekunden} sind durchaus deutlich mehr Sekunden, wenn
 man eine Schlüssellänge von 4096 Bit wählt!)
 
-Der Inhalt der (öffentlichen) Schlüsseldateien müssen dann in einer
-Datei mit dem Namen \datei{authorized\_keys} gesammelt und im Ordner des
-\git-Benutzers abgelegt werden.
+Die Inhalte der (öffentlichen) Schlüsseldateien der Schüler müssen dann
+in einer Datei mit dem Namen \datei{authorized\_keys} gesammelt und im
+Ordner des \git-Benutzers abgelegt werden. Die Datei muss dann auch noch
+die passende Berechtungen erhalten!
 
-\subsubsection{Schlüssel eintragen}\label{schluxfcssel-eintragen}
+\paragraph{Schlüssel eintragen}\label{schluxfcssel-eintragen}
 
 Der einfachste Weg besteht wohl darin, sämtliche Schlüsseldateien nach
 Einsendeschluss gesammelt auf den Server zu kopieren und sie dann durch
@@ -818,27 +819,28 @@ ein kleines Script in die \datei{authorized\_keys} zu übertragen.
 
 \textbf{Schritt 2: Dateien übertragen}\\
 Hier kommt das Protokoll SCP zum Einsatz. Unter Windows ist es sinnvoll,
-das grafische Programm \emph{WinSCP} (kostenlos, keine Installation
-nötig für portable Edition) zu verwenden.
+das grafische Programm \emph{WinSCP} zu verwenden. Es ist kostenlos und
+erfordert keine Installation (protable Edition).
 
 \texttt{https://winscp.net/download/WinSCP-6.5.4-Portable.zip/download}
 
-Nach dem Aufruf hat man eine Oberfläche, die an den Explorer erinnert.
-Nach der Anmeldung über ssh auf dem Server ist die eine Fensterhälfte
-der lokale Rechner, die andere Fensterhälft der Server. Dateien können
-über Drag and Drop kopier werden.
+Nach dem Entpacken und Starten hat man eine Oberfläche, die an den
+Explorer erinnert. Die Anmeldung erfolgt im Hintergrund wieder über ssh.
+Nach der Anmeldung ist die eine Fensterhälfte der lokale Rechner, die
+andere Fensterhälft der Server. Dateien können über Drag and Drop
+kopiert werden.
 
 Kopiere die `\emph{pub} Dateien in den Ordner \ordner{/home/git}.
 
 \textbf{Schritt 3: Dateien zusammenführen}\\
-Gib auf der Kommandozeile des Servers folgende Befehlsabfolge ein:
+Gib auf der Kommandozeile des Servers folgende Befehlsfolge ein:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{cd}\NormalTok{ /home/git }
 \FunctionTok{ls} \PreprocessorTok{*}\NormalTok{.pub   }\CommentTok{\# Nur zur Kontrolle, ob die Dateien da sind.}
 
-\ControlFlowTok{for}\NormalTok{ i }\KeywordTok{in} \VariableTok{$(}\FunctionTok{ls} \PreprocessorTok{*}\NormalTok{pub}\VariableTok{)}\KeywordTok{;} \ControlFlowTok{do} \FunctionTok{cat} \VariableTok{$i} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ .ssh/authorized\_keys}\KeywordTok{;} \ControlFlowTok{done}
+\FunctionTok{cat} \PreprocessorTok{*}\NormalTok{.pub }\OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ \textasciitilde{}/.ssh/authorized\_keys}
 \end{Highlighting}
 \end{Shaded}
 
@@ -861,6 +863,79 @@ Löschen der Dateien
 
 Ab jetzt steht einer Verwendung von \git über die Kommandozeile nichts
 mehr im Weg.
+
+\subsubsection{Individuelle Benutzer}\label{individuelle-benutzer}
+
+Das hier verwendete Verfahren erstellt eine andere Art von Benutzer,
+weil Benutzer-IDs größer 1000 verwendet werden. Der vorher angelegte
+Benutzer \git  war ein System-Benutzer mit einer kleineren ID.
+
+Um einen Benutzer anzulegen können zwei etwas unterschiedliche Befehle
+verwendet werden:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{adduser} führt zu einer interaktiven Eingabe von Daten
+\item
+  \texttt{useradd} zur Verwendung von Scripten
+\end{itemize}
+
+\textbf{adduser}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{adduser}\NormalTok{ demouser}
+
+\CommentTok{\# Interaktion}
+\ExtensionTok{info:}\NormalTok{ Adding user }\KeywordTok{\textasciigrave{}}\ExtensionTok{demouser}\StringTok{\textquotesingle{} ...}
+\StringTok{info: Selecting UID/GID from range 1000 to 59999 ...}
+\StringTok{info: Adding new group \textasciigrave{}demouser\textquotesingle{}} \ErrorTok{(}\ExtensionTok{1002}\KeywordTok{)} \ExtensionTok{...}
+\ExtensionTok{info:}\NormalTok{ Adding new user }\KeywordTok{\textasciigrave{}}\NormalTok{demouser}\StringTok{\textquotesingle{} (1002) with group \textasciigrave{}demouser (1002)\textquotesingle{}}\NormalTok{ ...}
+\ExtensionTok{info:}\NormalTok{ Creating home directory }\KeywordTok{\textasciigrave{}}\ExtensionTok{/home/demouser}\StringTok{\textquotesingle{} ...}
+\StringTok{info: Copying files from \textasciigrave{}/etc/skel\textquotesingle{}}\NormalTok{ ...}
+\ExtensionTok{New}\NormalTok{ password: }
+\ExtensionTok{Retype}\NormalTok{ new password: }
+\ExtensionTok{passwd:}\NormalTok{ password updated successfully}
+\ExtensionTok{Changing}\NormalTok{ the user information for demouser}
+\ExtensionTok{Enter}\NormalTok{ the new value, or press ENTER for the default}
+    \ExtensionTok{Full}\NormalTok{ Name []: }
+    \ExtensionTok{Room}\NormalTok{ Number []: }
+    \ExtensionTok{Work}\NormalTok{ Phone []: }
+    \ExtensionTok{Home}\NormalTok{ Phone []: }
+    \ExtensionTok{Other}\NormalTok{ []: }
+\ExtensionTok{Is}\NormalTok{ the information correct}\PreprocessorTok{?} \PreprocessorTok{[}\SpecialStringTok{Y/n}\PreprocessorTok{]}\NormalTok{ y}
+\ExtensionTok{info:}\NormalTok{ Adding new user }\KeywordTok{\textasciigrave{}}\NormalTok{demouser}\StringTok{\textquotesingle{} to supplemental / extra groups \textasciigrave{}users\textquotesingle{}}\NormalTok{ ...}
+\ExtensionTok{info:}\NormalTok{ Adding user }\KeywordTok{\textasciigrave{}}\ExtensionTok{demouser}\StringTok{\textquotesingle{} to group \textasciigrave{}users\textquotesingle{}}\NormalTok{ ...}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{useradd}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{useradd} \AttributeTok{{-}m}\NormalTok{ demouser2 }\AttributeTok{{-}s}\NormalTok{ /bin/bash }
+
+\CommentTok{\# danach}
+\FunctionTok{passwd}\NormalTok{ demouser2  }\CommentTok{\# 2x Eingabeaufforderung folgt}
+\end{Highlighting}
+\end{Shaded}
+
+Als Script:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#!/bin/bash}
+
+\VariableTok{PASSWORT}\OperatorTok{=}\StringTok{"gitkurs"}
+
+\ControlFlowTok{for}\NormalTok{ i }\KeywordTok{in} \DataTypeTok{\{}\DecValTok{1}\DataTypeTok{..}\DecValTok{30}\DataTypeTok{\}}\KeywordTok{;} \ControlFlowTok{do}
+  \VariableTok{USER}\OperatorTok{=}\StringTok{"benutzer\_}\VariableTok{$i}\StringTok{"}
+  \ExtensionTok{useradd} \AttributeTok{{-}m} \StringTok{"}\VariableTok{$USER}\StringTok{"}
+  \BuiltInTok{echo} \StringTok{"}\VariableTok{$USER}\StringTok{:}\VariableTok{$PASSWORT}\StringTok{"} \KeywordTok{|} \ExtensionTok{chpasswd}
+\ControlFlowTok{done}
+\end{Highlighting}
+\end{Shaded}
 
 \bookmarksetup{startatroot}
 
@@ -2451,7 +2526,7 @@ folgenden Befehl verwenden:
 
 Wechsle in das Buch-Fenster
 
-\phantomsection\label{annotated-cell-79}%
+\phantomsection\label{annotated-cell-82}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2484,7 +2559,7 @@ Empfohlener Befehl \cmd{git add story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-80}%
+\phantomsection\label{annotated-cell-83}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2539,7 +2614,7 @@ Für dich bedeutet das nun das Abarbeiten folgende Schritte:
   Checke den Status: \cmd{git status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-81}%
+\phantomsection\label{annotated-cell-84}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -2605,7 +2680,7 @@ erkennen:
 
 TODO: Neu aufbauen
 
-\phantomsection\label{annotated-cell-84}%
+\phantomsection\label{annotated-cell-87}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -4528,7 +4603,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-154}%
+\phantomsection\label{annotated-cell-157}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -6218,7 +6293,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-217}%
+\phantomsection\label{annotated-cell-220}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -6278,7 +6353,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-219}%
+\phantomsection\label{annotated-cell-222}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -6312,7 +6387,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-220}%
+\phantomsection\label{annotated-cell-223}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -6384,7 +6459,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-222}%
+\phantomsection\label{annotated-cell-225}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6858,7 +6933,7 @@ Automatismus bauen.
 \textbf{Verwende für die Einrückungen unbedingt Leerzeichen und keine
 Tabulatoren!}
 
-\phantomsection\label{annotated-cell-236}%
+\phantomsection\label{annotated-cell-239}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -6919,7 +6994,7 @@ Du siehst:
 Für unser Minibuch brauchen wir ein anderes Docker-Image und noch ein
 paar Erweiterungen in der Datei:
 
-\phantomsection\label{annotated-cell-238}%
+\phantomsection\label{annotated-cell-241}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}

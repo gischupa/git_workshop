@@ -72,7 +72,7 @@ Wenn alles geklappt hat, so wirst du vom Eingabepromt des Terminals
 auf dem Server begrüßt:
 
 ```bash
-benutzer#>
+benutzer@ubu:~$
 ```
 
 ### Installieren von Git
@@ -92,8 +92,8 @@ Nun kannst du administrative Arbeiten erledigen.
 apt update
 ```
 
-In regelmäßigen Abständen sollte auch ein Komplettupgrade des Systems laufen, um 
-z.B. Sicherheitslücken zu schließen und *alle* Programme zu aktualisieren^[vgl. Windows ... hier muss jedes 
+In regelmäßigen Abständen sollte auch ein Komplett-Upgrade des Systems laufen, um 
+zum Beispiel Sicherheitslücken zu schließen und *alle* Programme zu aktualisieren^[vgl. Windows ... hier muss jedes 
 Programm einzeln aktualisiert werden!]
 Da auf deinem Server eine komplett neue Installation von DVD ist, kann einiges 
 veraltet sein -- also führst du aus:
@@ -174,25 +174,29 @@ mit den Schülern \git verwenden willst, müssen die Schüler auch Zugriff
 auf den Server haben. Es ist zwar generell möglich, Daten anonym vom Server 
 abzuholen (=clone, pull), aber ein Speichern ist dann nicht möglich (push).
 Aus diesem Grund muss für die Schüler eine Zugriffsmöglichkeit geschaffen 
-werden. Wenn wir später mit GitLab arbeiten, dann ist das komplett anders!
+werden^[Wenn wir später mit GitLab arbeiten, dann ist das komplett anders!].
 
 Der einfachste -- aber für alle Beteiligten unkomfortabelste -- Weg ist 
-für alle Beteiligten das anlegen eines echten Benutzeraccounts mit 
+das Anlegen von vollwertigen Benutzeraccounts mit 
 Kennwort^[Das ist durchaus sinnvoll, wenn mit den Schülern auch andere 
 Techniken als \git geübt werden sollen!].  
+
+
+#### Ein einziger Benutzer git
 
 Wir werden das System so einrichten, dass alle Benutzer mit dem gleichen
 Login arbeiten. Das klingt auf den ersten Blick gefährlich oder fahrlässig, 
 aber wir sichern das natürlich ab!
 
-An dieser Stelle trifft Theorie auf Praxis. Damit die Schüler einen 
+An dieser Stelle trifft Theorie (Thema Codierung und Verschlüsselung) auf Praxis. Damit die Schüler einen 
 Zugriff auf den Server bekommen (eigentlich nur auf \git) ohne das 
 Kennwort des gemeinsamen Benutzers kennen zu müssen, verwenden wir 
 RSA, d.h. jeder Schlüssel braucht einen privaten und einen öffentlichen 
 Schlüssel. Die öffentlichen Schlüssel der Schüler werden vom Lehrer 
-als Berechtigt eingetragen.
+als berechtigt eingetragen.
 
-#### Schlüssel erzeugen
+##### Schlüssel erzeugen
+
 Das dürfte in dem gesamten Prozess die Schlüsselstelle sein, da hier die 
 Schüler eigenständig tätig werden müssen. Ein zusätzliches Problem ist, 
 dass die Schüler an unterschiedlichen Geräten arbeiten -- zuhause, 
@@ -233,15 +237,16 @@ dass je nach Konfiguration die Dateiendungen ausgeblendet sein können!
 
 Im Prinzip genügt in vielen Fällen ein kürzerer Schlüssel, aber einige Plattformen (z.B. Gitea)
 erwarten diese Schlüssellänge.  
-Je nach perönlichem Vertrauen kann auch ein Online-Schlüsselgenerator verwendet werden:
+Je nach persönlichem Vertrauen kann auch ein Online-Schlüsselgenerator verwendet werden:
 
 [https://cryptotools.net/rsagen](https://cryptotools.net/rsagen)  
 (Die *einige Sekunden* sind durchaus deutlich mehr Sekunden, wenn man eine Schlüssellänge von 4096 Bit wählt!)
 
-Der Inhalt der (öffentlichen) Schlüsseldateien müssen dann in einer Datei mit dem Namen \datei{authorized\_keys} 
-gesammelt und im Ordner des \git-Benutzers abgelegt werden.
+Die Inhalte der (öffentlichen) Schlüsseldateien der Schüler müssen dann in einer Datei mit dem Namen \datei{authorized\_keys} 
+gesammelt und im Ordner des \git-Benutzers abgelegt werden. Die Datei muss dann auch 
+noch die passende Berechtungen erhalten!
 
-#### Schlüssel eintragen
+##### Schlüssel eintragen
 
 Der einfachste Weg besteht wohl darin, sämtliche Schlüsseldateien nach Einsendeschluss gesammelt auf den 
 Server zu kopieren und sie dann durch ein kleines Script in die \datei{authorized\_keys} zu übertragen.
@@ -255,24 +260,23 @@ adduser --system --shell /usr/bin/git-shell --home /home/git \
 
 **Schritt 2: Dateien übertragen**  
 Hier kommt das Protokoll SCP zum Einsatz. Unter Windows ist es sinnvoll, das grafische Programm
-*WinSCP* (kostenlos, keine Installation nötig für portable Edition) zu verwenden.
+*WinSCP* zu verwenden. Es ist kostenlos und erfordert keine Installation (portable Edition).
 
 `https://winscp.net/download/WinSCP-6.5.4-Portable.zip/download`
 
-Nach dem Aufruf hat man eine Oberfläche, die an den Explorer erinnert. Nach der Anmeldung über
-ssh auf dem Server ist die eine Fensterhälfte der lokale Rechner, die andere Fensterhälft der 
-Server. Dateien können über Drag and Drop kopier werden.
+Nach dem Entpacken und Starten hat man eine Oberfläche, die an den Explorer erinnert. Die Anmeldung erfolgt im Hintergrund wieder über ssh. Nach der Anmeldung ist die eine Fensterhälfte der lokale Rechner, die andere Fensterhälft der 
+Server. Dateien können über Drag and Drop kopiert werden.
 
 Kopiere die `*pub* Dateien in den Ordner \ordner{/home/git}.
 
 **Schritt 3: Dateien zusammenführen**  
-Gib auf der Kommandozeile des Servers folgende Befehlsabfolge ein:
+Gib auf der Kommandozeile des Servers folgende Befehlsfolge ein:
 
 ```bash
 cd /home/git 
 ls *.pub   # Nur zur Kontrolle, ob die Dateien da sind.
 
-for i in $(ls *pub); do cat $i >> .ssh/authorized_keys; done
+cat *.pub >> ~/.ssh/authorized_keys
 ```
 
 \samplestart
@@ -290,4 +294,75 @@ rm *.pub
 ```
 
 Ab jetzt steht einer Verwendung von \git über die Kommandozeile nichts mehr im Weg.
+
+#### Individuelle Benutzer
+
+Das hier verwendete Verfahren erstellt eine andere Art von Benutzer, weil 
+Benutzer-IDs größer 1000 verwendet werden. Der vorher angelegte Benutzer \git 
+war ein System-Benutzer mit einer kleineren ID.
+
+Um einen Benutzer anzulegen, können zwei etwas unterschiedliche Befehle verwendet werden:
+
+* `adduser` -- führt zu einer interaktiven Eingabe von Daten
+* `useradd` -- zur Verwendung von Scripten
+
+**adduser**
+
+```bash
+adduser demouser
+
+# Interaktion
+info: Adding user `demouser' ...
+info: Selecting UID/GID from range 1000 to 59999 ...
+info: Adding new group `demouser' (1002) ...
+info: Adding new user `demouser' (1002) with group `demouser (1002)' ...
+info: Creating home directory `/home/demouser' ...
+info: Copying files from `/etc/skel' ...
+New password: 
+Retype new password: 
+passwd: password updated successfully
+Changing the user information for demouser
+Enter the new value, or press ENTER for the default
+	Full Name []: 
+	Room Number []: 
+	Work Phone []: 
+	Home Phone []: 
+	Other []: 
+Is the information correct? [Y/n] y
+info: Adding new user `demouser' to supplemental / extra groups `users' ...
+info: Adding user `demouser' to group `users' ...
+```
+
+**useradd**
+
+```bash
+useradd -m demouser2 -s /bin/bash 
+
+# danach
+passwd demouser2  # 2x Eingabeaufforderung folgt
+```
+
+Als Script:
+
+```bash
+#!/bin/bash
+
+PASSWORT="gitkurs"
+
+for i in {1..30}; do
+  USER="benutzer_$i"
+  useradd -m "$USER"
+  echo "$USER:$PASSWORT" | chpasswd
+done
+```
+
+In diesem Fall bietet es sich an, dass jeder Benutzer seinen public-Key in 
+seinem eigenen Account auf dem Server hinterlegt:
+
+```bash
+# Auf dem Client:
+ssh-keygen -t rsa -b 4096
+
+ssh-copy-id -i .ssh/id_rsa.pub benutzer@<IP>
+```
 
