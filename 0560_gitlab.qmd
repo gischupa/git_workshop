@@ -3,8 +3,30 @@
 Diese Software ist etwas schwergewichtiger als \gitea,
 aber ebenso problemlos zu installieren. Auch hier stellt 
 stellt sich allerdings die Frage nach dem zu verwendenden 
-ssh-Port z.B. zum Clonen. Auf dem Testsystem ist der ssh-Port 
-ja bereits auf 23 umgestellt, damit können wir den Dafault lassen.
+ssh-Port z.B. zum Clonen. Ich selbst habe den ssh-Port des 
+Servers auf 23 umgestellt, damit \gitlab die 22 verwenden kann.
+
+## Umstellen des Ports
+
+Melde dich auf dem Server an und werde *root*.
+Suche in der Datei `/etc/ssh/sshd_config` nach der 
+Zeile **# Port 22** (Auskommentiert). Entferne den 
+Kommentar und ersetze 22 durch 23. (Speichern nicht vergessen!)
+
+**WICHTIG WICHTIG WICHTIG**
+Vergiss nicht, auf der Firewall auch Port 23 freizuschalten:
+
+```bash
+ufw disable 
+ufw allow 23/tcp 
+ufw enable 
+ufw status verbose
+```
+
+Nun muss der Dienst neu gestartet werden. Bei den letzten Tests
+hat der Befehl `systemctl restart ssh` den Dienst aber nicht
+auf den anderen Port umgestellt (wegen laufender Verbindung?).
+Linux-untypisch war ein Reboot die Lösung (im Terminal `reboot` eingeben).
 
 ## Docker
 
@@ -27,16 +49,16 @@ services:
     hostname: '192.168.3.181'  # Im Netz 'gitlab.server.de'
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://182.168.3.181:443'   # im Netz ...
+        external_url 'http://182.168.3.181:443' # im Netz https
         gitlab_rails['gitlab_shell_ssh_port'] = 22
     ports:
-      - '25:22'  # DAS müssen wir noch testen
+      - '22:22'  # 25:22 falls 22 nicht auf 23 umgestellt
       - '80:80'
       - '443:443'
     volumes:
-      - /srv/docker/gitlab25/config:/etc/gitlab
-      - /srv/docker/gitlab25/logs:/var/log/gitlab
-      - /srv/docker/gitlab25/data:/var/opt/gitlab
+      - ./config:/etc/gitlab
+      - ./logs:/var/log/gitlab
+      - ./data:/var/opt/gitlab
     shm_size: '256m'
     networks:
       - gitlab_net
@@ -46,44 +68,112 @@ networks:
     external: true
 ```
 
+Das Netz für \gitlab muss explizit angelegt werden,
+da es *external* ist:
 
-TODO: testen der Portkonfiguration für ssh
-TODO: Welches Netz verwenden?
+```bash
+docker network create gitlab_net 
+```
 
-Aus dem Ordner heraus wie üblich ausführen 
+Nun dem Ordner heraus ausführen 
 
 ```bash
 docker compose up --build
 ```
 
-Hier ist nun eine längere Kaffepause angebracht!
+Hier ist nun eine längere Kaffepause angebracht!  
+Das *länger* ist im Sinne von 20 Minuten+ gemeint und hängt
+stark vom verfügbaren Hauptspeicher ab. Mit 2GB bin ich an die 
+Wand gelaufen und musste im Nachhinein Auslagerungsspeicher 
+zur Verfügung stellen. Hier ist die Code-Sequenz, falls das bei dir 
+auch nötig werden sollte. Überwache den Speicherverbrauch in einem 
+zweiten Terminal mit dem Befehl \cmd{top}.  
+
+```bash
+sudo -i 
+fallocate -l 2G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+```
+
 
 Mit dem nachfolgenden Befehl kann das Erstkennwort 
 für \gitlab ausgelesen werden:
 
 ```bash
-cat config/initial_root_password
+sudo cat config/initial_root_password
 ```
 
 Damit ist eine Anmeldung als *root* auf der 
 Weboberfläche möglich. Hier muss nun auch sofort 
-das Kennwort geändert werden!
+das Kennwort geändert werden! Auch dort brauchst du 
+diese Zeichenkette erneut!
 
-Mit diesem docker-compose File ist ssh-clonen 
-über Port 25 möglich:
+Mit diesem docker-compose File ist ssh-clonen
+bereits möglich (sobald der ssh-Key im Profil hinterlegt ist). 
+Solltest du auf dem Host einen anderen Port 
+verwenden (gitlab arbeitet intern dennoch mit 22), dann clonst   
+du so (z.B. über Port 25):
 
 ```bash
 git clone ssh://git@192.168.3.181:25/root/demo.git
 ```
 
-... allerdings erst nach einigen Vorbereitungen!
+**Einstellungen auf dem Server**
 
 * Neues Kennwort setzen
 * Projekt demo.git erstellen
-* Den SSH-Key des Users in den eigenen Account eintragen
+* Deinen public-Key Account eintragen (das muss jeder Benutzer machen!)
 
 Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über 
 Konsole, GitClients, ... Weboberfläche.
 
-TODO: Noch detaillierter ausarbeiten
+## Einstieg in Gitlab
 
+Da für bestimmte Aspekte Bilder aussagekräftiger sind, wird dieser 
+Abschnitt deutlich bildlastig werden. An dieser Stelle sei noch 
+einmal betont, dass dieses Dokument eigentlich nicht für den Ausdruck 
+gedacht ist! In einer PDF-Datei ist die Anzahl der Seiten mit 
+Bildern ein geringeres ökoligisches Problem!
+
+### Anmeldung
+
+Wenn sich der root-Benutzer angemeldet hat, sollte er in seinem 
+Profil (rechts oben) ein neues Kennwort festlegen. Dafür wird erneut 
+das Einmalkennwort benötigt!
+
+Für lokale Versuche bietet es sich an, dass 2 Browser oder der 
+Inkognito-Modus verwendet werden, damit *root* und ein weiterer 
+Benutzer gleichzeitig angemeldet sein können.
+
+Ein weiterer Benutzer besitzt nach der Grundinstallation die 
+Möglichkeit, sich selbst auf der Plattform zu registrieren.
+Der diesbezügliche Dialog ist selbsterklärend und deshalb spare ich
+mir das Bild.  
+
+Nach der Registrierung ist allerdings noch keine Anmeldung am 
+System möglich -- sie muss erst von *root* freigeschaltet werden.
+
+![](bilder/gitlab/approve_1.png)
+
+![](bilder/gitlab/approve_2.png)
+
+![](bilder/gitlab/approve_3.png){width=7cm}
+![](bilder/gitlab/approve_4.png){width=7cm}
+
+![](bilder/gitlab/approve_5.png)
+
+Danach ist für den Benutzer die Anmeldung möglich und er kann eigene Projekte 
+erstellen. Am Startbildschirm erscheint auch ein Hinweis (mit Link), dass 
+noch ein ssh-Key eingetragen werden muss. Das ist natürlich nur nötig, wenn 
+von extern (Client) auf die Repos zugegriffen werden soll.
+
+\gitlab ist für einfache Szenarien relativ leicht zu überblicken, bei tiefergehender 
+Beschäftigung muss allerdings viel Zeit eingeplant werden. Aus diesem Grund 
+verzichte ich an dieser Stelle auf einen tieferen Einstieg. Das Anlegen eines 
+Repositories (=Projekts) ist relativ einfach, das Erstellen, Editieren und Committen 
+von Dateien ebenfalls. 
+
+Interessanter ist die Verwendung von \gitlab im Zusammenhang mit CICD, das das Thema des 
+nächsten Abschnitts ist.

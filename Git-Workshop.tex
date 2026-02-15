@@ -1,26 +1,29 @@
 % Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
+  ngerman,
   letterpaper,
   DIV=11]{scrreprt}
-
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else  
-    % xetex/luatex font selection
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -38,9 +41,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{xcolor}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -106,8 +106,7 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -132,6 +131,8 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
+
+
 % definitions for citeproc citations
 \NewDocumentCommand\citeproctext{}{}
 \NewDocumentCommand\citeproc{mm}{%
@@ -165,6 +166,29 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage[german]{selnolig} % disable illegal ligatures
+\fi
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
 
 % load packages
 \usepackage{geometry}
@@ -258,6 +282,7 @@
 \usepackage{changepage}
 \setlist[description]{style=nextline, leftmargin=2.5em}
 \newcommand{\cmd}[1]{\texttt{#1}\xspace}
+\newcommand{\menu}[1]{\texttt{#1}\xspace}
 \newcommand{\script}[1]{\texttt{#1}\xspace}
 \newcommand{\key}[1]{\texttt{#1}\xspace}
 \newcommand{\Git}{\textit{Git}\xspace}
@@ -342,7 +367,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, breakable, boxrule=0pt, frame hidden, colback={codebgcolor}, enhanced]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, breakable, boxrule=0pt, colback={codebgcolor}, enhanced, sharp corners]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -350,23 +375,9 @@
         \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
           \node[shape=circle,draw,inner sep=1pt] (char) {{\scriptsize#1}};}}  
                   
-
-\ifLuaTeX
-\usepackage[bidi=basic]{babel}
-\else
-\usepackage[bidi=default]{babel}
-\fi
-\babelprovide[main,import]{ngerman}
-% get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
-\def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage[german]{selnolig} % disable illegal ligatures
-\fi
 \usepackage{bookmark}
-
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same} % disable monospaced font for URLs
+\urlstyle{same}
 \hypersetup{
   pdftitle={Git Workshop},
   pdfauthor={Wolfgang Höfer},
@@ -382,7 +393,6 @@
 \title{Git Workshop}
 \author{Wolfgang Höfer}
 \date{2025-10-04}
-
 \begin{document}
 \maketitle
 
@@ -685,8 +695,8 @@ gehst nun in 2 Schritten vor:
 \ExtensionTok{ufw}\NormalTok{ default deny incoming}
 \ExtensionTok{ufw}\NormalTok{ default allow outgoing}
 
-\CommentTok{\# ssh erlaben}
-\ExtensionTok{ufw}\NormalTok{ limit 22/tcp}
+\CommentTok{\# ssh erlauben}
+\ExtensionTok{ufw}\NormalTok{ allow 22/tcp}
 
 \CommentTok{\# Firewall einschalten}
 \ExtensionTok{ufw}\NormalTok{ enable}
@@ -697,9 +707,10 @@ gehst nun in 2 Schritten vor:
 \samplestart
 
 \textbf{Hinweise}\\
-An Stelle von \emph{limit} könnte auch \emph{allow} stehen. Allerdings
+An Stelle von \emph{allow} könnte auch \emph{limit} stehen. Allerdings
 blockert \emph{limit} den Zugang für eine bestimmte Zeit, wenn zu viele
-gescheiterte Anmeldeversuche in kurzer Zeit vorliegen. \sampleend
+(gescheiterte) Anmeldeversuche in kurzer Zeit vorliegen. Das kann bei
+uns schon mal passieren! \sampleend
 
 \subsubsection{Probleme mit Ports}\label{probleme-mit-ports}
 
@@ -820,7 +831,7 @@ ein kleines Script in die \datei{authorized\_keys} zu übertragen.
 \textbf{Schritt 2: Dateien übertragen}\\
 Hier kommt das Protokoll SCP zum Einsatz. Unter Windows ist es sinnvoll,
 das grafische Programm \emph{WinSCP} zu verwenden. Es ist kostenlos und
-erfordert keine Installation (protable Edition).
+erfordert keine Installation (portable Edition).
 
 \texttt{https://winscp.net/download/WinSCP-6.5.4-Portable.zip/download}
 
@@ -870,15 +881,15 @@ Das hier verwendete Verfahren erstellt eine andere Art von Benutzer,
 weil Benutzer-IDs größer 1000 verwendet werden. Der vorher angelegte
 Benutzer \git  war ein System-Benutzer mit einer kleineren ID.
 
-Um einen Benutzer anzulegen können zwei etwas unterschiedliche Befehle
+Um einen Benutzer anzulegen, können zwei etwas unterschiedliche Befehle
 verwendet werden:
 
 \begin{itemize}
 \tightlist
 \item
-  \texttt{adduser} führt zu einer interaktiven Eingabe von Daten
+  \texttt{adduser} -- führt zu einer interaktiven Eingabe von Daten
 \item
-  \texttt{useradd} zur Verwendung von Scripten
+  \texttt{useradd} -- zur Verwendung von Scripten
 \end{itemize}
 
 \textbf{adduser}
@@ -934,6 +945,18 @@ Als Script:
   \ExtensionTok{useradd} \AttributeTok{{-}m} \StringTok{"}\VariableTok{$USER}\StringTok{"}
   \BuiltInTok{echo} \StringTok{"}\VariableTok{$USER}\StringTok{:}\VariableTok{$PASSWORT}\StringTok{"} \KeywordTok{|} \ExtensionTok{chpasswd}
 \ControlFlowTok{done}
+\end{Highlighting}
+\end{Shaded}
+
+In diesem Fall bietet es sich an, dass jeder Benutzer seinen public-Key
+in seinem eigenen Account auf dem Server hinterlegt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Auf dem Client:}
+\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096}
+
+\ExtensionTok{ssh{-}copy{-}id} \AttributeTok{{-}i}\NormalTok{ .ssh/id\_rsa.pub benutzer@}\OperatorTok{\textless{}}\NormalTok{IP}\OperatorTok{\textgreater{}}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2526,7 +2549,7 @@ folgenden Befehl verwenden:
 
 Wechsle in das Buch-Fenster
 
-\phantomsection\label{annotated-cell-82}%
+\phantomsection\label{annotated-cell-83}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2559,7 +2582,7 @@ Empfohlener Befehl \cmd{git add story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-83}%
+\phantomsection\label{annotated-cell-84}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2614,7 +2637,7 @@ Für dich bedeutet das nun das Abarbeiten folgende Schritte:
   Checke den Status: \cmd{git status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-84}%
+\phantomsection\label{annotated-cell-85}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -2680,7 +2703,7 @@ erkennen:
 
 TODO: Neu aufbauen
 
-\phantomsection\label{annotated-cell-87}%
+\phantomsection\label{annotated-cell-88}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -4344,8 +4367,8 @@ Stand zu haben.
 \end{scope}
 
 \draw(4.4,3.28) -- ++ (48:1.85);
-\draw(6.4,3.28) -- ++ (48:1.85);
-\draw(8.4,3.28) -- ++ (48:1.85);
+\draw[>=latex, ->](6.4,3.28) -- ++ (48:1.85);
+\draw[>=latex, ->](8.4,3.28) -- ++ (48:1.85);
 
 
 \end{tikzpicture}
@@ -4380,7 +4403,7 @@ Rechner simulieren. Dafür brauchst du:
   Ein Repository für eine Benutzerin Susi
 \end{itemize}
 
-Bevor wir diesen Setup umsetzen, müssen wir kurz den Begripp
+Bevor wir diesen Setup umsetzen, müssen wir kurz den Begriff
 \emph{origin} klären, der uns nun öfter begegnet! Für die einzelnen
 Schritte gibt es Scripts in den Kursmaterialien!
 
@@ -4483,16 +4506,14 @@ Der nachfolgende Setup erstellt
 \begin{itemize}
 \tightlist
 \item
-  einen Ordner
-\item
-  im Ordner ein vollwertiges Repository (--bare)
+  einen Repository auf dem Server
 \item
   eine lokale Kopie des Repositories mit dem Namen \emph{susi}
 \item
   eine lokale Kopie des Repositories mit dem Namen \emph{max}
 \end{itemize}
 
-Öffen in einem geeigneten Ordner eine \git-Bash und führe das Script
+Öffne in einem geeigneten Ordner eine \git-Bash und führe das Script
 \script{susi\_und\_max.sh} aus.
 
 Beachte, dass in dem Script im oberen Teil etwas Overhead nötig ist,
@@ -4504,39 +4525,44 @@ vorfinden:
 \begin{Highlighting}[]
 \CommentTok{\#!/bin/bash}
 
+\BuiltInTok{set} \AttributeTok{{-}x}
+
+\VariableTok{IP}\OperatorTok{=}\NormalTok{192.168.3.154}
 \CommentTok{\# Putzen früherer Versuche}
-  \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ labor2}
+\FunctionTok{ssh}\NormalTok{ benutzer@}\VariableTok{$IP} \StringTok{\textquotesingle{}}
+\StringTok{cd /home/benutzer}
+\StringTok{rm {-}rf entfernt.git}
 
-\CommentTok{\# Anlegen des Labor{-}Ordners}
-\FunctionTok{mkdir}\NormalTok{ labor2}
-\BuiltInTok{cd}\NormalTok{ labor2}
-
-\CommentTok{\# "Server" Repository erstellen}
-\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ entfernt.git}
-\BuiltInTok{cd}\NormalTok{ entfernt.git}
-\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
-\BuiltInTok{cd}\NormalTok{ ..}
+\StringTok{git init {-}{-}bare entfernt.git}
+\StringTok{cd entfernt.git}
+\StringTok{git branch {-}m main}
+\StringTok{\textquotesingle{}}
 
 \CommentTok{\# Nützliche Variablen}
-\VariableTok{ARBEIT}\OperatorTok{=}\VariableTok{$PWD}  \CommentTok{\# aktuellen Pfad merken }
+\VariableTok{ARBEIT}\OperatorTok{=}\NormalTok{/tmp  }\CommentTok{\# aktuellen Pfad merken }
 \VariableTok{SUSI}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/susi  }\CommentTok{\# Abkürzungen für den Überblick  }
 \VariableTok{MAX}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/max}
 
 \CommentTok{\#\#\#\#\#\#\# Vorbereitung}
 \CommentTok{\# Hier wird eine Datei ins Server{-}repo aufgenommen}
 \CommentTok{\# indem vorübergehend ein weiteres Repo erstellt wird.}
-\FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/entfernt vorbereitung}
+\FunctionTok{git}\NormalTok{ clone benutzer@}\VariableTok{$\{IP\}}\NormalTok{:/home/benutzer/entfernt.git vorbereitung}
 \BuiltInTok{cd}\NormalTok{ vorbereitung}
-\BuiltInTok{echo} \StringTok{"Hi"} \OperatorTok{\textgreater{}}\NormalTok{ README.md}
+\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
+\BuiltInTok{echo} \StringTok{"Welcome"} \OperatorTok{\textgreater{}}\NormalTok{ README.md}
 \FunctionTok{git}\NormalTok{ add README.md}
 \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Init"}
 \FunctionTok{git}\NormalTok{ push }\AttributeTok{{-}u}\NormalTok{ origin main}
 \BuiltInTok{cd}\NormalTok{ ..}
 \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ vorbereitung}
-\CommentTok{\#\#\#\#\#\# Ende Vorbereitung \#\#\#\#\#\#\#}
+\CommentTok{\#\#\#\#\#\# Ende Vorbereitung {-} löschen der lokalen Altlasten\#\#\#\#\#\#\#}
 
-\FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/entfernt susi }
-\FunctionTok{git}\NormalTok{ clone }\VariableTok{$ARBEIT}\NormalTok{/entfernt max   }
+\BuiltInTok{cd}\NormalTok{ /tmp}
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ susi max}
+\FunctionTok{git}\NormalTok{ clone benutzer@}\VariableTok{$IP}\NormalTok{:/home/benutzer/entfernt.git susi }
+\FunctionTok{git}\NormalTok{ clone benutzer@}\VariableTok{$IP}\NormalTok{:/home/benutzer/entfernt.git max   }
+
+\BuiltInTok{exit}\NormalTok{ 0}
 
 \end{Highlighting}
 \end{Shaded}
@@ -4558,7 +4584,7 @@ Es sollte erscheinen
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{Auf}\NormalTok{ Branch main    }\OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ das ist der von Susi}
+\ExtensionTok{Auf}\NormalTok{ Branch main    }\OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ das ist der lokale von Susi}
 \ExtensionTok{Ihr}\NormalTok{ Branch ist auf demselben Stand wie }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{. }\OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ Server}
 
 \ExtensionTok{nichts}\NormalTok{ zu committen, Arbeitsverzeichnis unverändert}
@@ -4603,7 +4629,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-157}%
+\phantomsection\label{annotated-cell-158}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -4645,7 +4671,7 @@ Ein \cmd{git log --oneline} zeigt dir:
 
 Und ein Blick in die beiden Dateien liefert die Hashes -- zumindest
 fast, denn \git hat hier schon wieder optimiert und den Hash vom
-\emph{origin/master} in die Datei \emph{packed-refs} umgelagert.
+\emph{origin/main} in die Datei \emph{packed-refs} umgelagert.
 
 Der \emph{SERVER} weiß vom SUSI Commit noch nichts -- die Repositories
 haben ja auch noch nicht miteinander kommuniziert! Wenn Max in seinem
@@ -4656,7 +4682,7 @@ Susi führt nun einen Push aus:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ push origin main }
+\FunctionTok{git}\NormalTok{ push  }
 \end{Highlighting}
 \end{Shaded}
 
@@ -4719,7 +4745,7 @@ Sein Status sagt ihm
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{Auf}\NormalTok{ Branch main     }\OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ MAX}
+\ExtensionTok{Auf}\NormalTok{ Branch main     }\OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ MAX lokal }
 \ExtensionTok{Ihr}\NormalTok{ Branch ist 1 Commit hinter }\StringTok{\textquotesingle{}origin/main\textquotesingle{}}\NormalTok{, und kann vorgespult }
 \ExtensionTok{werden.}
 \KeywordTok{(}\ExtensionTok{benutzen}\NormalTok{ Sie }\StringTok{"git pull"}\NormalTok{, um Ihren lokalen Branch zu aktualisieren}\KeywordTok{)}
@@ -4748,7 +4774,7 @@ Max sieht den Commit, der noch nicht in seinen Branch integriert ist.
     \ExtensionTok{Begrüßung}
 
 \ExtensionTok{commit}\NormalTok{ d46681db23c9e2b3f5379a951c026e3d673fe3e0 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)}
-\ExtensionTok{Author:}\NormalTok{ wolfgang }\OperatorTok{\textless{}}\NormalTok{lehrer@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Author:}\NormalTok{ max }\OperatorTok{\textless{}}\NormalTok{max@t{-}online.de}\OperatorTok{\textgreater{}}
 \ExtensionTok{Date:}\NormalTok{   Wed Jan 29 12:34:48 2025 +0100}
 
     \ExtensionTok{Init}
@@ -4808,12 +4834,82 @@ Hätte Max größeres Vertrauen, so würde er sich diese Recherche sparen
 und einfach ein \cmd{git pull} ausführen. Im Prinzip ist dieser Befehl
 die direkte Nacheinanderausführung von \cmd{fetch} und \cmd{merge}.
 
+\subsection{Wie sieht ein Fehler aus}\label{wie-sieht-ein-fehler-aus}
+
+Führe das Script erneut aus.
+
+Wir ändern nur die Vorgehensweise von Max. Sowohl Susi also auch Max
+erstellen nach dem Clonen lokal einen Commit. Susi mach als Erste einen
+Push, dann will Max das ebenfalls machen.
+
+Führe dafür das Script \datei{max\_error.sh} aus.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{IP}\OperatorTok{=}\NormalTok{192.168.3.154}
+\CommentTok{\# Nützliche Variablen}
+\VariableTok{ARBEIT}\OperatorTok{=}\NormalTok{/tmp  }\CommentTok{\# aktuellen Pfad merken }
+\VariableTok{SUSI}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/susi  }\CommentTok{\# Abkürzungen für den Überblick  }
+\VariableTok{MAX}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/max}
+
+\CommentTok{\# Susi}
+\BuiltInTok{cd} \VariableTok{$SUSI}
+\BuiltInTok{echo} \StringTok{"Hallo Welt, sagt Susi"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_susi.txt}
+\FunctionTok{git}\NormalTok{ add datei\_susi.txt}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Hallo von Susi"}
+
+\FunctionTok{git}\NormalTok{ push}
+
+\CommentTok{\# Max}
+\BuiltInTok{cd} \VariableTok{$MAX}
+\BuiltInTok{echo} \StringTok{"Hallo Welt, sagt Max"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_max.txt}
+\FunctionTok{git}\NormalTok{ add datei\_max.txt}
+\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Hallo von Max"}
+
+\FunctionTok{git}\NormalTok{ push}
+
+
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{To}\NormalTok{ 192.168.3.154:/home/benutzer/entfernt.git}
+ \OtherTok{! }\ExtensionTok{[rejected]}\NormalTok{        main }\AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main }\ErrorTok{(}\ExtensionTok{fetch}\NormalTok{ first}\KeywordTok{)}
+\ExtensionTok{error:}\NormalTok{ Fehler beim Versenden einiger Referenzen }
+        \ExtensionTok{nach} \StringTok{\textquotesingle{}192.168.3.154:/home/benutzer/entfernt.git\textquotesingle{}}
+\ExtensionTok{Hinweis:}\NormalTok{ Updates were rejected because the remote contains work }
+\ExtensionTok{Hinweis:}\NormalTok{ that you do not have locally. This is usually caused}
+\ExtensionTok{Hinweis:}\NormalTok{ by another repository pushing to the same ref. }
+\ExtensionTok{Hinweis:}\NormalTok{ If you want to integrate the remote changes, use}
+\ExtensionTok{Hinweis:} \StringTok{\textquotesingle{}git pull\textquotesingle{}}\NormalTok{ before pushing again.}
+\ExtensionTok{Hinweis:}\NormalTok{ See the }\StringTok{\textquotesingle{}Note about fast{-}forwards\textquotesingle{}}\NormalTok{ in }\StringTok{\textquotesingle{}git push {-}{-}help\textquotesingle{}} 
+\ExtensionTok{Hinweis:}\NormalTok{ for details.}
+\end{Highlighting}
+\end{Shaded}
+
+Die Lösungsstrategie \cmd{git pull} kann noch etwas verfeinert werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ fetch }
+\FunctionTok{git}\NormalTok{ log origin/main}
+\FunctionTok{git}\NormalTok{ diff HEAD..origin/main  }\CommentTok{\# sagt nicht viel aus }
+\FunctionTok{git}\NormalTok{ show }\OperatorTok{\textless{}}\NormalTok{HASH von Susi}\OperatorTok{\textgreater{}}
+
+\FunctionTok{git}\NormalTok{ merge}
+\FunctionTok{git}\NormalTok{ push}
+\end{Highlighting}
+\end{Shaded}
+
 \subsection{Einige Fragen}\label{einige-fragen}
 
 \textbf{Wie starte ich from Scratch}
 
 Wie man vorgehen muss, hängt sehr stark von deiner Umgebung ab. Da es
 hier einige Varianten gibt, habe ich das in den Anhang ausgelagert!
+
+\textbf{Kurzversion}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4847,7 +4943,7 @@ das Clonen auch gleichzeitig als \emph{upstream-branch} definiert wurde
 -- deshalb funktioniert statt \cmd{git pull origin main} auch die kurze
 Version \cmd{git pull} (analog für \cmd{git push}).
 
-Wenn du einen neuen Branch anlegst und einen commit pushen willst:
+Wenn du einen neuen Branch anlegst und einen Commit pushen willst:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5330,489 +5426,6 @@ Hier muss entschieden werden, wer für die Schlüssel zuständig ist.
 
 \bookmarksetup{startatroot}
 
-\chapter{gitea}\label{gitea}
-
-Die Installation von \emph{gitea} ist relativ einfach und kann über
-Kopieren und Einfügen erledigt werden. In den Kursmaterialien befinden
-sich die Scripte
-
-\begin{itemize}
-\tightlist
-\item
-  \script{setup\_gitea.sh} - führt die Basisinstallation durch
-\item
-  \script{selfreg.sh} - Selbstregistrierung ein/aus
-\item
-  \script{tune.sh} - Feineinstellungen direkt nach der Installation
-\end{itemize}
-
-\section{Setup-Script}\label{setup-script}
-
-In den folgenden Abschnitten sind die relevanten Passagen der Scripte
-dokumentiert. Die Befehle müssen nicht per Hand eingegeben werden. Das
-dient lediglich der Dokumentation. Die Scripte \script{setup\_gitea.sh}
-und \script{tune.sh} müssen als \emph{root} bzw. über \emph{sudo}
-ausgeführt werden.
-
-\textbf{setup\_gitea.sh}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#!/bin/bash}
-\CommentTok{\# Port 3000 muss für das Webinterface offen sein}
-\ExtensionTok{ufw}\NormalTok{ allow 3000/tcp}
-
-\FunctionTok{wget} \AttributeTok{{-}O}\NormalTok{ gitea  }\DataTypeTok{\textbackslash{}}
-\NormalTok{    https://dl.gitea.com/gitea/1.22.6/gitea{-}1.22.6{-}linux{-}amd64}
-\FunctionTok{chmod}\NormalTok{ +x gitea}
-
-\ExtensionTok{adduser} \DataTypeTok{\textbackslash{}}
-   \AttributeTok{{-}{-}system} \DataTypeTok{\textbackslash{}}
-   \AttributeTok{{-}{-}shell}\NormalTok{ /bin/bash }\DataTypeTok{\textbackslash{}}
-   \AttributeTok{{-}{-}gecos} \StringTok{\textquotesingle{}Git Version Control\textquotesingle{}} \DataTypeTok{\textbackslash{}}
-   \AttributeTok{{-}{-}group} \DataTypeTok{\textbackslash{}}
-   \AttributeTok{{-}{-}disabled{-}password} \DataTypeTok{\textbackslash{}}
-   \AttributeTok{{-}{-}home}\NormalTok{ /home/git }\DataTypeTok{\textbackslash{}}
-\NormalTok{   git}
-
-\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ /var/lib/gitea/}\DataTypeTok{\{custom}\OperatorTok{,}\DataTypeTok{data}\OperatorTok{,}\DataTypeTok{log\}}
-\FunctionTok{chown} \AttributeTok{{-}R}\NormalTok{ git:git /var/lib/gitea/}
-\FunctionTok{chmod} \AttributeTok{{-}R}\NormalTok{ 750 /var/lib/gitea/}
-\FunctionTok{mkdir}\NormalTok{ /etc/gitea}
-\FunctionTok{chown}\NormalTok{ root:git /etc/gitea}
-\FunctionTok{chmod}\NormalTok{ 770 /etc/gitea}
-
-\FunctionTok{mv}\NormalTok{ gitea /usr/local/bin/gitea}
-
-\FunctionTok{cat} \OperatorTok{\textless{}\textless{} EOF} \OperatorTok{\textgreater{}}\NormalTok{ /etc/systemd/system/gitea.service}
-\StringTok{[Unit]}
-\StringTok{Description=Gitea (Git with a cup of tea)}
-\StringTok{After=network.target}
-
-\StringTok{[Service]}
-\StringTok{RestartSec=2s}
-\StringTok{Type=simple}
-\StringTok{User=git}
-\StringTok{Group=git}
-\StringTok{WorkingDirectory=/var/lib/gitea/}
-
-\StringTok{ExecStart=/usr/local/bin/gitea web {-}{-}config /etc/gitea/app.ini}
-\StringTok{Restart=always}
-\StringTok{Environment=USER=git HOME=/home/git GITEA\_WORK\_DIR=/var/lib/gitea}
-
-\StringTok{[Install]}
-\StringTok{WantedBy=multi{-}user.target}
-\OperatorTok{EOF}
-
-\CommentTok{\# Autostart aktivieren}
-\ExtensionTok{systemctl}\NormalTok{ enable gitea}
-
-\CommentTok{\# Einmalig per Hand starten}
-\ExtensionTok{systemctl}\NormalTok{ start gitea}
-
-
-\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
-\CommentTok{\# Zusatz{-}Script um Selbstregistrierung}
-\CommentTok{\# von Benutzern zu de/aktivieren}
-
-\CommentTok{\# Kopieren Reg{-}script}
-\FunctionTok{cp}\NormalTok{ ./selfreg.sh /usr/local/sbin/}
-\FunctionTok{chmod}\NormalTok{ +x /usr/local/sbin/selfreg.sh}
-
-\CommentTok{\# Hinweis ausgeben}
-\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
-\BuiltInTok{echo}\NormalTok{ Einrichten über Web  }\KeywordTok{\textasciigrave{}}\ExtensionTok{http://ip{-}adresse:3000}\KeywordTok{\textasciigrave{}}  
-\BuiltInTok{echo}\NormalTok{ SQLITE als Datenbank einstellen}
-\BuiltInTok{echo} \PreprocessorTok{**}\NormalTok{WICHTIG:}\PreprocessorTok{**}\NormalTok{ Administrator einrichten!}
-\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
-\BuiltInTok{echo}\NormalTok{ Im Anschluss das Script }\StringTok{"tune.sh"}\NormalTok{ aufrufen}
-\end{Highlighting}
-\end{Shaded}
-
-\section{Nacharbeiten}\label{nacharbeiten}
-
-Im Nachgang sollten einige Schreibberechtigungen entzogen werden, damit
-nur noch \emph{root} Änderungen vornehmen darf:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{chmod}\NormalTok{ 750 /etc/gitea}
-\FunctionTok{chmod}\NormalTok{ 640 /etc/gitea/app.ini}
-\end{Highlighting}
-\end{Shaded}
-
-Dieses Script deaktiviert Anmeldungen über OpenID und setzt neue
-Sicherheitsschlüssel.
-
-\textbf{tune.sh}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# OpenID deaktivieren}
-\VariableTok{INI}\OperatorTok{=}\StringTok{"/etc/gitea/app.ini"}
-\VariableTok{KEY1}\OperatorTok{=}\StringTok{"ENABLE\_OPENID\_SIGNIN = "}
-\VariableTok{KEY2}\OperatorTok{=}\StringTok{"ENABLE\_OPENID\_SIGNUP = "}
-\FunctionTok{sed} \AttributeTok{{-}i} \StringTok{"s/}\VariableTok{$\{KEY1\}}\StringTok{true/}\VariableTok{$\{KEY1\}}\StringTok{false/g"} \VariableTok{$INI} 
-\FunctionTok{sed} \AttributeTok{{-}i} \StringTok{"s/}\VariableTok{$\{KEY2\}}\StringTok{true/}\VariableTok{$\{KEY2\}}\StringTok{false/g"} \VariableTok{$INI} 
-
-\CommentTok{\# Sicherheit}
-
-\ControlFlowTok{for}\NormalTok{ KEY }\KeywordTok{in}\NormalTok{ INTERNAL\_TOKEN SECRET\_KEY JWT\_SECRET LFS\_JWT\_SECRET}
-\ControlFlowTok{do} 
-  \VariableTok{VAL}\OperatorTok{=}\VariableTok{$(}\ExtensionTok{gitea}\NormalTok{ generate secret }\VariableTok{$\{KEY\})}
-  \FunctionTok{sed} \AttributeTok{{-}i} \StringTok{"s/\^{}}\VariableTok{$KEY}\StringTok{[[:space:]]*=.*/}\VariableTok{$KEY}\StringTok{ = }\VariableTok{$VAL}\StringTok{/"} \VariableTok{$INI}
-\ControlFlowTok{done}
-
-\ExtensionTok{systemctl}\NormalTok{ restart gitea}
-\end{Highlighting}
-\end{Shaded}
-
-In der Datei \datei{/etc/gitea/app.ini} kann das wieder rückgängig
-gemacht werden, indem der Abschnitt \emph{{[}openid{]}} so abgeändert
-wird:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{[openid]}
-\ExtensionTok{ENABLE\_OPENID\_SIGNIN}\NormalTok{ = true}
-\ExtensionTok{ENABLE\_OPENID\_SIGNUP}\NormalTok{ = true}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Selbstregistrierung an/aus}
-
-Standardmäßig können sich die Benutzer selbst auf Gitea registrieren.
-Das vereinfacht die Arbeit für den Lehrer enorm, ist aber bei einer
-öffentlich zugänglichen Instanz problematisch. Es ist also sinnvoll,
-diese Einstellung nach dem erfassen der Benutzer zu deaktivieren (kann
-kederzeit wieder aktiviert werden).
-
-Per Hand müsste in der Datei \datei{/etc/gitea/app.ini} die folgende
-Zeile im Abschnitt \emph{{[}service{]}} angepasst werden:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{ORIGINAL:}\NormalTok{  DISABLE\_REGISTRATION = false}
-\ExtensionTok{ANGEPASST:}\NormalTok{ DISABLE\_REGISTRATION = true}
-\end{Highlighting}
-\end{Shaded}
-
-Dies kann über \cmd{nano /etc/gitea/app.ini} gemacht werden (Speichern:
-\key{strg + o}, Beenden \key{strg + x} ).
-
-Danach muss Gitea neu gestartet werden:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{systemctl}\NormalTok{ restart gitea}
-\end{Highlighting}
-\end{Shaded}
-
-Das Setup-Script des Kurses kopiert das Script \script{selfreg.sh} nach
-\datei{/usr/local/bin}, so dass die Registrierung einfach aktiviert und
-deaktiviert werden kann:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{selfreg.sh}\NormalTok{ on}
-\ExtensionTok{selfreg.sh}\NormalTok{ off}
-\end{Highlighting}
-\end{Shaded}
-
-\section{SSH}\label{ssh}
-
-Für den Client muss der ssh-Zugriff möglich sein (clone, push, pull). Es
-kommt hier der normalen ssh-Server auf Port 22 zum Einsatz\footnote{Gitea
-  würde über einen eigenen ssh-Server verfügen, den man in einigen
-  speziellen Fällen verwenden könnte.}.
-
-Für den kennwortlosen ssh-Zugriff für clone, push, pull wird ein ein
-ausreichend langer ssh-Schlüssel benötigt. Die üblichen 2048 Bit genügen
-hier nicht! Dieser \emph{Deploy-Key} wird später dann über die
-graphische Benutzeroberfläche in \emph{Gitea} eingefügt (s.u.).
-
-\textbf{Schlüssel erzeugen}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{IN:}\NormalTok{  ssh{-}keygen }\AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096}
-\ExtensionTok{OUT:}\NormalTok{ Generating public/private rsa key pair.}
-     \ExtensionTok{Enter}\NormalTok{ file in which to save the key }
-     \KeywordTok{(}\ExtensionTok{/home/linuxadmin/.ssh/id\_rsa}\KeywordTok{)}\BuiltInTok{:}
-\ExtensionTok{IN:}\NormalTok{  gitea\_rsa}
-\ExtensionTok{OUT:}\NormalTok{ Enter passphrase }\ErrorTok{(}\ExtensionTok{empty}\NormalTok{ for no passphrase}\KeywordTok{)}\BuiltInTok{:} 
-     \CommentTok{\# leer lassen Enter}
-\ExtensionTok{OUT:}\NormalTok{ Enter same passphrase again: ... leer lassen Enter}
-\ExtensionTok{OUT:}\NormalTok{ Your identification has been saved in gitea\_rsa}
-     \ExtensionTok{Your}\NormalTok{ public key has been saved in gitea\_rsa.pub}
-     \ExtensionTok{The}\NormalTok{ key fingerprint is:}
-     \ExtensionTok{SHA256:ty5F............Q0}\NormalTok{ linuxadmin@gitserver}
-     \ExtensionTok{The}\NormalTok{ key}\StringTok{\textquotesingle{}s randomart image is:}
-\StringTok{     +{-}{-}{-}[RSA 4096]{-}{-}{-}{-}+}
-\StringTok{     |      . ..       |}
-\StringTok{     |.      o  .      |}
-\StringTok{     | E. . o  o o     |}
-\StringTok{     |..*. o o+ O .    |}
-\StringTok{     | =... *+SB.o     |}
-\StringTok{     | ..  o =O.o.     |}
-\StringTok{     |..     =.=.      |}
-\StringTok{     |++ .    *+       |}
-\StringTok{     |+ =.    .=+      |}
-\StringTok{     +{-}{-}{-}{-}[SHA256]{-}{-}{-}{-}{-}+}
-\end{Highlighting}
-\end{Shaded}
-
-Der Inhalt von \datei{gitea\_rsa.pub} kann durch folgenden Befehl im
-Terminal angezeigt werden:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{cat}\NormalTok{ \textasciitilde{}/.ssh/gitea\_rsa.pub}
-\end{Highlighting}
-\end{Shaded}
-
-Die mehrzeilige Ausgabe in einem Stück in die Oberfläche von Gitea
-kopieren:
-
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key1.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key2.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key3.png}
-
-Damit ist die Grundkonfiguration beendet. Es sollte nun noch eingestellt
-werden, welche Anmelde- und Registrierungsvarianten erlaubt sind, um
-nicht plötzlich fremde Personen in seiner Gitea-Instanz zu haben.
-
-\section{HTTPS}\label{https}
-
-Aktuell ist die Instanz nur über \emph{http} und Ip-Adresse zugänglich.
-Es ist möglich, Gitea auch für \emph{HTTPS} zu konfigurieren. Hierfür
-gibt es verschiedenen Lösungen, von denen aber eigentlich nur der
-Einsatz eines Reverse-Proxy mit einem entsprechenden Domain-Name
-sinnvoll ist. Eine derartige Konfiguration würde den Rahmen dieses
-Workshops aber sprengen! Zur Erinnerung: Es ging um eine möglichst
-einfache Installation eines funktionsfähigen Systems.
-
-\section{API}\label{api}
-
-Oft ist es effizienter, wenn Dinge über Kommandozeile erledigt werden.
-Wenn z.B. 50 Benutzerkonten erstellt und mit Passwort abgesichert werden
-sollen, weil die Selbstregistrierung nicht gewünscht ist. In diese Fall
-verwendet man die API von Gitea. Dies kann von jedem Rechner aus
-erfolgen, auf Gitea zugreifen kann. Dafür braucht es aber noch zwei
-Anpassungen an der \datei{/etc/gitea/app.ini}:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Ergänzen Sie am Ende der Datei:
-\end{enumerate}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{[api]}
-\ExtensionTok{ENABLE\_ADMIN}\NormalTok{ = true}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  Erweitern Sie den Abschnitt \emph{security} falls Sie die Accounts mit
-  sehr einfachen Kennwörtern vorbelegen wollen:
-\end{enumerate}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{[security]}
-\ExtensionTok{...}\NormalTok{ bisheriger Inhalt ...}
-\ExtensionTok{PASSWORD\_COMPLEXITY}\NormalTok{ = off}
-\ExtensionTok{MIN\_PASSWORD\_LENGTH}\NormalTok{ = 6}
-\end{Highlighting}
-\end{Shaded}
-
-Melden Sie sich als Administrator in Gitea an und rufen Sie das Menu
-\emph{Einstellungen} des Benutzers auf. Unter \emph{Anwendungen} können
-\emph{Admin-Token} erzeugt werden, die einen kennwortlosen Zugriff auf
-das System erlauben. Stellen Sie im aufklappbaren Detail-Abschnitt ein,
-welche Berechtigungen erforderlich sind:
-
-\begin{itemize}
-\tightlist
-\item
-  Admin - Lesen und Schreiben
-\item
-  Organisation
-\item
-  Repository
-\item
-  User
-\end{itemize}
-
-Kopieren Sie die lange Zahl (=Token) dann weg -- sie wird nur einmal
-angezeigt!
-
-Auf der Konsole (Linux / MacOS) kann dann z.B. folgender Befehl
-abgeschickt werden, der die Benutzerin Susi anlegt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ POST }\StringTok{"http://\textless{}ip{-}adresse\textgreater{}:3000/api/v1/admin/users"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}H }\StringTok{"Authorization: token \textless{}kopiertes Token\textgreater{}"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}H }\StringTok{"Content{-}Type: application/json"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}d }\StringTok{\textquotesingle{}\{}
-\StringTok{  "username": "susi",}
-\StringTok{  "email": "susi@sandmann.com",}
-\StringTok{  "password": "lalelu",}
-\StringTok{  "send\_notify": false,}
-\StringTok{  "must\_change\_password": true}
-\StringTok{\}\textquotesingle{}}
-\end{Highlighting}
-\end{Shaded}
-
-Verfeinert wird dieser Befehl in ein Script verpackt -- z.B.
-\script{gitea\_user\_anlegen.sh}, das man mit einer Namensdatei als
-Parameter aufrufen kann, in der folgende Spalten auftreten:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# login,kennwort,email  \textless{}{-} Diese Zeile entfernen}
-\ExtensionTok{susi,lalelu,susi@sandmann.de}
-\ExtensionTok{max,foobla,max@mustermann.de}
-\ExtensionTok{...}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Sinnvolle Szenarien}\label{sinnvolle-szenarien}
-
-\subsubsection{Organisationen}\label{organisationen}
-
-Hier bin ich mir nicht sicher, ob das kein Overkill ist. Eine Arbeit
-über Teams erscheint mir bei der Größe unserer Szenarien deutlich
-geeigneter. Das Problem ist nämlich, dass man über die API einen
-Benutzer nur löschen kann, wenn er in keiner Organistation mehr ist!
-
-Es könnte sinnvoll sein, wenn sich die einzelnen Kollegen als
-\emph{Organisationen} sehen. Dann müssen Schüler aber mehrfach ins
-System eingetragen werden und das bereits bei den eMail-Adressen
-Probleme.
-
-Sinnvoller erscheint eine Namenskonvention beim Erstellen von Teams!
-
-\textbf{Organisation erstellen} \blarge 
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\VariableTok{token}\OperatorTok{=}\NormalTok{1234}
-\VariableTok{name}\OperatorTok{=}\NormalTok{G10a}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ POST }\StringTok{"http://192.168.3.195:3000/api/v1/admin/organizations"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}H }\StringTok{"Content{-}Type: application/json"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}d }\StringTok{\textquotesingle{}\{}
-\StringTok{  "username": "$\{name\}",}
-\StringTok{  "full\_name": "$\{name\}",}
-\StringTok{  "description": "Organisation für die Schüler der Klasse $\{name\}",}
-\StringTok{  "visibility": "private"}
-\StringTok{\}\textquotesingle{}}
-\end{Highlighting}
-\end{Shaded}
-
-\elarge
-
-\textbf{Benutzer hinzufügen}\\
-(Die Variable url wurde nur wegen der begrenzten Zeilenlänge hier im
-Dokument eingeführt.)
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\VariableTok{token}\OperatorTok{=}\NormalTok{1234}
-\VariableTok{name}\OperatorTok{=}\NormalTok{G10a}
-\VariableTok{user}\OperatorTok{=}\NormalTok{susi}
-\VariableTok{url}\OperatorTok{=}\StringTok{"}\VariableTok{$\{name\}}\StringTok{$/members/}\VariableTok{$\{user\}}\StringTok{"}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ PUT }\DataTypeTok{\textbackslash{}}
-\StringTok{"http://192.168.3.195:3000/api/v1/orgs/"}\VariableTok{$url} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{User löschen}
-
-\blarge
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\VariableTok{token}\OperatorTok{=}\NormalTok{1234}
-\VariableTok{user}\OperatorTok{=}\StringTok{"susi"}
-\CommentTok{\# In welchen Organistaionen ist der User}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ GET }\StringTok{"http://192.168.3.195:3000/api/v1/users/}\VariableTok{$\{user\}}\StringTok{/orgs"} \DataTypeTok{\textbackslash{}}
-    \AttributeTok{{-}H} \StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
-
-\CommentTok{\# Einzeln austragen, sonst ist er nicht löschbar}
-\VariableTok{orga}\OperatorTok{=}\NormalTok{organization1}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ DELETE  }\DataTypeTok{\textbackslash{}}
-\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{orga\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
-
-\CommentTok{\# Benutzer löschen }
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ DELETE }\DataTypeTok{\textbackslash{}}
-\StringTok{"http://192.168.3.195:3000/api/v1/admin/users/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
-\end{Highlighting}
-\end{Shaded}
-
-\elarge
-
-\subsection{Teams}\label{teams}
-
-Auch ein Team erfordert eine Organisation -- hier würde ich einfach die
-Schule anlegen.
-
-\textbf{Team erstellen}
-
-\blarge
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\VariableTok{schule}\OperatorTok{=}\StringTok{"GGP"}
-\VariableTok{token}\OperatorTok{=}\NormalTok{1234}
-\VariableTok{team}\OperatorTok{=}\NormalTok{G10a}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ POST }\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{schule\}}\StringTok{/teams"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}H }\StringTok{"Content{-}Type: application/json"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}d }\StringTok{\textquotesingle{}\{}
-\StringTok{  "name": "$\{team\}",}
-\StringTok{  "description": "Team für das erste Projekt",}
-\StringTok{  "permission": "write"}
-\StringTok{\}\textquotesingle{}}
-\end{Highlighting}
-\end{Shaded}
-
-\elarge
-
-\textbf{Benutzer hinzufügen}
-
-\blarge
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\VariableTok{schule}\OperatorTok{=}\NormalTok{GGP}
-\VariableTok{token}\OperatorTok{=}\NormalTok{1234}
-\VariableTok{team}\OperatorTok{=}\NormalTok{G10a}
-\VariableTok{user}\OperatorTok{=}\NormalTok{susi}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ PUT }\DataTypeTok{\textbackslash{}}
-\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{schule\}}\StringTok{/teams/}\VariableTok{$\{team\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
-\NormalTok{{-}H }\StringTok{"Authorization: token YOUR\_ADMIN\_TOKEN"}
-\end{Highlighting}
-\end{Shaded}
-
-\elarge
-
-TODO: GPT sagt Team\_id statt Team\_name!
-
-\bookmarksetup{startatroot}
-
 \chapter{Docker}\label{docker}
 
 Docker ist eine besonders effiziente Art der Virtualisierung. Es ist
@@ -5879,10 +5492,9 @@ benötigt, als bei einer komplett neuen Erstellung!
 
 \section{Installation von Docker}\label{installation-von-docker}
 
-Die Befehle befinden sich auch bei den Kursmaterialien!
-
-TODO - Docker install Script TESTEN auf 24.04 TODO - Ist compose jetzt
-fest in Docker oder nicht?
+Die Befehle befinden sich als Script bei den Kursmaterialien! Wegen des
+Layouts sind hier Zeilenubrüche, die das Script in der abgedruckten Form
+scheitern lassen!
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5926,7 +5538,7 @@ TODO: docker compose oder docker-compose?
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{docker} \AttributeTok{{-}{-}version}
-\ExtensionTok{docker{-}compose} \AttributeTok{{-}{-}version}
+\ExtensionTok{docker{-}compose}\NormalTok{ version}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6293,7 +5905,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-220}%
+\phantomsection\label{annotated-cell-206}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -6353,7 +5965,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-222}%
+\phantomsection\label{annotated-cell-208}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -6387,7 +5999,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-223}%
+\phantomsection\label{annotated-cell-209}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -6459,7 +6071,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-225}%
+\phantomsection\label{annotated-cell-211}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6656,9 +6268,7 @@ entsprechend anpassen.
 
 TODO: Screenshot
 
-\bookmarksetup{startatroot}
-
-\chapter{Actions}\label{actions}
+\section{Actions}\label{actions}
 
 Dieses Thema ist nun so groß und speziell, dass wir an unsere Genzen
 stoßen. Ich möchte nur kurz das Vorgehen für unser Szenario der
@@ -6666,29 +6276,496 @@ Bucherstellung besprechen.
 
 \bookmarksetup{startatroot}
 
-\chapter{Clients}\label{clients}
+\chapter{Gitea ohne Docker}\label{gitea-ohne-docker}
 
-Generell gilt natürlich, dass im Informatikunterricht ein Tablet (oder
-Handy) kein geeignetes Werkzeug ist. Wir sprechen im Folgenden also von
-Laptops oder Desktops und diese können mit Windows, MacOS, Linux oder
-ChromeOS ausgestattet sein. Für jedes dieser Systeme gibt es viele
-verschiedene Git-Clients. Die Kommandozeile (Terminal, Bash, Git-Bash,
-\ldots) ohne grafische Benutzeroberfläche ist gerade bei Anfängern nicht
-besonders beliebt, aber gerade im Umfeld von Servern sehr verbreitet.
-Entwickler, die mir den IDEs von JetBrains, VS-Code, o.ä. arbeiten,
-verwenden oft die dort eingebauten Git-Clients. Leider sind diese
-Entwicklungsumgebungen dür den Einsatz im Unterricht ein Overkill. Bei
-einer kleineren IDE kann ein graphischer Git-Client diese Lücke
-schließen.\\
-Probleme gibt es allerdings traditionell bei der heimischen Installation
-der entsprechenden Software (GitKraken, \ldots). Mit Hilfe von
-\emph{portable} Versionen kann das aber deutlich vereinfacht werden.
-Diese Software-Variante wird nicht installiert, sondern lediglich
-entpackt. Der entstehende Ordner kann sogar auf einen USB-Stick
-ausgelagert werden. Damit sind auch die Rechner der Eltern problemlos
-benutzbar.
+Falls dir Docker unheimlich ist, kannst du \gitea auch direkt auf dem
+Server installieren. Ich halte das zwar für ungünstig, will dir diese
+Variante aber nicht vorenthalten. Da es sich um einen abgeschlossenen
+Abschnitt handelt, gibt es an einigen Stellen Wiederholungen!
 
-\href{https://git-scm.com/downloads/win}{Portable Git}
+Die Installation von \gitea ist relativ einfach und kann über Kopieren
+und Einfügen erledigt werden. In den Kursmaterialien befinden sich auch
+die folgenden Scripte :
+
+\begin{itemize}
+\tightlist
+\item
+  \script{setup\_gitea.sh} - führt die Basisinstallation durch
+\item
+  \script{selfreg.sh} - Selbstregistrierung ein/aus
+\item
+  \script{tune.sh} - Feineinstellungen direkt nach der Installation
+\end{itemize}
+
+\section{Setup-Script}\label{setup-script}
+
+In den folgenden Abschnitten sind die relevanten Passagen der Scripte
+dokumentiert. Die Befehle müssen nicht per Hand eingegeben werden. Das
+dient lediglich der Dokumentation. Die Scripte \script{setup\_gitea.sh}
+und \script{tune.sh} müssen als \emph{root} bzw. über \emph{sudo}
+ausgeführt werden.
+
+\textbf{setup\_gitea.sh}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#!/bin/bash}
+\CommentTok{\# Port 3000 muss für das Webinterface offen sein}
+\ExtensionTok{ufw}\NormalTok{ allow 3000/tcp}
+
+\FunctionTok{wget} \AttributeTok{{-}O}\NormalTok{ gitea  }\DataTypeTok{\textbackslash{}}
+\NormalTok{    https://dl.gitea.com/gitea/1.22.6/gitea{-}1.22.6{-}linux{-}amd64}
+\FunctionTok{chmod}\NormalTok{ +x gitea}
+
+\ExtensionTok{adduser} \DataTypeTok{\textbackslash{}}
+   \AttributeTok{{-}{-}system} \DataTypeTok{\textbackslash{}}
+   \AttributeTok{{-}{-}shell}\NormalTok{ /bin/bash }\DataTypeTok{\textbackslash{}}
+   \AttributeTok{{-}{-}gecos} \StringTok{\textquotesingle{}Git Version Control\textquotesingle{}} \DataTypeTok{\textbackslash{}}
+   \AttributeTok{{-}{-}group} \DataTypeTok{\textbackslash{}}
+   \AttributeTok{{-}{-}disabled{-}password} \DataTypeTok{\textbackslash{}}
+   \AttributeTok{{-}{-}home}\NormalTok{ /home/git }\DataTypeTok{\textbackslash{}}
+\NormalTok{   git}
+
+\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ /var/lib/gitea/}\DataTypeTok{\{custom}\OperatorTok{,}\DataTypeTok{data}\OperatorTok{,}\DataTypeTok{log\}}
+\FunctionTok{chown} \AttributeTok{{-}R}\NormalTok{ git:git /var/lib/gitea/}
+\FunctionTok{chmod} \AttributeTok{{-}R}\NormalTok{ 750 /var/lib/gitea/}
+\FunctionTok{mkdir}\NormalTok{ /etc/gitea}
+\FunctionTok{chown}\NormalTok{ root:git /etc/gitea}
+\FunctionTok{chmod}\NormalTok{ 770 /etc/gitea}
+
+\FunctionTok{mv}\NormalTok{ gitea /usr/local/bin/gitea}
+
+\FunctionTok{cat} \OperatorTok{\textless{}\textless{} EOF} \OperatorTok{\textgreater{}}\NormalTok{ /etc/systemd/system/gitea.service}
+\StringTok{[Unit]}
+\StringTok{Description=Gitea (Git with a cup of tea)}
+\StringTok{After=network.target}
+
+\StringTok{[Service]}
+\StringTok{RestartSec=2s}
+\StringTok{Type=simple}
+\StringTok{User=git}
+\StringTok{Group=git}
+\StringTok{WorkingDirectory=/var/lib/gitea/}
+
+\StringTok{ExecStart=/usr/local/bin/gitea web {-}{-}config /etc/gitea/app.ini}
+\StringTok{Restart=always}
+\StringTok{Environment=USER=git HOME=/home/git GITEA\_WORK\_DIR=/var/lib/gitea}
+
+\StringTok{[Install]}
+\StringTok{WantedBy=multi{-}user.target}
+\OperatorTok{EOF}
+
+\CommentTok{\# Autostart aktivieren}
+\ExtensionTok{systemctl}\NormalTok{ enable gitea}
+
+\CommentTok{\# Einmalig per Hand starten}
+\ExtensionTok{systemctl}\NormalTok{ start gitea}
+
+
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\# Zusatz{-}Script um Selbstregistrierung}
+\CommentTok{\# von Benutzern zu de/aktivieren}
+
+\CommentTok{\# Kopieren Reg{-}script}
+\FunctionTok{cp}\NormalTok{ ./selfreg.sh /usr/local/sbin/}
+\FunctionTok{chmod}\NormalTok{ +x /usr/local/sbin/selfreg.sh}
+
+\CommentTok{\# Hinweis ausgeben}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\BuiltInTok{echo}\NormalTok{ Einrichten über Web  }\KeywordTok{\textasciigrave{}}\ExtensionTok{http://ip{-}adresse:3000}\KeywordTok{\textasciigrave{}}  
+\BuiltInTok{echo}\NormalTok{ SQLITE als Datenbank einstellen}
+\BuiltInTok{echo} \PreprocessorTok{**}\NormalTok{WICHTIG:}\PreprocessorTok{**}\NormalTok{ Administrator einrichten!}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\BuiltInTok{echo}\NormalTok{ Im Anschluss das Script }\StringTok{"tune.sh"}\NormalTok{ aufrufen}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Nacharbeiten}\label{nacharbeiten}
+
+Im Nachgang sollten einige Schreibberechtigungen entzogen werden, damit
+nur noch \emph{root} Änderungen vornehmen darf:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{chmod}\NormalTok{ 750 /etc/gitea}
+\FunctionTok{chmod}\NormalTok{ 640 /etc/gitea/app.ini}
+\end{Highlighting}
+\end{Shaded}
+
+Dieses Script deaktiviert Anmeldungen über OpenID und setzt neue
+Sicherheitsschlüssel.
+
+\textbf{tune.sh}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# OpenID deaktivieren}
+\VariableTok{INI}\OperatorTok{=}\StringTok{"/etc/gitea/app.ini"}
+\VariableTok{KEY1}\OperatorTok{=}\StringTok{"ENABLE\_OPENID\_SIGNIN = "}
+\VariableTok{KEY2}\OperatorTok{=}\StringTok{"ENABLE\_OPENID\_SIGNUP = "}
+\FunctionTok{sed} \AttributeTok{{-}i} \StringTok{"s/}\VariableTok{$\{KEY1\}}\StringTok{true/}\VariableTok{$\{KEY1\}}\StringTok{false/g"} \VariableTok{$INI} 
+\FunctionTok{sed} \AttributeTok{{-}i} \StringTok{"s/}\VariableTok{$\{KEY2\}}\StringTok{true/}\VariableTok{$\{KEY2\}}\StringTok{false/g"} \VariableTok{$INI} 
+
+\CommentTok{\# Sicherheit}
+
+\ControlFlowTok{for}\NormalTok{ KEY }\KeywordTok{in}\NormalTok{ INTERNAL\_TOKEN SECRET\_KEY JWT\_SECRET LFS\_JWT\_SECRET}
+\ControlFlowTok{do} 
+  \VariableTok{VAL}\OperatorTok{=}\VariableTok{$(}\ExtensionTok{gitea}\NormalTok{ generate secret }\VariableTok{$\{KEY\})}
+  \FunctionTok{sed} \AttributeTok{{-}i} \StringTok{"s/\^{}}\VariableTok{$KEY}\StringTok{[[:space:]]*=.*/}\VariableTok{$KEY}\StringTok{ = }\VariableTok{$VAL}\StringTok{/"} \VariableTok{$INI}
+\ControlFlowTok{done}
+
+\ExtensionTok{systemctl}\NormalTok{ restart gitea}
+\end{Highlighting}
+\end{Shaded}
+
+In der Datei \datei{/etc/gitea/app.ini} kann das wieder rückgängig
+gemacht werden, indem der Abschnitt \emph{{[}openid{]}} so abgeändert
+wird:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{[openid]}
+\ExtensionTok{ENABLE\_OPENID\_SIGNIN}\NormalTok{ = true}
+\ExtensionTok{ENABLE\_OPENID\_SIGNUP}\NormalTok{ = true}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Selbstregistrierung an/aus}
+
+Standardmäßig können sich die Benutzer selbst auf \gitea registrieren.
+Das vereinfacht die Arbeit für den Lehrer enorm, ist aber bei einer
+öffentlich zugänglichen Instanz problematisch. Es ist also sinnvoll,
+diese Einstellung nach dem Erfassen der Benutzer zu deaktivieren (kann
+jederzeit wieder aktiviert werden).
+
+Per Hand müsste in der Datei \datei{/etc/gitea/app.ini} die folgende
+Zeile im Abschnitt \emph{{[}service{]}} angepasst werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{ORIGINAL:}\NormalTok{  DISABLE\_REGISTRATION = false}
+\ExtensionTok{ANGEPASST:}\NormalTok{ DISABLE\_REGISTRATION = true}
+\end{Highlighting}
+\end{Shaded}
+
+Dies kann über \cmd{nano /etc/gitea/app.ini} gemacht werden (Speichern:
+\key{strg + o}, Beenden \key{strg + x} ).
+
+Danach muss \gitea neu gestartet werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{systemctl}\NormalTok{ restart gitea}
+\end{Highlighting}
+\end{Shaded}
+
+Das Setup-Script des Kurses kopiert das Script \script{selfreg.sh} nach
+\datei{/usr/local/bin}, so dass die Registrierung einfach aktiviert und
+deaktiviert werden kann:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{selfreg.sh}\NormalTok{ on}
+\ExtensionTok{selfreg.sh}\NormalTok{ off}
+\end{Highlighting}
+\end{Shaded}
+
+\section{SSH}\label{ssh}
+
+Für den Client muss der ssh-Zugriff möglich sein (clone, push, pull). Es
+kommt hier der normalen ssh-Server auf Port 22 zum Einsatz\footnote{Gitea
+  würde über einen eigenen ssh-Server verfügen, den man in einigen
+  speziellen Fällen verwenden könnte.}.
+
+Für den kennwortlosen ssh-Zugriff für clone, push, pull wird ein
+ausreichend langer ssh-Schlüssel benötigt. Die üblichen 2048 Bit genügen
+hier nicht! Dieser \emph{Deploy-Key} wird später dann über die
+graphische Benutzeroberfläche in \emph{Gitea} eingefügt (s.u.).
+
+\textbf{Schlüssel erzeugen}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{IN:}\NormalTok{  ssh{-}keygen }\AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096}
+\ExtensionTok{OUT:}\NormalTok{ Generating public/private rsa key pair.}
+     \ExtensionTok{Enter}\NormalTok{ file in which to save the key }
+     \KeywordTok{(}\ExtensionTok{/home/linuxadmin/.ssh/id\_rsa}\KeywordTok{)}\BuiltInTok{:}
+\ExtensionTok{IN:}\NormalTok{  gitea\_rsa}
+\ExtensionTok{OUT:}\NormalTok{ Enter passphrase }\ErrorTok{(}\ExtensionTok{empty}\NormalTok{ for no passphrase}\KeywordTok{)}\BuiltInTok{:} 
+     \CommentTok{\# leer lassen Enter}
+\ExtensionTok{OUT:}\NormalTok{ Enter same passphrase again: ... leer lassen Enter}
+\ExtensionTok{OUT:}\NormalTok{ Your identification has been saved in gitea\_rsa}
+     \ExtensionTok{Your}\NormalTok{ public key has been saved in gitea\_rsa.pub}
+     \ExtensionTok{The}\NormalTok{ key fingerprint is:}
+     \ExtensionTok{SHA256:ty5F............Q0}\NormalTok{ linuxadmin@gitserver}
+     \ExtensionTok{The}\NormalTok{ key}\StringTok{\textquotesingle{}s randomart image is:}
+\StringTok{     +{-}{-}{-}[RSA 4096]{-}{-}{-}{-}+}
+\StringTok{     |      . ..       |}
+\StringTok{     |.      o  .      |}
+\StringTok{     | E. . o  o o     |}
+\StringTok{     |..*. o o+ O .    |}
+\StringTok{     | =... *+SB.o     |}
+\StringTok{     | ..  o =O.o.     |}
+\StringTok{     |..     =.=.      |}
+\StringTok{     |++ .    *+       |}
+\StringTok{     |+ =.    .=+      |}
+\StringTok{     +{-}{-}{-}{-}[SHA256]{-}{-}{-}{-}{-}+}
+\end{Highlighting}
+\end{Shaded}
+
+Der Inhalt von \datei{gitea\_rsa.pub} kann durch folgenden Befehl im
+Terminal angezeigt werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{ \textasciitilde{}/.ssh/gitea\_rsa.pub}
+\end{Highlighting}
+\end{Shaded}
+
+Die mehrzeilige Ausgabe in einem Stück in die Oberfläche von
+\gitea kopieren:
+
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key1.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key2.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key3.png}
+
+Damit ist die Grundkonfiguration beendet. Es sollte nun noch eingestellt
+werden, welche Anmelde- und Registrierungsvarianten erlaubt sind, um
+nicht plötzlich fremde Personen in seiner Gitea-Instanz zu haben.
+
+\section{HTTPS}\label{https}
+
+Aktuell ist die Instanz nur über \emph{http} und \emph{IP-Adresse}
+zugänglich. Es ist möglich, Gitea auch für \emph{HTTPS} zu
+konfigurieren. Hierfür gibt es verschiedenen Lösungen, von denen aber
+eigentlich nur der Einsatz eines Reverse-Proxy mit einem entsprechenden
+Domain-Name sinnvoll ist. Eine derartige Konfiguration würde den Rahmen
+dieses Workshops aber sprengen! Zur Erinnerung: Es ging um eine
+möglichst einfache Installation eines funktionsfähigen Systems.
+
+\section{API}\label{api}
+
+Oft ist es effizienter, wenn Dinge über Kommandozeile erledigt werden.
+Wenn z.B. 50 Benutzerkonten erstellt und mit Passwort abgesichert werden
+sollen, weil die Selbstregistrierung nicht gewünscht ist. In diesem Fall
+verwendest die die API von \gitea. Dies kann von jedem Rechner aus
+erfolgen, der auf \gitea zugreifen kann. Dafür braucht es aber noch zwei
+Anpassungen an der \datei{/etc/gitea/app.ini}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Ergänze am Ende der Datei:
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{[api]}
+\ExtensionTok{ENABLE\_ADMIN}\NormalTok{ = true}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Erweitere den Abschnitt \emph{security} falls du die Accounts mit sehr
+  einfachen Kennwörtern vorbelegen willst:
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{[security]}
+\ExtensionTok{...}\NormalTok{ bisheriger Inhalt ...}
+\ExtensionTok{PASSWORD\_COMPLEXITY}\NormalTok{ = off}
+\ExtensionTok{MIN\_PASSWORD\_LENGTH}\NormalTok{ = 6}
+\end{Highlighting}
+\end{Shaded}
+
+Melde dich als Administrator in \gitea an und rufe das Menu
+\emph{Einstellungen} des Benutzers auf. Unter \emph{Anwendungen} können
+\emph{Admin-Token} erzeugt werden, die einen kennwortlosen Zugriff auf
+das System erlauben. Stelle im aufklappbaren Detail-Abschnitt ein,
+welche Berechtigungen erforderlich sind:
+
+\begin{itemize}
+\tightlist
+\item
+  Admin - Lesen und Schreiben
+\item
+  Organisation
+\item
+  Repository
+\item
+  User
+\end{itemize}
+
+Kopiere die lange Zahl (=Token) dann weg -- sie wird nur einmal
+angezeigt!
+
+Auf der Konsole (Linux / MacOS) kann dann z.B. folgender Befehl
+abgeschickt werden, der die Benutzerin Susi anlegt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ POST }\StringTok{"http://\textless{}ip{-}adresse\textgreater{}:3000/api/v1/admin/users"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}H }\StringTok{"Authorization: token \textless{}kopiertes Token\textgreater{}"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}H }\StringTok{"Content{-}Type: application/json"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}d }\StringTok{\textquotesingle{}\{}
+\StringTok{  "username": "susi",}
+\StringTok{  "email": "susi@sandmann.com",}
+\StringTok{  "password": "lalelu",}
+\StringTok{  "send\_notify": false,}
+\StringTok{  "must\_change\_password": true}
+\StringTok{\}\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+Verfeinert wird dieser Befehl in ein Script verpackt -- z.B.
+\script{gitea\_user\_anlegen.sh}. Es verwendet eine csv-Datei als
+Parameter, in der folgende Spalten auftreten:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# login,kennwort,email  \textless{}{-} Diese Zeile entfernen}
+\ExtensionTok{susi,lalelu,susi@sandmann.de}
+\ExtensionTok{max,foobla,max@mustermann.de}
+\ExtensionTok{...}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Sinnvolle Szenarien}\label{sinnvolle-szenarien}
+
+\subsection{Organisationen}\label{organisationen}
+
+Hier bin ich mir nicht sicher, ob das kein Overkill ist. Eine Arbeit
+über Teams\footnote{NEIN -- nicht DAS Teams!} erscheint mir bei der
+Größe unserer Szenarien deutlich geeigneter. Das Problem ist nämlich,
+dass man über die API einen Benutzer nur löschen kann, wenn er in keiner
+Organistation mehr ist!
+
+Es könnte sinnvoll sein, wenn sich die einzelnen Kollegen als
+\emph{Organisationen} sehen. Dann müssen Schüler aber mehrfach ins
+System eingetragen werden und das ist bereits bei den eMail-Adressen
+Probleme.
+
+Sinnvoller erscheint mir eine Namenskonvention beim Erstellen von Teams!
+
+\textbf{Organisation erstellen} \blarge 
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{token}\OperatorTok{=}\NormalTok{1234}
+\VariableTok{name}\OperatorTok{=}\NormalTok{G10a}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ POST }\StringTok{"http://192.168.3.195:3000/api/v1/admin/organizations"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}H }\StringTok{"Content{-}Type: application/json"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}d }\StringTok{\textquotesingle{}\{}
+\StringTok{  "username": "$\{name\}",}
+\StringTok{  "full\_name": "$\{name\}",}
+\StringTok{  "description": "Organisation für die Schüler der Klasse $\{name\}",}
+\StringTok{  "visibility": "private"}
+\StringTok{\}\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+\elarge
+
+\textbf{Benutzer hinzufügen}\\
+(Die Variable \emph{url} wurde nur wegen der begrenzten Zeilenlänge hier
+im Dokument eingeführt.)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{token}\OperatorTok{=}\NormalTok{1234}
+\VariableTok{name}\OperatorTok{=}\NormalTok{G10a}
+\VariableTok{user}\OperatorTok{=}\NormalTok{susi}
+\VariableTok{url}\OperatorTok{=}\StringTok{"}\VariableTok{$\{name\}}\StringTok{$/members/}\VariableTok{$\{user\}}\StringTok{"}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ PUT }\DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.195:3000/api/v1/orgs/"}\VariableTok{$url} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{User löschen}
+
+\blarge
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{token}\OperatorTok{=}\NormalTok{1234}
+\VariableTok{user}\OperatorTok{=}\StringTok{"susi"}
+\CommentTok{\# In welchen Organistaionen ist der User}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ GET }\StringTok{"http://192.168.3.195:3000/api/v1/users/}\VariableTok{$\{user\}}\StringTok{/orgs"} \DataTypeTok{\textbackslash{}}
+    \AttributeTok{{-}H} \StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
+
+\CommentTok{\# Einzeln austragen, sonst ist er nicht löschbar}
+\VariableTok{orga}\OperatorTok{=}\NormalTok{organization1}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ DELETE  }\DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{orga\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
+
+\CommentTok{\# Benutzer löschen }
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ DELETE }\DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.195:3000/api/v1/admin/users/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
+\end{Highlighting}
+\end{Shaded}
+
+\elarge
+
+\section{Teams}\label{teams}
+
+Auch ein Team erfordert eine Organisation -- hier würde ich einfach die
+Schule anlegen.
+
+\textbf{Team erstellen}
+
+\blarge
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{schule}\OperatorTok{=}\StringTok{"GGP"}
+\VariableTok{token}\OperatorTok{=}\NormalTok{1234}
+\VariableTok{team}\OperatorTok{=}\NormalTok{G10a}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ POST }\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{schule\}}\StringTok{/teams"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}H }\StringTok{"Content{-}Type: application/json"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}d }\StringTok{\textquotesingle{}\{}
+\StringTok{  "name": "$\{team\}",}
+\StringTok{  "description": "Team für das erste Projekt",}
+\StringTok{  "permission": "write"}
+\StringTok{\}\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+\elarge
+
+\textbf{Benutzer hinzufügen}
+
+\blarge
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{schule}\OperatorTok{=}\NormalTok{GGP}
+\VariableTok{token}\OperatorTok{=}\NormalTok{1234}
+\VariableTok{team}\OperatorTok{=}\NormalTok{G10a}
+\VariableTok{user}\OperatorTok{=}\NormalTok{susi}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ PUT }\DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{schule\}}\StringTok{/teams/}\VariableTok{$\{team\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\NormalTok{{-}H }\StringTok{"Authorization: token YOUR\_ADMIN\_TOKEN"}
+\end{Highlighting}
+\end{Shaded}
+
+\elarge
+
+\samplestart
+
+\textbf{Hinweis}\\
+Bei der Recherche bin ich swohl über Team\_id als auch Team\_name
+gestolpert. Einfach ausprobieren, was bei dir stimmt! \sampleend
 
 \bookmarksetup{startatroot}
 
@@ -6696,9 +6773,33 @@ benutzbar.
 
 Diese Software ist etwas schwergewichtiger als \gitea, aber ebenso
 problemlos zu installieren. Auch hier stellt stellt sich allerdings die
-Frage nach dem zu verwendenden ssh-Port z.B. zum Clonen. Auf dem
-Testsystem ist der ssh-Port ja bereits auf 23 umgestellt, damit können
-wir den Dafault lassen.
+Frage nach dem zu verwendenden ssh-Port z.B. zum Clonen. Ich selbst habe
+den ssh-Port des Servers auf 23 umgestellt, damit \gitlab die 22
+verwenden kann.
+
+\section{Umstellen des Ports}\label{umstellen-des-ports}
+
+Melde dich auf dem Server an und werde \emph{root}. Suche in der Datei
+\texttt{/etc/ssh/sshd\_config} nach der Zeile \textbf{\# Port 22}
+(Auskommentiert). Entferne den Kommentar und ersetze 22 durch 23.
+(Speichern nicht vergessen!)
+
+\textbf{WICHTIG WICHTIG WICHTIG} Vergiss nicht, auf der Firewall auch
+Port 23 freizuschalten:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{ufw}\NormalTok{ disable }
+\ExtensionTok{ufw}\NormalTok{ allow 23/tcp }
+\ExtensionTok{ufw}\NormalTok{ enable }
+\ExtensionTok{ufw}\NormalTok{ status verbose}
+\end{Highlighting}
+\end{Shaded}
+
+Nun muss der Dienst neu gestartet werden. Bei den letzten Tests hat der
+Befehl \texttt{systemctl\ restart\ ssh} den Dienst aber nicht auf den
+anderen Port umgestellt (wegen laufender Verbindung?). Linux-untypisch
+war ein Reboot die Lösung (im Terminal \texttt{reboot} eingeben).
 
 \section{Docker}\label{docker-1}
 
@@ -6724,16 +6825,16 @@ Erstelle hier eine \datei{docker-compose.yml} Datei:
     \ExtensionTok{hostname:} \StringTok{\textquotesingle{}192.168.3.181\textquotesingle{}}  \CommentTok{\# Im Netz \textquotesingle{}gitlab.server.de\textquotesingle{}}
     \ExtensionTok{environment:}
       \ExtensionTok{GITLAB\_OMNIBUS\_CONFIG:} \KeywordTok{|}
-        \ExtensionTok{external\_url} \StringTok{\textquotesingle{}https://182.168.3.181:443\textquotesingle{}}   \CommentTok{\# im Netz ...}
+        \ExtensionTok{external\_url} \StringTok{\textquotesingle{}http://182.168.3.181:443\textquotesingle{}} \CommentTok{\# im Netz https}
         \VariableTok{gitlab\_rails}\OperatorTok{[}\StringTok{\textquotesingle{}gitlab\_shell\_ssh\_port\textquotesingle{}}\OperatorTok{]} \ExtensionTok{=}\NormalTok{ 22}
     \ExtensionTok{ports:}
-      \ExtensionTok{{-}} \StringTok{\textquotesingle{}25:22\textquotesingle{}}  \CommentTok{\# DAS müssen wir noch testen}
+      \ExtensionTok{{-}} \StringTok{\textquotesingle{}22:22\textquotesingle{}}  \CommentTok{\# 25:22 falls 22 nicht auf 23 umgestellt}
       \ExtensionTok{{-}} \StringTok{\textquotesingle{}80:80\textquotesingle{}}
       \ExtensionTok{{-}} \StringTok{\textquotesingle{}443:443\textquotesingle{}}
     \ExtensionTok{volumes:}
-      \ExtensionTok{{-}}\NormalTok{ /srv/docker/gitlab25/config:/etc/gitlab}
-      \ExtensionTok{{-}}\NormalTok{ /srv/docker/gitlab25/logs:/var/log/gitlab}
-      \ExtensionTok{{-}}\NormalTok{ /srv/docker/gitlab25/data:/var/opt/gitlab}
+      \ExtensionTok{{-}}\NormalTok{ ./config:/etc/gitlab}
+      \ExtensionTok{{-}}\NormalTok{ ./logs:/var/log/gitlab}
+      \ExtensionTok{{-}}\NormalTok{ ./data:/var/opt/gitlab}
     \ExtensionTok{shm\_size:} \StringTok{\textquotesingle{}256m\textquotesingle{}}
     \ExtensionTok{networks:}
       \ExtensionTok{{-}}\NormalTok{ gitlab\_net}
@@ -6744,9 +6845,16 @@ Erstelle hier eine \datei{docker-compose.yml} Datei:
 \end{Highlighting}
 \end{Shaded}
 
-TODO: testen der Portkonfiguration für ssh TODO: Welches Netz verwenden?
+Das Netz für \gitlab muss explizit angelegt werden, da es
+\emph{external} ist:
 
-Aus dem Ordner heraus wie üblich ausführen
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ network create gitlab\_net }
+\end{Highlighting}
+\end{Shaded}
+
+Nun dem Ordner heraus ausführen
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6754,21 +6862,42 @@ Aus dem Ordner heraus wie üblich ausführen
 \end{Highlighting}
 \end{Shaded}
 
-Hier ist nun eine längere Kaffepause angebracht!
+Hier ist nun eine längere Kaffepause angebracht!\\
+Das \emph{länger} ist im Sinne von 20 Minuten+ gemeint und hängt stark
+vom verfügbaren Hauptspeicher ab. Mit 2GB bin ich an die Wand gelaufen
+und musste im Nachhinein Auslagerungsspeicher zur Verfügung stellen.
+Hier ist die Code-Sequenz, falls das bei dir auch nötig werden sollte.
+Überwache den Speicherverbrauch in einem zweiten Terminal mit dem Befehl
+\cmd{top}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo} \AttributeTok{{-}i} 
+\ExtensionTok{fallocate} \AttributeTok{{-}l}\NormalTok{ 2G /swapfile}
+\FunctionTok{chmod}\NormalTok{ 600 /swapfile}
+\ExtensionTok{mkswap}\NormalTok{ /swapfile}
+\ExtensionTok{swapon}\NormalTok{ /swapfile}
+\end{Highlighting}
+\end{Shaded}
 
 Mit dem nachfolgenden Befehl kann das Erstkennwort für
 \gitlab ausgelesen werden:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{cat}\NormalTok{ config/initial\_root\_password}
+\FunctionTok{sudo}\NormalTok{ cat config/initial\_root\_password}
 \end{Highlighting}
 \end{Shaded}
 
 Damit ist eine Anmeldung als \emph{root} auf der Weboberfläche möglich.
-Hier muss nun auch sofort das Kennwort geändert werden!
+Hier muss nun auch sofort das Kennwort geändert werden! Auch dort
+brauchst du diese Zeichenkette erneut!
 
-Mit diesem docker-compose File ist ssh-clonen über Port 25 möglich:
+Mit diesem docker-compose File ist ssh-clonen bereits möglich (sobald
+der ssh-Key im Profil hinterlegt ist). Solltest du auf dem Host einen
+anderen Port verwenden (gitlab arbeitet intern dennoch mit 22), dann
+clonst\\
+du so (z.B. über Port 25):
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6776,7 +6905,7 @@ Mit diesem docker-compose File ist ssh-clonen über Port 25 möglich:
 \end{Highlighting}
 \end{Shaded}
 
-\ldots{} allerdings erst nach einigen Vorbereitungen!
+\textbf{Einstellungen auf dem Server}
 
 \begin{itemize}
 \tightlist
@@ -6785,13 +6914,62 @@ Mit diesem docker-compose File ist ssh-clonen über Port 25 möglich:
 \item
   Projekt demo.git erstellen
 \item
-  Den SSH-Key des Users in den eigenen Account eintragen
+  Deinen public-Key Account eintragen (das muss jeder Benutzer machen!)
 \end{itemize}
 
 Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über Konsole,
 GitClients, \ldots{} Weboberfläche.
 
-TODO: Noch detaillierter ausarbeiten
+\section{Einstieg in Gitlab}\label{einstieg-in-gitlab}
+
+Da für bestimmte Aspekte Bilder aussagekräftiger sind, wird dieser
+Abschnitt deutlich bildlastig werden. An dieser Stelle sei noch einmal
+betont, dass dieses Dokument eigentlich nicht für den Ausdruck gedacht
+ist! In einer PDF-Datei ist die Anzahl der Seiten mit Bildern ein
+geringeres ökoligisches Problem!
+
+\subsection{Anmeldung}\label{anmeldung}
+
+Wenn sich der root-Benutzer angemeldet hat, sollte er in seinem Profil
+(rechts oben) ein neues Kennwort festlegen. Dafür wird erneut das
+Einmalkennwort benötigt!
+
+Für lokale Versuche bietet es sich an, dass 2 Browser oder der
+Inkognito-Modus verwendet werden, damit \emph{root} und ein weiterer
+Benutzer gleichzeitig angemeldet sein können.
+
+Ein weiterer Benutzer besitzt nach der Grundinstallation die
+Möglichkeit, sich selbst auf der Plattform zu registrieren. Der
+diesbezügliche Dialog ist selbsterklärend und deshalb spare ich mir das
+Bild.
+
+Nach der Registrierung ist allerdings noch keine Anmeldung am System
+möglich -- sie muss erst von \emph{root} freigeschaltet werden.
+
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_1.png}}
+
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_2.png}}
+
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_3.png}
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_4.png}
+
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_5.png}}
+
+Danach ist für den Benutzer die Anmeldung möglich und er kann eigene
+Projekte erstellen. Am Startbildschirm erscheint auch ein Hinweis (mit
+Link), dass noch ein ssh-Key eingetragen werden muss. Das ist natürlich
+nur nötig, wenn von extern (Client) auf die Repos zugegriffen werden
+soll.
+
+\gitlab ist für einfache Szenarien relativ leicht zu überblicken, bei
+tiefergehender Beschäftigung muss allerdings viel Zeit eingeplant
+werden. Aus diesem Grund verzichte ich an dieser Stelle auf einen
+tieferen Einstieg. Das Anlegen eines Repositories (=Projekts) ist
+relativ einfach, das Erstellen, Editieren und Committen von Dateien
+ebenfalls.
+
+Interessanter ist die Verwendung von \gitlab im Zusammenhang mit CICD,
+das das Thema des nächsten Abschnitts ist.
 
 \bookmarksetup{startatroot}
 
@@ -6839,6 +7017,40 @@ bereitgestellten Anwendung. CI/CD bildet damit das Rückgrat moderner
 Entwicklungsprozesse -- und ist ein Schlüsselkonzept, das jeder
 fortgeschrittene \git-Nutzer verstehen sollte.
 
+\samplestart
+
+\textbf{Hinweis}\\
+Das Thema CICD ist eng mit sogenannten \emph{runner}-Programmen
+verbunden, die für die Ausführung von CICD verantwortlich sind. Leider
+erfordert die Registrierung eines solchen Runners in \gitlab eine
+funktionierende Zertifikat-Infrastruktur, da das über https erfolgt. Das
+ist in unserem Umfeld aber sehr aufwändig. Besser wäre es, sich einen
+Account auf gitlab.com anzulegen! \sampleend
+
+\textbf{Dennoch}\\
+Ja - man kann es auch seiner Spielumgebung machen, allerdings nicht so
+einfach.
+
+\begin{itemize}
+\tightlist
+\item
+  root werden
+\item
+  \texttt{nano\ config/gitlab.rb}
+\item
+  suchen nach \texttt{\#external\_url="EXTERNAL\_URL"}
+\item
+  ersetzen durch \texttt{external\_url="http://192.168.3.154"} (meine
+  IP)
+\item
+  Im Docker-Container eine Reconfiguration triggern:\\
+  \texttt{docker\ exec\ -it\ gitlab\ gitlab-ctl\ reconfigure}
+\end{itemize}
+
+Jetzt sollte ein Zugriff über http möglich sein. Wichtig ist allerdings,
+dass im Browser wirklich alle Cookies dieser Seite gelöscht werden, da
+sonst Fehler auftreten.
+
 \section{CI -- Einstieg}\label{ci-einstieg}
 
 Im Prinzip geht es um die Automatisierung von Abläufen, sobald ein
@@ -6857,34 +7069,32 @@ offiziellen \gitlab{} -- du benötigst also einen Account\footnote{Natürlich
   können aber viele Teilnehmer nicht mit nachhause nehmen und deshalb
   verwenden wir die offizielle Instanz}.
 
-\subsection{Vorbereitung}\label{vorbereitung}
-
-\textbf{Schritt 1}\\
-Erstelle dir ein Projekt auf \gitlab.\\
-Der Name ist aktuell egal. Beim Initialisieren kann eine Datei
-\datei{Readme.md} erstellt werden -- das ist sinnvoll, da beim Clonen
-von leeren Repositories Folgeprobleme entstehen können.
-
-\textbf{Schritt 2}\\
-Clone das Repository auf deinen Rechner
-
-\textbf{Schritt 3}\\
-Kopiere die Datei \datei{quarto_vorlage.zip} aus dem Kursordner in das
-Repository und entpacke sie sie dort. Dateien, die auf \emph{qmd} enden,
-sind einfach Markdowndateien für Quarto.
-
-TODO: quarto\_vorlage.zip erstellen für CICD - incl gitignore\\
-TODO: Mit mini Geschichten Setup
-
-\textbf{Schritt 4}\\
-Erstelle einen ersten Commit und pushe das Repository wieder auf
-\gitlab.
-
-Du hast nun viele Dateien, die kannst du auch später noch genau unter
-die Lupe nehmen. Aktuell geht es darum, einen Automatimus auf \gitlab zu
-erstellen. Aus diesem Grund änderst du zunächst nichts an den Dateien.
-
 \subsection{Hintergrund}\label{hintergrund}
+
+Damit CICD funktioniert, brauchst du ein Programm mit dem Namen
+\emph{gitlab-runner}, kurz auch \emph{runner} genannt. Das ist nur
+bedingt richtig, weil \emph{gitlab-runner} auch mehrere Jobs verwalten
+kann, die ebenfalls als \emph{runner} bezeichnet werden.
+
+Wo und wie der \emph{gitlab-runner} installiert wird, hängt von deinen
+Bedürfnissen ab. Es gibt hier verschiedene Varianten:
+
+\begin{itemize}
+\tightlist
+\item
+  Du verwendest das offizielle GitLab? Dann sind dort schon Runner
+  vorhanden. Sie sind aber langsam, du kannst sie nicht beliebig oft
+  starten und höhere Geschwindigkeit kostet!
+\item
+  Du verwendest das offizielle GitLab? Dann kannst du auch einen Runner
+  verwenden, der auf deinem Server, Laptop, \ldots{} installiert ist.
+  Das kann, muss aber nicht mit Docker gemacht werden.
+\item
+  Du hast dein eigenes GitLab? Dann musst du einen Runner irgendwo
+  installieren. Auch hier kann das im Prinzip jeder Computer sein.
+\end{itemize}
+
+\textbf{Was macht der Runner?}
 
 \Gitlab kann einen automatischen Prozess im Hintergrund starten, wenn es
 eine Datei mit dem Namen \datei{.gitlab-ci.yml} auf der obersten Ebene
@@ -6894,46 +7104,27 @@ wirst den genauen Aufbau in einem der nächsten Schritte kennenlernen,
 aber aktuell geht es erst einmal um das Funktionsprinzip.
 
 Wenn das System richtig konfiguriert ist, wird diese Datei einem
-weiteren Programm übergeben, einem sogenannten \emph{runner}. Dieses
-Programm kannn auf \gitlab installiert (=shared runner und andere
-Varianten), aber auch auf deinem eigenen Rechner oder Server, der dann
-eigenständig mit \gitlab  kommuniziert um die Befehle in der
-\datei{.gitlab-ci.yml} abzuarbeiten.
+weiteren Programm übergeben, dem \emph{runner}. Dieses Programm kannn
+auf \gitlab installiert (=shared runner und andere Varianten), aber auch
+auf deinem eigenen Rechner oder Server, der dann eigenständig mit
+\gitlab  kommuniziert um die Befehle in der \datei{.gitlab-ci.yml}
+abzuarbeiten.
 
-Aber beginnen wir mit der Version direkt auf \gitlab.
+In vielen Fällen muss der Runner dazu einen Docker-Container erstellen.
 
-In deinem Projekt gibt es (linker Rand) einen Menüpunkt\\
-\emph{Settings -\textgreater{} CI/CD -\textgreater{} Runner}
+\subsection{Vorbereitung}\label{vorbereitung}
 
-Hier kannst du einen Runner mit deinem Projekt verbinden. Die
-Formulierung \emph{create project runner} (rechts oben) ist also
-eigentlich nicht korrekt.
+\textbf{Schritt 1}\\
+Erstelle dir ein Projekt auf \gitlab.\\
+Der Name ist aktuell egal. Beim Initialisieren kann eine Datei
+\datei{Readme.md} erstellt werden -- das ist sinnvoll, da beim Clonen
+von leeren Repositories Folgeprobleme entstehen können.
 
-Im Prinzip genügt es, wenn du bei \emph{run untagged jobs} einen Haken
-setzt und auf \emph{create runner} klickst.
+\textbf{Schritt 2}\\
+Erstelle eine neue Datei mit dem Namen \texttt{.gitlab-ci.yml} und trage
+ein:
 
-Die nachfolgende Seite ist nur dann wichtig, falls du einen eigenen
-Runner auf deinem eigenen Computer laufen hast! Klick also unten auf der
-Seite \emph{View runners}.
-
-Seltsamer Weise kann man diese Seite nur \emph{mit Gewalt} verlassen,
-indem du wieder auf Settings wechselst (Seite verlassen). Nun solltest
-du im Abschnitt \emph{CI/CD - \textgreater{} Runners} einen
-angekoppelten Runner sehen.
-
-TODO: SCREENSHOT Liste der Runner
-
-\subsection{Automatismus basteln}\label{automatismus-basteln}
-
-Erstelle nun die Datei \datei{.gitlab-ci.yml} in deinem Repository.
-Bevor wir unser Minibuch schreiben, wollen wir uns einen minimalen
-Automatismus bauen.
-
-Übertrage folgende Zeilen in die Datei \datei{.gitlab-ci.yml}.\\
-\textbf{Verwende für die Einrückungen unbedingt Leerzeichen und keine
-Tabulatoren!}
-
-\phantomsection\label{annotated-cell-239}%
+\phantomsection\label{annotated-cell-246}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -6960,19 +7151,76 @@ Auszuführender Befehl. Bei mehr Befehlen werden Spiegelstriche
 verwendet.
 \end{description}
 
-Wenn du das erledigt hast, erstellst du einen Commit und pushst das
-Repository. Auf \gitlab solltest du am linken Rand im Menü \emph{build}
-unter \emph{jobs} jetzt einen laufenden Job sehen. Wenn du ihn
-anklickst, kannst du direkt sehen was passiert.\\
-Von den vielen Meldungen sind nur wenige direkt interessant:
+\textbf{Schritt 3}\\
+Committe diese Datei.
+
+\subsection{Runner auf GilLab}\label{runner-auf-gillab}
+
+In deinem Projekt gibt es (linker Rand) einen Menüpunkt\\
+\emph{Settings -\textgreater{} CI/CD -\textgreater{} Runner}
+
+Hier kannst du einen Runner mit deinem Projekt verbinden. Die
+Formulierung \emph{create project runner} (rechts oben) ist also
+eigentlich nicht korrekt.
+
+Im Prinzip genügt es, wenn du bei \emph{run untagged jobs} einen Haken
+setzt und auf \emph{create runner} klickst.
+
+Auf der nächsten Seite siehst du dann eine Anleitung, wie du einen
+Runner mit deinem Projekt koppeln kannst. Dafür muss natürlich erst
+irgendwo ein Runner laufen! Für uns dürfte wieder Docker der schnellste
+Weg sein, du kannst einen gitlab-runner aber auch auf jeder beliebigen
+anderen Maschine installieren!
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ run }\AttributeTok{{-}d} \AttributeTok{{-}{-}name}\NormalTok{ gitlab{-}runner }\DataTypeTok{\textbackslash{}}
+  \AttributeTok{{-}v}\NormalTok{ /srv/gitlab{-}runner/config:/etc/gitlab{-}runner }\DataTypeTok{\textbackslash{}}
+  \AttributeTok{{-}v}\NormalTok{ /var/run/docker.sock:/var/run/docker.sock }\DataTypeTok{\textbackslash{}}
+\NormalTok{  gitlab/gitlab{-}runner:latest}
+\end{Highlighting}
+\end{Shaded}
+
+Wir müssen diesen Container nun betreten um die Registrierung
+durchzuführen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ exec }\AttributeTok{{-}it}\NormalTok{ gitlab{-}runner /bin/bash }
+\end{Highlighting}
+\end{Shaded}
+
+Hier hin kopieren wir den Befehl aus \gitlab. Die ersten Fragen
+beantworten wir mit \key{enter}. Auf die Frage nach dem Executor geben
+wir \texttt{docker} an.
+
+Danach starten wir den Runner
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{gitlab{-}runner}\NormalTok{ run}
+\end{Highlighting}
+\end{Shaded}
+
+Danach verlassen wir den Container mit \strg{pq}.
+
+\subsection{Ausführen des Jobs}\label{ausfuxfchren-des-jobs}
+
+Nimm eine minimale Änderung in der Readme vor und Committe deine
+Änderung. Am linken Rand findest du einen Menüpunkt \menu{build}, aus
+dem du Pipeline wählst. Nun siehst du oben an der Seite das Symbol für
+einen laufenden Job. Klickst du es an, siehst du die Ausgabe im
+Docker-Container!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{...}
 \ExtensionTok{Running}\NormalTok{ with gitlab{-}runner 18.4.0\textasciitilde{}pre.246.g71914659 }\ErrorTok{(}\ExtensionTok{71914659}\KeywordTok{)}
 \ExtensionTok{Preparing}\NormalTok{ the }\StringTok{"docker+machine"}\NormalTok{ executor}
 \ExtensionTok{Using}\NormalTok{ default image}
 \ExtensionTok{Getting}\NormalTok{ source from Git repository}
 \ExtensionTok{Ich}\NormalTok{ bin die erste Ausgabe}
+\ExtensionTok{...}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6991,10 +7239,19 @@ Du siehst:
   Der Echo-Befehl ausgeführt wird
 \end{itemize}
 
-Für unser Minibuch brauchen wir ein anderes Docker-Image und noch ein
-paar Erweiterungen in der Datei:
+\subsection{Sinnvollere Anwendung}\label{sinnvollere-anwendung}
 
-\phantomsection\label{annotated-cell-241}%
+Ziel ist das Erstellen eines Buches in \gitlab mit CICD. Dafür brauchen
+wir ein anderes Docker-Image und noch ein paar Erweiterungen in der
+Datei \datei{.gitlab-ci.yml}.
+
+Zunächst erstellst du ein neues Repository, Clonst es auf deinen Rechner
+und entpackst die Dateien aus dem Kursmaterial, die im Paket
+\emph{minibuch.zip} enthalten sind, in dieses Repository.
+
+Im Paket befindet sich auch bereits diese \emph{.gitlab-ci.yml}:
+
+\phantomsection\label{annotated-cell-251}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7007,6 +7264,7 @@ paar Erweiterungen in der Datei:
   \ExtensionTok{stage:}\NormalTok{ build}
   \ExtensionTok{image:}\NormalTok{ DOCKER\_IMAGE }\hspace*{\fill}\NormalTok{\circled{4}}
   \ExtensionTok{script:} 
+    \ExtensionTok{{-}}\NormalTok{ quarto install tinytex}
     \ExtensionTok{{-}}\NormalTok{ quarto render }\AttributeTok{{-}{-}to}\NormalTok{ pdf }\hspace*{\fill}\NormalTok{\circled{5}}
   \ExtensionTok{artifacts:} \hspace*{\fill}\NormalTok{\circled{6}}
     \ExtensionTok{paths:}
@@ -7032,68 +7290,24 @@ Das fertige PDF muss zurück zu \gitlab übertragen werden
 An dieser Stelle befindet sich das PDF
 \end{description}
 
-Leider scheitert diese Pipeline, da auf diesem Quarto-Image kein LaTeX
-installiert ist. Das kannst du ändern, indem du im
-\emph{script}-Abschnitt den Befehl \cmd{quarto install tinytex} an den
-Anfang stellst. Nach diesem Commit sollte der Job durchlaufen. Auf
-\gitlab findest du im Menü (links) bai \emph{Jobs} nun die Möglichkeit,
-die Zip-Datei mit dem Artifact -- also der pdf-Datei -- herunterzuladen.
+Führe nun einen Commit aus. Nach diesem Commit sollte der Job
+durchlaufen. Auf \gitlab findest du im Menü (links) bei \emph{Jobs} nun
+die Möglichkeit, die Zip-Datei mit dem Artifact -- also der pdf-Datei --
+herunterzuladen.
 
-\subsection{Wie geht es weiter?}\label{wie-geht-es-weiter}
+\subsection{Alles auf dem Server}\label{alles-auf-dem-server}
 
-Vorher habe ich von \emph{Problemen} gesprochen. Je nachdem, wie schnell
-du das entsprechende Menü gefunden hast, lief der Job eventuell noch.
-Das liegt daran, dass hier standardmäßig ein komplettes Docker-Image
-heruntergeladen werden muss, und das dauert (unverhältnismäßig) lange
-für einen derartig winzigen Job. Häufige Commits führen jedes Mal zu
-einem Download des Docker-Images. Da in der kostenlosen Version von
-\gitlab die monatlich Zeit für die Ausführung von Piplines gedeckelt
-ist, kann das zu Engpässen führen!
-
-Es gibt hierfür verschiedene Lösungsansätze:
-
-\begin{itemize}
-\tightlist
-\item
-  Zeit kaufen
-\item
-  \gitlab selbst hosten
-\item
-  Den Docker-Aspekt auf einen anderen Rechner auslagern.
-\end{itemize}
-
-Wenn du vor dem selbst hosten oder kaufen zurückschreckst, bleibt dir
-nur die dritte Option. Hierfür musst du einen sogenannten \emph{Runner}
-und den zugehörigen \emph{Agent} auf deinem eigenen Rechner (oder
-Server) installieren und dort auch die benötigte Infrastruktur (z.B.
-Docker oder die Build-Umgebung). Der Runner führt als Agent in
-konfigurierbaren Abständen Anfragen bei \gitlab aus, um auf das
-Vorhandensein von neuen Jobs zu testen. Das ist zwar etwas unelegant,
-löst aber das Problem der Erreichbarakeit des eigenen Rechners aus dem
-Internet, falls er hinter deiner Firewall steht -- also bei der
-Kontaktaufnahme von Seiten von \gitlab.
-
-\textbf{Wie kannst du deinen Runner auslagern?}
-
-Der Runner ist ein Programm, das installiert werden muss. Das kann
-direkt im Prinzip auf jedem Rechner (nicht iPad) gemacht werden, egal ob
-\emph{native} oder in Form eines eigenen Docker-Containers. Wenn der
-Runner einen Job bekommt, startet er auf dem Zielrechner (muss nicht
-identisch mit dem Rechner des Runners sein) einen Docker-Container, der
-die eigentliche Arbeit erledigt. Da auf einem eigenen Server/Rechner das
-Image im Regelfall bereits vorligt, dauert der Start nur extrem kurz und
-die eigentliche Laufzeit des Jobs hängt von der Komplexität der Aufgabe
-ab. Wie du das einrichtest, erfährst du im nächsten Abschnitt, wobei ich
-auf eine reine Docker-Lösung setze.
-
-\subsection{Vorbereiten der Container}\label{vorbereiten-der-container}
+Wenn du ausreichend Rechnenleistung auf deinem Server hast, kannst du
+auch einen etwas umfassenderen Setup erstellen.\\
+Ziel ist das Erstellen von Büchern und Testdriven-Development mit Java.
 
 Lege zunächst einen Ordner an, wo die Dateien für die Erzeugung der
 Container ablegen willst:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\BuiltInTok{cd} \OperatorTok{\textless{}}\NormalTok{wo auch immer}\OperatorTok{\textgreater{}}
+\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ /srv/docker}
+\BuiltInTok{cd}\NormalTok{ /srv/docker }
 \FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ runner quarto java }\CommentTok{\# 3 Ordner}
 \end{Highlighting}
 \end{Shaded}
@@ -7118,6 +7332,9 @@ In diesen Ordnern liegen dann Startdateien.
 \end{Highlighting}
 \end{Shaded}
 
+Starte diesen Container \textbf{noch nicht}, denn wir wollen erst die
+Vorbereitungsarbeiten abschließen.
+
 In dieser Version liegt der Konfigurationsordner \ordner{config} im
 Verzeichnis des Runners. Beim ersten Start -- vor dem Registrieren des
 Runners auf \gitlab{} -- wird ein Fehler gemeldet, dass die Datei
@@ -7125,12 +7342,10 @@ Runners auf \gitlab{} -- wird ein Fehler gemeldet, dass die Datei
 Schritten erst erstellt -- das ist also normal und kann ignoriert
 werden!
 
-Starte diesen Container noch \textbf{nicht}, denn wir wollen erst die
-Vorbereitungsarbeiten abschließen.
-
 \textbf{quarto}\\
-Für diesen Container genügt ein Dockerfile, denn dieser Container wird
-komplett vom Runner verwaltet.
+Für diesen Container genügt ein Dockerfile im Ordner \emph{quarto}, denn
+dieser Container wird komplett vom Runner verwaltet.
+\texttt{Docker\ Compose} ist nicht erforderlich.
 
 \blarge
 
@@ -7162,8 +7377,8 @@ komplett vom Runner verwaltet.
 \elarge
 
 In dieser Datei wird die Installation eines kompletten Quarto/Latex
-Servers beschrieben. Das dauert dann einige Zeit, da der Container am
-Ende etwa 10GB groß ist!
+Servers beschrieben. Das dauert beim ersten Start einige Zeit, da der
+Container am Ende etwa 10GB groß ist!
 
 Du kannst dieses Image mit folgendem Befehl auf deinem Server verfügbar
 machen:
@@ -7177,8 +7392,8 @@ machen:
 \textbf{Java}\\
 Auch für Java brauchst du ein lokales Image, wenn die Geschwindigkeit
 stimmen soll. Ein mögliches Dockerfile sieht so aus, allerdings musst du
-zuerst unter nachfolgender Adresse die aktuelle Version in Efahrung
-bringen und in das Dockerfile eintragen (siehe Kommentar):
+zuerst unter nachfolgender Adresse die aktuelle Version von \emph{maven}
+in Erfahrung bringen und in das Dockerfile eintragen (siehe Kommentar):
 
 \url{https://downloads.apache.org/maven/maven-3}
 
@@ -7220,15 +7435,11 @@ bringen und in das Dockerfile eintragen (siehe Kommentar):
 
 \elarge
 
-\bookmarksetup{startatroot}
-
-\chapter{Runner}\label{runner-1}
-
-Ein Runner ist ein Hilfsprogramm, das Aufträge von Gitlab entgegen nimmt
-und ausführt. Solche Runner können auf unterschiedlichen Ebenen agieren,
-d.h. nur für einzelne Projekte, für Gruppen, für alle Repositories,
-\ldots{} Nicht alle Varianten sind für die freien Accounts auf Gitlab
-verfügbar!
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ build }\AttributeTok{{-}t}\NormalTok{ java:latest }\AttributeTok{{-}f}\NormalTok{ Dockerfile .}
+\end{Highlighting}
+\end{Shaded}
 
 \bookmarksetup{startatroot}
 
@@ -7372,8 +7583,8 @@ Inhalt:
 
 \textbf{Alternativ nur für den aktuellen Benutzer}
 
-Füge die gleichen beiden (export) Zeilen an das Ende der Datei folgenden
-Datei an
+Füge die gleichen beiden (export) Zeilen an das Ende der folgenden Datei
+an
 
 \datei{/home/<benutzer>/.profile}
 
@@ -7382,7 +7593,7 @@ Datei an
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{source}\NormalTok{ /etc/profile.d/java.sh }\CommentTok{\# bei Systemweit}
-\CommentTok{\# bzw. source \textasciitilde{}/.profile      \# bei EInzeluser}
+\CommentTok{\# bzw. source \textasciitilde{}/.profile      \# bei Einzeluser}
 \ExtensionTok{java} \AttributeTok{{-}version}
 \BuiltInTok{echo} \VariableTok{$JAVA\_HOME}
 \end{Highlighting}
@@ -7468,12 +7679,12 @@ Zur Kontrolle genügt dann ein
 \subsubsection*{Windows}\label{windows-3}
 \addcontentsline{toc}{subsubsection}{Windows}
 
-TODO: Maven auf Windows installieren
+Hier verweise ich einfach mal auf Youtube.
 
 \subsubsection*{Apple}\label{apple}
 \addcontentsline{toc}{subsubsection}{Apple}
 
-TODO: Maven auf Apple installieren
+Auch hier sind genug Tutorials auf Youtube zu finden.
 
 \subsection{Erster Test}\label{erster-test}
 
@@ -7503,10 +7714,12 @@ Hier wird die Ordnerstruktur automatisch von \maven erstellt und mit
 Demo-Dateien bestückt. Wir werden -- darauf aufbauend -- im nächsten
 Block ein TDD-Beispiel durchspielen.
 
-TODO: Wirklich? aktuell keine Warnungen!
+\samplestart
 
-Wir sehen noch einige typische Warnungen, die auf eine falsche
-Parameterisierung in der \datei{pom.xml} hinweisen -- dazu später mehr.
+\textbf{Hinweis}\\
+Es kann sein, dass hier noch einige typische Warnungen erscheinen, die
+auf eine falsche Parameterisierung in der \datei{pom.xml} hinweisen --
+dazu später mehr. \sampleend
 
 \subsection{Konventionen}\label{konventionen}
 
@@ -7558,9 +7771,9 @@ hochgeladen wurde und deshalb einfach nicht existiert). Derartige (also
 eigene) \emph{jar}-Dateien musst du selbst in den Cache \ordner{.m2}
 einpflegen, damit Maven sie verwenden kann.
 
-Im Ordner liegt eine Ordnerstruktur vor, geordnet nach productID,
-Version, \ldots, in der du selbst Ordner erstellen kannst. Im Prinzip
-macht Maven genau das, wenn du \emph{install} aufrufst.
+Im diesem Ordner liegt eine Ordnerstruktur vor, geordnet nach productID,
+Version, \ldots, in der du selbst weitere Ordner erstellen kannst. Im
+Prinzip macht Maven genau das, wenn du \emph{install} aufrufst.
 
 LINK-Tipp: \url{https://www.youtube.com/watch?v=T00NKLQvwYE} -
 Windows-lastig
@@ -7606,7 +7819,7 @@ Das liefert folgende Struktur:
 \pandocbounded{\includegraphics[keepaspectratio]{bilder/tdd/tree_init.png}}
 
 Dieses Projekt kann bereits (fast) compiliert werden. Zuerst müssen wir
-allerdings noch einige Einträge in der \datei{pom.xml} angepasst werden:
+allerdings noch einige Einträge in der \datei{pom.xml} angepassen:
 
 \begin{itemize}
 \tightlist
@@ -7703,7 +7916,7 @@ ganz genau und führe auch wirklich \emph{jeden} Schritt aus, egal wie
 sinnlos er aktuell für dich wirkt! Mir ist bewusst, dass es unendlich
 viele verschiedene Ansätze zur Implementierung eines Cäsar-Algorithmus
 gibt. Ich werde hier sicher nicht den elegantesten oder performantesten
-Ansatz verfolgen, denn ich will schließlich TDD demonstrieren und keine
+Ansatz verfolgen, denn ich will schließlich TDD demonstrieren und keinen
 Programmierkurs halten! Aus diesem Grund wird auch nicht jeder Edge-Case
 abgefangen.
 
@@ -7756,10 +7969,10 @@ Setter für den Klartext in der Datei \datei{Caesar.java}
 \end{Shaded}
 
 Nun schreibst du in der Datei \datei{CaesarTest.java} den ersten Test
-für eine nicht existierende Funktion. Bei Hard-Core TDD würdest du
-bereits die reine Existenz der Funktion mit Hilfe von Reflections testen
--- so weit möchte ich nicht gehen. Deshalb testen wir, ob die Funktion
-einen Text zurückliefert:
+für eine \emph{noch nicht existierende} Funktion. Bei Hard-Core TDD
+würdest du bereits die reine Existenz der Funktion mit Hilfe von
+Reflections testen -- so weit möchte ich nicht gehen. Deshalb testen
+wir, ob die Funktion einen Text zurückliefert:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7937,7 +8150,7 @@ Wir sind wieder bei \emph{rot}, weil wir nun echt arbeiten müssen!
 \end{Shaded}
 
 Wieder haben wir \emph{grün} erreicht -- allerdings nur für kleine
-Verschiebungen im der Mitte des Alphabets. Wollen wir zum Beispiel „x``
+Verschiebungen in der Mitte des Alphabets. Wollen wir zum Beispiel „x``
 verschieben, so wird nicht „c`` entstehen. Aber dafür schreiben wir
 einen Test:
 
@@ -8012,123 +8225,6 @@ bei mir dann auch das Ende erreicht, weil ich von diesem Weg irgendwann
 abgebogen bin. Man kann einfach nicht jeden Weg gehen und in diesen
 Sinne hoffe ich, dass dieser Workshop zumindest einige lehrreiche
 Aspekte beinhaltet hat.
-
-\bookmarksetup{startatroot}
-
-\chapter{cicd Buch}\label{cicd-buch}
-
-\section{Gitlab Runners}\label{gitlab-runners}
-
-Runners are small programs that are installed separately from the main
-GitLab application. Their purpose is to receive new CI/CD jobs published
-by GitLab and follow the jobs' instructions as specified in the
-.gitlab-ci.yml file. Runners can be installed and configured to work
-with a variety of types of infrastructure, including standalone servers,
-VMs, containers, and others.
-
-Zusätzlich zu einem GitLab-Account braucht man ein Gerät, auf dem dem
-der GitLab Runner (Agent) läuft. Das kann \emph{jeder} Rechner sein
-(Auch der Server)!
-
-CICD Pipelines laufen NICHT innerhalb von GitLab, da jeder Job ganz
-individuelle Einstellungen erfordert.
-
-Runners akzeptieren Jobs von GitLab und liefern das Ergebnis zurück an
-GitLab.
-
-Was der Runner macht, ist in der .gitlab-ci.yml definiert.
-
-Jeder Commit triggert einen neuen Lauf der Pipeline.
-
-Bekommt ein Runner einen Job zugewiesen, so holt sich der Runner den
-Commit aus dem Repo.
-
-\subsection{Terminiologie}\label{terminiologie}
-
-GitLab Runner: Die Runner-Software auf einem Rechner\\
-Runner: Das sind quasi registreierte Instanzen, die dann Jobs
-abarbeiten.\\
-Im Prinzip zur Laufzeit ein Runner-Prozess, der einen Job abarbeitet.
-
-Die Gitlab Runner - Software übernimmt die Jobs von GitHub und startet
-daraufhin die passenden Runner-Anwendungen.
-
-\subsection{Runner Agent}\label{runner-agent}
-
-Eine Art von Relais, wenn der runner nicht direkt über einen anstehenden
-Job informiert werden kann. Der Agent pollt in konfigurierbaren
-Abständen den GitLab-Server.
-
-Runner können auf verschiedenen Leveln in GitLab registriert werden. Das
-schließt Projekte, Gruppen, \ldots{} ein.
-
-Shared Runners Only Apply to Self-Managed GitLab
-
-Administrators can only configure shared runners on self-managed GitLab
-instances. GitLab.com customers can choose to use SaaS runners provided
-by GitLab, as well as register their own group or specific runners. A
-certain number of pipeline minutes for SaaS runners are included in each
-GitLab license tier, with additional minutes available for purchase.
-There is never a charge to use your own group or specific runners.
-
-\subsection{Mögliche Executors}\label{muxf6gliche-executors}
-
-\subsubsection{Docker}\label{docker-2}
-
-In diesem Fall muss Docker auf dem gleichen Rechner wie der GitLab
-Runner installiert sein. Meistgenutzter Typ auch bei den SaaS Runners
-von GitLab. Perfekt für reproduzierbare Umgebungen.
-
-Welches Image verwendete wird, kann auf verschiedenen Ebenen festgelegt
-werden (default, pipeline, job).
-
-Das Image kann nicht nur auf Dockerhub gehostet sein!
-
-\subsubsection{Shell}\label{shell}
-
-Stellt im Prinzip eine Shell-Session auf dem Host dar, auf dem der
-GitLab-Runner installiert ist. Im Prinzip wird ein Keyboard simuliert.
-
-Hier bekommt man leider keine \emph{suabere} Umgebung und es können
-Reste vom letzten Lauf zurückbleiben, die den Ablauf stören. Besser
-Finger weg.
-
-\subsubsection{Hypervisoren}\label{hypervisoren}
-
-VB, Parallels, Kubernetes, \ldots{}\\
-Für spezielle Anwendungen -- spezieller als unsere Szenarien.
-
-\subsubsection{Docker Machine}\label{docker-machine}
-
-Simuliert einen kompletten Docker-Host und nicht nur einen Container.
-Wird von Docker nicht mehr aktiv weiter entwickelt.
-
-\subsubsection{SSH}\label{ssh-1}
-
-Damit können Remote-Befehle auf anderen Rechnern ausgeführt werden. Wir
-sprechen von „bash-Level``. Kann sinnvoll sein, um auf einen Server zu
-grätschen, auf dem man keinen Runner installieren will / kann.
-
-\section{Runner Tags}\label{runner-tags}
-
-Ein Runner kann mit einem Tag versehen werden, analog zu Jobs. Damit
-passen Job und Runner zusammen.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{deploy{-}to{-}staging:}
-\ExtensionTok{    stage:}\NormalTok{ staging}
-\ExtensionTok{    script:}\NormalTok{ ./deploy{-}staging.sh}
-\ExtensionTok{    tags:}
-\ExtensionTok{        {-}}\NormalTok{ windows}
-\ExtensionTok{        {-}}\NormalTok{ staging}
-\end{Highlighting}
-\end{Shaded}
-
-Dieser Job kann nur (default) von Runnern ausgeführt werden, die
-ebenfalls die Tags \emph{windows} und \emph{staging} besitzen. Das kann
-in den Einstellungen eines Runners aber deaktiviert werden. (Vorsicht:
-Runner-Tags haben nichts mit Git-Tags zu tun)
 
 \bookmarksetup{startatroot}
 
@@ -8217,6 +8313,15 @@ Prinzip natürlich auch durch ein eigenes Image ersetzen:
 \section{Wie beginnt man mit einem neuen
 Repository}\label{wie-beginnt-man-mit-einem-neuen-repository}
 
+Ganz allgemein kann man sagen, dass hier immer noch Inkonsistenzen
+zwischen verschiedenen Versionen von \git existieren. In manchen Fällen
+müssen Branches umbenannt werden, in anderen nicht.\\
+Ich habe diese Anleitung bereits mehrfach umgeschrieben, weil sich das
+Verhalten zwischenzeitlich minimal geändert hat.
+
+Das nachfolgende Verfahren sollte aber in jedem Fall funktionieren, auch
+wenn manche Schritte überflüssig sein können.
+
 \subsection{Reiner Git-Server (nicht
 GitLab)}\label{reiner-git-server-nicht-gitlab}
 
@@ -8263,9 +8368,14 @@ vom Client aus:
 Sollte der git-Server nicht auf Port 22 laufen, so ist der Aufruf etwas
 anders:
 
-\begin{verbatim}
-git clone ssh:<ip>:port/tmp/projekt.git
-\end{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ clone ssh://}\OperatorTok{\textless{}}\NormalTok{ip}\OperatorTok{\textgreater{}}\NormalTok{:port/tmp/projekt.git}
+
+\CommentTok{\# oder }
+\FunctionTok{git}\NormalTok{ clone ssh://benutzer@}\OperatorTok{\textless{}}\NormalTok{ip}\OperatorTok{\textgreater{}}\NormalTok{:port/tmp/projekt.git}
+\end{Highlighting}
+\end{Shaded}
 
 \sampleend
 
@@ -8311,7 +8421,10 @@ Wovon ich dringend abrate, ist folgende Variante:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ remote add origin ssh://server/../../projekt.git}
+\FunctionTok{git}\NormalTok{ remote add origin benutzer@}\OperatorTok{\textless{}}\NormalTok{ip}\OperatorTok{\textgreater{}}\NormalTok{:/pfad/zum/projekt.git}
+
+\CommentTok{\# bei abweichendem Port }
+\FunctionTok{git}\NormalTok{ remote add origin ssh://benutzer@}\OperatorTok{\textless{}}\NormalTok{ip}\OperatorTok{\textgreater{}}\NormalTok{:25/pfad/zum/projekt.git}
 \end{Highlighting}
 \end{Shaded}
 
@@ -8334,14 +8447,20 @@ Das Force kann entfallen, wenn das neu erzeugte Repository auf dem
 Server noch komplett neu und ohne Inhalt ist!
 
 Du siehst also, es gibt eine ganze Menge von Varianten mit
-untschiedlichem Vorgehensweise. In meinen Augen ist es am sinnvollsten,
+untschiedlichen Vorgehensweise. In meinen Augen ist es am sinnvollsten,
 wenn man direkt mit einem Server-Repository beginnt und sich ein lokales
 Repository clont.
 
 Einen Fall möchte ich noch erwähnen, wenn man zwar schon einige Zeit mit
 \git lokal gearbeitet hat, aber keine wertvollen Commits oder Branches
 in seiner History vorliegen hat. Es ist dann eine Option, den kompletten
-Quellcode einfach in ein frisches Server-Repository zu kopieren.
+Quellcode einfach in ein frisch geclontes Server-Repository zu kopieren.
+
+\subsection{GitLab / GitHub}\label{gitlab-github}
+
+Wenn du ein Repository auf einer dieser Plattformen erstellst, dann
+kannst du sofort mit der geclonten Version arbeiten, falls du dort
+automatisch eine README erstellen lässt.
 
 \section{Installation von Tree}\label{installation-von-tree}
 
@@ -8369,20 +8488,6 @@ Der bin-Ordner muss an folgender Stelle erzeugt werden:
 \end{Shaded}
 
 \sampleend
-
-ERLEDIGEN:
-
-Man kann alles speichern - aber sollte man?
-
-Git Large File Storage (LFS)
-
-https://www.youtube.com/watch?v=JOIL6gof2BA
-
-11:36 Auflistung der Befehle
-
-Unter der Haube
-
-https://www.youtube.com/watch?v=RxHJdapz2p0\&t=13s
 
 \bookmarksetup{startatroot}
 

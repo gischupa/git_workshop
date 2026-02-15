@@ -17,43 +17,6 @@ Version von \gitlab, die können aber viele Teilnehmer nicht
 mit nachhause nehmen und deshalb verwenden wir die offizielle 
 Instanz].
 
-### Hintergrund
-
-Damit CICD funktioniert, brauchst du ein Programm mit dem 
-Namen *gitlab-runner*, kurz auch *runner* genannt. Das ist nur 
-bedingt richtig, weil *gitlab-runner* auch mehrere Jobs verwalten 
-kann, die ebenfalls als *runner* bezeichnet werden.
-
-Wo und wie der *gitlab-runner* installiert wird, hängt von deinen 
-Bedürfnissen ab. Es gibt hier verschiedene Varianten:
-
-* Du verwendest das offizielle GitLab? Dann sind dort schon Runner 
-  vorhanden. Sie sind aber langsam, du kannst sie nicht beliebig oft 
-  starten und höhere Geschwindigkeit kostet!
-* Du verwendest das offizielle GitLab? Dann kannst du auch einen 
-  Runner verwenden, der auf deinem Server, Laptop, ... installiert ist.
-  Das kann, muss aber nicht mit Docker gemacht werden.
-* Du hast dein eigenes GitLab? Dann musst du einen Runner irgendwo 
-  installieren. Auch hier kann das im Prinzip jeder Computer sein.
-
-**Was macht der Runner?**  
-
-\Gitlab kann einen automatischen Prozess im Hintergrund starten,
-wenn es eine Datei mit dem Namen \datei{.gitlab-ci.yml} auf der 
-obersten Ebene des Repositories findet.  
-Diese Datei definiert genauer, was dieser Prozess wie erledigen soll.
-Du wirst den genauen Aufbau in einem der nächsten Schritte kennenlernen, 
-aber aktuell geht es erst einmal um das Funktionsprinzip.
-
-Wenn das System richtig konfiguriert ist, wird diese Datei einem weiteren
-Programm übergeben, dem *runner*. Dieses Programm kannn 
-auf \gitlab installiert (=shared runner und andere Varianten), aber auch auf 
-deinem eigenen Rechner oder Server, der dann eigenständig mit \gitlab 
-kommuniziert um die Befehle in der \datei{.gitlab-ci.yml} abzuarbeiten.
-
-In vielen Fällen muss der Runner dazu einen Docker-Container erstellen.
-
-
 ### Vorbereitung
 
 **Schritt 1**  
@@ -64,8 +27,71 @@ beim Clonen von leeren Repositories Folgeprobleme entstehen
 können.
 
 **Schritt 2**  
-Erstelle eine neue Datei mit dem Namen `.gitlab-ci.yml` und 
-trage ein:
+Clone das Repository auf deinen Rechner 
+
+**Schritt 3**  
+Kopiere die Datei \datei{quarto_vorlage.zip} aus dem 
+Kursordner in das Repository und entpacke sie sie dort.
+Dateien, die auf *qmd* enden, sind einfach Markdowndateien 
+für Quarto.
+
+TODO: quarto_vorlage.zip erstellen für CICD - incl gitignore  
+TODO: Mit mini Geschichten Setup
+
+**Schritt 4**  
+Erstelle einen ersten Commit und pushe das Repository wieder auf
+\gitlab.
+
+Du hast nun viele Dateien, die kannst du auch später noch genau unter 
+die Lupe nehmen. Aktuell geht es darum, einen Automatimus auf 
+\gitlab zu erstellen. Aus diesem Grund änderst du zunächst 
+nichts an den Dateien.
+
+### Hintergrund
+
+\Gitlab kann einen automatischen Prozess im Hintergrund starten,
+wenn es eine Datei mit dem Namen \datei{.gitlab-ci.yml} auf der 
+obersten Ebene des Repositories findet.  
+Diese Datei definiert genauer, was dieser Prozess wie erledigen soll.
+Du wirst den genauen Aufbau in einem der nächsten Schritte kennenlernen, 
+aber aktuell geht es erst einmal um das Funktionsprinzip.
+
+Wenn das System richtig konfiguriert ist, wird diese Datei einem weiteren
+Programm übergeben, einem sogenannten *runner*. Dieses Programm kannn 
+auf \gitlab installiert (=shared runner und andere Varianten), aber auch auf 
+deinem eigenen Rechner oder Server, der dann eigenständig mit \gitlab 
+kommuniziert um die Befehle in der \datei{.gitlab-ci.yml} abzuarbeiten.
+
+Aber beginnen wir mit der Version direkt auf \gitlab.
+
+In deinem Projekt gibt es (linker Rand) einen Menüpunkt  
+*Settings -> CI/CD -> Runner*  
+
+Hier kannst du einen Runner mit deinem Projekt verbinden. Die 
+Formulierung *create project runner* (rechts oben) ist also 
+eigentlich nicht korrekt. 
+
+Im Prinzip genügt es, wenn du bei *run untagged jobs* einen Haken setzt 
+und auf *create runner* klickst.
+
+Die nachfolgende Seite ist nur dann wichtig, falls du einen eigenen 
+Runner auf deinem eigenen Computer laufen hast! Klick also unten auf der Seite
+*View runners*.
+
+Seltsamer Weise kann man diese Seite nur *mit Gewalt* verlassen, indem du 
+wieder auf Settings wechselst (Seite verlassen). Nun solltest 
+du im Abschnitt *CI/CD - > Runners* einen angekoppelten Runner sehen.
+
+TODO: SCREENSHOT Liste der Runner
+
+### Automatismus basteln
+
+Erstelle nun die Datei  \datei{.gitlab-ci.yml} in deinem Repository. Bevor wir unser Minibuch schreiben, 
+wollen wir uns einen minimalen Automatismus bauen.
+
+Übertrage folgende Zeilen in die Datei \datei{.gitlab-ci.yml}.  
+**Verwende für die Einrückungen 
+unbedingt Leerzeichen und keine Tabulatoren!**
 
 ```bash
 stages:  #<1>
@@ -82,67 +108,17 @@ ausgabe_1:  #<3>
 4. Angabe, zu welchem Schritt die Aktion gehört
 5. Auszuführender Befehl. Bei mehr Befehlen werden Spiegelstriche verwendet.
 
-**Schritt 3**  
-Committe diese Datei.
-
-
-
-### Runner auf GilLab
-
-In deinem Projekt gibt es (linker Rand) einen Menüpunkt  
-*Settings -> CI/CD -> Runner*  
-
-Hier kannst du einen Runner mit deinem Projekt verbinden. Die 
-Formulierung *create project runner* (rechts oben) ist also 
-eigentlich nicht korrekt. 
-
-Im Prinzip genügt es, wenn du bei *run untagged jobs* einen Haken setzt 
-und auf *create runner* klickst.
-
-Auf der nächsten Seite siehst du dann eine Anleitung, wie du einen 
-Runner mit deinem Projekt koppeln kannst. Dafür muss natürlich erst 
-irgendwo ein Runner laufen! Für uns dürfte wieder Docker der schnellste 
-Weg sein, du kannst einen gitlab-runner aber auch auf jeder beliebigen 
-anderen Maschine installieren!
+Wenn du das erledigt hast, erstellst du einen Commit  und pushst das Repository.
+Auf \gitlab solltest du am linken Rand im Menü *build* unter *jobs* jetzt einen 
+laufenden Job sehen. Wenn du ihn anklickst, kannst du direkt sehen was passiert.  
+Von den vielen Meldungen sind nur wenige direkt interessant:
 
 ```bash
-docker run -d --name gitlab-runner \
-  -v /srv/gitlab-runner/config:/etc/gitlab-runner \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  gitlab/gitlab-runner:latest
-```
-
-Wir müssen diesen Container nun betreten um die Registrierung durchzuführen:
-
-```bash
-docker exec -it gitlab-runner /bin/bash 
-```
-
-Hier hin kopieren wir den Befehl aus \gitlab. Die ersten Fragen beantworten
-wir mit \key{enter}. Auf die Frage nach dem Executor geben wir `docker` an.
-
-Danach starten wir den Runner
-
-```bash
-gitlab-runner run
-```
-
-Danach verlassen wir den Container mit \strg{pq}.
-
-### Ausführen des Jobs
-Nimm eine minimale Änderung in der Readme vor und Committe deine Änderung.
-Am linken Rand findest du einen Menüpunkt \menu{build}, aus dem du Pipeline
-wählst. Nun siehst du oben an der Seite das Symbol für einen laufenden Job.
-Klickst du es an, siehst du die Ausgabe im Docker-Container!
-
-```bash
-...
 Running with gitlab-runner 18.4.0~pre.246.g71914659 (71914659)
 Preparing the "docker+machine" executor
 Using default image
 Getting source from Git repository
 Ich bin die erste Ausgabe
-...
 ```
 
 Du siehst: 
@@ -153,17 +129,8 @@ Du siehst:
 * Der Echo-Befehl ausgeführt wird
 
 
-### Sinnvollere Anwendung
-
-Ziel ist das Erstellen eines Buches in \gitlab mit CICD.
-Dafür brauchen wir ein anderes Docker-Image und noch ein paar Erweiterungen 
-in der Datei \datei{.gitlab-ci.yml}.
-
-Zunächst erstellst du ein neues Repository, Clonst es auf deinen 
-Rechner und entpackst die Dateien aus dem Kursmaterial, die im 
-Paket *minibuch.zip* enthalten sind, in dieses Repository. 
-
-Im Paket befindet sich auch bereits diese *.gitlab-ci.yml*:
+Für unser Minibuch brauchen wir ein anderes Docker-Image und noch ein paar Erweiterungen 
+in der Datei:
 
 ```bash
 variables:   #<1>
@@ -176,7 +143,6 @@ projekt_uebersetzen:
   stage: build
   image: DOCKER_IMAGE  #<4>
   script: 
-    - quarto install tinytex
     - quarto render --to pdf #<5>
   artifacts:   #<6>
     paths:
@@ -190,25 +156,58 @@ projekt_uebersetzen:
 6. Das fertige PDF muss zurück zu \gitlab übertragen werden
 7. An dieser Stelle befindet sich das PDF
 
-Führe nun einen Commit aus.
-Nach diesem Commit sollte der Job durchlaufen. Auf \gitlab findest du 
-im Menü (links) bei *Jobs* nun die Möglichkeit, die Zip-Datei mit dem 
-Artifact -- also der pdf-Datei --  herunterzuladen.
+Leider scheitert diese Pipeline, da auf diesem Quarto-Image kein 
+LaTeX installiert ist. Das kannst du ändern, indem du im *script*-Abschnitt
+den Befehl \cmd{quarto install tinytex} an den Anfang stellst.
+Nach diesem Commit sollte der Job durchlaufen. Auf \gitlab findest du im Menü (links) bai *Jobs* 
+nun die Möglichkeit, die Zip-Datei mit dem Artifact -- also der pdf-Datei --  herunterzuladen.
 
+### Wie geht es weiter?
 
-### Alles auf dem Server
+Vorher habe ich von *Problemen* gesprochen. Je nachdem, wie 
+schnell du das entsprechende Menü gefunden hast, lief der Job 
+eventuell noch. Das liegt daran, dass hier standardmäßig ein 
+komplettes Docker-Image heruntergeladen werden muss, und das 
+dauert (unverhältnismäßig) lange für einen derartig winzigen Job.
+Häufige Commits führen jedes Mal zu einem Download des Docker-Images.
+Da in der kostenlosen Version von \gitlab die monatlich Zeit für 
+die Ausführung von Piplines gedeckelt ist, kann das zu Engpässen führen!
 
-Wenn du ausreichend Rechnenleistung auf deinem Server hast, 
-kannst du auch einen etwas umfassenderen Setup erstellen.  
-Ziel ist das Erstellen von Büchern und Testdriven-Development mit Java. 
+Es gibt hierfür verschiedene Lösungsansätze:
 
+* Zeit kaufen
+* \gitlab selbst hosten
+* Den Docker-Aspekt auf einen anderen Rechner auslagern.
+
+Wenn du vor dem selbst hosten oder kaufen zurückschreckst, bleibt dir nur 
+die dritte Option. Hierfür musst du einen sogenannten *Runner* 
+und den zugehörigen *Agent* auf deinem eigenen Rechner (oder Server) installieren und dort auch die benötigte Infrastruktur (z.B. Docker oder die Build-Umgebung).
+Der Runner führt als Agent in konfigurierbaren Abständen Anfragen bei \gitlab aus, um 
+auf das Vorhandensein von neuen Jobs zu testen. Das ist zwar etwas 
+unelegant, löst aber das Problem der Erreichbarakeit des eigenen Rechners 
+aus dem Internet, falls er hinter deiner Firewall steht -- also bei der Kontaktaufnahme von Seiten von \gitlab.
+
+**Wie kannst du deinen Runner auslagern?**  
+
+Der Runner ist ein Programm, das installiert werden muss.
+Das kann direkt im Prinzip auf jedem Rechner (nicht iPad) 
+gemacht werden, egal ob *native* oder in Form eines eigenen 
+Docker-Containers. Wenn der Runner einen Job bekommt, startet 
+er auf dem Zielrechner (muss nicht identisch mit dem Rechner 
+des Runners sein) einen Docker-Container, der die eigentliche 
+Arbeit erledigt. Da auf einem eigenen Server/Rechner das Image 
+im Regelfall bereits vorligt, dauert der Start nur extrem kurz 
+und die eigentliche Laufzeit des Jobs hängt von der Komplexität
+der Aufgabe ab. Wie du das einrichtest, erfährst du im nächsten 
+Abschnitt, wobei ich auf eine reine Docker-Lösung setze.
+
+### Vorbereiten der Container
 
 Lege zunächst einen Ordner an, wo die Dateien für die 
 Erzeugung der Container ablegen willst:
 
 ```bash
-mkdir -p /srv/docker
-cd /srv/docker 
+cd <wo auch immer>
 mkdir -p runner quarto java # 3 Ordner
 ```
 
@@ -230,18 +229,18 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 ```
 
-Starte diesen Container **noch nicht**, denn wir wollen erst die 
-Vorbereitungsarbeiten abschließen. 
-
 In dieser Version liegt der Konfigurationsordner \ordner{config}
 im Verzeichnis des Runners. Beim ersten Start -- vor dem Registrieren
 des Runners auf \gitlab{}  -- wird ein Fehler gemeldet, dass die Datei
 \datei{config.toml} in diesem Ordner fehlt. Sie wird bei den 
 nächsten Schritten erst erstellt -- das ist also normal und kann ignoriert werden!
 
+Starte diesen Container noch **nicht**, denn wir wollen erst die 
+Vorbereitungsarbeiten abschließen. 
+
 **quarto**  
-Für diesen Container genügt ein Dockerfile im Ordner *quarto*, denn dieser Container
-wird komplett vom Runner verwaltet. `Docker Compose` ist nicht erforderlich.
+Für diesen Container genügt ein Dockerfile, denn dieser Container
+wird komplett vom Runner verwaltet.
 
 \blarge
 ```bash
@@ -269,7 +268,7 @@ CMD ["bash"]
 \elarge 
 
 In dieser Datei wird die Installation eines kompletten Quarto/Latex
-Servers beschrieben. Das dauert beim ersten Start einige Zeit, da der Container 
+Servers beschrieben. Das dauert dann einige Zeit, da der Container 
 am Ende etwa 10GB groß ist!
 
 Du kannst dieses Image mit folgendem Befehl auf deinem Server 
@@ -283,8 +282,8 @@ docker build -t quarto-git:latest -f Dockerfile .
 Auch für Java brauchst du ein lokales Image, wenn die 
 Geschwindigkeit stimmen soll. Ein mögliches Dockerfile
 sieht so aus, allerdings musst du zuerst unter nachfolgender 
-Adresse die aktuelle Version von *maven* in Erfahrung bringen 
-und in das Dockerfile eintragen (siehe Kommentar):
+Adresse die aktuelle Version in Efahrung bringen und in das
+Dockerfile eintragen (siehe Kommentar):
 
 [https://downloads.apache.org/maven/maven-3](https://downloads.apache.org/maven/maven-3)
 
@@ -322,7 +321,3 @@ CMD ["mvn", "--version"]
 
 ```
 \elarge
-
-```bash
-docker build -t java:latest -f Dockerfile .
-```

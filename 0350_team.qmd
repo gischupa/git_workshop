@@ -128,7 +128,7 @@ auf deinem eigenen Rechner simulieren. Dafür brauchst du:
 * Ein Repository für eine Benutzerin Susi
 
 Bevor wir diesen Setup umsetzen, müssen wir kurz den 
-Begripp *origin* klären, der uns nun öfter begegnet!
+Begriff *origin* klären, der uns nun öfter begegnet!
 Für die einzelnen Schritte gibt es Scripts in den Kursmaterialien!
 
 ### origin 
@@ -184,12 +184,11 @@ gemeint, \branch{main} (ohne *origin*) bezieht sich auf den Branch in deiner lok
 ### Eigentliches Labor
 Der nachfolgende Setup erstellt 
 
-* einen Ordner
-* im Ordner ein vollwertiges Repository (--bare)
+* einen Repository auf dem Server
 * eine lokale Kopie des Repositories mit dem Namen *susi*
 * eine lokale Kopie des Repositories mit dem Namen *max*
 
-Öffen in einem geeigneten Ordner eine \git-Bash und 
+Öffne in einem geeigneten Ordner eine \git-Bash und 
 führe das Script \script{susi\_und\_max.sh} aus.
 
 Beachte, dass in dem Script im oberen Teil etwas Overhead
@@ -212,7 +211,7 @@ git status
 Es sollte erscheinen
 
 ```bash
-Auf Branch main    <<< das ist der von Susi
+Auf Branch main    <<< das ist der lokale von Susi
 Ihr Branch ist auf demselben Stand wie 'origin/main'. <<< Server
 
 nichts zu committen, Arbeitsverzeichnis unverändert
@@ -282,7 +281,7 @@ d46681d (origin/main, origin/HEAD) Init  <<<< SERVER
 
 Und ein Blick in die beiden Dateien liefert die Hashes --
 zumindest fast, denn \git hat hier schon wieder optimiert
-und den Hash vom *origin/master* in die Datei *packed-refs* 
+und den Hash vom *origin/main* in die Datei *packed-refs* 
 umgelagert. 
 
 Der *SERVER* weiß vom SUSI Commit noch nichts -- die Repositories 
@@ -293,7 +292,7 @@ daran würde auch ein \cmd{git pull} nichts ändern.
 Susi führt nun einen Push aus:
 
 ```bash
-git push origin main 
+git push  
 ```
 *Git* kommentiert das:
 
@@ -344,7 +343,7 @@ Von /tmp/labor2/entfernt
 Sein Status sagt ihm
 
 ```bash
-Auf Branch main     <<<< MAX
+Auf Branch main     <<<< MAX lokal 
 Ihr Branch ist 1 Commit hinter 'origin/main', und kann vorgespult 
 werden.
 (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
@@ -369,7 +368,7 @@ Date:   Wed Jan 29 12:39:38 2025 +0100
     Begrüßung
 
 commit d46681db23c9e2b3f5379a951c026e3d673fe3e0 (HEAD -> main)
-Author: wolfgang <lehrer@t-online.de>
+Author: max <max@t-online.de>
 Date:   Wed Jan 29 12:34:48 2025 +0100
 
     Init
@@ -417,6 +416,46 @@ sparen und einfach ein \cmd{git pull} ausführen. Im Prinzip ist
 dieser Befehl die direkte Nacheinanderausführung von \cmd{fetch} 
 und \cmd{merge}.
 
+### Wie sieht ein Fehler aus
+
+Führe das Script erneut aus.   
+
+Wir ändern nur die Vorgehensweise 
+von Max. Sowohl Susi also auch Max erstellen nach dem Clonen 
+lokal einen Commit. Susi mach als Erste einen Push, dann will 
+Max das ebenfalls machen.
+
+Führe dafür das Script \datei{max\_error.sh} aus.
+
+```{.bash include="src/hands_on_III/max_error.sh"}
+```
+
+
+```bash
+To 192.168.3.154:/home/benutzer/entfernt.git
+ ! [rejected]        main -> main (fetch first)
+error: Fehler beim Versenden einiger Referenzen 
+        nach '192.168.3.154:/home/benutzer/entfernt.git'
+Hinweis: Updates were rejected because the remote contains work 
+Hinweis: that you do not have locally. This is usually caused
+Hinweis: by another repository pushing to the same ref. 
+Hinweis: If you want to integrate the remote changes, use
+Hinweis: 'git pull' before pushing again.
+Hinweis: See the 'Note about fast-forwards' in 'git push --help' 
+Hinweis: for details.
+```
+
+Die Lösungsstrategie \cmd{git pull} kann noch etwas verfeinert werden:
+
+```bash
+git fetch 
+git log origin/main
+git diff HEAD..origin/main  # sagt nicht viel aus 
+git show <HASH von Susi>
+
+git merge
+git push
+```
 
 ### Einige Fragen
 
@@ -426,7 +465,7 @@ Wie man vorgehen muss, hängt sehr stark von deiner
 Umgebung ab. Da es hier einige Varianten gibt, habe 
 ich das in den Anhang ausgelagert!
 
-
+**Kurzversion**  
 ```bash
 # auf dem Server 
 git init --bare musterrepo
@@ -456,7 +495,7 @@ als *upstream-branch* definiert wurde -- deshalb funktioniert
 statt \cmd{git pull origin main} auch die kurze Version \cmd{git pull}
 (analog für \cmd{git push}).
 
-Wenn du einen neuen Branch anlegst und einen commit 
+Wenn du einen neuen Branch anlegst und einen Commit 
 pushen willst:
 
 ```bash

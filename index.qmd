@@ -32,14 +32,14 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
   {{< include 0400_installation_allgemein.qmd >}}
  {{< include 0410_benutzer.qmd >}}
  {{< include 0450_basis.qmd >}}
- {{< include 0500_gitea.qmd >}}
+ 
  {{< include 0510_docker.qmd >}}
 
    {{< include 0515_docker_vertieft.qmd >}}
 
  {{< include 0520_giteadocker.qmd >}}
  {{< include 0530_gitea_actions.qmd >}}
- {{< include 0550_client.qmd >}}
+ {{< include 0540_gitea_ohne_docker.qmd >}}
 
    {{< include 0560_gitlab.qmd >}}
 
@@ -47,29 +47,12 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
  
  {{< include 0710_basis_ci.qmd >}}
 
-   {{< include 0720_runner.qmd >}}
-
  {{< include 0820_tdd.qmd >}}
  {{< include 0830_maven.qmd >}}
  {{< include 0840_java_komplexer.qmd >}}
- {{< include 0850_cicdbuch.qmd >}}
-
+ 
  {{< include 0900_anhang_java.qmd >}}
  {{< include 0905_git_start.qmd >}}
  {{< include 0910_install_tree.qmd >}}
 
-ERLEDIGEN:  
-
-Man kann alles speichern - aber sollte man?
-
-Git Large File Storage (LFS)
-
-https://www.youtube.com/watch?v=JOIL6gof2BA
-
-11:36 Auflistung der Befehle
-
-
-Unter der Haube
-
-https://www.youtube.com/watch?v=RxHJdapz2p0&t=13s
 

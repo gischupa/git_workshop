@@ -144,8 +144,8 @@ ufw status verbose
 ufw default deny incoming
 ufw default allow outgoing
 
-# ssh erlaben
-ufw limit 22/tcp
+# ssh erlauben
+ufw allow 22/tcp
 
 # Firewall einschalten
 ufw enable
@@ -154,9 +154,10 @@ ufw status verbose
 
 \samplestart
 **Hinweise**  
-An Stelle von *limit* könnte auch *allow* stehen.
+An Stelle von *allow* könnte auch *limit* stehen.
 Allerdings blockert *limit* den Zugang für eine bestimmte Zeit, wenn zu 
-viele gescheiterte Anmeldeversuche in kurzer Zeit vorliegen.
+viele (gescheiterte) Anmeldeversuche in kurzer Zeit vorliegen. Das kann bei 
+uns schon mal passieren!
 \sampleend
 
 #### Probleme mit Ports

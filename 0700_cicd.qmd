@@ -40,3 +40,28 @@ Anwendung. CI/CD bildet damit das Rückgrat moderner Entwicklungsprozesse --
 und ist ein Schlüsselkonzept, das jeder fortgeschrittene \git-Nutzer 
 verstehen sollte.
 
+\samplestart
+**Hinweis**  
+Das Thema CICD ist eng mit sogenannten *runner*-Programmen verbunden,
+die für die Ausführung von CICD verantwortlich sind. Leider erfordert 
+die Registrierung eines solchen Runners in \gitlab eine funktionierende 
+Zertifikat-Infrastruktur, da das über https erfolgt. Das ist in unserem 
+Umfeld aber sehr aufwändig. Besser wäre es, sich einen Account auf gitlab.com 
+anzulegen!
+\sampleend
+
+
+**Dennoch**  
+Ja - man kann es auch seiner Spielumgebung machen, allerdings nicht so einfach.
+
+* root werden
+* `nano config/gitlab.rb` 
+* suchen nach `#external_url="EXTERNAL_URL"`
+* ersetzen durch `external_url="http://192.168.3.154"`  (meine IP)
+* Im Docker-Container eine Reconfiguration triggern:  
+`docker exec -it gitlab gitlab-ctl reconfigure` 
+
+Jetzt sollte ein Zugriff über http möglich sein. Wichtig ist allerdings, dass 
+im Browser wirklich alle Cookies dieser Seite gelöscht werden, da sonst Fehler 
+auftreten.
+

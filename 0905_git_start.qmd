@@ -122,4 +122,4 @@ einfach in ein frisch geclontes Server-Repository zu kopieren.
 
 Wenn du ein Repository auf einer dieser Plattformen erstellst, dann 
 kannst du sofort mit der geclonten Version arbeiten, falls du dort 
-automatisch eine README erstellen lässt.
+automatisch eine README erstellen lässt.  

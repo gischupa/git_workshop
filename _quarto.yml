@@ -33,6 +33,7 @@ format:
         \usepackage{changepage}
         \setlist[description]{style=nextline, leftmargin=2.5em}
         \newcommand{\cmd}[1]{\texttt{#1}\xspace}
+        \newcommand{\menu}[1]{\texttt{#1}\xspace}
         \newcommand{\script}[1]{\texttt{#1}\xspace}
         \newcommand{\key}[1]{\texttt{#1}\xspace}
         \newcommand{\Git}{\textit{Git}\xspace}

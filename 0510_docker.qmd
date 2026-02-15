@@ -54,10 +54,9 @@ als bei einer komplett neuen Erstellung!
 
 ## Installation von Docker
 
-Die Befehle befinden sich auch bei den Kursmaterialien!
-
-TODO - Docker install Script TESTEN auf 24.04
-TODO - Ist compose jetzt fest in Docker oder nicht?
+Die Befehle befinden sich als Script bei den Kursmaterialien!
+Wegen des Layouts sind hier Zeilenubrüche, die das Script 
+in der abgedruckten Form scheitern lassen!
 
 ```bash
 sudo -i
@@ -98,7 +97,7 @@ TODO:  docker compose oder docker-compose?
 
 ```bash
 docker --version
-docker-compose --version
+docker-compose version
 ```
 
 ## Kurzeinführung

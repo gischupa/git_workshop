@@ -340,6 +340,20 @@ javac ../java/de/alp/kurs/StringFlipper.java
 
 
 
+ERLEDIGEN:  
+
+Man kann alles speichern - aber sollte man?
+
+Git Large File Storage (LFS)
+
+https://www.youtube.com/watch?v=JOIL6gof2BA
+
+11:36 Auflistung der Befehle
+
+
+Unter der Haube
+
+https://www.youtube.com/watch?v=RxHJdapz2p0&t=13s
 
 
 

@@ -37,7 +37,7 @@ Das liefert folgende Struktur:
 
 Dieses Projekt kann bereits (fast) compiliert werden. 
 Zuerst müssen wir allerdings noch einige Einträge in der 
-\datei{pom.xml} angepasst werden:
+\datei{pom.xml} angepassen:
 
 * Die lokal installierte Java-Version in die \datei{pom.xml} eintragen.   
   Default ist 17, ich verwende 21. 
@@ -119,7 +119,7 @@ egal wie sinnlos er aktuell für dich wirkt! Mir ist bewusst, dass
 es unendlich viele verschiedene Ansätze zur Implementierung 
 eines Cäsar-Algorithmus gibt. Ich werde hier sicher nicht 
 den elegantesten oder performantesten Ansatz verfolgen, denn
-ich will schließlich TDD demonstrieren und keine Programmierkurs 
+ich will schließlich TDD demonstrieren und keinen Programmierkurs 
 halten! Aus diesem Grund wird auch nicht jeder Edge-Case abgefangen.
 
 Ich möchte allerdings als Hauptklasse nicht *App*, sondern *Caesar*.
@@ -162,7 +162,7 @@ public class Caesar {
 ```
 
 Nun schreibst du in der Datei \datei{CaesarTest.java} den ersten 
-Test für eine nicht existierende Funktion. Bei Hard-Core TDD würdest 
+Test für eine *noch nicht existierende* Funktion. Bei Hard-Core TDD würdest 
 du bereits die reine Existenz der Funktion mit Hilfe von Reflections
 testen -- so weit möchte ich nicht gehen. Deshalb testen wir, ob die 
 Funktion einen Text zurückliefert:
@@ -313,7 +313,7 @@ public char shiftChar(char buchstabe) {
 ```
 
 Wieder haben wir *grün* erreicht -- allerdings nur für 
-kleine Verschiebungen im der Mitte des Alphabets.
+kleine Verschiebungen in der Mitte des Alphabets.
 Wollen wir zum Beispiel „x“ verschieben, so wird nicht „c“
 entstehen. Aber dafür schreiben wir einen Test:
 
