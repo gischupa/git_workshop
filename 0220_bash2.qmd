@@ -20,14 +20,15 @@ Benutzerkennung zugegriffen werden darf -- aber eben nur lesend.
 Aus diesem Grund wird zum Clonen auch *https* und nicht *ssh* verwendet.
 Öffne die \gitbash (oder ein Terminal) und gib ein:
 
-
+\blarge
 ```bash
 mkdir fortbildung
 cd fortbildung
-git clone https://TODO    storyvorlagen vorlage # Ziel: vorlage.git 
+git clone https://github.com/gischupa/dillingen_storyvorlage.git vorlage 
 ```
+\elarge
 
-Es entsteht ein Ordner *storyvorlagen*, in dem die 
+Es entsteht ein Ordner *vorlage*, in dem die 
 verschiedenen Stände des Projektes enthalten sind.
 
 ## Labor
@@ -189,7 +190,7 @@ Es könnte nämlich sein dass der Vorgang zu Datenverlust führt!
 error: die folgende Datei hat zum Commit vorgemerkte Änderungen  
       unterschiedlich zu der Datei und HEAD:
          story1.md
-(benutze *-f*, um die Löschung zu erzwingen)
+(benutze -f, um die Löschung zu erzwingen)
 ```
 
 Bei \cmd{git restore story1.md} gibt es keine solche Warnung! 
@@ -206,7 +207,6 @@ git diff story1.md
 
 ### Analyse der Differenz
 
-TODO: Neu aufbauen
 ```bash
 diff --git a/story1.md b/story1.md # <1>
 index 9c818e7..3126a18 100644          # <2>
@@ -244,12 +244,8 @@ Nun wird die Datei wieder zum Stage hinzugefügt und dann committet:
 ```bash
 git add story1.md
 git commit -m 'Guter Ansatz'
-```
 
-TODO:  Hash aktualisieren
-
-*Ausgabe*  
-```bash
+# Ausgabe
 [main (Root-Commit) 5229c6b] Guter Ansatz
  1 file changed, 4 insertions(+)
  create mode 100644 story1.md
@@ -392,7 +388,7 @@ kurz miteinander:
 git diff
 ```
 
-Das ist ein Vergleich \work - Stage. Du siehst 
+Das ist ein Vergleich von \work mit Stage. Du siehst 
 
 ```bash
 diff --git a/story2.md b/story2.md

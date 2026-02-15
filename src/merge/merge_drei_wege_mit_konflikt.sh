@@ -43,3 +43,5 @@ git commit -m "Schritt 7"
 # Merge
 
 git merge entwicklung
+
+exit 0

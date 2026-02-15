@@ -1,7 +1,5 @@
 rm -rf vorlage buch
 
-head -n 26 story1.md > story1_teil1.md
-
 git init vorlage
 cd vorlage
 git branch -m main

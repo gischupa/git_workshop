@@ -79,8 +79,6 @@ volumes:  #<3>
    außerhalb des Containers liegen und in diesen hinein 
    verlinkt werden.
 
-ToDo: Was hat es genau mit dem *external:false* auf sich?
-ToDo: Welche andere Driver haben Volumens noch?
 
 ### Services
 
@@ -152,9 +150,8 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
    auf Port 22, Zugriff von außen über Port 222. Das ist 
    nötig, da der Server (also der gemietete Server) seinen
    ssh-Server bereits auf Port 22 laufen hat. Das kann man
-   zwar ändern, muss aber etwas aufpassen, dass man sich
-   nit versehentlich aussperrt, weil man die Firewall 
-   nicht angepasst hat.
+   zwar ändern, muss aber etwas aufpassen. Wenn man die Firewall
+   nicht anpasst, kann man sich so aussperren!
 6. Der Container wird erst gestartet, wenn der Datenbankserver
    erfolgreich hochgefahren ist.
 
@@ -214,7 +211,7 @@ Es werden hier nur neue oder wichtige Einstellungen erklärt!
    \datei{gitea\_runner\_data}. Das *./* am Anfang bedeutet, dass diese 
    Datei im gleichen Ordner liegt wie die \datei{docker-compose.yaml}.
 5. Dieser Container braucht auch selbst Zugriff auf Docker, damit
-   er selbst neue Container starten kann.
+   er eigenständig neue Container starten kann.
 
 **Das Config-File**  
 Bei vielen Containern kann die Konfiguration durch Einträge
@@ -239,7 +236,7 @@ docker exec -it gitea_runner act_runner generate-config > config.yaml
 
 \samplestart
 **Hinweis**  
-Vielleicht ist dir aufgafallen, dass einmal im Environment Spiegelstriche
+Vielleicht ist dir aufgefallen, dass einmal im Environment Spiegelstriche
 vorkommen und einmal nicht. Das ist Absicht, denn die Server wollen das 
 unterschiedlich haben. Intern wird bei der Spiegelstrich-Variante
 eine Liste der Art *["key=value", "key=vlaue", ...]* erstellt, die der 
@@ -252,7 +249,7 @@ die Spiegelstriche.
 Bist du in Gitea eingelogged, so kannst du über das Einstellungsmenü
 (Das geht auf Instanz-, Repository- oder Userebene) nach *actions* 
 suchen, dort auf *runner* und dann oben rechts auf *neuen runner 
-anlegen* (o.ä.). Dort erscheint dann das Token, das in 
+anlegen* (o.ä.) klicken. Dort erscheint dann das Token, das in 
 die \datei{docker-compose.yaml} eingetragen werden muss. 
 Beim Neustart registriert sich der Runner 
 dann damit bei Gitea.
@@ -272,14 +269,13 @@ Fehlermeldungen.
 Nun kannst du dich bei Gitea im Browser anmelden und den ersten Benutzer
 einrichten, den du dann auch als Administrator verwenden kannst.
 
-TODO: Anmeldescreen
 
 Im Prinzip kann man auch Mailregistrierung und andere Dinge 
 konfigurieren -- für einen einfachen Betrieb genügt aber 
 das Einrichten des Benutzers.
 
 Nach dem oben beschriebenen Erstellen eines Tokens kannst
-du den Gitea und den DB-Server mit \cmd{ctrl-c} zunächst wieder beenden.
+du den Gitea- und den DB-Server mit \cmd{ctrl-c} zunächst wieder beenden.
 Das Token wird nun in die \datei{docker-compose.yaml} kopiert.
 
 Nun kann auch der Runner gestartet werden. Auch jetzt zu Testzwecken
@@ -324,10 +320,8 @@ cat ~/.ssh/gitea.pub
 In den Benutzereinstellungen auf Gitea kann nun ein neuer 
 Schlüssel hinzugefügt werden.
 
-TODO: Eventuell Screenshot
-
 **Auf Windows**  
-... ach ja ... Windows ...
+Hier verwendest du den gleichen Befehl innerhalb der git-Bash.
 
 ### Clonen
 Das Clonen eines öffentlichen Repositories über Https sollte auch ohne
@@ -342,5 +336,4 @@ Die Angabe von 222 ist nötig, da wir nicht Port 22 verwenden --
 man muss also die Adresse, die man in Gitea über dem Repository sieht,
 noch entsprechend anpassen.
 
-TODO: Screenshot
 

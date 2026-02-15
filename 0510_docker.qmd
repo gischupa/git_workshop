@@ -93,11 +93,9 @@ Benutzer angelegt und den richtigen Gruppen zugeordnet werden.
 
 Teste die Installation durch folgende Befehle:
 
-TODO:  docker compose oder docker-compose?
-
 ```bash
 docker --version
-docker-compose version
+docker compose version
 ```
 
 ## Kurzeinführung

@@ -1,9 +1,17 @@
 #!/bin/bash
 
+set -e
 set -x
 
-IP=192.168.3.154
-# Putzen früherer Versuche
+
+# Nützliche Variablen
+ARBEIT=/tmp        # Dort arbeiten wir 
+SUSI=$ARBEIT/susi  # Abkürzungen für den Überblick  
+MAX=$ARBEIT/max
+
+IP=192.168.3.154 # Mein Server
+
+# Repository auf dem Server erstellen
 ssh benutzer@$IP '
 cd /home/benutzer
 rm -rf entfernt.git
@@ -13,11 +21,9 @@ cd entfernt.git
 git branch -m main
 '
 
-# Nützliche Variablen
-ARBEIT=/tmp  # aktuellen Pfad merken 
-SUSI=$ARBEIT/susi  # Abkürzungen für den Überblick  
-MAX=$ARBEIT/max
 
+cd $ARBEIT
+rm -rf vorbereitung
 ####### Vorbereitung
 # Hier wird eine Datei ins Server-repo aufgenommen
 # indem vorübergehend ein weiteres Repo erstellt wird.
@@ -32,8 +38,8 @@ cd ..
 rm -rf vorbereitung
 ###### Ende Vorbereitung - löschen der lokalen Altlasten#######
 
-cd /tmp
-rm -rf susi max
+cd $ARBEIT
+rm -rf susi max   # alte Daten löschen
 git clone benutzer@$IP:/home/benutzer/entfernt.git susi 
 git clone benutzer@$IP:/home/benutzer/entfernt.git max   
 

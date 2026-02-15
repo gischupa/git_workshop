@@ -1,17 +1,22 @@
 #!/bin/bash
+
+# Soll das Verhalten von reset --hard demonstrieren
+# Bei "hard" entsteht genau der Zusatnd des Commits
+
+set -e
+set -x
+
 cd /tmp
 
 # Putzen
-if [ -d projekt ]; then
   rm -rf projekt
-fi
 
-# Neues Repo
+# Neues Repo - lokalwork
 git init projekt
 cd projekt
 git branch -m main
 
-# Auf dm main-Branch 3 Commits
+# Auf dm main-Branch 10 Commits mit 10 Dateien
 for i in {1..10}
 do
   echo "Schritt $i" >> datei_$i.txt
@@ -29,8 +34,9 @@ git reset --hard step_3
 ####################
 # Kontrolle
 
-
+ls
 git status
 git log --oneline
 
 
+exit 0

@@ -2,6 +2,12 @@
 ########################
 # Erstellt unterschiedliche Stände in einem 
 # Arbeits-Branch zur Demonstration von fetch
+#
+# Dafür wird ein Server-Repo erstellt und 
+# zwei Clones gezogen. Dann werden Abweichungen generiert
+#
+# Der ABLAUF steht in den letzten Zeilen des Scripts!!!!
+#
 ######################
 
 set -x
@@ -82,7 +88,7 @@ content_in_arbeit_1
 clonen_des_repo
 content_in_arbeit_2
 
-#### ab hier:
+#### Nachfolgeaktionen ab hier:
 
 # cd /tmp/team2
 # git log

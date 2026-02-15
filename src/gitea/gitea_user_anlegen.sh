@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -x
+
 # Datei mit Benutzerdaten
 INPUT_FILE="$1"
 
@@ -36,3 +39,4 @@ while IFS=',' read -r login password email; do
   echo -e "\nBenutzer $login angelegt."
 done < "$INPUT_FILE"
 
+exit 0

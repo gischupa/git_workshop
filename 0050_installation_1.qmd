@@ -67,6 +67,6 @@ apt install git -y
 ### MacOS
 
 MacOS ist ähnlich pflegeleicht. Mit \cmd{brew install git} 
-ist die Insallation ebenfalls bereits gestartet und nach kurzer 
+ist die Installation ebenfalls bereits gestartet und nach kurzer 
 Zeit beendet.
 

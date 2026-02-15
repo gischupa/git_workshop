@@ -1,29 +1,26 @@
 % Options for packages loaded elsewhere
-% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
-  ngerman,
   letterpaper,
   DIV=11]{scrreprt}
-\usepackage{xcolor}
+
 \usepackage{amsmath,amssymb}
-\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
+\ifPDFTeX\else  
+    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -41,6 +38,9 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -106,7 +106,8 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
-\usepackage{longtable,booktabs,array}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -131,8 +132,6 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
-
-
 % definitions for citeproc citations
 \NewDocumentCommand\citeproctext{}{}
 \NewDocumentCommand\citeproc{mm}{%
@@ -166,29 +165,6 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
-
-\ifLuaTeX
-\usepackage[bidi=basic]{babel}
-\else
-\usepackage[bidi=default]{babel}
-\fi
-% get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
-\def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage[german]{selnolig} % disable illegal ligatures
-\fi
-
-
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-
-
- 
-
 
 % load packages
 \usepackage{geometry}
@@ -230,6 +206,15 @@
   \fancyfootoffset{3.5cm}
 }
 \setlength{\footskip}{20pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \renewcommand\headrulewidth{0pt}
+  \fancyfoot[R]{\thepage}
+  \fancyfootoffset{3.5cm}
+}
+
+
 
 %% style the chapter/section fonts
 \chapterfont{\color{dark}\fontsize{20}{16.8}\selectfont}
@@ -367,7 +352,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, breakable, boxrule=0pt, colback={codebgcolor}, enhanced, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, frame hidden, breakable, enhanced, colback={codebgcolor}, sharp corners]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -375,9 +360,23 @@
         \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
           \node[shape=circle,draw,inner sep=1pt] (char) {{\scriptsize#1}};}}  
                   
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{ngerman}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage[german]{selnolig} % disable illegal ligatures
+\fi
 \usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
+\urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Git Workshop},
   pdfauthor={Wolfgang Höfer},
@@ -393,6 +392,7 @@
 \title{Git Workshop}
 \author{Wolfgang Höfer}
 \date{2025-10-04}
+
 \begin{document}
 \maketitle
 
@@ -518,447 +518,7 @@ Befehl
 \subsection{MacOS}\label{macos}
 
 MacOS ist ähnlich pflegeleicht. Mit \cmd{brew install git} ist die
-Insallation ebenfalls bereits gestartet und nach kurzer Zeit beendet.
-
-\section{Serverinstallation}\label{serverinstallation}
-
-Dieser Abschnitt ist nun deutlich umfangreicher und kann bei einer
-ersten Lektüre auch problemlos übersprungen werden, wenn du dich nur für
-die Verwendung von \git  auf deinem eigenen, isolierten Rechner
-interessierst.
-
-Ansonsten wirst du nachfolgende Schritte durchlaufen:
-
-\begin{itemize}
-\tightlist
-\item
-  Allgemeine Gedanken zum Serverbetrieb
-\item
-  Anmelden auf dem späteren \git-Server
-\item
-  Installation eines \emph{normalen} \git 
-\item
-  Docker kennenlernen
-\item
-  GitLab mit Docker installieren
-\end{itemize}
-
-Die Bedienung von GitLab lernst du später im Workshop noch genauer.
-
-\subsection{Allgemeine Gedanken}\label{allgemeine-gedanken}
-
-Der Betrieb eines Servers ist auch immer mit Verantwortung und Aufwand
-verbunden. Wer hier keine Kenntnisse besitzt, schreckt schnell davor
-zurück, obwohl die Grundlagen eigentlich relativ schnell gelernt sind.
-Anleitungen und Checklisten aus dem Internet erleichtern hier auch den
-Einstieg.
-
-Generell muss man sich natürlich über den Einsatzzweck des Servers
-Gedanken machen. Was für Dienste soll er bereitstellen? Müssen Benutzer
-verwaltet werden, was sollen diese Benutzer dürfen. Es liegt in der
-Natur der Sache, dass dich das Anwendungsspektrum im Lauf der Zeit
-vergrößert und damit wächst zwangsläufig auch das Wissen.
-
-Eine besondere Hürde stellt der Betrieb von mehreren Webangeboten auf
-dem gleichen Server dar, die über verschiedene Namen angesprochen werden
-sollen (homepage.schule.de, gitlab.schule.de, versuche.schule.de,
-\ldots). Die Lösung hierfür ist ein \emph{reverse Proxy}, allerdings
-sprengt das den Rahmen dieses Workshops.
-
-\subsection{Anmelden auf dem Server}\label{anmelden-auf-dem-server}
-
-Damit du dich auf deinem Server anmelden kannst, benötigst du folgende
-Informationen:
-
-\begin{quote}
-IP-Adresse des Servers Benutzername Kennwort
-\end{quote}
-
-Diese Daten werden dir im Workshop mitgeteilt. Solltest du mit deiner
-eigenen Installation arbeiten, so sollten dir diese Informationen
-bereits vorliegen.
-
-Die Anmeldung auf dem Server erfolgt über das Protokoll \emph{ssh}.\\
-Seit einer der letzten Versionen von Windows ist auch hier bereits ein
-ssh-Client eingebaut. Bei Lunx und MacOS gehört er seit Jahrzehnten zum
-Standard. Ich selbst bevorzuge auf Windows allerdings eher das
-(kostenlose) Programm \emph{Putty} und die gerade vorher installierte
-\git-bash.
-
-In jedem Fall musst du zunächst ein Terminal (Kommandofenster) öffnen um
-den nachfolgenden Befehl eingeben zu können:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ssh}\NormalTok{ benutzer@IP{-}adresse }
-\end{Highlighting}
-\end{Shaded}
-
-Du erhältst eine Sicherheitsabfrage um zukünftige Man-in-the-middle
-Angriffe erkennen zu können, die du mit \emph{yes} beantwortest. Bei der
-nachfolgenden Kennworteingabe kann es (je nach System) sein, dass die
-Tastendrücke nicht angezeigt werden!
-
-Wenn alles geklappt hat, so wirst du vom Eingabepromt des Terminals auf
-dem Server begrüßt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{benutzer@ubu:\textasciitilde{}$}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Installieren von Git}\label{installieren-von-git}
-
-Vor jeder Installation muss die Softwaredatenbank aktualisiert werden,
-damit keine veralteten Dateien installiert werden. Als normaler Benutzer
-darfst du das aber nicht und musst zuerst zum Administrator (=root)
-werden:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{sudo} \AttributeTok{{-}i}
-\end{Highlighting}
-\end{Shaded}
-
-Es wird wieder dein Kennwort abgefragt und der Eingabeprompt ändert
-sich. Nun kannst du administrative Arbeiten erledigen.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{apt}\NormalTok{ update}
-\end{Highlighting}
-\end{Shaded}
-
-In regelmäßigen Abständen sollte auch ein Komplett-Upgrade des Systems
-laufen, um zum Beispiel Sicherheitslücken zu schließen und \emph{alle}
-Programme zu aktualisieren\footnote{vgl. Windows \ldots{} hier muss
-  jedes Programm einzeln aktualisiert werden!} Da auf deinem Server eine
-komplett neue Installation von DVD ist, kann einiges veraltet sein --
-also führst du aus:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{apt}\NormalTok{ upgrade }\AttributeTok{{-}y}
-\end{Highlighting}
-\end{Shaded}
-
-Das kann nun einige Zeit dauern. Hättest du eine weitere Verbindung
-geöffnet, so könntest du parallel weiterarbeiten, aktuell warten wir
-aber ab.
-
-Nun zu eigentlichen Installation von \git:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{apt}\NormalTok{ install git }\AttributeTok{{-}y} 
-\end{Highlighting}
-\end{Shaded}
-
-Damit ist die Installation von \git bereits beendet, solange keine
-besondere Zusatzsoftware benötigt wird, die auf dem Server ohnehin
-unüblich ist.
-
-\subsection{Absicherung}\label{absicherung}
-
-Gleich an dieser Stelle ein Wort zur Sicherheit. Wenn dein Server im
-Internet steht, dann bietet er natürlich eine große Angriffsfläche. Es
-ist deshalb sinnvoll, wenn du zumindest die Firewall aktivierst und ein
-sicheres Kennwort einstellst. Das hat im Prinzip nichts mit \git zu tun,
-ist aber dennoch wichtig.
-
-\subsubsection{Kennwort}\label{kennwort}
-
-Das geht relativ schnell. Gib einfach im Terminal den Befehl
-\cmd{passwd} ein und drücke \key{Enter}. Du wirst zweimal nach einem
-neuen Kennwort gefragt und damit ist bereits alles erledigt.
-
-\subsubsection{Firewall}\label{firewall}
-
-In Ubuntu ist eine sehr pflegeleichte Firewall integriert (UFW). Du
-gehst nun in 2 Schritten vor:
-
-\begin{itemize}
-\tightlist
-\item
-  Definieren des/der offenen Ports (bei uns 22 für SSH)
-\item
-  Aktivieren der Firewall
-\end{itemize}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{ufw}\NormalTok{ status verbose}
-\CommentTok{\# sollte *inactive* liefern}
-
-\CommentTok{\# Die Firewall darf hier noch nicht aktiv sein !!!!!!!}
-\ExtensionTok{ufw}\NormalTok{ default deny incoming}
-\ExtensionTok{ufw}\NormalTok{ default allow outgoing}
-
-\CommentTok{\# ssh erlauben}
-\ExtensionTok{ufw}\NormalTok{ allow 22/tcp}
-
-\CommentTok{\# Firewall einschalten}
-\ExtensionTok{ufw}\NormalTok{ enable}
-\ExtensionTok{ufw}\NormalTok{ status verbose}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hinweise}\\
-An Stelle von \emph{allow} könnte auch \emph{limit} stehen. Allerdings
-blockert \emph{limit} den Zugang für eine bestimmte Zeit, wenn zu viele
-(gescheiterte) Anmeldeversuche in kurzer Zeit vorliegen. Das kann bei
-uns schon mal passieren! \sampleend
-
-\subsubsection{Probleme mit Ports}\label{probleme-mit-ports}
-
-Wir werden im weiteren Verlauf ein Problem mit Port 22 bekommen. Die
-Software GitLab, die wir später installieren werden, beansprucht den
-Port 22 (sinnvoller Weise) für sich und das führt zu einer Kollision mit
-dem SSH-Dienst des Servers. Wir werden ihn zu gegebener Zeit auf Port 23
-umlegen.
-
-\subsection{Wer darf was?}\label{wer-darf-was}
-
-Das ist nun eine Grundsatzdiskussion. Wenn du in dieser Konfiguration
-mit den Schülern \git verwenden willst, müssen die Schüler auch Zugriff
-auf den Server haben. Es ist zwar generell möglich, Daten anonym vom
-Server abzuholen (=clone, pull), aber ein Speichern ist dann nicht
-möglich (push). Aus diesem Grund muss für die Schüler eine
-Zugriffsmöglichkeit geschaffen werden\footnote{Wenn wir später mit
-  GitLab arbeiten, dann ist das komplett anders!}.
-
-Der einfachste -- aber für alle Beteiligten unkomfortabelste -- Weg ist
-das Anlegen von vollwertigen Benutzeraccounts mit Kennwort\footnote{Das
-  ist durchaus sinnvoll, wenn mit den Schülern auch andere Techniken als
-  \git geübt werden sollen!}.
-
-\subsubsection{Ein einziger Benutzer
-git}\label{ein-einziger-benutzer-git}
-
-Wir werden das System so einrichten, dass alle Benutzer mit dem gleichen
-Login arbeiten. Das klingt auf den ersten Blick gefährlich oder
-fahrlässig, aber wir sichern das natürlich ab!
-
-An dieser Stelle trifft Theorie (Thema Codierung und Verschlüsselung)
-auf Praxis. Damit die Schüler einen Zugriff auf den Server bekommen
-(eigentlich nur auf \git) ohne das Kennwort des gemeinsamen Benutzers
-kennen zu müssen, verwenden wir RSA, d.h. jeder Schlüssel braucht einen
-privaten und einen öffentlichen Schlüssel. Die öffentlichen Schlüssel
-der Schüler werden vom Lehrer als berechtigt eingetragen.
-
-\paragraph{Schlüssel erzeugen}\label{schluxfcssel-erzeugen}
-
-Das dürfte in dem gesamten Prozess die Schlüsselstelle sein, da hier die
-Schüler eigenständig tätig werden müssen. Ein zusätzliches Problem ist,
-dass die Schüler an unterschiedlichen Geräten arbeiten -- zuhause,
-vielleicht je nach Stundenplan in unterschiedlichen Computerräumen,
-\ldots{} und auf jedem Computer muss die Schlüssel-Infrastruktur
-eingerichtet sein.
-
-Ich würde hier gerne auf GitLab vertrösten, aber um dieses Problem
-kommen wir nicht herum, da auch in GitLab der Public-Key hinterlegt
-werden muss und der private Schlüssel auf dem Client vorhanden sein
-muss. Die einzige Abhilfe ist eine konsequente Verwendung der
-Weboberfläche als Editor, aber das ist eben keine Java-IDE. Ein Weg --
-wenn auch unsicher -- ist das Mitführen des Schlüsselpaares auf einem
-USB-Stick (oder Cloud-Storage). Der private Schlüssel muss dann eben am
-Anfang der Stunde an die richtige Stelle kopiert werden. Noch unsicherer
-aber einfacher wäre es, wenn alle Schüler einfach das gleiche
-Schlüsselpaar für den Unterricht verwenden. Dass die Idee hinter der
-asymmetrischen Verschlüsselung damit ad absurdum geführt ist, versteht
-sich von selbst!
-
-Die Schlüsselerzeugung funktioniert im Prinzip auf allen Betriebssystem
-gleich (vom Befehl) nur die Kommandozeile muss passend gewählt werden.
-Auf Windows sollte einfach die \git-bash verwendet werden, auf den
-anderen Systemen das Terminal.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096}
-\end{Highlighting}
-\end{Shaded}
-
-Sollte bereits ein Schlüsselpaar existieren, so bietet sich diese
-Variante des Befehls an, um den anderen Schlüssel nicht zu
-überschreiben:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096   }\AttributeTok{{-}C} \StringTok{"gitkey\_susi\_sandmann@schule.de"}
-\end{Highlighting}
-\end{Shaded}
-
-Als Lehrer musst du die öffentlichen Schlüssel \emph{einsammeln} (Mail,
-Cloud, \ldots). Sie sind an der Endung \emph{.pub} erkennbar. Hier
-laufen wir in das übliche Windowsproblem, dass je nach Konfiguration die
-Dateiendungen ausgeblendet sein können!
-
-(Im Explorer: Anzeige - Dateinamenserweiterungen anzeigen)
-
-Im Prinzip genügt in vielen Fällen ein kürzerer Schlüssel, aber einige
-Plattformen (z.B. Gitea) erwarten diese Schlüssellänge.\\
-Je nach persönlichem Vertrauen kann auch ein Online-Schlüsselgenerator
-verwendet werden:
-
-\url{https://cryptotools.net/rsagen}\strut \\
-(Die \emph{einige Sekunden} sind durchaus deutlich mehr Sekunden, wenn
-man eine Schlüssellänge von 4096 Bit wählt!)
-
-Die Inhalte der (öffentlichen) Schlüsseldateien der Schüler müssen dann
-in einer Datei mit dem Namen \datei{authorized\_keys} gesammelt und im
-Ordner des \git-Benutzers abgelegt werden. Die Datei muss dann auch noch
-die passende Berechtungen erhalten!
-
-\paragraph{Schlüssel eintragen}\label{schluxfcssel-eintragen}
-
-Der einfachste Weg besteht wohl darin, sämtliche Schlüsseldateien nach
-Einsendeschluss gesammelt auf den Server zu kopieren und sie dann durch
-ein kleines Script in die \datei{authorized\_keys} zu übertragen.
-
-\textbf{Schritt 1: Benutzer anlegen}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{adduser} \AttributeTok{{-}{-}system} \AttributeTok{{-}{-}shell}\NormalTok{ /usr/bin/git{-}shell }\AttributeTok{{-}{-}home}\NormalTok{ /home/git }\DataTypeTok{\textbackslash{}}
-        \AttributeTok{{-}{-}group} \AttributeTok{{-}{-}disabled{-}password}\NormalTok{ git}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Schritt 2: Dateien übertragen}\\
-Hier kommt das Protokoll SCP zum Einsatz. Unter Windows ist es sinnvoll,
-das grafische Programm \emph{WinSCP} zu verwenden. Es ist kostenlos und
-erfordert keine Installation (portable Edition).
-
-\texttt{https://winscp.net/download/WinSCP-6.5.4-Portable.zip/download}
-
-Nach dem Entpacken und Starten hat man eine Oberfläche, die an den
-Explorer erinnert. Die Anmeldung erfolgt im Hintergrund wieder über ssh.
-Nach der Anmeldung ist die eine Fensterhälfte der lokale Rechner, die
-andere Fensterhälft der Server. Dateien können über Drag and Drop
-kopiert werden.
-
-Kopiere die `\emph{pub} Dateien in den Ordner \ordner{/home/git}.
-
-\textbf{Schritt 3: Dateien zusammenführen}\\
-Gib auf der Kommandozeile des Servers folgende Befehlsfolge ein:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{cd}\NormalTok{ /home/git }
-\FunctionTok{ls} \PreprocessorTok{*}\NormalTok{.pub   }\CommentTok{\# Nur zur Kontrolle, ob die Dateien da sind.}
-
-\FunctionTok{cat} \PreprocessorTok{*}\NormalTok{.pub }\OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ \textasciitilde{}/.ssh/authorized\_keys}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hinweis}\\
-Dieses Script ist \textbf{nur} für einen Erstimport geeignet. Werden
-später noch Schlüsseldateien nachgeliefert, so würden in der
-\datei{authorized\_keys} lauter Duplikate entstehen! Wenn du nach dem
-Import die Schlüsseldateien löschst, dann können spätere Dateien aber
-schon auf diese Weise eingespielt werden! \sampleend
-
-Löschen der Dateien
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{rm} \PreprocessorTok{*}\NormalTok{.pub }
-\end{Highlighting}
-\end{Shaded}
-
-Ab jetzt steht einer Verwendung von \git über die Kommandozeile nichts
-mehr im Weg.
-
-\subsubsection{Individuelle Benutzer}\label{individuelle-benutzer}
-
-Das hier verwendete Verfahren erstellt eine andere Art von Benutzer,
-weil Benutzer-IDs größer 1000 verwendet werden. Der vorher angelegte
-Benutzer \git  war ein System-Benutzer mit einer kleineren ID.
-
-Um einen Benutzer anzulegen, können zwei etwas unterschiedliche Befehle
-verwendet werden:
-
-\begin{itemize}
-\tightlist
-\item
-  \texttt{adduser} -- führt zu einer interaktiven Eingabe von Daten
-\item
-  \texttt{useradd} -- zur Verwendung von Scripten
-\end{itemize}
-
-\textbf{adduser}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{adduser}\NormalTok{ demouser}
-
-\CommentTok{\# Interaktion}
-\ExtensionTok{info:}\NormalTok{ Adding user }\KeywordTok{\textasciigrave{}}\ExtensionTok{demouser}\StringTok{\textquotesingle{} ...}
-\StringTok{info: Selecting UID/GID from range 1000 to 59999 ...}
-\StringTok{info: Adding new group \textasciigrave{}demouser\textquotesingle{}} \ErrorTok{(}\ExtensionTok{1002}\KeywordTok{)} \ExtensionTok{...}
-\ExtensionTok{info:}\NormalTok{ Adding new user }\KeywordTok{\textasciigrave{}}\NormalTok{demouser}\StringTok{\textquotesingle{} (1002) with group \textasciigrave{}demouser (1002)\textquotesingle{}}\NormalTok{ ...}
-\ExtensionTok{info:}\NormalTok{ Creating home directory }\KeywordTok{\textasciigrave{}}\ExtensionTok{/home/demouser}\StringTok{\textquotesingle{} ...}
-\StringTok{info: Copying files from \textasciigrave{}/etc/skel\textquotesingle{}}\NormalTok{ ...}
-\ExtensionTok{New}\NormalTok{ password: }
-\ExtensionTok{Retype}\NormalTok{ new password: }
-\ExtensionTok{passwd:}\NormalTok{ password updated successfully}
-\ExtensionTok{Changing}\NormalTok{ the user information for demouser}
-\ExtensionTok{Enter}\NormalTok{ the new value, or press ENTER for the default}
-    \ExtensionTok{Full}\NormalTok{ Name []: }
-    \ExtensionTok{Room}\NormalTok{ Number []: }
-    \ExtensionTok{Work}\NormalTok{ Phone []: }
-    \ExtensionTok{Home}\NormalTok{ Phone []: }
-    \ExtensionTok{Other}\NormalTok{ []: }
-\ExtensionTok{Is}\NormalTok{ the information correct}\PreprocessorTok{?} \PreprocessorTok{[}\SpecialStringTok{Y/n}\PreprocessorTok{]}\NormalTok{ y}
-\ExtensionTok{info:}\NormalTok{ Adding new user }\KeywordTok{\textasciigrave{}}\NormalTok{demouser}\StringTok{\textquotesingle{} to supplemental / extra groups \textasciigrave{}users\textquotesingle{}}\NormalTok{ ...}
-\ExtensionTok{info:}\NormalTok{ Adding user }\KeywordTok{\textasciigrave{}}\ExtensionTok{demouser}\StringTok{\textquotesingle{} to group \textasciigrave{}users\textquotesingle{}}\NormalTok{ ...}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{useradd}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{useradd} \AttributeTok{{-}m}\NormalTok{ demouser2 }\AttributeTok{{-}s}\NormalTok{ /bin/bash }
-
-\CommentTok{\# danach}
-\FunctionTok{passwd}\NormalTok{ demouser2  }\CommentTok{\# 2x Eingabeaufforderung folgt}
-\end{Highlighting}
-\end{Shaded}
-
-Als Script:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#!/bin/bash}
-
-\VariableTok{PASSWORT}\OperatorTok{=}\StringTok{"gitkurs"}
-
-\ControlFlowTok{for}\NormalTok{ i }\KeywordTok{in} \DataTypeTok{\{}\DecValTok{1}\DataTypeTok{..}\DecValTok{30}\DataTypeTok{\}}\KeywordTok{;} \ControlFlowTok{do}
-  \VariableTok{USER}\OperatorTok{=}\StringTok{"benutzer\_}\VariableTok{$i}\StringTok{"}
-  \ExtensionTok{useradd} \AttributeTok{{-}m} \StringTok{"}\VariableTok{$USER}\StringTok{"}
-  \BuiltInTok{echo} \StringTok{"}\VariableTok{$USER}\StringTok{:}\VariableTok{$PASSWORT}\StringTok{"} \KeywordTok{|} \ExtensionTok{chpasswd}
-\ControlFlowTok{done}
-\end{Highlighting}
-\end{Shaded}
-
-In diesem Fall bietet es sich an, dass jeder Benutzer seinen public-Key
-in seinem eigenen Account auf dem Server hinterlegt:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Auf dem Client:}
-\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096}
-
-\ExtensionTok{ssh{-}copy{-}id} \AttributeTok{{-}i}\NormalTok{ .ssh/id\_rsa.pub benutzer@}\OperatorTok{\textless{}}\NormalTok{IP}\OperatorTok{\textgreater{}}
-\end{Highlighting}
-\end{Shaded}
+Installation ebenfalls bereits gestartet und nach kurzer Zeit beendet.
 
 \bookmarksetup{startatroot}
 
@@ -2461,16 +2021,20 @@ aber eben nur lesend. Aus diesem Grund wird zum Clonen auch \emph{https}
 und nicht \emph{ssh} verwendet. Öffne die \gitbash (oder ein Terminal)
 und gib ein:
 
+\blarge
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{mkdir}\NormalTok{ fortbildung}
 \BuiltInTok{cd}\NormalTok{ fortbildung}
-\FunctionTok{git}\NormalTok{ clone https://TODO    storyvorlagen vorlage }\CommentTok{\# Ziel: vorlage.git }
+\FunctionTok{git}\NormalTok{ clone https://github.com/gischupa/dillingen\_storyvorlage.git vorlage }
 \end{Highlighting}
 \end{Shaded}
 
-Es entsteht ein Ordner \emph{storyvorlagen}, in dem die verschiedenen
-Stände des Projektes enthalten sind.
+\elarge
+
+Es entsteht ein Ordner \emph{vorlage}, in dem die verschiedenen Stände
+des Projektes enthalten sind.
 
 \section{Labor}\label{labor}
 
@@ -2549,7 +2113,7 @@ folgenden Befehl verwenden:
 
 Wechsle in das Buch-Fenster
 
-\phantomsection\label{annotated-cell-83}%
+\phantomsection\label{annotated-cell-67}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2582,7 +2146,7 @@ Empfohlener Befehl \cmd{git add story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-84}%
+\phantomsection\label{annotated-cell-68}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2637,7 +2201,7 @@ Für dich bedeutet das nun das Abarbeiten folgende Schritte:
   Checke den Status: \cmd{git status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-85}%
+\phantomsection\label{annotated-cell-69}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -2682,7 +2246,7 @@ dass der Vorgang zu Datenverlust führt!
 \ExtensionTok{error:}\NormalTok{ die folgende Datei hat zum Commit vorgemerkte Änderungen  }
       \ExtensionTok{unterschiedlich}\NormalTok{ zu der Datei und HEAD:}
          \ExtensionTok{story1.md}
-\KeywordTok{(}\ExtensionTok{benutze} \PreprocessorTok{*}\NormalTok{{-}f}\PreprocessorTok{*}\NormalTok{, um die Löschung zu erzwingen}\KeywordTok{)}
+\KeywordTok{(}\ExtensionTok{benutze} \AttributeTok{{-}f,}\NormalTok{ um die Löschung zu erzwingen}\KeywordTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2701,9 +2265,7 @@ erkennen:
 
 \subsection{Analyse der Differenz}\label{analyse-der-differenz}
 
-TODO: Neu aufbauen
-
-\phantomsection\label{annotated-cell-88}%
+\phantomsection\label{annotated-cell-72}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -2757,15 +2319,8 @@ Nun wird die Datei wieder zum Stage hinzugefügt und dann committet:
 \begin{Highlighting}[]
 \FunctionTok{git}\NormalTok{ add story1.md}
 \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{\textquotesingle{}Guter Ansatz\textquotesingle{}}
-\end{Highlighting}
-\end{Shaded}
 
-TODO: Hash aktualisieren
-
-\emph{Ausgabe}
-
-\begin{Shaded}
-\begin{Highlighting}[]
+\CommentTok{\# Ausgabe}
 \ExtensionTok{[main} \ErrorTok{(}\ExtensionTok{Root{-}Commit}\KeywordTok{)} \ExtensionTok{5229c6b]}\NormalTok{ Guter Ansatz}
  \ExtensionTok{1}\NormalTok{ file changed, 4 insertions}\ErrorTok{(}\ExtensionTok{+}\KeywordTok{)}
  \ExtensionTok{create}\NormalTok{ mode 100644 story1.md}
@@ -2959,7 +2514,7 @@ Aus Sicherheitsgründen vergleichst du die Versionen kurz miteinander:
 \end{Highlighting}
 \end{Shaded}
 
-Das ist ein Vergleich \work - Stage. Du siehst
+Das ist ein Vergleich von \work mit Stage. Du siehst
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3775,15 +3330,20 @@ andere Dateien bearbeitet werden. Damit können die Änderungen einfach
 \begin{Highlighting}[]
 \CommentTok{\#!/bin/bash}
 
-\CommentTok{\# Demo for Cherry without error}
+\CommentTok{\# Zwei Branches, unterschiedliche Dateien}
 
+\CommentTok{\# Putzen}
+\BuiltInTok{cd}\NormalTok{ /tmp}
 \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ cherry\_labor}
 
+\CommentTok{\# Lokales Repo erstellen}
 \FunctionTok{mkdir}\NormalTok{ cherry\_labor}
 \BuiltInTok{cd}\NormalTok{ cherry\_labor}
 \FunctionTok{git}\NormalTok{ init}
 \FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
 
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\# Auf branch main}
 \BuiltInTok{echo} \StringTok{"\textless{}h1\textgreater{}Intro\textless{}/h1\textgreater{}"} \OperatorTok{\textgreater{}}\NormalTok{ index.html}
 \FunctionTok{git}\NormalTok{ add index.html}
 \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"initial"}
@@ -3792,6 +3352,8 @@ andere Dateien bearbeitet werden. Damit können die Änderungen einfach
 \FunctionTok{git}\NormalTok{ add index.html}
 \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"Einleitung"}
 
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\# wechsel zu development}
 \FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ development}
 
 \BuiltInTok{echo} \StringTok{"\textless{}div class=\textquotesingle{}nav\textquotesingle{}\textgreater{} ... \textless{}/div\textgreater{} "} \OperatorTok{\textgreater{}}\NormalTok{ nav.html}
@@ -3802,6 +3364,8 @@ andere Dateien bearbeitet werden. Damit können die Änderungen einfach
 \FunctionTok{git}\NormalTok{ add nav.html}
 \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"javascript begonnen"}
 
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\# zurück zu main}
 \FunctionTok{git}\NormalTok{ switch main}
 
 \BuiltInTok{echo} \StringTok{"\textless{}h2\textgreater{}Hauptteil\textless{}/h2\textgreater{}"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
@@ -3871,39 +3435,58 @@ gleichen Datei in zwei Branches vor. Hier der ist der Inhalt von Script
 \begin{Highlighting}[]
 \CommentTok{\#!/bin/bash}
 
-\CommentTok{\# Demo for Cherry without error}
+\CommentTok{\# In beiden Branches wird die gleiche Datei }
+\CommentTok{\# ständig ergänzt. Das erzeugt demnach eine Lücke}
+\CommentTok{\#}
+\CommentTok{\#  zeile 1}
+\CommentTok{\#  zeile 2}
+\CommentTok{\#           zeile 3}
+\CommentTok{\#           zeile 4}
+\CommentTok{\#  zeile 5}
+\CommentTok{\#}
+\CommentTok{\# Pickt man Zeile 3, so liegt die in der Datei }
+\CommentTok{\# dann nicht in der richtigen Zeile!}
 
+\BuiltInTok{set} \AttributeTok{{-}e}
+\BuiltInTok{set} \AttributeTok{{-}x}
+
+\CommentTok{\# putzen}
+\BuiltInTok{cd}\NormalTok{ /tmp}
 \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ cherry\_labor}
 
+\CommentTok{\# Repo erstellen}
 \FunctionTok{mkdir}\NormalTok{ cherry\_labor}
 \BuiltInTok{cd}\NormalTok{ cherry\_labor}
 \FunctionTok{git}\NormalTok{ init}
 \FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
 
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\# auf main}
 \BuiltInTok{echo} \StringTok{"Zeile 1"} \OperatorTok{\textgreater{}}\NormalTok{ index.html}
-\FunctionTok{git}\NormalTok{ add index.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1"}
+\FunctionTok{git}\NormalTok{ add index.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"zeile 1"}
 
 \BuiltInTok{echo} \StringTok{"Zeile 2"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
-\FunctionTok{git}\NormalTok{ add index.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z2"}
+\FunctionTok{git}\NormalTok{ add index.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"zeile 2"}
 
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\# wechsel zu development}
 \FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ development  }\CommentTok{\# branch wechsel}
 
 \BuiltInTok{echo} \StringTok{"Zeile 3"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
-\FunctionTok{git}\NormalTok{ add index.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z3"}
+\FunctionTok{git}\NormalTok{ add index.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"zeile 3"}
 
 \BuiltInTok{echo} \StringTok{"Zeile 4"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
-\FunctionTok{git}\NormalTok{ add index.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z4"}
+\FunctionTok{git}\NormalTok{ add index.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"zeile 4"}
 
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\#\# Zurück zu main}
 \FunctionTok{git}\NormalTok{ switch main  }\CommentTok{\# wieder auf main}
 
 \BuiltInTok{echo} \StringTok{"Zeile 5"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ index.html}
-\FunctionTok{git}\NormalTok{ add index.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z5"}
+\FunctionTok{git}\NormalTok{ add index.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"zeile 5"}
 
+
+\CommentTok{\# Darstellen}
 \FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} \AttributeTok{{-}{-}decorate} \AttributeTok{{-}{-}graph} \AttributeTok{{-}{-}all}
 \end{Highlighting}
 \end{Shaded}
@@ -3911,12 +3494,12 @@ gleichen Datei in zwei Branches vor. Hier der ist der Inhalt von Script
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe }
-\ExtensionTok{*}\NormalTok{ 3aef088 }\ErrorTok{(}\ExtensionTok{development}\KeywordTok{)} \ExtensionTok{z4}
-\ExtensionTok{*}\NormalTok{ b287548 z3             }\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ der hier soll}
-\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 69336b4 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{z5}   \OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ da her}
+\ExtensionTok{*}\NormalTok{ 3aef088 }\ErrorTok{(}\ExtensionTok{development}\KeywordTok{)} \ExtensionTok{zeile}\NormalTok{ 4}
+\ExtensionTok{*}\NormalTok{ b287548 zeile 3      }\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ der hier soll}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ 69336b4 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{zeile}\NormalTok{ 5   }\OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ da her}
 \KeywordTok{|}\ExtensionTok{/}  
-\ExtensionTok{*}\NormalTok{ 896aefc z2}
-\ExtensionTok{*}\NormalTok{ 1fb21e9 z1}
+\ExtensionTok{*}\NormalTok{ 896aefc zeile 2}
+\ExtensionTok{*}\NormalTok{ 1fb21e9 zeile 1}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3934,7 +3517,7 @@ Bekommen wir folgenden Konflikt:
 \begin{Highlighting}[]
 \ExtensionTok{automatischer}\NormalTok{ Merge von index.html}
 \ExtensionTok{KONFLIKT} \ErrorTok{(}\ExtensionTok{Inhalt}\KeywordTok{)}\BuiltInTok{:}\NormalTok{ Merge{-}Konflikt in index.html}
-\ExtensionTok{error:}\NormalTok{ Konnte b287548... }\ErrorTok{(}\ExtensionTok{z3}\KeywordTok{)} \ExtensionTok{nicht}\NormalTok{ anwenden}
+\ExtensionTok{error:}\NormalTok{ Konnte b287548... }\ErrorTok{(}\ExtensionTok{zeile}\NormalTok{ 3}\KeywordTok{)} \ExtensionTok{nicht}\NormalTok{ anwenden}
 \ExtensionTok{Hinweis:}\NormalTok{ Lösen Sie alle Konflikte manuell auf, markieren Sie diese }
 \ExtensionTok{Hinweis:}\NormalTok{ mit }\StringTok{"git add/rm \textless{}Pfadspezifikation\textgreater{}"}\NormalTok{ und führen Sie dann}
 \ExtensionTok{Hinweis:} \StringTok{"git cherry{-}pick {-}{-}continue"}\NormalTok{ aus.}
@@ -4028,14 +3611,14 @@ so aus:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{*}\NormalTok{ 177a8a6 }\ErrorTok{(}\ExtensionTok{development}\KeywordTok{)} \ExtensionTok{z3d2}
-\ExtensionTok{*}\NormalTok{ d46d7bb z2d2     }\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ wollen wir von hier ...}
-\ExtensionTok{*}\NormalTok{ 1b07ddb z1d3}
-\ExtensionTok{*}\NormalTok{ 8fa5974 z1d2}
-\KeywordTok{|} \ExtensionTok{*}\NormalTok{ a4cc92c }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{d1z3} \OperatorTok{\textless{}\textless{}\textless{}\textless{}}\NormalTok{ ... nach da picken}
+\ExtensionTok{*}\NormalTok{ 177a8a6 }\ErrorTok{(}\ExtensionTok{development}\KeywordTok{)} \ExtensionTok{z3}\NormalTok{ d1}
+\ExtensionTok{*}\NormalTok{ d46d7bb z2 d2     }\OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ wollen wir von hier ...}
+\ExtensionTok{*}\NormalTok{ 1b07ddb z1 d3}
+\ExtensionTok{*}\NormalTok{ 8fa5974 z1 d2}
+\KeywordTok{|} \ExtensionTok{*}\NormalTok{ a4cc92c }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)} \ExtensionTok{d1}\NormalTok{ z3 }\OperatorTok{\textless{}\textless{}\textless{}}\NormalTok{ ... nach da picken}
 \KeywordTok{|}\ExtensionTok{/}  
-\ExtensionTok{*}\NormalTok{ cc253e1 z2d1}
-\ExtensionTok{*}\NormalTok{ 09a1330 z1d1}
+\ExtensionTok{*}\NormalTok{ cc253e1 z2 d1}
+\ExtensionTok{*}\NormalTok{ 09a1330 z1 d1}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4046,48 +3629,61 @@ Erzeugen können wir die Situation mit dem Script
 \begin{Highlighting}[]
 \CommentTok{\#!/bin/bash}
 
-\CommentTok{\# Demo for Cherry without error}
+\CommentTok{\# Erstellen einer Struktur zum Probieren }
+\CommentTok{\# von Cherry{-}pick. Führt i.a. zu einem }
+\CommentTok{\# Konflikt im Sinne dass eine Datei }
+\CommentTok{\# manuell geadded werden muss}
 
+\CommentTok{\# z2 d3 steht für zeile 2 Datei 3}
+
+\BuiltInTok{set} \AttributeTok{{-}e}
+\BuiltInTok{set} \AttributeTok{{-}x}
+
+\BuiltInTok{cd}\NormalTok{ /tmp}
 \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ cherry\_labor}
 
+\CommentTok{\#\# Lokale Repo erstellen}
 \FunctionTok{mkdir}\NormalTok{ cherry\_labor}
 \BuiltInTok{cd}\NormalTok{ cherry\_labor}
 \FunctionTok{git}\NormalTok{ init}
 \FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
 
+\CommentTok{\# Arbeit auf main}
 \BuiltInTok{echo} \StringTok{"Zeile 1"} \OperatorTok{\textgreater{}}\NormalTok{ datei\_1.html}
-\FunctionTok{git}\NormalTok{ add datei\_1.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1d1"}
+\FunctionTok{git}\NormalTok{ add datei\_1.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1 d1"}
 
 \BuiltInTok{echo} \StringTok{"Zeile 2"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_1.html}
-\FunctionTok{git}\NormalTok{ add datei\_1.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z2d1"}
+\FunctionTok{git}\NormalTok{ add datei\_1.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z2 d1"}
 
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\# Wechsel zu development }
 \FunctionTok{git}\NormalTok{ switch }\AttributeTok{{-}c}\NormalTok{ development  }\CommentTok{\# branch wechsel}
 
 \BuiltInTok{echo} \StringTok{"Zeile 1"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_2.html}
-\FunctionTok{git}\NormalTok{ add datei\_2.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1d2"}
+\FunctionTok{git}\NormalTok{ add datei\_2.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1 d2"}
 
 \BuiltInTok{echo} \StringTok{"Zeile 1"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_3.html}
-\FunctionTok{git}\NormalTok{ add datei\_3.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1d3"}
+\FunctionTok{git}\NormalTok{ add datei\_3.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z1 d3"}
 
 \BuiltInTok{echo} \StringTok{"Zeile 2"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_2.html}
-\FunctionTok{git}\NormalTok{ add datei\_2.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z2d2"}
+\FunctionTok{git}\NormalTok{ add datei\_2.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z2 d2"}
 
 \BuiltInTok{echo} \StringTok{"Zeile 3"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_2.html}
-\FunctionTok{git}\NormalTok{ add datei\_2.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z3d2"}
+\FunctionTok{git}\NormalTok{ add datei\_2.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z3 d2"}
 
+\CommentTok{\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\# zurück auf main}
 \FunctionTok{git}\NormalTok{ switch main  }\CommentTok{\# wieder auf main}
 
 \BuiltInTok{echo} \StringTok{"Zeile 3"} \OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ datei\_1.html}
-\FunctionTok{git}\NormalTok{ add datei\_1.html}
-\FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"d1z3"}
+\FunctionTok{git}\NormalTok{ add datei\_1.html}\KeywordTok{;} \FunctionTok{git}\NormalTok{ commit }\AttributeTok{{-}m} \StringTok{"z3 d1"}
 
+\CommentTok{\# Darstellen}
 \FunctionTok{git}\NormalTok{ log }\AttributeTok{{-}{-}oneline} \AttributeTok{{-}{-}decorate} \AttributeTok{{-}{-}graph} \AttributeTok{{-}{-}all}
+
+\CommentTok{\# Ab hier kann im Terminal experimentiert werden}
+
+\BuiltInTok{exit}\NormalTok{ 0}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4249,12 +3845,16 @@ Für eine server-basierende Teamarbeit gibt es folgende Varianten
   \emph{GitLab}
 \item
   Ein \git-Server mit \emph{GitLab}
+\item
+  Ein bezahlter DSGVO-Konformer Anbieter
+\item
+  Gemeinnützige Organisationen wie \emph{codeberg.org} (kein CICD)
 \end{itemize}
 
-Bei allen Varianten ist im Prinzip eine direkte Installation auf den
-Server (nicht empfohlen) oder der Einsatz von Docker (sinnvoll) möglich.
-Die Anleitungen für die einzelnen Varianten befinden sich weiter hinten
-im Script.
+Bei allen selbst gehosteten Varianten ist eine direkte Installation auf
+den Server (nicht empfohlen) oder der Einsatz von Docker (sinnvoll)
+möglich. Die Anleitungen für die einzelnen Varianten befinden sich
+weiter hinten im Script.
 
 \subsection{Änderungen am Workflow}\label{uxe4nderungen-am-workflow}
 
@@ -4270,7 +3870,7 @@ Schritte
 \item
   Regelmäßiges Abrufen des aktuellen Standes (=pull)
 \item
-  Veröffentlichen des eigenen Standes (push)
+  Veröffentlichen des eigenen Standes (=push)
 \end{itemize}
 
 Hierbei sind einige Spielregeln zu beachten, damit es nicht zu Problemen
@@ -4407,97 +4007,44 @@ Bevor wir diesen Setup umsetzen, müssen wir kurz den Begriff
 \emph{origin} klären, der uns nun öfter begegnet! Für die einzelnen
 Schritte gibt es Scripts in den Kursmaterialien!
 
-\subsection{origin}\label{origin}
+\subsection{Was ist Origin?}\label{was-ist-origin}
 
-\textbf{Origin.sh}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#!/bin/bash}
-
-\CommentTok{\# Putzen alter Versuche}
-\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ labor1}
-
-
-\CommentTok{\# Anlegen des Versuchsordner}
-\FunctionTok{mkdir}\NormalTok{ labor1}
-\BuiltInTok{cd}\NormalTok{ labor1}
-
-\VariableTok{AKTUELL}\OperatorTok{=}\VariableTok{$PWD}  \CommentTok{\# aktuellen Pfad merken}
-
-\CommentTok{\# Repo "entfernt.git" anlegen}
-\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ entfernt.git}
-
-\CommentTok{\# branch auf main umbenennen}
-\BuiltInTok{cd}\NormalTok{ entfernt.git}
-\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main}
-\BuiltInTok{cd}\NormalTok{ ..}
-
-\CommentTok{\# Repo in Ordner "lokal" clonen}
-\FunctionTok{git}\NormalTok{ clone }\VariableTok{$AKTUELL}\NormalTok{/entfernt.git lokal}
-
-\CommentTok{\# Überblick}
-\BuiltInTok{cd}\NormalTok{ lokal}
-\FunctionTok{git}\NormalTok{ status}
-\end{Highlighting}
-\end{Shaded}
-
-Das Script \script{origin.sh} erstellt dir
-
-\begin{itemize}
-\tightlist
-\item
-  Ein Repository mit dem Namen \emph{entfernt}, das einen Server
-  darstellt
-\item
-  Ein Repository mit dem Namen \emph{lokal}, das deinen Rechner
-  darstellt, indem es eine Kopie von \emph{entfernt} erstellt (=clone).
-\end{itemize}
-
-Öffne eine \git-Bash in einem Spielordner und führe das Script
-\script{origin.sh} aus. Die Ausgabe wird bei dir minimal abweichen.
+\emph{Origin} spielt in erster Linie im Zusammenhang mit
+Server-Repositories eine Rolle. Für diesen Abschnitt kannst du einfach
+das Material-Repository verwenden -- zur Not clonst du es einfach
+erneut:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{Leeres}\NormalTok{ Git{-}Repository in /tmp/labor1/entfernt.git/ initialisiert}
-\ExtensionTok{Klone}\NormalTok{ nach }\StringTok{\textquotesingle{}lokal\textquotesingle{}}\NormalTok{ …}
-\ExtensionTok{warning:}\NormalTok{ Sie scheinen ein leeres Repository geklont zu haben.}
-\ExtensionTok{Fertig.}
-\ExtensionTok{Auf}\NormalTok{ Branch main}
-
-\ExtensionTok{Noch}\NormalTok{ keine Commits}
-
-\ExtensionTok{nichts}\NormalTok{ zu committen }\ErrorTok{(}\ExtensionTok{erstellen/kopieren}\NormalTok{ Sie Dateien und benutzen}
-\ExtensionTok{Sie} \StringTok{"git add"}\NormalTok{ zum Versionieren}\KeywordTok{)}
+\FunctionTok{git}\NormalTok{ clone git@github.com:gischupa/dillingen\_material\_git.git}
 \end{Highlighting}
 \end{Shaded}
 
-Durch
+Im Ordner führst du dann aus:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ remote }\AttributeTok{{-}v} 
+\BuiltInTok{cd}\NormalTok{ dillingen\_material\_git}
+\FunctionTok{git}\NormalTok{ remote }\AttributeTok{{-}v}
 \end{Highlighting}
 \end{Shaded}
 
-siehst du, woher das Repository stammt. Bei dir ist natürlich ein
-anderer Pfad zu sehen!
+Die Ausgabe ist dann
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{origin}\NormalTok{  /tmp/labor1/entfernt.git }\ErrorTok{(}\ExtensionTok{fetch}\KeywordTok{)}
-\ExtensionTok{origin}\NormalTok{  /tmp/labor1/entfernt.git }\ErrorTok{(}\ExtensionTok{push}\KeywordTok{)}
+\ExtensionTok{origin}\NormalTok{  git@github.com:gischupa/dillingen\_material\_git.git }\ErrorTok{(}\ExtensionTok{fetch}\KeywordTok{)}
+\ExtensionTok{origin}\NormalTok{  git@github.com:gischupa/dillingen\_material\_git.git }\ErrorTok{(}\ExtensionTok{push}\KeywordTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-Wenn also in den folgenden Ausgaben und Befehlen \emph{origin}
-erscheint, dann ist \textbf{dieser} Pfad gemeint. \emph{Pfad} kann
-allerdings auch eine Netzwerkverbindung zu einem Server sein -- das ist
-sogar der Normalfall.
-
-Mit \branch{origin/main} ist immer der Branch im entfernten Repository
-(z.B. Server) gemeint, \branch{main} (ohne \emph{origin}) bezieht sich
-auf den Branch in deiner lokalen Kopie.
+Du siehst also, dass \emph{origin} nur die Abkürzung für die unhandliche
+Internetadresse darstellt. Wenn an verschiedenen Stellen
+\texttt{origin/main/} auftritt, dann stellt das eine Referenz auf das
+entfernte Repository dar. Tritt dagegen \texttt{origin\ main} auf, dann
+sind das Parameter, die an einen Befehl übergeben werden und den Branch
+im entfernten Repository meinen. Siehst du nur \texttt{main}, so ist der
+lokale Branch gemeint.
 
 \subsection{Eigentliches Labor}\label{eigentliches-labor}
 
@@ -4506,7 +4053,7 @@ Der nachfolgende Setup erstellt
 \begin{itemize}
 \tightlist
 \item
-  einen Repository auf dem Server
+  eine Repository auf dem Server
 \item
   eine lokale Kopie des Repositories mit dem Namen \emph{susi}
 \item
@@ -4516,19 +4063,26 @@ Der nachfolgende Setup erstellt
 Öffne in einem geeigneten Ordner eine \git-Bash und führe das Script
 \script{susi\_und\_max.sh} aus.
 
-Beachte, dass in dem Script im oberen Teil etwas Overhead nötig ist,
-damit Susi und Max nicht einfach nur ein leeres Repository clonen,
-sondern die realistischere Situation mit zumindest einer Datei
-vorfinden:
+Beachte, dass im oberen Teil des Scripts etwas Overhead nötig ist, damit
+Susi und Max nicht einfach nur ein leeres Repository clonen. Es ist
+üblich, dass zumindest eine Datei enthalten ist.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#!/bin/bash}
 
+\BuiltInTok{set} \AttributeTok{{-}e}
 \BuiltInTok{set} \AttributeTok{{-}x}
 
-\VariableTok{IP}\OperatorTok{=}\NormalTok{192.168.3.154}
-\CommentTok{\# Putzen früherer Versuche}
+
+\CommentTok{\# Nützliche Variablen}
+\VariableTok{ARBEIT}\OperatorTok{=}\NormalTok{/tmp        }\CommentTok{\# Dort arbeiten wir }
+\VariableTok{SUSI}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/susi  }\CommentTok{\# Abkürzungen für den Überblick  }
+\VariableTok{MAX}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/max}
+
+\VariableTok{IP}\OperatorTok{=}\NormalTok{192.168.3.154 }\CommentTok{\# Mein Server}
+
+\CommentTok{\# Repository auf dem Server erstellen}
 \FunctionTok{ssh}\NormalTok{ benutzer@}\VariableTok{$IP} \StringTok{\textquotesingle{}}
 \StringTok{cd /home/benutzer}
 \StringTok{rm {-}rf entfernt.git}
@@ -4538,11 +4092,9 @@ vorfinden:
 \StringTok{git branch {-}m main}
 \StringTok{\textquotesingle{}}
 
-\CommentTok{\# Nützliche Variablen}
-\VariableTok{ARBEIT}\OperatorTok{=}\NormalTok{/tmp  }\CommentTok{\# aktuellen Pfad merken }
-\VariableTok{SUSI}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/susi  }\CommentTok{\# Abkürzungen für den Überblick  }
-\VariableTok{MAX}\OperatorTok{=}\VariableTok{$ARBEIT}\NormalTok{/max}
 
+\BuiltInTok{cd} \VariableTok{$ARBEIT}
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ vorbereitung}
 \CommentTok{\#\#\#\#\#\#\# Vorbereitung}
 \CommentTok{\# Hier wird eine Datei ins Server{-}repo aufgenommen}
 \CommentTok{\# indem vorübergehend ein weiteres Repo erstellt wird.}
@@ -4557,8 +4109,8 @@ vorfinden:
 \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ vorbereitung}
 \CommentTok{\#\#\#\#\#\# Ende Vorbereitung {-} löschen der lokalen Altlasten\#\#\#\#\#\#\#}
 
-\BuiltInTok{cd}\NormalTok{ /tmp}
-\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ susi max}
+\BuiltInTok{cd} \VariableTok{$ARBEIT}
+\FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ susi max   }\CommentTok{\# alte Daten löschen}
 \FunctionTok{git}\NormalTok{ clone benutzer@}\VariableTok{$IP}\NormalTok{:/home/benutzer/entfernt.git susi }
 \FunctionTok{git}\NormalTok{ clone benutzer@}\VariableTok{$IP}\NormalTok{:/home/benutzer/entfernt.git max   }
 
@@ -4595,7 +4147,7 @@ Im Prinzip hat Susi also eine identische Kopie des Repositories
 erstellt. Der \branch{main}-Branch gehört \emph{Susi} in \emph{diesem}
 Repository. Die Statusmeldung sagt dir, dass beide Branches, \emph{main}
 (Susis) und \emph{origin/main} (der im Original Repo) auf dem gleichen
-Stand sind..
+Stand sind.
 
 Nachfolgend stehen die Bezeichnungen \emph{SERVER} und \emph{SUSI} für
 die entsprechenden Repositories (bei MAX ist das analog).
@@ -4629,7 +4181,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-158}%
+\phantomsection\label{annotated-cell-140}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -4697,7 +4249,7 @@ Susi führt nun einen Push aus:
 \ExtensionTok{Schreibe}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{3/3}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ 292 Bytes }\KeywordTok{|} \ExtensionTok{292.00}\NormalTok{ KiB/s, fertig.}
 \ExtensionTok{Gesamt}\NormalTok{ 3 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Wiederverwendet 0 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,} 
 \ExtensionTok{Pack}\NormalTok{ wiederverwendet 0}
-\ExtensionTok{To}\NormalTok{ /tmp/labor2/entfernt}
+\ExtensionTok{To}\NormalTok{ 192.168.3.154:/home/benutzer/entfernt.git}
    \ExtensionTok{d46681d..78db34e}\NormalTok{  main }\AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}
 \end{Highlighting}
 \end{Shaded}
@@ -4736,7 +4288,7 @@ Als Ausgabe bekommt er
 \ExtensionTok{remote:}\NormalTok{ Gesamt 3 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Wiederverwendet 0 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,} 
 \ExtensionTok{Pack}\NormalTok{ wiederverwendet 0}
 \ExtensionTok{Entpacke}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{3/3}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ 272 Bytes }\KeywordTok{|} \ExtensionTok{272.00}\NormalTok{ KiB/s, fertig.}
-\ExtensionTok{Von}\NormalTok{ /tmp/labor2/entfernt}
+\ExtensionTok{Von}\NormalTok{ 192.168.3.154:/home/benutzer/entfernt.git}
    \ExtensionTok{d46681d..78db34e}\NormalTok{  main       }\AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ origin/main}
 \end{Highlighting}
 \end{Shaded}
@@ -5013,6 +4565,446 @@ Branch als Upstream konfiguriert, holt sich ein kurzes \cmd{git pull}
 die richtigen Daten. Ein \cmd{git pull <branch>} holt aber genau das,
 was du angegeben hast! Das ist eine Fehlerquelle!
 
+\section{Serverinstallation}\label{serverinstallation}
+
+Dieser Abschnitt ist nun deutlich umfangreicher und kann bei einer
+ersten Lektüre auch problemlos übersprungen werden, wenn du dich nur für
+die Verwendung von \git  auf deinem eigenen, isolierten Rechner
+interessierst.
+
+Ansonsten wirst du nachfolgende Schritte durchlaufen:
+
+\begin{itemize}
+\tightlist
+\item
+  Allgemeine Gedanken zum Serverbetrieb
+\item
+  Anmelden auf dem späteren \git-Server
+\item
+  Installation eines \emph{normalen} \git 
+\item
+  Docker kennenlernen
+\item
+  GitLab mit Docker installieren
+\end{itemize}
+
+Die Bedienung von GitLab lernst du später im Workshop noch genauer.
+
+\subsection{Allgemeine Gedanken}\label{allgemeine-gedanken}
+
+Der Betrieb eines Servers ist auch immer mit Verantwortung und Aufwand
+verbunden. Wer hier keine Kenntnisse besitzt, schreckt schnell davor
+zurück, obwohl die Grundlagen eigentlich relativ schnell gelernt sind.
+Anleitungen und Checklisten aus dem Internet erleichtern hier auch den
+Einstieg.
+
+Generell muss man sich natürlich über den Einsatzzweck des Servers
+Gedanken machen. Was für Dienste soll er bereitstellen? Müssen Benutzer
+verwaltet werden, was sollen diese Benutzer dürfen. Es liegt in der
+Natur der Sache, dass dich das Anwendungsspektrum im Lauf der Zeit
+vergrößert und damit wächst zwangsläufig auch das Wissen.
+
+Eine besondere Hürde stellt der Betrieb von mehreren Webangeboten auf
+dem gleichen Server dar, die über verschiedene Namen angesprochen werden
+sollen (homepage.schule.de, gitlab.schule.de, versuche.schule.de,
+\ldots). Die Lösung hierfür ist ein \emph{reverse Proxy}, allerdings
+sprengt das den Rahmen dieses Workshops.
+
+\subsection{Anmelden auf dem Server}\label{anmelden-auf-dem-server}
+
+Damit du dich auf deinem Server anmelden kannst, benötigst du folgende
+Informationen:
+
+\begin{quote}
+IP-Adresse des Servers Benutzername Kennwort
+\end{quote}
+
+Diese Daten werden dir im Workshop mitgeteilt. Solltest du mit deiner
+eigenen Installation arbeiten, so sollten dir diese Informationen
+bereits vorliegen.
+
+Die Anmeldung auf dem Server erfolgt über das Protokoll \emph{ssh}.\\
+Seit einer der letzten Versionen von Windows ist auch hier bereits ein
+ssh-Client eingebaut. Bei Lunx und MacOS gehört er seit Jahrzehnten zum
+Standard. Ich selbst bevorzuge auf Windows allerdings eher das
+(kostenlose) Programm \emph{Putty} und die gerade vorher installierte
+\git-bash.
+
+In jedem Fall musst du zunächst ein Terminal (Kommandofenster) öffnen um
+den nachfolgenden Befehl eingeben zu können:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh}\NormalTok{ benutzer@IP{-}adresse }
+\end{Highlighting}
+\end{Shaded}
+
+Du erhältst eine Sicherheitsabfrage um zukünftige Man-in-the-middle
+Angriffe erkennen zu können, die du mit \emph{yes} beantwortest. Bei der
+nachfolgenden Kennworteingabe kann es (je nach System) sein, dass die
+Tastendrücke nicht angezeigt werden!
+
+Wenn alles geklappt hat, so wirst du vom Eingabepromt des Terminals auf
+dem Server begrüßt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{benutzer@ubu:\textasciitilde{}$}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Installieren von Git}\label{installieren-von-git}
+
+Vor jeder Installation muss die Softwaredatenbank aktualisiert werden,
+damit keine veralteten Dateien installiert werden. Als normaler Benutzer
+darfst du das aber nicht und musst zuerst zum Administrator (=root)
+werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo} \AttributeTok{{-}i}
+\end{Highlighting}
+\end{Shaded}
+
+Es wird wieder dein Kennwort abgefragt und der Eingabeprompt ändert
+sich. Nun kannst du administrative Arbeiten erledigen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt}\NormalTok{ update}
+\end{Highlighting}
+\end{Shaded}
+
+In regelmäßigen Abständen sollte auch ein Komplett-Upgrade des Systems
+laufen, um zum Beispiel Sicherheitslücken zu schließen und \emph{alle}
+Programme zu aktualisieren\footnote{vgl. Windows \ldots{} hier muss
+  jedes Programm einzeln aktualisiert werden!} Da auf deinem Server eine
+komplett neue Installation von DVD ist, kann einiges veraltet sein --
+also führst du aus:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt}\NormalTok{ upgrade }\AttributeTok{{-}y}
+\end{Highlighting}
+\end{Shaded}
+
+Das kann nun einige Zeit dauern. Hättest du eine weitere Verbindung
+geöffnet, so könntest du parallel weiterarbeiten, aktuell warten wir
+aber ab.
+
+Nun zu eigentlichen Installation von \git:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt}\NormalTok{ install git }\AttributeTok{{-}y} 
+\end{Highlighting}
+\end{Shaded}
+
+Damit ist die Installation von \git bereits beendet, solange keine
+besondere Zusatzsoftware benötigt wird, die auf dem Server ohnehin
+unüblich ist.
+
+\subsection{Absicherung}\label{absicherung}
+
+Gleich an dieser Stelle ein Wort zur Sicherheit. Wenn dein Server im
+Internet steht, dann bietet er natürlich eine große Angriffsfläche. Es
+ist deshalb sinnvoll, wenn du zumindest die Firewall aktivierst und ein
+sicheres Kennwort einstellst. Das hat im Prinzip nichts mit \git zu tun,
+ist aber dennoch wichtig.
+
+\subsubsection{Kennwort}\label{kennwort}
+
+Das geht relativ schnell. Gib einfach im Terminal den Befehl
+\cmd{passwd} ein und drücke \key{Enter}. Du wirst zweimal nach einem
+neuen Kennwort gefragt und damit ist bereits alles erledigt.
+
+\subsubsection{Firewall}\label{firewall}
+
+In Ubuntu ist eine sehr pflegeleichte Firewall integriert (UFW). Du
+gehst nun in 2 Schritten vor:
+
+\begin{itemize}
+\tightlist
+\item
+  Definieren des/der offenen Ports (bei uns 22 für SSH)
+\item
+  Aktivieren der Firewall
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{ufw}\NormalTok{ status verbose}
+\CommentTok{\# sollte *inactive* liefern}
+
+\CommentTok{\# Die Firewall darf hier noch nicht aktiv sein !!!!!!!}
+\ExtensionTok{ufw}\NormalTok{ default deny incoming}
+\ExtensionTok{ufw}\NormalTok{ default allow outgoing}
+
+\CommentTok{\# ssh erlauben}
+\ExtensionTok{ufw}\NormalTok{ allow 22/tcp}
+
+\CommentTok{\# Firewall einschalten}
+\ExtensionTok{ufw}\NormalTok{ enable}
+\ExtensionTok{ufw}\NormalTok{ status verbose}
+\end{Highlighting}
+\end{Shaded}
+
+\samplestart
+
+\textbf{Hinweise}\\
+An Stelle von \emph{allow} könnte auch \emph{limit} stehen. Allerdings
+blockert \emph{limit} den Zugang für eine bestimmte Zeit, wenn zu viele
+(gescheiterte) Anmeldeversuche in kurzer Zeit vorliegen. Das kann bei
+uns schon mal passieren! \sampleend
+
+\subsubsection{Probleme mit Ports}\label{probleme-mit-ports}
+
+Wir werden im weiteren Verlauf ein Problem mit Port 22 bekommen. Die
+Software GitLab, die wir später installieren werden, beansprucht den
+Port 22 (sinnvoller Weise) für sich und das führt zu einer Kollision mit
+dem SSH-Dienst des Servers. Wir werden ihn zu gegebener Zeit auf Port 23
+umlegen.
+
+\subsection{Wer darf was?}\label{wer-darf-was}
+
+Das ist nun eine Grundsatzdiskussion. Wenn du in dieser Konfiguration
+mit den Schülern \git verwenden willst, müssen die Schüler auch Zugriff
+auf den Server haben. Es ist zwar generell möglich, Daten anonym vom
+Server abzuholen (=clone, pull), aber ein Speichern ist dann nicht
+möglich (push). Aus diesem Grund muss für die Schüler eine
+Zugriffsmöglichkeit geschaffen werden\footnote{Wenn wir später mit
+  GitLab arbeiten, dann ist das komplett anders!}.
+
+Der einfachste -- aber für alle Beteiligten unkomfortabelste -- Weg ist
+das Anlegen von vollwertigen Benutzeraccounts mit Kennwort\footnote{Das
+  ist durchaus sinnvoll, wenn mit den Schülern auch andere Techniken als
+  \git geübt werden sollen!}.
+
+\subsubsection{Ein einziger Benutzer
+git}\label{ein-einziger-benutzer-git}
+
+Wir werden das System so einrichten, dass alle Benutzer mit dem gleichen
+Login arbeiten. Das klingt auf den ersten Blick gefährlich oder
+fahrlässig, aber wir sichern das natürlich ab!
+
+An dieser Stelle trifft Theorie (Thema Codierung und Verschlüsselung)
+auf Praxis. Damit die Schüler einen Zugriff auf den Server bekommen
+(eigentlich nur auf \git) ohne das Kennwort des gemeinsamen Benutzers
+kennen zu müssen, verwenden wir RSA, d.h. jeder Schlüssel braucht einen
+privaten und einen öffentlichen Schlüssel. Die öffentlichen Schlüssel
+der Schüler werden vom Lehrer als berechtigt eingetragen.
+
+\paragraph{Schlüssel erzeugen}\label{schluxfcssel-erzeugen}
+
+Das dürfte in dem gesamten Prozess die Schlüsselstelle sein, da hier die
+Schüler eigenständig tätig werden müssen. Ein zusätzliches Problem ist,
+dass die Schüler an unterschiedlichen Geräten arbeiten -- zuhause,
+vielleicht je nach Stundenplan in unterschiedlichen Computerräumen,
+\ldots{} und auf jedem Computer muss die Schlüssel-Infrastruktur
+eingerichtet sein.
+
+Ich würde hier gerne auf GitLab vertrösten, aber um dieses Problem
+kommen wir nicht herum, da auch in GitLab der Public-Key hinterlegt
+werden muss und der private Schlüssel auf dem Client vorhanden sein
+muss. Die einzige Abhilfe ist eine konsequente Verwendung der
+Weboberfläche als Editor, aber das ist eben keine Java-IDE. Ein Weg --
+wenn auch unsicher -- ist das Mitführen des Schlüsselpaares auf einem
+USB-Stick (oder Cloud-Storage). Der private Schlüssel muss dann eben am
+Anfang der Stunde an die richtige Stelle kopiert werden. Noch unsicherer
+aber einfacher wäre es, wenn alle Schüler einfach das gleiche
+Schlüsselpaar für den Unterricht verwenden. Dass die Idee hinter der
+asymmetrischen Verschlüsselung damit ad absurdum geführt ist, versteht
+sich von selbst!
+
+Die Schlüsselerzeugung funktioniert im Prinzip auf allen Betriebssystem
+gleich (vom Befehl) nur die Kommandozeile muss passend gewählt werden.
+Auf Windows sollte einfach die \git-bash verwendet werden, auf den
+anderen Systemen das Terminal.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096}
+\end{Highlighting}
+\end{Shaded}
+
+Sollte bereits ein Schlüsselpaar existieren, so bietet sich diese
+Variante des Befehls an, um den anderen Schlüssel nicht zu
+überschreiben:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096   }\AttributeTok{{-}C} \StringTok{"gitkey\_susi\_sandmann@schule.de"}
+\end{Highlighting}
+\end{Shaded}
+
+Als Lehrer musst du die öffentlichen Schlüssel \emph{einsammeln} (Mail,
+Cloud, \ldots). Sie sind an der Endung \emph{.pub} erkennbar. Hier
+laufen wir in das übliche Windowsproblem, dass je nach Konfiguration die
+Dateiendungen ausgeblendet sein können!
+
+(Im Explorer: Anzeige - Dateinamenserweiterungen anzeigen)
+
+Im Prinzip genügt in vielen Fällen ein kürzerer Schlüssel, aber einige
+Plattformen (z.B. Gitea) erwarten diese Schlüssellänge.\\
+Je nach persönlichem Vertrauen kann auch ein Online-Schlüsselgenerator
+verwendet werden:
+
+\url{https://cryptotools.net/rsagen}\strut \\
+(Die \emph{einige Sekunden} sind durchaus deutlich mehr Sekunden, wenn
+man eine Schlüssellänge von 4096 Bit wählt!)
+
+Die Inhalte der (öffentlichen) Schlüsseldateien der Schüler müssen dann
+in einer Datei mit dem Namen \datei{authorized\_keys} gesammelt und im
+Ordner des \git-Benutzers abgelegt werden. Die Datei muss dann auch noch
+die passende Berechtungen erhalten!
+
+\paragraph{Schlüssel eintragen}\label{schluxfcssel-eintragen}
+
+Der einfachste Weg besteht wohl darin, sämtliche Schlüsseldateien nach
+Einsendeschluss gesammelt auf den Server zu kopieren und sie dann durch
+ein kleines Script in die \datei{authorized\_keys} zu übertragen.
+
+\textbf{Schritt 1: Benutzer anlegen}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{adduser} \AttributeTok{{-}{-}system} \AttributeTok{{-}{-}shell}\NormalTok{ /usr/bin/git{-}shell }\AttributeTok{{-}{-}home}\NormalTok{ /home/git }\DataTypeTok{\textbackslash{}}
+        \AttributeTok{{-}{-}group} \AttributeTok{{-}{-}disabled{-}password}\NormalTok{ git}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Schritt 2: Dateien übertragen}\\
+Hier kommt das Protokoll SCP zum Einsatz. Unter Windows ist es sinnvoll,
+das grafische Programm \emph{WinSCP} zu verwenden. Es ist kostenlos und
+erfordert keine Installation (portable Edition).
+
+\texttt{https://winscp.net/download/WinSCP-6.5.4-Portable.zip/download}
+
+Nach dem Entpacken und Starten hat man eine Oberfläche, die an den
+Explorer erinnert. Die Anmeldung erfolgt im Hintergrund wieder über ssh.
+Nach der Anmeldung ist die eine Fensterhälfte der lokale Rechner, die
+andere Fensterhälft der Server. Dateien können über Drag and Drop
+kopiert werden.
+
+Kopiere die `\emph{pub} Dateien in den Ordner \ordner{/home/git}.
+
+\textbf{Schritt 3: Dateien zusammenführen}\\
+Gib auf der Kommandozeile des Servers folgende Befehlsfolge ein:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ /home/git }
+\FunctionTok{ls} \PreprocessorTok{*}\NormalTok{.pub   }\CommentTok{\# Nur zur Kontrolle, ob die Dateien da sind.}
+
+\FunctionTok{cat} \PreprocessorTok{*}\NormalTok{.pub }\OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ \textasciitilde{}/.ssh/authorized\_keys}
+\end{Highlighting}
+\end{Shaded}
+
+\samplestart
+
+\textbf{Hinweis}\\
+Dieses Script ist \textbf{nur} für einen Erstimport geeignet. Werden
+später noch Schlüsseldateien nachgeliefert, so würden in der
+\datei{authorized\_keys} lauter Duplikate entstehen! Wenn du nach dem
+Import die Schlüsseldateien löschst, dann können spätere Dateien aber
+schon auf diese Weise eingespielt werden! \sampleend
+
+Löschen der Dateien
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{rm} \PreprocessorTok{*}\NormalTok{.pub }
+\end{Highlighting}
+\end{Shaded}
+
+Ab jetzt steht einer Verwendung von \git über die Kommandozeile nichts
+mehr im Weg.
+
+\subsubsection{Individuelle Benutzer}\label{individuelle-benutzer}
+
+Das hier verwendete Verfahren erstellt eine andere Art von Benutzer,
+weil Benutzer-IDs größer 1000 verwendet werden. Der vorher angelegte
+Benutzer \git  war ein System-Benutzer mit einer kleineren ID.
+
+Um einen Benutzer anzulegen, können zwei etwas unterschiedliche Befehle
+verwendet werden:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{adduser} -- führt zu einer interaktiven Eingabe von Daten
+\item
+  \texttt{useradd} -- zur Verwendung von Scripten
+\end{itemize}
+
+\textbf{adduser}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{adduser}\NormalTok{ demouser}
+
+\CommentTok{\# Interaktion}
+\ExtensionTok{info:}\NormalTok{ Adding user }\KeywordTok{\textasciigrave{}}\ExtensionTok{demouser}\StringTok{\textquotesingle{} ...}
+\StringTok{info: Selecting UID/GID from range 1000 to 59999 ...}
+\StringTok{info: Adding new group \textasciigrave{}demouser\textquotesingle{}} \ErrorTok{(}\ExtensionTok{1002}\KeywordTok{)} \ExtensionTok{...}
+\ExtensionTok{info:}\NormalTok{ Adding new user }\KeywordTok{\textasciigrave{}}\NormalTok{demouser}\StringTok{\textquotesingle{} (1002) with group \textasciigrave{}demouser (1002)\textquotesingle{}}\NormalTok{ ...}
+\ExtensionTok{info:}\NormalTok{ Creating home directory }\KeywordTok{\textasciigrave{}}\ExtensionTok{/home/demouser}\StringTok{\textquotesingle{} ...}
+\StringTok{info: Copying files from \textasciigrave{}/etc/skel\textquotesingle{}}\NormalTok{ ...}
+\ExtensionTok{New}\NormalTok{ password: }
+\ExtensionTok{Retype}\NormalTok{ new password: }
+\ExtensionTok{passwd:}\NormalTok{ password updated successfully}
+\ExtensionTok{Changing}\NormalTok{ the user information for demouser}
+\ExtensionTok{Enter}\NormalTok{ the new value, or press ENTER for the default}
+    \ExtensionTok{Full}\NormalTok{ Name []: }
+    \ExtensionTok{Room}\NormalTok{ Number []: }
+    \ExtensionTok{Work}\NormalTok{ Phone []: }
+    \ExtensionTok{Home}\NormalTok{ Phone []: }
+    \ExtensionTok{Other}\NormalTok{ []: }
+\ExtensionTok{Is}\NormalTok{ the information correct}\PreprocessorTok{?} \PreprocessorTok{[}\SpecialStringTok{Y/n}\PreprocessorTok{]}\NormalTok{ y}
+\ExtensionTok{info:}\NormalTok{ Adding new user }\KeywordTok{\textasciigrave{}}\NormalTok{demouser}\StringTok{\textquotesingle{} to supplemental / extra groups \textasciigrave{}users\textquotesingle{}}\NormalTok{ ...}
+\ExtensionTok{info:}\NormalTok{ Adding user }\KeywordTok{\textasciigrave{}}\ExtensionTok{demouser}\StringTok{\textquotesingle{} to group \textasciigrave{}users\textquotesingle{}}\NormalTok{ ...}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{useradd}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{useradd} \AttributeTok{{-}m}\NormalTok{ demouser2 }\AttributeTok{{-}s}\NormalTok{ /bin/bash }
+
+\CommentTok{\# danach}
+\FunctionTok{passwd}\NormalTok{ demouser2  }\CommentTok{\# 2x Eingabeaufforderung folgt}
+\end{Highlighting}
+\end{Shaded}
+
+Als Script:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#!/bin/bash}
+
+\VariableTok{PASSWORT}\OperatorTok{=}\StringTok{"gitkurs"}
+
+\ControlFlowTok{for}\NormalTok{ i }\KeywordTok{in} \DataTypeTok{\{}\DecValTok{1}\DataTypeTok{..}\DecValTok{30}\DataTypeTok{\}}\KeywordTok{;} \ControlFlowTok{do}
+  \VariableTok{USER}\OperatorTok{=}\StringTok{"benutzer\_}\VariableTok{$i}\StringTok{"}
+  \ExtensionTok{useradd} \AttributeTok{{-}m} \StringTok{"}\VariableTok{$USER}\StringTok{"}
+  \BuiltInTok{echo} \StringTok{"}\VariableTok{$USER}\StringTok{:}\VariableTok{$PASSWORT}\StringTok{"} \KeywordTok{|} \ExtensionTok{chpasswd}
+\ControlFlowTok{done}
+\end{Highlighting}
+\end{Shaded}
+
+In diesem Fall bietet es sich an, dass jeder Benutzer seinen public-Key
+in seinem eigenen Account auf dem Server hinterlegt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Auf dem Client:}
+\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096}
+
+\ExtensionTok{ssh{-}copy{-}id} \AttributeTok{{-}i}\NormalTok{ .ssh/id\_rsa.pub benutzer@}\OperatorTok{\textless{}}\NormalTok{IP}\OperatorTok{\textgreater{}}
+\end{Highlighting}
+\end{Shaded}
+
 \bookmarksetup{startatroot}
 
 \chapter{Installation}\label{installation-1}
@@ -5080,23 +5072,14 @@ Internet machst, ist etwas \emph{Training} in einer virtuellen Umgebung
 ganz sinnvoll. Nach der Installation und Konfiguration eines
 Übungsservers in VirtualBox sind die Schritte identisch mit der realen
 Situation.\\
-Die Anleitung zur Installation von VirtualBox und dem entsprechenden
-Gastsystems \emph{Ubuntu-24.04} befindet sich am Ende des Handouts.
-Gegebenenfalls also zuerst dort fortfahren und dann erst hierher
-zurückkehren.
+Da wir hier aber einen anderen Focus haben, werde ich auf VirtualBox
+nicht näher eingehen. Im Workshop selbst arbeiten wir auf Ubuntu 24.04
+Instanzen auf einem Proxmox-System.
 
-TODO: VirtualBox Anleitung erstellen
+\subsection{Verbindung zum Server --
+ssh}\label{verbindung-zum-server-ssh}
 
-\subsection{Grundkonfiguration}\label{grundkonfiguration}
-
-Alle erforderlichen Konfigurationsschritte erfolgen über ssh im Terminal
-auf dem Server. In der virtuellen Maschine kann dies zwar auch direkt
-aus VirtualBox heraus erfolgen, zum \emph{üben} ist es aber auch hier
-sinnvoll, sich mit ssh auf die VM zu verbinden.
-
-\subsubsection{SSH-Verbindung}\label{ssh-verbindung}
-
-\paragraph{Windows}\label{windows-1}
+\subsubsection{Windows}\label{windows-1}
 
 Seit einiger Zeit kann auch Windows auch ohne Zusatzsoftware
 SSH-Verbindungen aufbauen. Allerdings unterliegt die \texttt{cmd.exe}
@@ -5148,7 +5131,7 @@ Fingerabdruck nicht und es gibt eine Warnung. \sampleend
 \textbf{Git-Bash} Da das eine abgespeckte Linux-Umgebung ist, kannst du
 im nächsten Abschnitt weiterlesen.
 
-\paragraph{Apple und Linux}\label{apple-und-linux}
+\subsubsection{Apple und Linux}\label{apple-und-linux}
 
 Auch hier erfolgt der Verbindungsaufbau in gleicher Weise direkt aus dem
 Terminal.
@@ -5169,7 +5152,7 @@ Eine ssh-Verbindung kann auf verschieden Weise wieder abgebaut werden:
   \strg{d}
 \end{itemize}
 
-\subsubsection{Software installieren}\label{software-installieren}
+\subsection{Software installieren}\label{software-installieren}
 
 Bei \emph{Ubuntu-24.04} ist in der Standard-Installation die
 Versionsverwaltung \git bereits vorinstalliert und auch der ssh-Server
@@ -5253,7 +5236,7 @@ Falls eine Fehlermeldung erscheint, muss \git noch installiert werden:
 \end{Highlighting}
 \end{Shaded}
 
-\subsubsection{Firewall}\label{firewall-1}
+\subsection{Firewall}\label{firewall-1}
 
 Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
 Den Status erfragt man mit \texttt{ufw\ status}. Hierbei steht
@@ -5279,7 +5262,7 @@ Firewall immer Vorsicht walten lassen! Man kann sich aussperren!
 \end{Highlighting}
 \end{Shaded}
 
-\subsubsection{Ordner für Repository}\label{ordner-fuxfcr-repository}
+\subsection{Ordner für Repository}\label{ordner-fuxfcr-repository}
 
 Wo man diesen im Verzeichnisbaum von Linux anlegt, ist im Prinzip
 unwichtig -- es gibt aber bessere und schlechtere Orte. Der Home-Ordner
@@ -5346,6 +5329,9 @@ Eintrag \texttt{/bin/false} machen. Nun mit der Tastenkombination
 \strg{o} und `\strg{x} die Änderung abspeichern.
 
 \textbf{Erstellen eines Schlüsselpaars}\\
+(Nachfolgender Ablauf ist nur ein Vorschlag! Varianten stehen wieter
+unten.)
+
 Unter Linux / MacOS einfach eingeben:
 
 \begin{Shaded}
@@ -5354,35 +5340,45 @@ Unter Linux / MacOS einfach eingeben:
 \end{Highlighting}
 \end{Shaded}
 
-Als Dateiname \emph{schule} vergeben und die Fragen nach einer
-PassPhrase beide Male mit der Enter-Taste übergehen.
+Bei der Frage nach Speicherort und Dateiname nur \emph{schule} angeben
+und die Fragen nach einer PassPhrase beide Male mit der Enter-Taste
+übergehen.
 
-Unter Windows geht das ab Windows 10 mit dem gleichen Befehl aus der
-\emph{cmd.exe} oder \emph{powershell}. Frühere Versionen müssen PuTTYgen
-verwenden -- Anleitung z.B. über KI. Bei der Vorbereitung des Workshops
-hat sich das Erstellen des Schlüsselpaares hier allerdings als ziemlich
-problematisch erwiesen. Mit Standardnamen im Standardordner ging es
-problemlos, bei Angabe eines anderen Namens wurde es kompliziert.
+Unter Windows geht das ab Windows 10 im Prinzip mit dem gleichen Befehl
+aus der \emph{cmd.exe} oder \emph{powershell} -- allerdings bin ich
+dabei auch schon mit seltsamen Fehlern konfrontiert worden. Aus der
+git-Bash heraus sollte es aber eigentlich funktionieren.
 
-TODO: Überarbeiten Key unter WIndows.
+Diesen Schritt muss jeder Schüler auf seinem Arbeitsrechner durchführen!
 
-\textbf{Zuschicken der Datei \texttt{schule.pub} per Mail}\\
-Sollte klar sein. Durch die Wahl von \emph{schule} wird das
-Schlüsselpaar auch nicht im versteckten Ordner \texttt{.ssh} angelegt,
-sondern sichtbar direkt unter
+Durch die Wahl von \emph{schule} wird das Schlüsselpaar auch nicht im
+versteckten Ordner \texttt{.ssh} angelegt, sondern sichtbar direkt unter
 \texttt{c:\textbackslash{}user\textbackslash{}BENUTZER}.
 
-TODO: Das klappt noch nicht
+\textbf{Zuschicken der Datei \texttt{schule.pub} per Mail}\\
+Die Schüler schicken die Datei \datei{schule.pub} als Anhang an den
+Lehrer, der sie dann auf dem Server hinterlegt (s.u.).
 
 \textbf{Kopieren des Schlüssels}\\
-Der Schlüssel muss aus der eMail in die Datei
-\texttt{/home/git/.ssh/authorized\_keys} eingetragen werden.
+Der Schlüssel muss aus der Datei \datei{schule.pub} in die Datei
+\texttt{/home/git/.ssh/authorized\_keys} eingetragen werden. Die
+Berechtigungen der Datei sollten auf 644 gestellt sein:
 
-TODO: Klappt das über \strg{c}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{chmod}\NormalTok{ 644 /home/git/.ssh/authorized\_keys}
+\end{Highlighting}
+\end{Shaded}
 
-Die Schüler sollten nun kennwortfrei mit \git arbeiten können.\\
-Beim Einsatz einer Weboberfläche (später im Script) müssen die Schüler
-diesen Schlüssel selbst dort im System registrieren.
+Das kopieren geht mit Putty, wenn man auf Windows den Key in die
+Zwischenablage kopiert (\strg{c}) und in putty die Datei mit \emph{nano}
+geöffnet hat. Ein Rechtsklick fügt dann dort den Inhalt der
+Zwischenablage ein. Das hat\\
+zumindest bei meiner Windows-Version funktioniert.
+
+Im Prinzip kann ab jetzt kennwortfrei mit \git gearbeitet werden. Beim
+Einsatz einer Weboberfläche (später im Script) müssen die Schüler diesen
+Schlüssel \emph{selbst} dort im System registrieren.
 
 \samplestart
 
@@ -5391,13 +5387,13 @@ Nach der Anmeldung über ssh wird über die Einstellungen im Benutzerkonto
 entschieden, welche Art von Terminal der Benutzer erhält. Üblich ist die
 \verb+bash, sh, csh, ...+. Wird hier ein \textit{ungültiges} Terminal
 eingetragen, so ist eine Anmeldung auf diese Weise nicht mehr möglich.
-Für \git  spielt diese allerdings keine Rolle, da hierfür das Terminal
-nicht gestartet werden muss. Da trotzdem eine Art von Anmeldung für den
-Zugriff auf \git  erfolgen muss, wird das Public-Key-Verfahren
+Für \git  spielt dies allerdings keine Rolle, da bei \git-Befehlen das
+Terminal nicht gestartet werden muss. Da trotzdem eine Art von Anmeldung
+für den Zugriff auf \git  erfolgen muss, wird das Public-Key-Verfahren
 verwendet.
 
-Hier muss entschieden werden, wer für die Schlüssel zuständig ist.
-\sampleend
+Hier muss entschieden werden, wer für die Schlüssel zuständig ist und
+sie in die Datei \datei{authorized_keys} einfügt. \sampleend
 
 \textbf{Varianten}
 
@@ -5533,12 +5529,10 @@ angelegt und den richtigen Gruppen zugeordnet werden.
 
 Teste die Installation durch folgende Befehle:
 
-TODO: docker compose oder docker-compose?
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{docker} \AttributeTok{{-}{-}version}
-\ExtensionTok{docker{-}compose}\NormalTok{ version}
+\ExtensionTok{docker}\NormalTok{ compose version}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5905,7 +5899,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-206}%
+\phantomsection\label{annotated-cell-205}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -5941,9 +5935,6 @@ diese Weise drei Ordner mit den angegebenen Namen erstellt, die
 außerhalb des Containers liegen und in diesen hinein verlinkt werden.
 \end{description}
 
-ToDo: Was hat es genau mit dem \emph{external:false} auf sich? ToDo:
-Welche andere Driver haben Volumens noch?
-
 \subsection{Services}\label{services}
 
 \begin{Shaded}
@@ -5965,7 +5956,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-208}%
+\phantomsection\label{annotated-cell-207}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -5999,7 +5990,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-209}%
+\phantomsection\label{annotated-cell-208}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -6037,8 +6028,8 @@ auch.
 Der SSH-Server (für pull, push, \ldots) läuft im Container auf Port 22,
 Zugriff von außen über Port 222. Das ist nötig, da der Server (also der
 gemietete Server) seinen ssh-Server bereits auf Port 22 laufen hat. Das
-kann man zwar ändern, muss aber etwas aufpassen, dass man sich nit
-versehentlich aussperrt, weil man die Firewall nicht angepasst hat.
+kann man zwar ändern, muss aber etwas aufpassen. Wenn man die Firewall
+nicht anpasst, kann man sich so aussperren!
 \item[\circled{6}]
 Der Container wird erst gestartet, wenn der Datenbankserver erfolgreich
 hochgefahren ist.
@@ -6071,7 +6062,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-211}%
+\phantomsection\label{annotated-cell-210}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6113,8 +6104,8 @@ Unterschied bei der Schreibung von \datei{./config.yaml} und
 diese Datei im gleichen Ordner liegt wie die
 \datei{docker-compose.yaml}.
 \item[\circled{5}]
-Dieser Container braucht auch selbst Zugriff auf Docker, damit er selbst
-neue Container starten kann.
+Dieser Container braucht auch selbst Zugriff auf Docker, damit er
+eigenständig neue Container starten kann.
 \end{description}
 
 \textbf{Das Config-File}\\
@@ -6148,7 +6139,7 @@ oder direkt als Datei
 \samplestart
 
 \textbf{Hinweis}\\
-Vielleicht ist dir aufgafallen, dass einmal im Environment
+Vielleicht ist dir aufgefallen, dass einmal im Environment
 Spiegelstriche vorkommen und einmal nicht. Das ist Absicht, denn die
 Server wollen das unterschiedlich haben. Intern wird bei der
 Spiegelstrich-Variante eine Liste der Art \emph{{[}``key=value'',
@@ -6161,8 +6152,8 @@ die Spiegelstriche. \sampleend
 Bist du in Gitea eingelogged, so kannst du über das Einstellungsmenü
 (Das geht auf Instanz-, Repository- oder Userebene) nach \emph{actions}
 suchen, dort auf \emph{runner} und dann oben rechts auf \emph{neuen
-runner anlegen} (o.ä.). Dort erscheint dann das Token, das in die
-\datei{docker-compose.yaml} eingetragen werden muss. Beim Neustart
+runner anlegen} (o.ä.) klicken. Dort erscheint dann das Token, das in
+die \datei{docker-compose.yaml} eingetragen werden muss. Beim Neustart
 registriert sich der Runner dann damit bei Gitea.
 
 \subsection{Starten}\label{starten}
@@ -6183,13 +6174,11 @@ Fehlermeldungen.
 Nun kannst du dich bei Gitea im Browser anmelden und den ersten Benutzer
 einrichten, den du dann auch als Administrator verwenden kannst.
 
-TODO: Anmeldescreen
-
 Im Prinzip kann man auch Mailregistrierung und andere Dinge
 konfigurieren -- für einen einfachen Betrieb genügt aber das Einrichten
 des Benutzers.
 
-Nach dem oben beschriebenen Erstellen eines Tokens kannst du den Gitea
+Nach dem oben beschriebenen Erstellen eines Tokens kannst du den Gitea-
 und den DB-Server mit \cmd{ctrl-c} zunächst wieder beenden. Das Token
 wird nun in die \datei{docker-compose.yaml} kopiert.
 
@@ -6245,10 +6234,8 @@ Diesen Schlüssel lässt man sich ausgeben:
 In den Benutzereinstellungen auf Gitea kann nun ein neuer Schlüssel
 hinzugefügt werden.
 
-TODO: Eventuell Screenshot
-
 \textbf{Auf Windows}\\
-\ldots{} ach ja \ldots{} Windows \ldots{}
+Hier verwendest du den gleichen Befehl innerhalb der git-Bash.
 
 \subsection{Clonen}\label{clonen}
 
@@ -6265,8 +6252,6 @@ aber lieber \emph{ssh} und zwar mit folgendem Befehl:
 Die Angabe von 222 ist nötig, da wir nicht Port 22 verwenden -- man muss
 also die Adresse, die man in Gitea über dem Repository sieht, noch
 entsprechend anpassen.
-
-TODO: Screenshot
 
 \section{Actions}\label{actions}
 
@@ -6800,6 +6785,9 @@ Nun muss der Dienst neu gestartet werden. Bei den letzten Tests hat der
 Befehl \texttt{systemctl\ restart\ ssh} den Dienst aber nicht auf den
 anderen Port umgestellt (wegen laufender Verbindung?). Linux-untypisch
 war ein Reboot die Lösung (im Terminal \texttt{reboot} eingeben).
+Mittlerweile habe ich herausgefunden, dass ein vorher ausgeführtes
+\texttt{systemctl\ daemon-reload} das Problem löst! Damit kein Reboot
+mehr nötig.
 
 \section{Docker}\label{docker-1}
 
@@ -7124,7 +7112,7 @@ von leeren Repositories Folgeprobleme entstehen können.
 Erstelle eine neue Datei mit dem Namen \texttt{.gitlab-ci.yml} und trage
 ein:
 
-\phantomsection\label{annotated-cell-246}%
+\phantomsection\label{annotated-cell-245}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7251,7 +7239,7 @@ und entpackst die Dateien aus dem Kursmaterial, die im Paket
 
 Im Paket befindet sich auch bereits diese \emph{.gitlab-ci.yml}:
 
-\phantomsection\label{annotated-cell-251}%
+\phantomsection\label{annotated-cell-250}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}

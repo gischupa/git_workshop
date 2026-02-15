@@ -5,20 +5,13 @@ beschrieben. Bevor Du dich an die Installation auf einem Server
 im Internet machst, ist etwas *Training* in einer virtuellen Umgebung
 ganz sinnvoll. Nach der Installation und Konfiguration eines Übungsservers 
 in VirtualBox sind die Schritte identisch mit der realen Situation.  
-Die Anleitung zur Installation von VirtualBox 
-und dem entsprechenden Gastsystems *Ubuntu-24.04* befindet sich am Ende 
-des Handouts. Gegebenenfalls also zuerst dort fortfahren und dann erst 
-hierher zurückkehren.
+Da wir hier aber einen anderen Focus haben, werde ich auf VirtualBox 
+nicht näher eingehen. Im Workshop selbst arbeiten wir auf Ubuntu 24.04 
+Instanzen auf einem Proxmox-System.
 
-TODO: VirtualBox Anleitung erstellen
+### Verbindung zum Server -- ssh
 
-### Grundkonfiguration
-Alle erforderlichen Konfigurationsschritte erfolgen über ssh im Terminal auf dem Server.
-In der virtuellen Maschine kann dies zwar auch direkt aus VirtualBox heraus erfolgen, 
-zum *üben* ist es aber auch hier sinnvoll, sich mit ssh auf die VM zu verbinden.
-
-#### SSH-Verbindung
-##### Windows
+#### Windows
 Seit einiger Zeit kann auch Windows auch ohne Zusatzsoftware SSH-Verbindungen 
 aufbauen. Allerdings unterliegt die `cmd.exe` einigen Einschränkungen
 (z.B. kopieren von Textinhalten), die bei der Verbindung mit Putty 
@@ -66,7 +59,7 @@ weiterlesen.
 
 
 
-##### Apple und Linux
+#### Apple und Linux
 Auch hier erfolgt der Verbindungsaufbau in gleicher Weise direkt aus dem Terminal.
 
 Die Eingabe des Kennworts kann je nach Installationsvariante auch ohne 
@@ -80,7 +73,7 @@ Eine ssh-Verbindung kann auf verschieden Weise wieder abgebaut werden:
 * \strg{d}
 
 
-#### Software installieren
+### Software installieren
 Bei *Ubuntu-24.04* ist in der Standard-Installation die Versionsverwaltung \git
 bereits vorinstalliert und auch der ssh-Server sollte bereits funktionieren.
 Bei gemieteten Installationen muss das nicht so sein, ssh sollte aber funktionieren.
@@ -143,7 +136,7 @@ apt get install git -y
 
 
 
-#### Firewall
+### Firewall
 Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
 Den Status erfragt man mit `ufw status`. Hierbei steht `ufw` für *uncomplicated firewall*.
 Bei Änderungen an der Firewall immer Vorsicht walten lassen! 
@@ -166,7 +159,7 @@ IN:   y
 OUT:  Firewall is active and enabled on system startup
 ```
 
-#### Ordner für Repository
+### Ordner für Repository
 Wo man diesen im Verzeichnisbaum von Linux anlegt, ist im Prinzip
 unwichtig -- es gibt aber bessere und schlechtere Orte. Der Home-Ordner
 ist keine gute Idee -- besser ist z.B. der Ordner `/srv`. Dort erstellen
@@ -217,39 +210,48 @@ den Eintrag `/bin/false` machen. Nun mit der Tastenkombination
 \strg{o} und `\strg{x} die Änderung abspeichern.
 
 **Erstellen eines Schlüsselpaars**  
+(Nachfolgender Ablauf ist nur ein Vorschlag! Varianten stehen wieter unten.)  
+
 Unter Linux / MacOS einfach eingeben:
 ```bash
 ssh-keygen -t rsa -b 4096 -C "schueler@example.com"
 ```
-Als Dateiname *schule* vergeben und die Fragen nach einer PassPhrase
+Bei der Frage nach Speicherort und Dateiname nur *schule* angeben 
+und die Fragen nach einer PassPhrase
 beide Male mit der Enter-Taste übergehen.
 
-Unter Windows geht das ab Windows 10 mit dem gleichen Befehl 
-aus der *cmd.exe* oder *powershell*. 
-Frühere Versionen müssen PuTTYgen verwenden -- Anleitung z.B.
-über KI. Bei der Vorbereitung des Workshops hat sich 
-das Erstellen des Schlüsselpaares hier allerdings als ziemlich 
-problematisch erwiesen. Mit Standardnamen im Standardordner ging
-es problemlos, bei Angabe eines anderen Namens wurde es kompliziert.
+Unter Windows geht das ab Windows 10 im Prinzip mit dem gleichen Befehl 
+aus der *cmd.exe* oder *powershell* -- allerdings bin ich dabei auch
+schon mit seltsamen Fehlern konfrontiert worden. Aus der git-Bash 
+heraus sollte es aber eigentlich funktionieren.
 
-TODO: Überarbeiten Key unter WIndows.
+Diesen Schritt muss jeder Schüler auf seinem Arbeitsrechner durchführen!
+
+Durch die Wahl von *schule* wird das Schlüsselpaar 
+auch nicht im versteckten Ordner `.ssh` angelegt, sondern sichtbar 
+direkt unter `c:\user\BENUTZER`.  
 
 **Zuschicken der Datei `schule.pub` per Mail**  
-Sollte klar sein. Durch die Wahl von *schule* wird das Schlüsselpaar 
-auch nicht im versteckten Ordner `.ssh` angelegt, sondern sichtbar 
-direkt unter `c:\user\BENUTZER`.
-
-TODO: Das klappt noch nicht
+Die Schüler schicken die Datei \datei{schule.pub} als Anhang an den 
+Lehrer, der sie dann auf dem Server hinterlegt (s.u.).
 
 **Kopieren des Schlüssels**  
-Der Schlüssel muss aus der eMail in die Datei 
-`/home/git/.ssh/authorized_keys` eingetragen werden.
+Der Schlüssel muss aus der Datei \datei{schule.pub} in die Datei 
+`/home/git/.ssh/authorized_keys` eingetragen werden. 
+Die Berechtigungen der Datei sollten auf 644 gestellt sein:
 
-TODO: Klappt das über \strg{c}
+```bash
+chmod 644 /home/git/.ssh/authorized_keys
+```
 
-Die Schüler sollten nun kennwortfrei mit \git arbeiten können.  
+Das kopieren geht mit Putty, wenn man auf Windows den Key in die Zwischenablage
+kopiert (\strg{c}) und in putty die Datei mit *nano* geöffnet hat. 
+Ein Rechtsklick fügt dann dort den Inhalt der Zwischenablage ein. Das hat  
+zumindest bei meiner Windows-Version funktioniert.
+
+Im Prinzip kann ab jetzt kennwortfrei mit \git gearbeitet werden.
 Beim Einsatz einer Weboberfläche (später im Script) müssen die
-Schüler diesen Schlüssel selbst dort im System registrieren. 
+Schüler diesen Schlüssel *selbst* dort im System registrieren. 
 
 \samplestart
 **Hintergrund**  
@@ -257,13 +259,13 @@ Nach der Anmeldung über ssh wird über die Einstellungen im
 Benutzerkonto entschieden, welche Art von Terminal der Benutzer
 erhält. Üblich ist die \verb+bash, sh, csh, ...+. Wird hier 
 ein \textit{ungültiges} Terminal eingetragen, so ist eine Anmeldung
-auf diese Weise nicht mehr möglich. Für \git  spielt diese
-allerdings keine Rolle, da hierfür das Terminal nicht gestartet 
+auf diese Weise nicht mehr möglich. Für \git  spielt dies
+allerdings keine Rolle, da bei \git-Befehlen das Terminal nicht gestartet 
 werden muss. Da trotzdem eine Art von Anmeldung für den Zugriff auf
 \git  erfolgen muss, wird das Public-Key-Verfahren verwendet.
 
 Hier muss entschieden werden, wer für die Schlüssel zuständig
-ist. 
+ist und sie in die Datei \datei{authorized_keys} einfügt.
 \sampleend
 
 **Varianten**  

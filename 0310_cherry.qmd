@@ -107,12 +107,12 @@ Inhalt von Script \script{cherry\_pick\_2.sh}:
 
 ```bash
 # Ausgabe 
-* 3aef088 (development) z4
-* b287548 z3             <<<<<<<<<< der hier soll
-| * 69336b4 (HEAD -> main) z5   <<< da her
+* 3aef088 (development) zeile 4
+* b287548 zeile 3      <<<<<<<<<< der hier soll
+| * 69336b4 (HEAD -> main) zeile 5   <<< da her
 |/  
-* 896aefc z2
-* 1fb21e9 z1
+* 896aefc zeile 2
+* 1fb21e9 zeile 1
 ```
 
 Mit Hilfe von 
@@ -126,7 +126,7 @@ Bekommen wir folgenden Konflikt:
 ```bash
 automatischer Merge von index.html
 KONFLIKT (Inhalt): Merge-Konflikt in index.html
-error: Konnte b287548... (z3) nicht anwenden
+error: Konnte b287548... (zeile 3) nicht anwenden
 Hinweis: Lösen Sie alle Konflikte manuell auf, markieren Sie diese 
 Hinweis: mit "git add/rm <Pfadspezifikation>" und führen Sie dann
 Hinweis: "git cherry-pick --continue" aus.
@@ -208,64 +208,21 @@ nur \datei{datei\_1.html} im \branch{main}-Branch liegen. Die anderen beiden Dat
 cherry-picken. Im Tree sieht das so aus:
 
 ```bash
-* 177a8a6 (development) z3d2
-* d46d7bb z2d2     <<<<<<< wollen wir von hier ...
-* 1b07ddb z1d3
-* 8fa5974 z1d2
-| * a4cc92c (HEAD -> main) d1z3 <<<< ... nach da picken
+* 177a8a6 (development) z3 d1
+* d46d7bb z2 d2     <<<<<<< wollen wir von hier ...
+* 1b07ddb z1 d3
+* 8fa5974 z1 d2
+| * a4cc92c (HEAD -> main) d1 z3 <<< ... nach da picken
 |/  
-* cc253e1 z2d1
-* 09a1330 z1d1
+* cc253e1 z2 d1
+* 09a1330 z1 d1
 ```
 
 Erzeugen können wir die Situation mit dem Script \script{cherry\_pick\_3.sh}:
 
-```bash
-#!/bin/bash
-
-# Demo for Cherry without error
-
-rm -rf cherry_labor
-
-mkdir cherry_labor
-cd cherry_labor
-git init
-git branch -m main
-
-echo "Zeile 1" > datei_1.html
-git add datei_1.html
-git commit -m "z1d1"
-
-echo "Zeile 2" >> datei_1.html
-git add datei_1.html
-git commit -m "z2d1"
-
-git switch -c development  # branch wechsel
-
-echo "Zeile 1" >> datei_2.html
-git add datei_2.html
-git commit -m "z1d2"
-
-echo "Zeile 1" >> datei_3.html
-git add datei_3.html
-git commit -m "z1d3"
-
-echo "Zeile 2" >> datei_2.html
-git add datei_2.html
-git commit -m "z2d2"
-
-echo "Zeile 3" >> datei_2.html
-git add datei_2.html
-git commit -m "z3d2"
-
-git switch main  # wieder auf main
-
-echo "Zeile 3" >> datei_1.html
-git add datei_1.html
-git commit -m "d1z3"
-
-git log --oneline --decorate --graph --all
+```{.bash include="src/cherry/cherry_pick_3.sh"}
 ```
+
 
 Der Befehl \cmd{git cherry-pick d46d7bb} liefert diese,
 etwas seltsame Meldung:

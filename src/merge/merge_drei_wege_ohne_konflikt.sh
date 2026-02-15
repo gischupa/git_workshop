@@ -1,17 +1,19 @@
 #!/bin/bash
 # Basteln eines 3-Wege-Merge
 
+
+set -e
+set -x
+
 cd /tmp
 
-if [ -d projekt ]; then
-  rm -rf projekt
-fi
+rm -rf projekt
 
 git init projekt
 cd projekt
 git branch -m main
 
-# Auf dm Main Branch
+# Auf dem Main Branch
 for i in {1..3}
 do
   echo "Schritt $i" >> datei.txt
@@ -43,3 +45,5 @@ git commit -m "Schritt 7"
 # Merge
 
 git merge entwicklung
+
+exit 0

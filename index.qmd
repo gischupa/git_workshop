@@ -20,7 +20,7 @@ Wir werden uns also mit beiden Welten (Windows und Linux) beschäftigen müssen.
 Wer hier noch keine Erfahrung hat, wird viel profitieren!
 
  {{< include 0050_installation_1.qmd >}}
- {{< include 0070_installation_2.qmd >}}
+ 
  {{< include 0170_ersteSchritte.qmd >}}
  {{< include 0210_bash1.qmd >}}
  {{< include 0212_branch.qmd >}}
@@ -29,6 +29,7 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
  {{< include 0300_rebase.qmd >}}
    {{< include 0310_cherry.qmd >}}
  {{< include 0350_team.qmd >}}
+ {{< include 0370_installation_2.qmd >}}
   {{< include 0400_installation_allgemein.qmd >}}
  {{< include 0410_benutzer.qmd >}}
  {{< include 0450_basis.qmd >}}

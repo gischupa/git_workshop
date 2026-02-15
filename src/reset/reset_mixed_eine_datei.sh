@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# bei einem --soft reset werden die Commits entfernt, 
-# stage und workdir behalten aber den aktuellen Stand
+# bei einem --mixed reset wird auf den Commit zurückgesetzt, 
+# inklusive Stage! 
+# Das workdir behält aber den aktuellen Stand
 
 
 set -e
@@ -29,7 +30,7 @@ done
 ####################
 # Alles nach Schritt 3 löschen
 
-git reset --soft step_3
+git reset --mixed step_3
 
 
 ####################
