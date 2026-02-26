@@ -7,10 +7,11 @@
 * Lege im Home deines Benutzers einen Ordner *bin* an und kopiere die Datei *tree* hinein.
 
 \samplestart
+**Hinweis**
 Der bin-Ordner muss an folgender Stelle erzeugt werden:
 
 ```bash
-c:\benutzer\name\bin 
+c:\users\benutzername\bin 
 ```
 
 \sampleend

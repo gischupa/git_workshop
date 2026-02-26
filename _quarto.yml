@@ -7,9 +7,7 @@ book:
   date: "10.4.2025"
   chapters:
     - index.qmd
-    - intro.qmd
-    - summary.qmd
-    - references.qmd
+    
   
 
 bibliography: references.bib

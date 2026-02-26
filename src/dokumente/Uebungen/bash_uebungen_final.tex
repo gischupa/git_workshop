@@ -1,0 +1,126 @@
+
+\documentclass[]{scrreprt}
+\usepackage{arbeitsblatt}
+
+\usepackage[bottom=2cm, top=1.5cm]{geometry}
+ 
+\title{Übungsblatt \LaTeX}
+\ohead{}
+\ihead{Gitkurs}
+
+
+\author{}
+\date{}
+
+\begin{document}
+
+
+\section*{Erste Schritte im Terminal}
+Sicheres Navigieren im Dateisystem sowie Erstellen, Anzeigen und Löschen von
+Dateien und Ordnern im Terminal.
+
+\section*{Hinweise}
+\begin{itemize}
+  \item Erstelle im Explorer ein Ordner mit Namen \texttt{gitkurs}.
+  \item Öffne die git-Bash in diesem Ordner (rechte Maus Taste.
+  \item Arbeite ausschließlich in \textbf{diesem} Ordner oder tiefer.
+  \item Nutze die \texttt{Tab}-Taste zur automatischen Vervollständigung von Befehlen.
+  \item Starte die Befehlsausführung immer mit der \texttt{enter}-Taste.
+  \item Lies auftretende Fehlermeldungen aufmerksam.
+\end{itemize}
+
+\section*{1. Wo bin ich?}
+
+\textbf{Neuer Befehl:}
+\begin{lstlisting}
+pwd   # kurz für "print working directory"
+\end{lstlisting}
+
+\begin{enumerate}
+  \item Geben Sie den Befehl ein.
+  \item Notiere, welches Verzeichnis angezeigt wird.
+\end{enumerate}
+
+\section*{2. Inhalte anzeigen}
+
+\textbf{Neuer Befehl:}
+\begin{lstlisting}
+ls   # kurz für "list"
+\end{lstlisting}
+
+\begin{enumerate}
+  \item Lass dir den Inhalt des aktuellen Ordners anzeigen.
+  \item Wiederhole den Befehl mit der Option:
+\begin{lstlisting}
+ls -l    # kurz für "list long"
+\end{lstlisting}
+  \item Beschreibe den Unterschied.
+\end{enumerate}
+
+\section*{3. Verzeichnisse erstellen}
+
+\textbf{Neuer Befehl:}
+\begin{lstlisting}
+mkdir    # Kurz für "make directory"
+\end{lstlisting}
+
+\begin{enumerate}
+  \item Erstelle ein Verzeichnis \texttt{shell\_training}.
+  \item Wechsle in dieses Verzeichnis.\\ Der Befehl besteht aus den 
+  Anfangsbuchstaben von „change directory“.
+\end{enumerate}
+
+\section*{4. Dateien erstellen}
+
+\textbf{Neuer Befehl:}
+\begin{lstlisting}
+touch   # Erstellt leere Datei
+\end{lstlisting}
+
+\begin{enumerate}
+  \item Erstelle drei leere Dateien:
+  \texttt{datei1.txt}, \texttt{datei2.txt}, \texttt{notizen.md}
+  \item Kontrolliere das Ergebnis mit einem geeigneten Befehl.
+\end{enumerate}
+
+\section*{5. Kopieren und Verschieben}
+
+\textbf{Neue Befehle:}
+\begin{lstlisting}
+cp  # kurz für "copy"
+mv  # kurz für "move". Im gleichen Ordner = umbenennen 
+\end{lstlisting}
+
+\begin{enumerate}
+  \item Erstelle ein Unterverzeichnis \texttt{backup}.
+  \item Kopiere \texttt{datei1.txt} in dieses Verzeichnis.
+  \item Verschiebe \texttt{datei2.txt} ebenfalls nach \texttt{backup}.
+  \item Prüfe jeweils das Ergebnis.
+\end{enumerate}
+
+\section*{6. Löschen}
+
+\textbf{Neue Befehle:}
+\begin{lstlisting}
+rm     # kurz für "remove"  (Datei)
+rmdir  # kurz für "remove directory"
+\end{lstlisting}
+
+\begin{enumerate}
+  \item Lösche die Datei \texttt{notizen.md}.
+  \item Wechsle in das Verzeichnis \texttt{backup}.
+  \item Lösche dort eine Datei.
+\end{enumerate}
+
+\begin{tcolorbox}[title=Hinweis]
+Oben hast du den Befehl \texttt{cd <ordnername>} kennengelernt. Damit kommst du in der Hierarchie aber nur abwärts. Um wieder hinauf zu klettern, kannst du entweder den kompletten Zielpfad angeben oder \texttt{cd ..} verwenden
+\end{tcolorbox}
+
+
+
+\section*{Abschluss}
+
+Lösche das gesamte Verzeichnis \texttt{shell\_training} inklusive Inhalt.\\
+\textbf{Achtung:} Informiere dich vorher über die passende Option von \texttt{rm}.
+
+\end{document}

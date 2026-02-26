@@ -33,7 +33,9 @@ Bestätigen: Y
 
 Das liefert folgende Struktur:
 
-![](bilder/tdd/tree_init.png)
+\bcenter
+![](bilder/tdd/tree_init.png){width=10cm}
+\ecenter
 
 Dieses Projekt kann bereits (fast) compiliert werden. 
 Zuerst müssen wir allerdings noch einige Einträge in der 

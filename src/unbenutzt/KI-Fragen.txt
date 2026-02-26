@@ -1,0 +1,71 @@
+Ich versuche in git eine Situation zu verstehen. Dafür habe ich das gleich
+Szenario in 2 Versionen erstellt.
+
+Szenario 1:
+In zwei Branches mit den Namen *entwicklung_story_2* und *story2_idee_1* liegt 
+ein Dokument *story2.md" in verschiedenen Versionen vor.
+Dabei ist in *entwicklung_story_2* weniger Text, dafür aber ein ausgebesserter 
+Tippfehler. "Weiße Schildkröte" wurde durch "weise Schildkröte"
+ersetzt und ein Commit erstellt. Ein Diff (gekürzt) der Commits sieht so aus:
+
+diff --git a/story2.md b/story2.md
+index bb2c446..dc1ed47 100644
+--- a/story2.md
++++ b/story2.md
+@@ -9,7 +9,7 @@ bereits am Horizont. Freddy liebte solche Abende,
+ denn sie versprachen Abenteuer und Entdeckungen.
+ 
+ Freddy war nicht allein. Seine beste Freundin,
+-Shelly, die weise Schildkröte, lebte ebenfalls am
++Shelly, die weiße Schildkröte, lebte ebenfalls am
+ Teich. Shelly war für ihre ruhige und besonnene
+ Art bekannt, aber sie konnte auch sehr mutig sein,
+ wenn es darauf ankam.
+@@ -31,3 +31,59 @@ Asphalt war mit Moos und Gras überwuchert. Freddy
+ und Shelly schlängelten sich durch das dichte Grün
+ und genossen die friedliche Stille der Nacht.
+ 
++Doch als sie die Mitte der Straße erreichten, stießen
++sie auf ein unerwartetes Hindernis. Ein breiter
++Riss zog sich quer über den Asphalt und bildete
++eine tiefe Schlucht, die den Weg versperrte. Freddy
++sprang neugierig an den Rand und schaute hinunter.
+
+Die Zeile mit "-" am Anfang enthält die korrekte Schreibweise.
+Die Zeilen mit "+" am Anfang müssen beim Merge in den *entwicklung_story_2*
+Branch übernommen werden. Warum bleibt die Zeile im Text erhalten:
+
+
+Shelly, die weise Schildkröte, lebte ebenfalls am
+
+Ich hätte erwartet, dass sie ersetzt würde.
+
+
+------------------
+
+Das ist der Graph:
+
+* 13d93c0 (HEAD -> entwicklung_story_2) ß s
+| * d1933ab (story2_idee_2) Inhalt nach Idee 2 fortgeführt
+|/  
+| * 6970bcc (story2_idee_1) Inhalt nach Idee1 fortgeführt
+|/  
+* 960422f (main) Story 2 begonnen
+* dd8470f Guter Ansatz
+
+
+Die Änderung erfolgte in 13d93c0.
+Damit steht in 
+
+960422f noch weiße
+6970bcc noch weiße
+13d93c0 dann weise
+
+-------------------------------------
+
+
+Ich habe hier ein Script, das eine ähnlich Situation erzeugt:
+
+Die Merge-Base enthält dei Zeilen "start" und "blau".
+In beiden Branches "branch_1" und "main" kommt die Zeile "Version 1" 
+dazu, nur in "main" wird die Farbe ersetzt.

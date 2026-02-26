@@ -189,14 +189,12 @@ Maven erwartet eine bestimmte Verzeichnisstruktur und
 auch entsprechende Namenskonventionen (Du musst das nicht
 per Hand anlegen, da gibt es Hilfs-Scripts!)
 
-```bash
-
-TODO: Bild vom TREE
-
-```
+\bcenter
+![](bilder/tdd/full_tree.png)
+\ecenter
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht
-alle Ordner. Sie werden bei Bedarf dynmaisch von \maven angelegt.
+alle Ordner. Sie werden bei Bedarf dynamisch von \maven angelegt.
 
 
 ### Idee

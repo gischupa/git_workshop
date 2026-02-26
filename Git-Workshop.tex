@@ -132,39 +132,6 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
-% definitions for citeproc citations
-\NewDocumentCommand\citeproctext{}{}
-\NewDocumentCommand\citeproc{mm}{%
-  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
-\makeatletter
- % allow citations to break across lines
- \let\@cite@ofmt\@firstofone
- % avoid brackets around text for \cite:
- \def\@biblabel#1{}
- \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
-\makeatother
-\newlength{\cslhangindent}
-\setlength{\cslhangindent}{1.5em}
-\newlength{\csllabelwidth}
-\setlength{\csllabelwidth}{3em}
-\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
- {\begin{list}{}{%
-  \setlength{\itemindent}{0pt}
-  \setlength{\leftmargin}{0pt}
-  \setlength{\parsep}{0pt}
-  % turn on hanging indent if param 1 is 1
-  \ifodd #1
-   \setlength{\leftmargin}{\cslhangindent}
-   \setlength{\itemindent}{-1\cslhangindent}
-  \fi
-  % set entry spacing
-  \setlength{\itemsep}{#2\baselineskip}}}
- {\end{list}}
-\usepackage{calc}
-\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
-\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 % load packages
 \usepackage{geometry}
@@ -352,7 +319,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, frame hidden, breakable, enhanced, colback={codebgcolor}, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, boxrule=0pt, colback={codebgcolor}, sharp corners, enhanced, breakable]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -4565,32 +4532,9 @@ Branch als Upstream konfiguriert, holt sich ein kurzes \cmd{git pull}
 die richtigen Daten. Ein \cmd{git pull <branch>} holt aber genau das,
 was du angegeben hast! Das ist eine Fehlerquelle!
 
-\section{Serverinstallation}\label{serverinstallation}
+\bookmarksetup{startatroot}
 
-Dieser Abschnitt ist nun deutlich umfangreicher und kann bei einer
-ersten Lektüre auch problemlos übersprungen werden, wenn du dich nur für
-die Verwendung von \git  auf deinem eigenen, isolierten Rechner
-interessierst.
-
-Ansonsten wirst du nachfolgende Schritte durchlaufen:
-
-\begin{itemize}
-\tightlist
-\item
-  Allgemeine Gedanken zum Serverbetrieb
-\item
-  Anmelden auf dem späteren \git-Server
-\item
-  Installation eines \emph{normalen} \git 
-\item
-  Docker kennenlernen
-\item
-  GitLab mit Docker installieren
-\end{itemize}
-
-Die Bedienung von GitLab lernst du später im Workshop noch genauer.
-
-\subsection{Allgemeine Gedanken}\label{allgemeine-gedanken}
+\chapter{Serverinstallation}\label{serverinstallation}
 
 Der Betrieb eines Servers ist auch immer mit Verantwortung und Aufwand
 verbunden. Wer hier keine Kenntnisse besitzt, schreckt schnell davor
@@ -4610,7 +4554,7 @@ sollen (homepage.schule.de, gitlab.schule.de, versuche.schule.de,
 \ldots). Die Lösung hierfür ist ein \emph{reverse Proxy}, allerdings
 sprengt das den Rahmen dieses Workshops.
 
-\subsection{Anmelden auf dem Server}\label{anmelden-auf-dem-server}
+\section{Anmelden auf dem Server}\label{anmelden-auf-dem-server}
 
 Damit du dich auf deinem Server anmelden kannst, benötigst du folgende
 Informationen:
@@ -4625,10 +4569,16 @@ bereits vorliegen.
 
 Die Anmeldung auf dem Server erfolgt über das Protokoll \emph{ssh}.\\
 Seit einer der letzten Versionen von Windows ist auch hier bereits ein
-ssh-Client eingebaut. Bei Lunx und MacOS gehört er seit Jahrzehnten zum
+ssh-Client eingebaut. Bei Linux und MacOS gehört er seit Jahrzehnten zum
 Standard. Ich selbst bevorzuge auf Windows allerdings eher das
 (kostenlose) Programm \emph{Putty} und die gerade vorher installierte
 \git-bash.
+
+Putty kann unter
+\url{https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html} als
+einzelne Datei heruntergeladen werden und erlaubt die Erstellung von
+Verbindungsprofilen. Ich gehe davon aus, dass du mit diesem Tool selbst
+klar kommst.
 
 In jedem Fall musst du zunächst ein Terminal (Kommandofenster) öffnen um
 den nachfolgenden Befehl eingeben zu können:
@@ -4644,6 +4594,15 @@ Angriffe erkennen zu können, die du mit \emph{yes} beantwortest. Bei der
 nachfolgenden Kennworteingabe kann es (je nach System) sein, dass die
 Tastendrücke nicht angezeigt werden!
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{The}\NormalTok{ authenticity of host }\StringTok{\textquotesingle{}try.example.com (38.243.220.195)\textquotesingle{}}\NormalTok{ can}\StringTok{\textquotesingle{}t be established.}
+\StringTok{ED25519 key fingerprint is SHA256:DSeSsfXDL2PkSlLYCt64krg9xa2vNr3og5SBJzZ/WNk.}
+\StringTok{This key is not known by any other names.}
+\StringTok{Are you sure you want to continue connecting (yes/no/[fingerprint])?}
+\end{Highlighting}
+\end{Shaded}
+
 Wenn alles geklappt hat, so wirst du vom Eingabepromt des Terminals auf
 dem Server begrüßt:
 
@@ -4653,7 +4612,22 @@ dem Server begrüßt:
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Installieren von Git}\label{installieren-von-git}
+\samplestart
+
+\textbf{Hintergrund}\\
+Der Rechner merkt sich den Fingerabruck des Servers, zu dem die
+Verbindung aufgebaut wurde. Sollte später ein anderer Server diese
+IP-Adresse übernehmen (z.B. Man in the middle), so stimmt der
+Fingerabdruck nicht und es gibt eine Warnung. \sampleend
+
+Wenn wir mit unseren Arbeiten fertig sind müssen wir uns wieder
+abmelden. Der brutale Weg ist das Schließen des Fensters, besser ist
+aber \cmd{exit}, \cmd{logout} oder \strg{d}.
+
+\section{Installieren von Git}\label{installieren-von-git}
+
+\git ist in vielen Fällen bereits vorinstalliert. Ich beschreibe den
+Ablauf dennoch, weil allgemeine Prinzipien vorkommen.
 
 Vor jeder Installation muss die Softwaredatenbank aktualisiert werden,
 damit keine veralteten Dateien installiert werden. Als normaler Benutzer
@@ -4704,7 +4678,7 @@ Damit ist die Installation von \git bereits beendet, solange keine
 besondere Zusatzsoftware benötigt wird, die auf dem Server ohnehin
 unüblich ist.
 
-\subsection{Absicherung}\label{absicherung}
+\subsection{Absicherung des Servers}\label{absicherung-des-servers}
 
 Gleich an dieser Stelle ein Wort zur Sicherheit. Wenn dein Server im
 Internet steht, dann bietet er natürlich eine große Angriffsfläche. Es
@@ -4712,13 +4686,15 @@ ist deshalb sinnvoll, wenn du zumindest die Firewall aktivierst und ein
 sicheres Kennwort einstellst. Das hat im Prinzip nichts mit \git zu tun,
 ist aber dennoch wichtig.
 
-\subsubsection{Kennwort}\label{kennwort}
+\subsubsection*{Kennwort}\label{kennwort}
+\addcontentsline{toc}{subsubsection}{Kennwort}
 
 Das geht relativ schnell. Gib einfach im Terminal den Befehl
 \cmd{passwd} ein und drücke \key{Enter}. Du wirst zweimal nach einem
 neuen Kennwort gefragt und damit ist bereits alles erledigt.
 
-\subsubsection{Firewall}\label{firewall}
+\subsubsection*{Firewall}\label{firewall}
+\addcontentsline{toc}{subsubsection}{Firewall}
 
 In Ubuntu ist eine sehr pflegeleichte Firewall integriert (UFW). Du
 gehst nun in 2 Schritten vor:
@@ -4757,10 +4733,11 @@ blockert \emph{limit} den Zugang für eine bestimmte Zeit, wenn zu viele
 (gescheiterte) Anmeldeversuche in kurzer Zeit vorliegen. Das kann bei
 uns schon mal passieren! \sampleend
 
-\subsubsection{Probleme mit Ports}\label{probleme-mit-ports}
+\subsubsection*{Probleme mit Ports}\label{probleme-mit-ports}
+\addcontentsline{toc}{subsubsection}{Probleme mit Ports}
 
 Wir werden im weiteren Verlauf ein Problem mit Port 22 bekommen. Die
-Software GitLab, die wir später installieren werden, beansprucht den
+Software \gitlab, die wir später installieren werden, beansprucht den
 Port 22 (sinnvoller Weise) für sich und das führt zu einer Kollision mit
 dem SSH-Dienst des Servers. Wir werden ihn zu gegebener Zeit auf Port 23
 umlegen.
@@ -4794,7 +4771,8 @@ kennen zu müssen, verwenden wir RSA, d.h. jeder Schlüssel braucht einen
 privaten und einen öffentlichen Schlüssel. Die öffentlichen Schlüssel
 der Schüler werden vom Lehrer als berechtigt eingetragen.
 
-\paragraph{Schlüssel erzeugen}\label{schluxfcssel-erzeugen}
+\paragraph*{Schlüssel erzeugen}\label{schluxfcssel-erzeugen}
+\addcontentsline{toc}{paragraph}{Schlüssel erzeugen}
 
 Das dürfte in dem gesamten Prozess die Schlüsselstelle sein, da hier die
 Schüler eigenständig tätig werden müssen. Ein zusätzliches Problem ist,
@@ -4804,17 +4782,16 @@ vielleicht je nach Stundenplan in unterschiedlichen Computerräumen,
 eingerichtet sein.
 
 Ich würde hier gerne auf GitLab vertrösten, aber um dieses Problem
-kommen wir nicht herum, da auch in GitLab der Public-Key hinterlegt
-werden muss und der private Schlüssel auf dem Client vorhanden sein
-muss. Die einzige Abhilfe ist eine konsequente Verwendung der
-Weboberfläche als Editor, aber das ist eben keine Java-IDE. Ein Weg --
-wenn auch unsicher -- ist das Mitführen des Schlüsselpaares auf einem
-USB-Stick (oder Cloud-Storage). Der private Schlüssel muss dann eben am
-Anfang der Stunde an die richtige Stelle kopiert werden. Noch unsicherer
-aber einfacher wäre es, wenn alle Schüler einfach das gleiche
-Schlüsselpaar für den Unterricht verwenden. Dass die Idee hinter der
-asymmetrischen Verschlüsselung damit ad absurdum geführt ist, versteht
-sich von selbst!
+kommen wir nicht herum. Auch in GitLab muss der Public-Key hinterlegt
+werden und der private Schlüssel auf dem Client vorhanden sein. Die
+einzige Abhilfe ist eine konsequente Verwendung der Weboberfläche als
+Editor, aber das ist eben keine Java-IDE. Ein Weg -- wenn auch unsicher
+-- ist das Mitführen des Schlüsselpaares auf einem USB-Stick (oder
+Cloud-Storage). Der private Schlüssel muss dann eben am Anfang der
+Stunde an die richtige Stelle kopiert werden. Noch unsicherer aber
+einfacher wäre es, wenn alle Schüler einfach das gleiche Schlüsselpaar
+für den Unterricht verwenden. Dass die Idee hinter der asymmetrischen
+Verschlüsselung damit ad absurdum geführt ist, versteht sich von selbst!
 
 Die Schlüsselerzeugung funktioniert im Prinzip auf allen Betriebssystem
 gleich (vom Befehl) nur die Kommandozeile muss passend gewählt werden.
@@ -4837,10 +4814,16 @@ Variante des Befehls an, um den anderen Schlüssel nicht zu
 \end{Highlighting}
 \end{Shaded}
 
-Als Lehrer musst du die öffentlichen Schlüssel \emph{einsammeln} (Mail,
-Cloud, \ldots). Sie sind an der Endung \emph{.pub} erkennbar. Hier
-laufen wir in das übliche Windowsproblem, dass je nach Konfiguration die
-Dateiendungen ausgeblendet sein können!
+Dabei wird nach Speicherort und Name des Schlüssels gefragt. Überlässt
+man den Schülern die Wahl des Namens, bekommt man meist unbrauchbare
+Ergebnisse. Wahrscheinlich ist das Austeilen individueller Anleitungen
+mit Namensvorgabe der beste Weg. Lauter gleiche Namen führt zu mehr
+Arbeit für den Lehrer beim Einpflegen der Schlüssel!
+
+Als Lehrer musst du dann die öffentlichen Schlüssel \emph{einsammeln}
+(Mail, Cloud, \ldots). Sie sind an der Endung \emph{.pub} erkennbar.
+Hier laufen wir in das übliche Windowsproblem, dass je nach
+Konfiguration die Dateiendungen ausgeblendet sein können!
 
 (Im Explorer: Anzeige - Dateinamenserweiterungen anzeigen)
 
@@ -4855,16 +4838,11 @@ man eine Schlüssellänge von 4096 Bit wählt!)
 
 Die Inhalte der (öffentlichen) Schlüsseldateien der Schüler müssen dann
 in einer Datei mit dem Namen \datei{authorized\_keys} gesammelt und im
-Ordner des \git-Benutzers abgelegt werden. Die Datei muss dann auch noch
-die passende Berechtungen erhalten!
+Ordner \ordner{.ssh} des \git-Benutzers abgelegt werden. Die Datei muss
+dann auch noch die passende Berechtungen erhalten!
 
-\paragraph{Schlüssel eintragen}\label{schluxfcssel-eintragen}
-
-Der einfachste Weg besteht wohl darin, sämtliche Schlüsseldateien nach
-Einsendeschluss gesammelt auf den Server zu kopieren und sie dann durch
-ein kleines Script in die \datei{authorized\_keys} zu übertragen.
-
-\textbf{Schritt 1: Benutzer anlegen}
+\paragraph*{Benutzer anlegen}\label{benutzer-anlegen}
+\addcontentsline{toc}{paragraph}{Benutzer anlegen}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4873,7 +4851,9 @@ ein kleines Script in die \datei{authorized\_keys} zu übertragen.
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Schritt 2: Dateien übertragen}\\
+\paragraph*{Dateien übertragen}\label{dateien-uxfcbertragen}
+\addcontentsline{toc}{paragraph}{Dateien übertragen}
+
 Hier kommt das Protokoll SCP zum Einsatz. Unter Windows ist es sinnvoll,
 das grafische Programm \emph{WinSCP} zu verwenden. Es ist kostenlos und
 erfordert keine Installation (portable Edition).
@@ -4886,17 +4866,25 @@ Nach der Anmeldung ist die eine Fensterhälfte der lokale Rechner, die
 andere Fensterhälft der Server. Dateien können über Drag and Drop
 kopiert werden.
 
-Kopiere die `\emph{pub} Dateien in den Ordner \ordner{/home/git}.
+Kopiere die `\emph{pub} Dateien in den Ordner \ordner{/home/benutzer}
+(wenn das dein Name ist).
 
-\textbf{Schritt 3: Dateien zusammenführen}\\
+\paragraph*{Dateien zusammenführen}\label{dateien-zusammenfuxfchren}
+\addcontentsline{toc}{paragraph}{Dateien zusammenführen}
+
+Der einfachste Weg besteht wohl darin, sämtliche Schlüsseldateien nach
+Einsendeschluss gesammelt auf den Server zu kopieren und sie dann durch
+ein kleines Script in die \datei{authorized\_keys} zu übertragen.
+
 Gib auf der Kommandozeile des Servers folgende Befehlsfolge ein:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\BuiltInTok{cd}\NormalTok{ /home/git }
+\BuiltInTok{cd}\NormalTok{ /home/benutzer }
 \FunctionTok{ls} \PreprocessorTok{*}\NormalTok{.pub   }\CommentTok{\# Nur zur Kontrolle, ob die Dateien da sind.}
 
 \FunctionTok{cat} \PreprocessorTok{*}\NormalTok{.pub }\OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ \textasciitilde{}/.ssh/authorized\_keys}
+\FunctionTok{chmod}\NormalTok{ 644 \textasciitilde{}/.ssh/authorized\_keys}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4906,8 +4894,9 @@ Gib auf der Kommandozeile des Servers folgende Befehlsfolge ein:
 Dieses Script ist \textbf{nur} für einen Erstimport geeignet. Werden
 später noch Schlüsseldateien nachgeliefert, so würden in der
 \datei{authorized\_keys} lauter Duplikate entstehen! Wenn du nach dem
-Import die Schlüsseldateien löschst, dann können spätere Dateien aber
-schon auf diese Weise eingespielt werden! \sampleend
+Import die Schlüsseldateien löschst (oder archivierst), dann können
+spätere Dateien aber schon auf diese Weise eingespielt werden!
+\sampleend
 
 Löschen der Dateien
 
@@ -4917,10 +4906,20 @@ Löschen der Dateien
 \end{Highlighting}
 \end{Shaded}
 
+Archivieren der Dateien
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{zip} \AttributeTok{{-}r}\NormalTok{ keys\_2026\_1.zip }\PreprocessorTok{*}\NormalTok{pub }
+\FunctionTok{rm} \PreprocessorTok{*}\NormalTok{.pub }
+\end{Highlighting}
+\end{Shaded}
+
 Ab jetzt steht einer Verwendung von \git über die Kommandozeile nichts
 mehr im Weg.
 
-\subsubsection{Individuelle Benutzer}\label{individuelle-benutzer}
+\subsubsection{Individuelle Benutzer
+erstellen}\label{individuelle-benutzer-erstellen}
 
 Das hier verwendete Verfahren erstellt eine andere Art von Benutzer,
 weil Benutzer-IDs größer 1000 verwendet werden. Der vorher angelegte
@@ -4961,7 +4960,8 @@ verwendet werden:
     \ExtensionTok{Home}\NormalTok{ Phone []: }
     \ExtensionTok{Other}\NormalTok{ []: }
 \ExtensionTok{Is}\NormalTok{ the information correct}\PreprocessorTok{?} \PreprocessorTok{[}\SpecialStringTok{Y/n}\PreprocessorTok{]}\NormalTok{ y}
-\ExtensionTok{info:}\NormalTok{ Adding new user }\KeywordTok{\textasciigrave{}}\NormalTok{demouser}\StringTok{\textquotesingle{} to supplemental / extra groups \textasciigrave{}users\textquotesingle{}}\NormalTok{ ...}
+\ExtensionTok{info:}\NormalTok{ Adding new user }\KeywordTok{\textasciigrave{}}\NormalTok{demouser}\StringTok{\textquotesingle{} }
+\StringTok{info: to supplemental / extra groups \textasciigrave{}users\textquotesingle{}}\NormalTok{ ...}
 \ExtensionTok{info:}\NormalTok{ Adding user }\KeywordTok{\textasciigrave{}}\ExtensionTok{demouser}\StringTok{\textquotesingle{} to group \textasciigrave{}users\textquotesingle{}}\NormalTok{ ...}
 \end{Highlighting}
 \end{Shaded}
@@ -5004,421 +5004,6 @@ in seinem eigenen Account auf dem Server hinterlegt:
 \ExtensionTok{ssh{-}copy{-}id} \AttributeTok{{-}i}\NormalTok{ .ssh/id\_rsa.pub benutzer@}\OperatorTok{\textless{}}\NormalTok{IP}\OperatorTok{\textgreater{}}
 \end{Highlighting}
 \end{Shaded}
-
-\bookmarksetup{startatroot}
-
-\chapter{Installation}\label{installation-1}
-
-\section{Überlegungen allgemein}\label{uxfcberlegungen-allgemein}
-
-Ein einfacher \git-Server ist lediglich ein Server mit einer
-rudimentären Installation von \git und einer Erreichbarkeit über das
-Netz. Da gerade diese Erreichbarkeit bei Windows ein Problem darstellt,
-handelt es sich im Regelfall um einen Linux-Server. Als solcher besitzt
-er üblicherweise kein grafisches Benutzerinterface (GUI).
-
-Je nach Szenario müssen auf dem Server Benutzer angelegt und verwaltet
-werden. Das kann ziemlich aufwändig sein und ist bei größeren
-Benutzerzahlen ohne Scripting kaum machbar. Es gibt Hilfsmittel in Form
-von Weboberflächen, die hier aber nicht weiter thematisiert werden.
-
-Für einen reinen \gitserver genügt allerdings bereits ein einziger
-Bunutzer -- z.B. \git.
-
-\textbf{Zweck des Servers}\\
-Geht es nur um \git oder sollen noch Wordpress, VPN-Server, \ldots{}
-dazu kommen. Für jedes Szenario wird die endgültige Konfiguration anders
-aussehen.
-
-\textbf{Wer nutzt den Server}\\
-Müssen auch andere Lehrkräfte (administrativen) Zugriff auf den Server
-besitzen? Werden Gruppen benötigt?
-
-\textbf{Rolle der Benutzer}\\
-Sollen die Benutzer nur für die Verwendung von \git angelegt und
-konfiguriert werden, oder sollen sie \emph{vollwertige} Benutzer sein,
-die den Server auch in anderen Szenarien sinnvoll nutzen dürfen?
-
-\textbf{Benennung der Benutzer}\\
-Sollen die Schüler mit Zugangsdaten versehen werden, die ihren Namen
-widerspiegeln -- Probleme siehe unten -- oder sollen Zugänge im Sinne
-von \texttt{user1} bis \texttt{user20} verwendet werden?
-
-Bei Verwendung von richtigen Namen entstehen folgende Probleme:
-
-\begin{itemize}
-\tightlist
-\item
-  Sonderzeichen in den richtigen Namen erschweren das automatische
-  Erstellen von Benutzernamen.
-\item
-  Verschiedene Namen können den gleichen Login ergeben.
-\item
-  Behandlung von Schülern mit gleichen Namen in gleichen / verschiedenen
-  Klassen
-\end{itemize}
-
-Die Variante mit \texttt{user1} bis \texttt{user20} ist unpersönlich,
-leichter einzurichten, erschwert dem Lehrer aber eventuell eine
-Zuordnung zum echten Schüler.
-
-Hierfür gibt es keine perfekte Lösung.
-
-\section{Vorbereitung des Systems}\label{vorbereitung-des-systems}
-
-Nachfolgend wird die Installation eines funktionsfähigen \gitservers
-beschrieben. Bevor Du dich an die Installation auf einem Server im
-Internet machst, ist etwas \emph{Training} in einer virtuellen Umgebung
-ganz sinnvoll. Nach der Installation und Konfiguration eines
-Übungsservers in VirtualBox sind die Schritte identisch mit der realen
-Situation.\\
-Da wir hier aber einen anderen Focus haben, werde ich auf VirtualBox
-nicht näher eingehen. Im Workshop selbst arbeiten wir auf Ubuntu 24.04
-Instanzen auf einem Proxmox-System.
-
-\subsection{Verbindung zum Server --
-ssh}\label{verbindung-zum-server-ssh}
-
-\subsubsection{Windows}\label{windows-1}
-
-Seit einiger Zeit kann auch Windows auch ohne Zusatzsoftware
-SSH-Verbindungen aufbauen. Allerdings unterliegt die \texttt{cmd.exe}
-einigen Einschränkungen (z.B. kopieren von Textinhalten), die bei der
-Verbindung mit Putty oder der git-Bash besser gelöst sind.
-
-Putty kann unter
-\url{https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html} als
-einzelne Datei heruntergeladen werden und erlaubt die Erstellung von
-Verbindungsprofilen. Ich gehe davon aus, dass du mit diesem Tool selbst
-klar kommst.
-
-TODO: Bild Putty-Anmeldung
-
-\textbf{Windows direkt}\\
-Starte die Commandozeile \texttt{cmd.exe} und gib folgenden Befehl ein
-(Benutzer und IP-Adresse müssen bekannt sein, ebenso das Kennwort):
-
-TODO: Unterschied cmd und putty
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ssh}\NormalTok{ benutzer@ip{-}adresse }
-\end{Highlighting}
-\end{Shaded}
-
-Es erscheint eine Sicherheitsabfrage, die mit \texttt{yes} und
-\texttt{enter} bestätigt werden muss:
-
-TODO: Als Bild einbinden
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{The}\NormalTok{ authenticity of host }\StringTok{\textquotesingle{}try.example.com (38.243.220.195)\textquotesingle{}}\NormalTok{ can}\StringTok{\textquotesingle{}t be established.}
-\StringTok{ED25519 key fingerprint is SHA256:DSeSsfXDL2PkSlLYCt64krg9xa2vNr3og5SBJzZ/WNk.}
-\StringTok{This key is not known by any other names.}
-\StringTok{Are you sure you want to continue connecting (yes/no/[fingerprint])?}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hintergrund}\\
-Der Rechner merkt sich den Fingerabruck des Servers, zu dem die
-Verbindung aufgebaut wurde. Sollte später ein anderer Server diese
-IP-Adresse übernehmen (z.B. Man in the middle), so stimmt der
-Fingerabdruck nicht und es gibt eine Warnung. \sampleend
-
-\textbf{Git-Bash} Da das eine abgespeckte Linux-Umgebung ist, kannst du
-im nächsten Abschnitt weiterlesen.
-
-\subsubsection{Apple und Linux}\label{apple-und-linux}
-
-Auch hier erfolgt der Verbindungsaufbau in gleicher Weise direkt aus dem
-Terminal.
-
-Die Eingabe des Kennworts kann je nach Installationsvariante auch ohne
-sichtbare Zeichen erfolgen!
-
-Eine ssh-Verbindung kann auf verschieden Weise wieder abgebaut werden:
-
-\begin{itemize}
-\item
-  brutal, geht aber: Fenster schließen
-\item
-  \texttt{exit()}
-\item
-  \texttt{logout}
-\item
-  \strg{d}
-\end{itemize}
-
-\subsection{Software installieren}\label{software-installieren}
-
-Bei \emph{Ubuntu-24.04} ist in der Standard-Installation die
-Versionsverwaltung \git bereits vorinstalliert und auch der ssh-Server
-sollte bereits funktionieren. Bei gemieteten Installationen muss das
-nicht so sein, ssh sollte aber funktionieren. Für die Verbindung mit ssh
-benötigt man die IP-Adresse. Von einem Mietserver kennt man die Adresse
-im Regelfall, in VirtualBox muss man sie erst im Terminal ermitteln, da
-sie vom DHCP-Server zugewiesen wird.
-
-\samplestart
-
-\textbf{Hinweis}\\
-Falls man \git im Klassenzimmer betreibt (was nicht besonders sinnvoll
-ist) und eine gewisse \emph{Konstanz} in den Unterrichtsverlauf bringen
-möchte, dann sollte der Systemadministrator diese virtuellen Maschine in
-den DHCP-Server eintragen, damit sie immer die gleiche IP-Adresse
-bekommt! \sampleend
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{ip}\NormalTok{ addr show}
-\end{Highlighting}
-\end{Shaded}
-
-Je nach Anbieter des Systems kann die Bildschirmausgabe etwas anders
-aussehen!
-
-\begin{figure}[H]
-
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/interfaces.png}}
-
-}
-
-\caption{Interfaces}
-
-\end{figure}%
-
-Der veraltete Befehl \texttt{ifconfig} kann jederzeit nachinstalliert
-werden durch
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{sudo} \AttributeTok{{-}i}           \CommentTok{\# Admin werden}
-\ExtensionTok{apt{-}get}\NormalTok{ update    }\CommentTok{\# Software{-}DB aktualisieren {-} dauert!}
-\ExtensionTok{apt{-}get}\NormalTok{ install net{-}tools  }\CommentTok{\# mit y oder J bestätigen}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hinweis}\\
-Zum Installieren von Software gibt es auf Linux verschiedene Programme:
-\emph{apt, apt-get, aptitude, snap, flatpak, appimages, \ldots{}}. Eine
-detaillierte Beschreibung ginge hier zu weit. In diesem Workshop wird
-nur mit \emph{apt, apt-get} und \texttt{aptitude} gearbeitet. Diese drei
-Programme verwenden die gleiche Datenbank für verfügbare Software und
-sind somit weitgehend identisch. \emph{Aptitude} verfügt über eine --
-für mich -- schönere Suchfunktion. Aus diesem Grund installieren wir es
-hier gleich nach. \sampleend
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{apt{-}get}\NormalTok{ install aptitude }\AttributeTok{{-}y}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Check auf installiertes git}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{git} \AttributeTok{{-}{-}version}
-\end{Highlighting}
-\end{Shaded}
-
-Falls eine Fehlermeldung erscheint, muss \git noch installiert werden:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{apt}\NormalTok{ update }
-\ExtensionTok{apt}\NormalTok{ get install git }\AttributeTok{{-}y}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Firewall}\label{firewall-1}
-
-Je nach Anbieter ist auf dem Server eine Firewall aktiv oder auch nicht.
-Den Status erfragt man mit \texttt{ufw\ status}. Hierbei steht
-\texttt{ufw} für \emph{uncomplicated firewall}. Bei Änderungen an der
-Firewall immer Vorsicht walten lassen! Man kann sich aussperren!
-
-\textbf{Ablauf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{IN:}\NormalTok{   ufw status}
-\ExtensionTok{OUT:}\NormalTok{  Status: inactive}
-
-\ExtensionTok{IN:}\NormalTok{   ufw allow ssh }
-\ExtensionTok{OUT:}\NormalTok{  Rules updated}
-      \ExtensionTok{Rules}\NormalTok{ updated }\ErrorTok{(}\ExtensionTok{v6}\KeywordTok{)}
-
-\ExtensionTok{IN:}\NormalTok{   ufw enable}
-\ExtensionTok{OUT:}\NormalTok{  Command may disrupt existing ssh connections. }
-      \ExtensionTok{Proceed}\NormalTok{ with operation }\ErrorTok{(}\ExtensionTok{y}\KeywordTok{|}\ExtensionTok{n}\KeywordTok{)}\ExtensionTok{?}
-\ExtensionTok{IN:}\NormalTok{   y}
-\ExtensionTok{OUT:}\NormalTok{  Firewall is active and enabled on system startup}
-\end{Highlighting}
-\end{Shaded}
-
-\subsection{Ordner für Repository}\label{ordner-fuxfcr-repository}
-
-Wo man diesen im Verzeichnisbaum von Linux anlegt, ist im Prinzip
-unwichtig -- es gibt aber bessere und schlechtere Orte. Der Home-Ordner
-ist keine gute Idee -- besser ist z.B. der Ordner \texttt{/srv}. Dort
-erstellen wir auch gleich ein Demo-Repository:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{sudo} \AttributeTok{{-}i}
-\BuiltInTok{cd}\NormalTok{ /srv }
-\FunctionTok{mkdir}\NormalTok{ repositories}
-\FunctionTok{chown}\NormalTok{ git:git repositories }
-\ExtensionTok{*strg}\NormalTok{ + d}\PreprocessorTok{*}
-\BuiltInTok{cd}\NormalTok{ /srv/repositories}
-\FunctionTok{git}\NormalTok{ init }\AttributeTok{{-}{-}bare}\NormalTok{ demo.git}
-\BuiltInTok{cd}\NormalTok{ demo.git }
-\FunctionTok{git}\NormalTok{ branch }\AttributeTok{{-}m}\NormalTok{ main }
-\end{Highlighting}
-\end{Shaded}
-
-Dieses Repositoriy ist nun bereit zum Clonen.
-
-\subsection{Benutzer für Git}\label{benutzer-fuxfcr-git}
-
-Wenn ein Schüler nur \git verwenden soll, dann braucht er dafür kein
-vollwertiges Benutzerkonto, an dem er sich auch für andere Arbeiten
-anmelden kann. Für die Verwendung von \git genügt es bereits, wenn man
-einen einzigen Benutzer mit dem Namen \git (als Beispiel) erstellt.
-
-Nötige Schritte:
-
-\begin{itemize}
-\tightlist
-\item
-  Dem Benutzer \git wird eine \emph{echte} Anmeldung unmöglich gemacht.
-\item
-  Schüler erstellen sich SSH-Schlüssel-Paare
-\item
-  Sie schicken ihren Public-Key per Mail an den Lehrer
-\item
-  Der Lehrer fügt den Schlüssel in die Datei
-  \texttt{/home/git/.ssh/authorized\_keys} ein.
-\end{itemize}
-
-\textbf{Benutzer anlegen}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{useradd} \AttributeTok{{-}m}\NormalTok{ git}
-\FunctionTok{passwd}\NormalTok{ git  }\CommentTok{\# Das Kennwort wird 2x unsichtbar abgefragt.}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Anmeldung deaktivieren}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{nano}\NormalTok{ /etc/passwd }
-\end{Highlighting}
-\end{Shaded}
-
-Den Benutzer \git  suchen und am Ende der Zeile aus \texttt{/bin/sh} den
-Eintrag \texttt{/bin/false} machen. Nun mit der Tastenkombination
-\strg{o} und `\strg{x} die Änderung abspeichern.
-
-\textbf{Erstellen eines Schlüsselpaars}\\
-(Nachfolgender Ablauf ist nur ein Vorschlag! Varianten stehen wieter
-unten.)
-
-Unter Linux / MacOS einfach eingeben:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096 }\AttributeTok{{-}C} \StringTok{"schueler@example.com"}
-\end{Highlighting}
-\end{Shaded}
-
-Bei der Frage nach Speicherort und Dateiname nur \emph{schule} angeben
-und die Fragen nach einer PassPhrase beide Male mit der Enter-Taste
-übergehen.
-
-Unter Windows geht das ab Windows 10 im Prinzip mit dem gleichen Befehl
-aus der \emph{cmd.exe} oder \emph{powershell} -- allerdings bin ich
-dabei auch schon mit seltsamen Fehlern konfrontiert worden. Aus der
-git-Bash heraus sollte es aber eigentlich funktionieren.
-
-Diesen Schritt muss jeder Schüler auf seinem Arbeitsrechner durchführen!
-
-Durch die Wahl von \emph{schule} wird das Schlüsselpaar auch nicht im
-versteckten Ordner \texttt{.ssh} angelegt, sondern sichtbar direkt unter
-\texttt{c:\textbackslash{}user\textbackslash{}BENUTZER}.
-
-\textbf{Zuschicken der Datei \texttt{schule.pub} per Mail}\\
-Die Schüler schicken die Datei \datei{schule.pub} als Anhang an den
-Lehrer, der sie dann auf dem Server hinterlegt (s.u.).
-
-\textbf{Kopieren des Schlüssels}\\
-Der Schlüssel muss aus der Datei \datei{schule.pub} in die Datei
-\texttt{/home/git/.ssh/authorized\_keys} eingetragen werden. Die
-Berechtigungen der Datei sollten auf 644 gestellt sein:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{chmod}\NormalTok{ 644 /home/git/.ssh/authorized\_keys}
-\end{Highlighting}
-\end{Shaded}
-
-Das kopieren geht mit Putty, wenn man auf Windows den Key in die
-Zwischenablage kopiert (\strg{c}) und in putty die Datei mit \emph{nano}
-geöffnet hat. Ein Rechtsklick fügt dann dort den Inhalt der
-Zwischenablage ein. Das hat\\
-zumindest bei meiner Windows-Version funktioniert.
-
-Im Prinzip kann ab jetzt kennwortfrei mit \git gearbeitet werden. Beim
-Einsatz einer Weboberfläche (später im Script) müssen die Schüler diesen
-Schlüssel \emph{selbst} dort im System registrieren.
-
-\samplestart
-
-\textbf{Hintergrund}\\
-Nach der Anmeldung über ssh wird über die Einstellungen im Benutzerkonto
-entschieden, welche Art von Terminal der Benutzer erhält. Üblich ist die
-\verb+bash, sh, csh, ...+. Wird hier ein \textit{ungültiges} Terminal
-eingetragen, so ist eine Anmeldung auf diese Weise nicht mehr möglich.
-Für \git  spielt dies allerdings keine Rolle, da bei \git-Befehlen das
-Terminal nicht gestartet werden muss. Da trotzdem eine Art von Anmeldung
-für den Zugriff auf \git  erfolgen muss, wird das Public-Key-Verfahren
-verwendet.
-
-Hier muss entschieden werden, wer für die Schlüssel zuständig ist und
-sie in die Datei \datei{authorized_keys} einfügt. \sampleend
-
-\textbf{Varianten}
-
-\begin{itemize}
-\item
-  Der Lehrer erstellt Schlüsselpaare für die Schüler, die sie auf den
-  verwendeten Geräten (Schule, Zuhause) hinterlegen und die vom Lehrer
-  auf dem Server freigeschaltet werden. Dies kann zu Problemen führen,
-  falls Schüler bereits aus anderen Gründen mit ssh arbeiten und deshalb
-  schon Schlüssel besitzen\footnote{Auch das kann im Prinzip
-    konfiguriert werden, stellt aber höhere Anforderungen an den
-    Benutzer}.
-\item
-  Der Schüler erstellt selbst das Schlüsselpaar oder bringt sein eigenes
-  mit (ausdrücklich NICHT empfohlen, da der Private-Key dann auf einem
-  Schulrechner liegt!). Er muss dann eigenständig seinen Public-Key auf
-  dem Server hinterlegen. Das ist auch problematische, weil der Schüler
-  zunächst das Kennwort für den Benutzer \git besitzen muss. Nach dem
-  Hinterlegen des Schlüssels ist es dann die Aufgabe des Lehrers, den
-  Account zu sperren.
-\item
-  Der Schüler erstellt für die Schule und zuhause unabhängige
-  Schlüsselpaare. In diesem Fall müssen beide Schlüssel auf dem Server
-  als gültig eingetragen werden.
-\end{itemize}
 
 \bookmarksetup{startatroot}
 
@@ -5899,7 +5484,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-205}%
+\phantomsection\label{annotated-cell-194}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -5956,7 +5541,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-207}%
+\phantomsection\label{annotated-cell-196}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -5990,7 +5575,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-208}%
+\phantomsection\label{annotated-cell-197}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -6062,7 +5647,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-210}%
+\phantomsection\label{annotated-cell-199}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -7112,7 +6697,7 @@ von leeren Repositories Folgeprobleme entstehen können.
 Erstelle eine neue Datei mit dem Namen \texttt{.gitlab-ci.yml} und trage
 ein:
 
-\phantomsection\label{annotated-cell-245}%
+\phantomsection\label{annotated-cell-234}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7239,7 +6824,7 @@ und entpackst die Dateien aus dem Kursmaterial, die im Paket
 
 Im Paket befindet sich auch bereits diese \emph{.gitlab-ci.yml}:
 
-\phantomsection\label{annotated-cell-250}%
+\phantomsection\label{annotated-cell-239}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7495,7 +7080,7 @@ Dass ein JDK installiert sein muss, sollte klar sein, denn es soll ja
 mit Java programmiert werden. Natürlich gibt es wieder Unterschiede
 zwischen Linux, Apple und Windows.
 
-\subsubsection*{Windows}\label{windows-2}
+\subsubsection*{Windows}\label{windows-1}
 \addcontentsline{toc}{subsubsection}{Windows}
 
 \emph{Java installieren}
@@ -7664,7 +7249,7 @@ Zur Kontrolle genügt dann ein
 
 (Tipp: Im Terminal eingeben: \cmd{sdk list maven})
 
-\subsubsection*{Windows}\label{windows-3}
+\subsubsection*{Windows}\label{windows-2}
 \addcontentsline{toc}{subsubsection}{Windows}
 
 Hier verweise ich einfach mal auf Youtube.
@@ -7715,15 +7300,13 @@ Maven erwartet eine bestimmte Verzeichnisstruktur und auch entsprechende
 Namenskonventionen (Du musst das nicht per Hand anlegen, da gibt es
 Hilfs-Scripts!)
 
-\begin{Shaded}
-\begin{Highlighting}[]
+\bcenter
 
-\ExtensionTok{TODO:}\NormalTok{ Bild vom TREE}
-\end{Highlighting}
-\end{Shaded}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/tdd/full_tree.png}}
+\ecenter
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht alle
-Ordner. Sie werden bei Bedarf dynmaisch von \maven angelegt.
+Ordner. Sie werden bei Bedarf dynamisch von \maven angelegt.
 
 \subsection{Idee}\label{idee-1}
 
@@ -7804,7 +7387,10 @@ eingestellt werden:
 
 Das liefert folgende Struktur:
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/tdd/tree_init.png}}
+\bcenter
+
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/tdd/tree_init.png}
+\ecenter
 
 Dieses Projekt kann bereits (fast) compiliert werden. Zuerst müssen wir
 allerdings noch einige Einträge in der \datei{pom.xml} angepassen:
@@ -8467,44 +8053,15 @@ automatisch eine README erstellen lässt.
 
 \samplestart
 
-Der bin-Ordner muss an folgender Stelle erzeugt werden:
+\textbf{Hinweis} Der bin-Ordner muss an folgender Stelle erzeugt werden:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{c:\textbackslash{}benutzer\textbackslash{}name\textbackslash{}bin} 
+\ExtensionTok{c:\textbackslash{}users\textbackslash{}benutzername\textbackslash{}bin} 
 \end{Highlighting}
 \end{Shaded}
 
 \sampleend
-
-\bookmarksetup{startatroot}
-
-\chapter{Introduction}\label{introduction}
-
-This is a book created from markdown and executable code.
-
-See Knuth (1984) for additional discussion of literate programming.
-
-\bookmarksetup{startatroot}
-
-\chapter{Summary}\label{summary}
-
-In summary, this book has no content whatsoever.
-
-\bookmarksetup{startatroot}
-
-\chapter*{References}\label{references}
-\addcontentsline{toc}{chapter}{References}
-
-\markboth{References}{References}
-
-\phantomsection\label{refs}
-\begin{CSLReferences}{1}{0}
-\bibitem[\citeproctext]{ref-knuth84}
-Knuth, Donald E. 1984. {„Literate Programming``}. \emph{Comput. J.} 27
-(2): 97--111. \url{https://doi.org/10.1093/comjnl/27.2.97}.
-
-\end{CSLReferences}
 
 
 

@@ -1,0 +1,73 @@
+---
+format: pdf
+---
+
+
+# Hilfserklärungen
+
+## Reset
+
+Das ist ziemlich intransparent. Befehle zur Demonstration,
+
+### Hard
+
+* Script `reset_hard_eine_datei.sh`
+* `git diff` zeigt leere Ausgabe, d.h. workdir = stage
+* `cat datei.txt` liefert 3 Zeile = Stand Commit 3
+
+Genauerer Blick
+
+```bash
+git ls-files --stage
+100644 258a2e452831a64644b9be3778c84e8a0330bda9 0	datei.txt
+
+git cat-file -p 258a2e452831a64644b9be3778c84e8a0330bda9
+Schritt 1
+Schritt 2
+Schritt 3
+```
+
+### Soft
+
+* Script `reset_soft_eine_datei.sh`
+* `git diff` zeigt leere Ausgabe, d.h. workdir = stage 
+* `cat datei.txt` liefert 10 Zeilen =  Stand Commit 10
+
+Genauerer Blick  
+
+```bash
+git ls-files --stage
+100644 2f78ed9a44aabba0c69dd9dc8efc073b17fc6827 0	datei.txt
+
+git cat-file -p 2f78ed9a44aabba0c69dd9dc8efc073b17fc6827
+Schritt 1
+Schritt 2
+Schritt 3
+Schritt 4
+Schritt 5
+Schritt 6
+Schritt 7
+Schritt 8
+Schritt 9
+Schritt 10
+```
+
+### Mixed
+
+* Script `reset_mixed_eine_datei.sh`
+* `git diff` zeigt, dass Workdir nicht gleich Stage!
+* `cat datei.txt` liefert 10 Zeilen =  Stand Commit 10
+* Der Stage ist auf dem Stand von Commit 3
+
+Genauerer Blick
+
+```bash
+git ls-files --stage
+100644 258a2e452831a64644b9be3778c84e8a0330bda9 0	datei.txt
+
+git cat-file -p 258a2e452831a64644b9be3778c84e8a0330bda9
+Schritt 1
+Schritt 2
+Schritt 3
+```
+
