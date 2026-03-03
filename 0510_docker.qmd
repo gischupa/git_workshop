@@ -48,14 +48,19 @@ Der zeitraubendste Teil ist der anfängliche Download des Images.
 **Hintergrund**  
 Images sind in Schichten organisiert, die nacheinander heruntergeladen werden. Dabei wird jeweils geprüft, welche Differenzen zum aktuellen 
 System benötigt werden, um arbeiten zu können.  
-Diese Schichtenstruktur ist wichtig, wenn man eigene Images erstellen möchte. Der Erstellungsprozess macht nämlich immer auf der Schicht weiter, ab der Änderungen am Image vorgenommen wurden (weitere Software, 
+Diese Schichtstruktur ist wichtig, wenn man eigene Images erstellen möchte. Der Erstellungsprozess macht nämlich immer auf der Schicht weiter, ab der Änderungen am Image vorgenommen wurden (weitere Software, 
 Dateiänderungen, ...). Auf diese Weise wird viel weniger Zeit benötigt,
 als bei einer komplett neuen Erstellung!
 
 ## Installation von Docker
 
+\bxlarge
+```{.bash include="src/docker/docker_install_schmal.sh"}
+```
+\exlarge 
+
 Die Befehle befinden sich als Script bei den Kursmaterialien!
-Wegen des Layouts sind hier Zeilenubrüche, die das Script 
+Wegen des Layouts sind hier Zeilenubrüche enthalten, die das Script 
 in der abgedruckten Form scheitern lassen!
 
 ```bash
@@ -90,6 +95,12 @@ Aktuell läuft Docker jetzt als Benutzer *root* (=Administrator),
 was man im professionellen Firmenumfeld lieber vermeidet. Es gibt 
 Anleitung, wie man das ändert. Im Prinzip muss nur ein weiterer
 Benutzer angelegt und den richtigen Gruppen zugeordnet werden.
+
+```bash
+usermod -aG docker benutzer
+```
+
+(Der Benutzer muss sich einmal ab- und wieder anmelden.)
 
 Teste die Installation durch folgende Befehle:
 

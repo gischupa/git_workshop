@@ -155,13 +155,43 @@ Du siehst:
 
 ### Sinnvollere Anwendung
 
-Ziel ist das Erstellen eines Buches in \gitlab mit CICD.
-Dafür brauchen wir ein anderes Docker-Image und noch ein paar Erweiterungen 
-in der Datei \datei{.gitlab-ci.yml}.
+Ziel ist das Erstellen eines Buches in \gitlab mit CICD. 
+Je nach Situation kann das mit einem gemeinsamen Repository 
+durchgespielt werden, oder du machst das alleine und schlüpfst
+in die Rollen verschiedener Schüler.
 
-Zunächst erstellst du ein neues Repository, Clonst es auf deinen 
-Rechner und entpackst die Dateien aus dem Kursmaterial, die im 
-Paket *minibuch.zip* enthalten sind, in dieses Repository. 
+Die Idee wäre, dass jeder Schüler seine eigene Kurzgeschichte in 
+einem eigenen Branch schreibt und seinen Stand laufend auf \gitlab pusht.
+Der Lehrer (oder andere Schüler) lesen die Geschichte und machen 
+Verbesserungsvorschläge. Dies kann auf der Online-Plattform gut mit 
+*Issues* (github) bzw. *Pullrequests* (gitlab) in Form einer Online-
+Diskussion erfolgen, bis ein geeigneter Schlussstand erreicht wird.
+Nun kann der Lehrer die Branches auf *main* mergen und die Pipeline 
+zum Erstellen des Buches Triggern.
+
+Voraussetzung hierfür ist natürlich, dass die Texte im richtigen Format
+geschrieben werden (sogar online möglich), nämlich als Markdown.  
+In der Pipline wird ein Erstellungssystem namens *Quarto* als Docker-Image 
+geholt und die Dateien nach einer Umwandlung nach LaTeX in ein PDF umgewandelt.
+
+Der Vorteil dieser Methode ist, dass es keine Probleme mit uneinheitlichen 
+Formatierungen über mehrere Dokumente hinweg gibt. Auf \gitlab gibt es 
+bei derartigen Projekten die Möglichkeit, den *main*-Branch zu schützen, 
+damit die Schüler ihr Dokument nicht direkt dorthin pushen können. 
+
+Der Lehrer muss für die Integration der einzelnen Kurszgeschichten 
+in ein Zentraldokument noch die passenden *include*-Statements schreiben, 
+damit die Zusammenführung funktioniert. 
+
+Wenn du das Repository *minibuch* clonst, dann sind die wesentlichen 
+Vorbereitungen bereits getroffen. 
+
+Nachfolgend beschreibe ich dennoch die wichtigen Schritte, weil du das 
+eventuell bei eigenen, anderen Projekten brauchen kannst. 
+
+
+Je nach Projekt wird ein geeignetes Docker-Image benötigt und die Datei \datei{.gitlab-ci.yml}
+entsprechend angepasst werden.
 
 Im Paket befindet sich auch bereits diese *.gitlab-ci.yml*:
 
@@ -189,6 +219,13 @@ projekt_uebersetzen:
 5. Aufruf zum Erstellen des PDF
 6. Das fertige PDF muss zurück zu \gitlab übertragen werden
 7. An dieser Stelle befindet sich das PDF
+
+Lege nun einen Branch mit deinem Namen an und erstelle eine Datei 
+mit einer Geschichte im Markdown-Format. Mit einem geeigneten 
+Prompt kann hier eine KI hilfreich sein.
+
+Versioniere dein Werk, committe es und führe einen Push deines 
+Branchs auf den Server aus. 
 
 Führe nun einen Commit aus.
 Nach diesem Commit sollte der Job durchlaufen. Auf \gitlab findest du 

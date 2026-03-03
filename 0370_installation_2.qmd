@@ -1,5 +1,6 @@
-# Serverinstallation
+# Serverinstallation II
 
+Dieser Anschnitt schließt an die Installation von Ubuntu auf dem Proxmox an, gilt aber ebenso für einen Server im Internet.
 
 Der Betrieb eines Servers ist auch immer mit Verantwortung und Aufwand 
 verbunden. Wer hier keine Kenntnisse besitzt, schreckt schnell davor 
@@ -28,9 +29,7 @@ folgende Informationen:
 > Benutzername
 > Kennwort
 
-Diese Daten werden dir im Workshop mitgeteilt. Solltest du mit 
-deiner eigenen Installation arbeiten, so sollten dir diese Informationen 
-bereits vorliegen.
+Diese Daten hast du vorher festgelegt oder vom Provider erhalten.
 
 Die Anmeldung auf dem Server erfolgt über das Protokoll *ssh*.  
 Seit einer der letzten Versionen von Windows ist auch hier bereits
@@ -55,18 +54,20 @@ erkennen zu können, die du mit *yes* beantwortest. Bei der nachfolgenden
 Kennworteingabe kann es (je nach System) sein, dass die Tastendrücke nicht 
 angezeigt werden!
 
+\bxlarge
 ```bash
 The authenticity of host 'try.example.com (38.243.220.195)' can't be established.
 ED25519 key fingerprint is SHA256:DSeSsfXDL2PkSlLYCt64krg9xa2vNr3og5SBJzZ/WNk.
 This key is not known by any other names.
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
+\exlarge
 
-Wenn alles geklappt hat, so wirst du vom Eingabepromt des Terminals 
+Wenn alles geklappt hat, so wirst du vom Eingabeprompt des Terminals 
 auf dem Server begrüßt:
 
 ```bash
-benutzer@ubu:~$
+benutzer@gitbox1:~$
 ```
 
 \samplestart
@@ -102,7 +103,7 @@ apt update
 
 In regelmäßigen Abständen sollte auch ein Komplett-Upgrade des Systems laufen, um 
 zum Beispiel Sicherheitslücken zu schließen und *alle* Programme zu aktualisieren^[vgl. Windows ... hier muss jedes 
-Programm einzeln aktualisiert werden!]
+Programm einzeln aktualisiert werden!].
 Da auf deinem Server eine komplett neue Installation von DVD ist, kann einiges 
 veraltet sein -- also führst du aus:
 
@@ -113,7 +114,7 @@ apt upgrade -y
 Das kann nun einige Zeit dauern. Hättest du eine weitere Verbindung geöffnet, so 
 könntest du parallel weiterarbeiten, aktuell warten wir aber ab.
 
-Nun zu eigentlichen Installation von \git:
+Nun zur eigentlichen Installation von \git:
 
 ```bash
 apt install git -y 
@@ -138,7 +139,7 @@ gefragt und damit ist bereits alles erledigt.
 
 #### Firewall{.unnumbered}
 
-In Ubuntu ist eine sehr pflegeleichte Firewall integriert (UFW).
+In Ubuntu ist eine sehr pflegeleichte Firewall integriert (UFW = Uncomplicated Firewall).  
 Du gehst nun in 2 Schritten vor:
 
 * Definieren des/der offenen Ports (bei uns 22 für SSH)
@@ -197,7 +198,7 @@ Wir werden das System so einrichten, dass alle Benutzer mit dem gleichen
 Login arbeiten. Das klingt auf den ersten Blick gefährlich oder fahrlässig, 
 aber wir sichern das natürlich ab!
 
-An dieser Stelle trifft Theorie (Thema Codierung und Verschlüsselung) auf Praxis. Damit die Schüler einen 
+An dieser Stelle trifft für die Schüler Theorie (Thema Codierung und Verschlüsselung) auf Praxis. Damit die Schüler einen 
 Zugriff auf den Server bekommen (eigentlich nur auf \git) ohne das 
 Kennwort des gemeinsamen Benutzers kennen zu müssen, verwenden wir 
 RSA, d.h. jeder Schlüssel braucht einen privaten und einen öffentlichen 
@@ -241,7 +242,7 @@ ssh-keygen -t rsa -b 4096   -C "gitkey_susi_sandmann@schule.de"
 Dabei wird nach Speicherort und Name des Schlüssels gefragt. Überlässt man den 
 Schülern die Wahl des Namens, bekommt man meist unbrauchbare Ergebnisse. 
 Wahrscheinlich ist das Austeilen individueller Anleitungen mit Namensvorgabe 
-der beste Weg. Lauter gleiche Namen führt zu mehr Arbeit für den Lehrer beim 
+der beste Weg. Lauter gleiche Dateinamen führen zu mehr Arbeit für den Lehrer beim 
 Einpflegen der Schlüssel!
 
 Als Lehrer musst du dann die öffentlichen Schlüssel *einsammeln* (Mail, Cloud, ...).
@@ -251,7 +252,7 @@ dass je nach Konfiguration die Dateiendungen ausgeblendet sein können!
 (Im Explorer: Anzeige - Dateinamenserweiterungen anzeigen)
 
 Im Prinzip genügt in vielen Fällen ein kürzerer Schlüssel, aber einige Plattformen (z.B. Gitea)
-erwarten diese Schlüssellänge.  
+erwarten diese Schlüssellänge von 4096 Bit.  
 Je nach persönlichem Vertrauen kann auch ein Online-Schlüsselgenerator verwendet werden:
 
 [https://cryptotools.net/rsagen](https://cryptotools.net/rsagen)  
@@ -329,6 +330,7 @@ Um einen Benutzer anzulegen, können zwei etwas unterschiedliche Befehle verwend
 
 **adduser**
 
+\blarge
 ```bash
 adduser demouser
 
@@ -354,6 +356,7 @@ info: Adding new user `demouser'
 info: to supplemental / extra groups `users' ...
 info: Adding user `demouser' to group `users' ...
 ```
+\elarge 
 
 **useradd**
 

@@ -4,7 +4,7 @@ project:
 book:
   title: "Git Workshop"
   author: "Wolfgang Höfer"
-  date: "10.4.2025"
+  date: "10.03.2026"
   chapters:
     - index.qmd
     
@@ -53,6 +53,8 @@ format:
         \newcommand{\work}{\textit{Working-Directory}\xspace}
         \newcommand{\blarge}{\begin{adjustwidth}{0cm}{-1.3cm}}
         \newcommand{\elarge}{\end{adjustwidth}}
+        \newcommand{\bxlarge}{\begin{adjustwidth}{0cm}{-2.3cm}}
+        \newcommand{\exlarge}{\end{adjustwidth}}
         \newcommand{\bcenter}{\begin{center}}
         \newcommand{\ecenter}{\end{center}}
         \usepackage{titlesec}
