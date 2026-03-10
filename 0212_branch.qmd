@@ -105,7 +105,9 @@ cat .git/refs/heads/main
 7c5a5851fcb062c07a9b99195e33b97ee5353ab0
 ```
 
-BILD Pointer auf Pointer
+\bcenter
+![](bilder/head_main.png)
+\ecenter
 
 Der Pointer *main* wird also von Commit zu Commit geschoben 
 und der Pointer *HEAD* zeigt ständig auf *main*.
