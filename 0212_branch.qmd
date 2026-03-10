@@ -106,7 +106,7 @@ cat .git/refs/heads/main
 ```
 
 \bcenter
-![](bilder/head_main.png)
+![](bilder/branch/head_main.png)
 \ecenter
 
 Der Pointer *main* wird also von Commit zu Commit geschoben 
@@ -141,7 +141,7 @@ ref: refs/heads/spielplatz
 ```
 
 Da *spielplatz* und *main* aber auf gleichem Stand -- dem aktuellen 
-Commit sind, erhalten wir:
+Commit -- sind, erhalten wir:
 
 ```bash
 cat .git/refs/heads/spielplatz
@@ -161,19 +161,19 @@ der Datei \datei{.git/HEAD}.
 
 ## Zusammenführen von Branches (merge)
 Dazu kommen weiter hinten im Script noch Varianten, deshalb möchte 
-ich hier nur die Grundlagen thematisieren. Merges dienen dem Abgleich 
+ich hier nur die Grundlagen thematisieren. *Merges* dienen dem Abgleich 
 verschiedener Branches. Das ist nötig, wenn Änderungen am Code nicht 
 nur in einem Branch verfügbar sein dürfen.  
 
-Der unkomplizierteste Fall ist es, wenn man in einen Branch wechselt,
-dort arbeitet und danach das Ergebnis direkt wieder in den Branch \branch{main}
-übernimmt. Dieser Vorgang wird *fast Forward (ff)* genannt, weil hier 
+Der unkomplizierteste Fall ist es, wenn du in einen Branch wechselst,
+dort arbeitest und danach das Ergebnis direkt wieder in den ursprünglichen Branch
+übernimmst. Dieser Vorgang wird *fast Forward (ff)* genannt, weil hier 
 eigentlich gar nichts passiert, außer dass die Pointer passend umgeschrieben werden.
 
 
 TODO: BILD, wann welcher Pointer wo ist
 
-Eine typische Fehlvorstellung ist es, dass *Branchig* sofort eine Abzweigung
+Eine typische Fehlvorstellung ist es, dass *Branching* sofort eine Abzweigung
 erzeugt. Korrekt ist aber, dass einfach nur ein Zeiger (also eine Datei,
 die einen Hash enthält) erzeugt wird, der auf den aktuellen Commit zeigt.
 
