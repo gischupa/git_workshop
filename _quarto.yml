@@ -31,7 +31,14 @@ format:
         \usepackage{changepage}
         \setlist[description]{style=nextline, leftmargin=2.5em}
         \newcommand{\cmd}[1]{\texttt{#1}\xspace}
-        \newcommand{\menu}[1]{\texttt{#1}\xspace}
+        \newcommand{\markcmd}[1]{\textbf{#1}\xspace}
+        \newcommand{\menu}[1]{\textbf{\texttt{#1}}\xspace}
+        \newcommand{\markcmx}[1]{
+        \tikz[baseline=(X.base)]
+          \node [draw=red,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {#1};\xspace}
         \newcommand{\script}[1]{\texttt{#1}\xspace}
         \newcommand{\key}[1]{\texttt{#1}\xspace}
         \newcommand{\Git}{\textit{Git}\xspace}

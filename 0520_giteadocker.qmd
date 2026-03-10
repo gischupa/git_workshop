@@ -321,7 +321,7 @@ In den Benutzereinstellungen auf Gitea kann nun ein neuer
 Schlüssel hinzugefügt werden.
 
 **Auf Windows**  
-Hier verwendest du den gleichen Befehl innerhalb der git-Bash.
+Hier verwendest du den gleichen Befehl innerhalb der \gitbash.
 
 ### Clonen
 Das Clonen eines öffentlichen Repositories über Https sollte auch ohne

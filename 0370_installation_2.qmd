@@ -35,7 +35,7 @@ Die Anmeldung auf dem Server erfolgt über das Protokoll *ssh*.
 Seit einer der letzten Versionen von Windows ist auch hier bereits
 ein ssh-Client eingebaut. Bei Linux und MacOS gehört er seit Jahrzehnten zum 
 Standard. Ich selbst bevorzuge auf Windows allerdings eher das (kostenlose)
-Programm *Putty* und die gerade vorher installierte \git-bash.
+Programm *Putty* und die gerade vorher installierte \gitbash.
 
 Putty kann unter [https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 
 als einzelne Datei heruntergeladen werden und erlaubt die Erstellung von 
@@ -226,7 +226,7 @@ der asymmetrischen Verschlüsselung damit ad absurdum geführt ist, versteht sic
 
 Die Schlüsselerzeugung funktioniert im Prinzip auf allen Betriebssystem gleich (vom Befehl) 
 nur die Kommandozeile muss passend gewählt werden. Auf Windows sollte einfach die 
-\git-bash verwendet werden, auf den anderen Systemen das Terminal.
+\gitbash verwendet werden, auf den anderen Systemen das Terminal.
 
 ```bash
 ssh-keygen -t rsa -b 4096

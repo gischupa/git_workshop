@@ -258,7 +258,14 @@
 \usepackage{changepage}
 \setlist[description]{style=nextline, leftmargin=2.5em}
 \newcommand{\cmd}[1]{\texttt{#1}\xspace}
-\newcommand{\menu}[1]{\texttt{#1}\xspace}
+\newcommand{\markcmd}[1]{\textbf{#1}\xspace}
+\newcommand{\menu}[1]{\textbf{\texttt{#1}}\xspace}
+\newcommand{\markcmx}[1]{
+\tikz[baseline=(X.base)]
+  \node [draw=red,fill=gray!40,
+  semithick,rectangle,
+  inner sep=2pt, 
+  rounded corners=3pt] (X) {#1};\xspace}
 \newcommand{\script}[1]{\texttt{#1}\xspace}
 \newcommand{\key}[1]{\texttt{#1}\xspace}
 \newcommand{\Git}{\textit{Git}\xspace}
@@ -345,7 +352,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, sharp corners, colback={codebgcolor}, enhanced, breakable, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, sharp corners, boxrule=0pt, breakable, colback={codebgcolor}, enhanced]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -423,25 +430,22 @@ MacOS) ist im Regelfall völlig problemlos und wird nachfolgend noch
 genau beschrieben. Für einen Git-Server braucht man -- wie schon der
 Name sagt -- einen Server. Da es für einfache Versuche etwas aufwändig
 ist, sich eine entsprechende Installation im Internet zu mieten, greifen
-wir in diesem Workshop auf virtuelle Umgebungen zurück. Damit ist
-gemeint, dass sich jeweils 4 Teilnehmer ein Gerät teilen, das für sie
-jeweils einen eigenen Spielserver bereit stellt. Die Installation dieser
-Infrastruktur ist im Anhang genauer beschrieben. Es ist natürlich auch
-möglich, einen Spielserver mit Hilfe von Virtualbox auf dem eigenen
-Computer zu installieren. Der eigentliche Server wird in jedem Fall ein
-Ubuntu 24.04 sein.
-
-Wem die letzten Zeilen gar nichts gesagt haben, der sollte im Anhang den
-Abschnitt über Virtualisierung lesen und dann hierher zurückkehren.
+wir in diesem Workshop auf virtuelle Umgebungen zurück. Dafür werden wir
+den vorhandenen Arbeitsplatzrechner uminstallieren (Proxmox) und darauf
+dann ein aktuelles Ubuntu als virtuelles Serversystem. Die Installation
+dieser Infrastruktur ist im Anhang genauer beschrieben. Es ist natürlich
+auch möglich, einen Spielserver mit Hilfe von Virtualbox auf dem eigenen
+Computer zu installieren.
 
 \section{Client-Installation}\label{client-installation}
 
-Für die ersten Schritte mit \git ist es sehr sinnvoll, einen ganz
-einfachen Client zu verwenden. Hier ist mit \emph{einfach} nicht die
-Bedienung sondern eher \emph{ursprünglich} gemeint. Mittlerweile bringt
-jede Entwicklungsumgebung bereits eine eigene Version eines \git-Clients
-mit und wir können beim besten Willen nicht jede Variante, eventuell
-noch mit eigenen Features, besprechen.
+Für die ersten Schritte mit \git ist es sehr sinnvoll, eine ganz
+einfache Client\_Software (kurz Client) zu verwenden. Hier ist
+\emph{einfach} nicht im Sinne von \emph{einfacher Bedienung} sondern
+eher im Sinne von \emph{ursprünglicher Version} gemeint. Mittlerweile
+bringt jede Entwicklungsumgebung bereits eine eigene Version eines
+\git-Clients mit und wir können beim besten Willen nicht jede Variante,
+eventuell noch mit eigenen Features, besprechen.
 
 Faktisch gibt es eigentlich keinen reinen \git-Client, weil immer
 automatisch Client und Server installiert werden. Gerade bei Windows
@@ -478,9 +482,33 @@ Installationsdatei herunter.
 
 Starte nun die Installation von \git durch Doppelklick auf die
 Installationsdatei. Die nachfolgenden Bilder zeigen den Ablauf in der
-Version vom November 2025.
+Version vom November 2025. Beachte, dass dieses Handout für die digitale
+Verwendung gedacht ist -- aus diesem Grund füge ich die Bilderstrecke
+hier ein. Für einen Ausdruck wäre das Verschwendung!
 
-ToDo: Bilderstrecke
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_001.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_002.png}
+
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_003.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_004.png}
+
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_005.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_007.png}
+
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_008.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_009.png}
+
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_010.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_011.png}
+
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_012.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_013.png}
+
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_014.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_015.png}
+
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_016.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_017.png}
 
 \subsection{Linux}\label{linux}
 
@@ -492,6 +520,9 @@ Befehl
 \ExtensionTok{apt}\NormalTok{ install git }\AttributeTok{{-}y}
 \end{Highlighting}
 \end{Shaded}
+
+Bei der Installation von Ubuntu-Server wird \git allerdings gleich mit
+installiert.
 
 \subsection{MacOS}\label{macos}
 
@@ -508,7 +539,7 @@ Bevor du wirklich mit dem Server arbeiten wirst, steht die lokale
 Anwendung von \git im Vordergrund. Du arbeitest also auf deinem Laptop,
 Arbeitsplatz, \ldots{}
 
-Du kannst diese Methode verwenden um alleine Software zu entwickeln,
+Du kannst diese Methode verwenden, um alleine Software zu entwickeln,
 aber auch für die Verwaltung von verschiedenen Versionen deiner
 Unterrichtsvorbereitung.
 
@@ -526,8 +557,8 @@ Nachfolgend besprechen wir folgende Punkte
   Einfache Fehlerbehebung
 \end{itemize}
 
-Die nachfolgende Liste an Befehlen ist keineswegs vollständig, aber mit
-den markierten Befehlen sind fast alle Aspekte der täglichen Arbeit
+Die hier angegebene Liste an Befehlen ist keineswegs vollständig, aber
+mit den markierten Befehlen sind fast alle Aspekte der täglichen Arbeit
 abgedeckt. Wir werden sie nachfolgend behandeln, wenn auch nicht in
 genau dieser Reihenfolge.
 
@@ -538,22 +569,21 @@ Befehl & Befehl \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\textgreater{} \texttt{git\ status} & \texttt{git\ clean} \\
-\texttt{git\ init} & \textgreater{} \texttt{git\ push} \\
-\textgreater{} \texttt{git\ log} & \textgreater{} \texttt{git\ pull} \\
-\textgreater{} \texttt{git\ add} & \texttt{git\ diff} \\
-\textgreater{} \texttt{git\ commit} & \texttt{git\ mergetool} \\
-\texttt{git\ stash} & \textgreater{} \texttt{git\ show} \\
-\textgreater{} \texttt{git\ checkout} & \texttt{git\ fetch} \\
-\textgreater{} \texttt{git\ merge} & \texttt{git\ clone} \\
-\textgreater{} \texttt{git\ branch} & \textgreater{}
-\texttt{git\ remote} \\
-\textgreater{} \texttt{git\ switch} & \\
+\markcmd{git status} & \texttt{git\ clean} \\
+\markcmd{git init} & \markcmd{git push} \\
+\markcmd{git log} & \markcmd{git pull} \\
+\markcmd{git add} & \markcmd{git diff} \\
+\markcmd{git commit} & \texttt{git\ mergetool} \\
+\texttt{git\ stash} & \markcmd{git show} \\
+\markcmd{git checkout} & \markcmd{git fetch} \\
+\markcmd{git merge} & \markcmd{git clone} \\
+\markcmd{git branch} & \markcmd{git remote} \\
+\markcmd{git switch} & \\
 \end{longtable}
 
-Darüber hinaus gibt es noch fortgeschrittene Befehle, die meist der
-Fehlerbehebung dienen. Auf diese Befehle werden wir auch einen Blick
-werfen, aber nicht zu sehr in die Tiefe gehen.
+Darüber hinaus gibt es noch fortgeschrittenere Befehle, die meist der
+Fehlerbehebung dienen. Auf sie werden wir auch einen Blick werfen, aber
+nicht zu sehr in die Tiefe gehen.
 
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
@@ -603,12 +633,12 @@ sein!\footnote{Sollte dir die Schrift im Fenter zu klein sein, kannst du
 Repositories}\label{erstellen-eines-repositories}
 
 Die Voraussetzung für die Arbeit mit \git ist ein Projektordner, in dem
-die relevanten Dateien liegen sollen. In diesem Ordener wirst du dein
+die relevanten Dateien liegen sollen. In diesem Ordner wirst du dein
 erstes (lokales) Repository erstellen.
 
 \subsection{Ordner anlegen}\label{ordner-anlegen}
 
-Ich gehe davon aus, dass das Erstellen eines Ordners mit dem üblichen
+Ich gehe davon aus, dass das Erstellen eines Ordners mit den üblichen
 Werkzeugen kein Problem darstellt und zeige es hier mit Hilfe des
 Terminals bzw. der \gitbash.
 
@@ -619,8 +649,8 @@ Terminals bzw. der \gitbash.
 \end{Highlighting}
 \end{Shaded}
 
-Um den Ordner auch später einfach wiederfinden zu können, solltes du den
-Pfad zum Ordner identifizieren und eventuell notieren:
+Um den Ordner auch später einfach wiederfinden zu können, solltest du
+den Pfad zum Ordner identifizieren und eventuell notieren:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -759,8 +789,7 @@ werden, was in diesem Workshop aber nicht Thema ist!
 
 Erstelle nun mit Hilfe eines Editors (notepad, notepad++,
 Programmierumgebung, \ldots) eine einfache Datei mit dem Namen
-\datei{datei1.txt}, die als Inhalt nur ie Zeile \emph{Version 1}
-enthält.
+\datei{datei1.txt}, die als Inhalt nur „\emph{Version 1}`` enthält.
 
 Auch hier wieder Version mit dem Terminal:
 
@@ -809,7 +838,7 @@ Später im Workshop lernst du auch, wie du Commits nachträglich
 zusammenfassen kannst (=squash) um deine Entwicklungsschritte
 übersichtlich zu halten. \sampleend 
 
-Damit der Versionierungsablauf eigentlich schon definiert:
+Damit ist der Versionierungsablauf eigentlich schon definiert:
 
 \begin{itemize}
 \tightlist
@@ -825,14 +854,15 @@ Damit der Versionierungsablauf eigentlich schon definiert:
 \samplestart
 
 \textbf{Hinweise}\\
-Wenn du die Beschreibung lieber mit dem Editor machen möchtest, rufst du
-\emph{nur} \cmd{git commit} auf.
+Wenn du die Beschreibung lieber mit dem Editor machen möchtest, rufst
+du\\
+\emph{nur} \cmd{git commit} auf (also ohne \texttt{-m}).
 
-In welche Zeitabständen oder Sinnzusammenhängen du Commits erstellst,
+In welchen Zeitabständen oder Sinnzusammenhängen du Commits erstellst,
 ist alleine \emph{deine} Entscheidung. Du solltest aber bedenken, dass
-ein Rücksprung zu einem älteren Commit zunächst von \emph{allen} Dateien
-die Vorgängerversion restauriert. Wenn du also zu viel Änderungen am
-Code vorgenommen hast, die behalten willst, dann wirst du einiges an
+ein Rücksprung zu einem älteren Commit von \emph{allen} Dateien die
+Vorgängerversion restauriert. Wenn du also zu viele Änderungen am Code
+vorgenommen hast, die behalten willst, dann wirst du einiges an
 Handarbeit haben. Deshalb lieber mehr Commits in kürzeren Abständen!
 Fehlerbehebung ist aber ein komplett anderes Thema -- auf einem deutlich
 anderen Niveau! \sampleend
@@ -881,9 +911,9 @@ man die gleiche Datei zwischen zwei Commits mehrfach ändert und
 
 Zusätzlich kann es natürlich auch sein, dass du bestimmte Dateien
 überhaupt nicht in die Versionsverwaltung aufnehmen willst. Das ist zum
-Beispiel dann der Fall, falls sich Kennwörter und Zugangsdaten in eine
-Datei befinden. Wenn du die Namen dieser Datei(en) in eine Datei mit dem
-Namen \texttt{.gitignore} einträgst, werden sie beim \emph{add}
+Beispiel dann der Fall, wenn sich Kennwörter und Zugangsdaten in einer
+Datei befinden. Sobald du die Namen dieser Datei(en) in eine Datei mit
+dem Namen \texttt{.gitignore} einträgst, werden sie beim \emph{add}
 ignoriert.
 
 \begin{Shaded}
@@ -898,9 +928,10 @@ ignoriert.
 \samplestart
 
 \textbf{Hinweis}\\
-\git archiviert keine leeren Ordner, weil es in ihnen keine zu
-archivierenden Dateien gibt. Soll ein leerer Ordner erhalten bleiben,
-musst du eine Datei \datei{.gitkeep} im Ordner erstellen. \sampleend
+\git versioniert keine leeren Ordner, weil es in ihnen keine Dateien
+gibt -- \git arbeitet dateibasiert! Soll ein leerer Ordner versioniert
+werden, so musst du eine Datei \datei{.gitkeep} im Ordner erstellen.
+\sampleend
 
 \bookmarksetup{startatroot}
 
@@ -908,7 +939,7 @@ musst du eine Datei \datei{.gitkeep} im Ordner erstellen. \sampleend
 
 \section{Übung}\label{uxfcbung}
 
-Besonders bei komplexen Systemen wie \git gilt \emph{use it or lose
+Besonders bei komplexen Systemen wie \git gilt: \emph{use it or lose
 it}!\\
 In diesem Sinne kommt hier nun ein \emph{winziger Projektauftrag}:
 
@@ -936,16 +967,16 @@ Steht ein Ordner unter der Verwaltung von \git, so kann man von drei
 \item
   \work (Arbeitsordner)
 \item
-  Stage (auch Index oder Cache genannt)
+  \emph{Stage} (auch Index oder Cache genannt)
 \item
-  Repository\footnote{Je nach Quelle und Kontext wird der Begriff etwas
-    inkonsistent verwendet}
+  \emph{Repository}\footnote{Je nach Quelle und Kontext wird der Begriff
+    etwas inkonsistent verwendet}
 \end{itemize}
 
-Das \work enthält die Dateien an denen gearbeitet wird. Er entspricht
+Das \work enthält die Dateien an denen gearbeitet wird. Es entspricht
 auf den ersten Blick genau einem normalen Ordner für die
-Projektentwicklung. Erst durch die Initialisierung durch \git entsteht
-dann ein weiterer, versteckter Ordner mit dem Namen \emph{.git}. Dieser
+Projektentwicklung. Erst die Initialisierung durch \git erzeugt dann
+einen weiteren, versteckten Ordner mit dem Namen \emph{.git}. Dieser
 Ordner bildet gleichzeitig den \emph{Stage} und das
 \emph{Repository}\footnote{Hier siehst du den inkonsistenten Gebrauch
   von „Repository``. Einerseits wird der gesamte Projektorder als
@@ -956,13 +987,13 @@ Ordner bildet gleichzeitig den \emph{Stage} und das
 
 \textbf{Hinweis}\\
 Es kann sein, dass in deinem Betriebssystem Ordner mit einem führenden
-Punkt nicht angezeigt werden. Dies aber üblicherweise im Dateimanager
+Punkt nicht angezeigt werden. Dies ist aber im Dateimanager
 konfigurierbar. \sampleend
 
-\emph{Logische Bereiche} bedeutet in diesem Zusammenhang, dass diese
-beiden Bereiche von \git verwaltet werden und vom unbedarften Benutzer
-nicht einfach unterschieden werden können. In einem späteren Abschnitt
-werden wir einen genaueren Blick in diesen Ordner werfen.
+\emph{Logische Bereiche} bedeutet in diesem Zusammenhang, dass sie von
+\git verwaltet werden und vom unbedarften Benutzer nicht einfach
+unterschieden werden können. In einem späteren Abschnitt werden wir
+einen genaueren Blick in diesen Ordner werfen.
 
 Betrachten wir zunächst einen Entwicklungszyklus im Detail. Dabei wirst
 du im Wesentlichen die gleichen Befehle wie vorher verwenden, allerdings
@@ -979,25 +1010,25 @@ Das kannst du mit folgenden Befehlen überprüfen:
 \end{Highlighting}
 \end{Shaded}
 
-Neben dem Dateinamen liefert das folgende Ausgabe:
+Neben dem Dateinamen liefert das folgende Ausgabe (andere Hashes!):
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{commit}\NormalTok{ 6db4f3383512a7f3aaaf3b050334d7fd2c474688 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)}
-\ExtensionTok{Author:}\NormalTok{ Wolfgang }\OperatorTok{\textless{}}\NormalTok{hoeferwolf@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Author:}\NormalTok{ Wolfgang }\OperatorTok{\textless{}}\NormalTok{lehrer@t{-}online.de}\OperatorTok{\textgreater{}}
 \ExtensionTok{Date:}\NormalTok{   Thu Nov 13 10:46:50 2025 +0100}
 
     \ExtensionTok{Erläuterung}
 
 \ExtensionTok{commit}\NormalTok{ 430149c83906005ae2c53c8eaf9ce230e3456ad0}
-\ExtensionTok{Author:}\NormalTok{ Wolfgang }\OperatorTok{\textless{}}\NormalTok{hoeferwolf@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Author:}\NormalTok{ Wolfgang }\OperatorTok{\textless{}}\NormalTok{lehrer@t{-}online.de}\OperatorTok{\textgreater{}}
 \ExtensionTok{Date:}\NormalTok{   Thu Nov 13 10:46:50 2025 +0100}
 
     \ExtensionTok{Erste}\NormalTok{ Datei erstellt}
 \end{Highlighting}
 \end{Shaded}
 
-Ob noch Änderungen offen sind,zeigt dir:
+Ob noch Änderungen offen sind, zeigt dir:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1012,11 +1043,12 @@ Ob noch Änderungen offen sind,zeigt dir:
 \end{Shaded}
 
 Das bedeutet, dass du aktuell einen \emph{sauberen} Zustand deines
-Arbeitsordners ohne Änderungen vorliegen hast.
+Arbeitsordners ohne Änderungen an Dateien vorliegen hast.
 
-Erstelle nun eine neue \datei{datei2.txt} und füge die Zeile
-\emph{Version 1} ein. In der Datei \datei{datei1.txt} kommt die Zeile
-\emph{Version 3} dazu:
+Erstelle nun eine neue Datei \datei{datei2.txt} und füge die Zeile
+„\emph{Version 1}`` ein.\\
+In der Datei \datei{datei1.txt} kommt die Zeile „\emph{Version 3}``
+dazu:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1050,9 +1082,10 @@ Erstelle nun eine neue \datei{datei2.txt} und füge die Zeile
 \end{Shaded}
 
 Es wird dir angezeigt, dass Änderungen im \work vorliegen.\\
-Du siehst auch, dass \git die \datei{datei1.txt} bereits kennt
-(=geändert) und dass \datei{datei2.txt} noch nicht in die\\
-Versionsverwaltung aufgenommen wurde (=unversioniert).
+Du siehst auch, dass \git die Datei \datei{datei1.txt} bereits kennt
+(=geändert) und dass\\
+\datei{datei2.txt} noch nicht in die Versionsverwaltung aufgenommen
+wurde (=unversioniert).
 
 \samplestart
 
@@ -1060,7 +1093,7 @@ Versionsverwaltung aufgenommen wurde (=unversioniert).
 Es gibt den Befehl \cmd{git commit -am "bemerkung"}.\\
 Hier musst du wissen, dass nur bereits versionierte Dateien in
 geänderter Form in den Commit übernommen werden -- \datei{datei2.txt}
-würde also ignoeriert.\\
+würde also ignoriert.\\
 \sampleend
 
 Übertrage nun die Änderungen beider Dateien \emph{auf den
@@ -1086,10 +1119,10 @@ Stage}/\emph{in den Stage}:
 \end{Shaded}
 
 Diese Dateien sind nun zum Commit vorgemerkt, also zum festen Eintrag in
-die Projekthistorie -- Das führst du jetzt aber \textbf{nicht aus}!
+die Projekthistorie -- Das führst du jetzt aber \textbf{noch nicht aus}!
 
-Als Demonstration fügen wir beiden Dateien eine weitere Zeile hinzu und
-fragen wieder den Status ab:
+Als Demonstration fügst du beiden Dateien eine weitere Zeile hinzu und
+fragst wieder den Status ab:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1123,9 +1156,9 @@ fragen wieder den Status ab:
 
 Beide Dateien liegen also in verschiedenen Versionen im Stage und im
 \work vor.\\
-Ein Commit transferiert \textbf{nur} die Versionen der Dateien aus dem
-Stage ins Repository, also in die Projekthistorie. Das führt dann zu
-folgender Situation:
+Ein \emph{Commit} transferiert \textbf{nur} die Versionen der
+Dateien\emph{aus dem Stage} ins Repository, also in die Projekthistorie.
+Das führt dann zu folgender Situation:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1189,7 +1222,7 @@ Dieser Abschnitt ist nur als Einblick für Interessierte gedacht! Bitte
 installiere dir in \gitbash das Programm \emph{tree}, um den
 Ausführungen folgen zu können. Die Anleitung befindet sich im Anhang.
 
-Ganz am Anfang muss man wissen, dass es 4 Git-Objekte gibt:
+Ganz am Anfang musst du wissen, dass es 4 Git-Objekte gibt:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -1209,17 +1242,18 @@ Ganz am Anfang muss man wissen, dass es 4 Git-Objekte gibt:
 oder Metadaten.
 
 \textbf{tree}\\
-Ein Tree ist ein (namentliches) Abbild des Arbeitsverzeichnisses. Er
-enthält aber nur die Namen, Typ und Hash der Dateien, Unterordner, also
-der Blobs und Trees, die an anderer Stelle gespeichert sind. Ein Tree
-ist klein, da er keine Dateiinhalte enthält.
+Ein \emph{Tree} ist ein Abbild des Arbeitsverzeichnisses. Er enthält
+aber nur die Namen, Typen und Hashes der Dateien, Ordner und
+Unterordner. Die eigentlichen Dateiinhalte (=Blobs) sind an anderer
+Stelle abgelegt. Ein Tree ist deshalb klein und stellt keine großen
+Ansprüche an den Speicherplatz im Versions-System.
 
 \textbf{commit}\\
-Ein Commit ist ein Zeiger auf den Tree, der zum Zeitpunkt des Commits
-aktuell war. Er enthält noch weitere Metadaten.
+Ein \emph{Commit} ist ein \emph{Zeiger} auf den \emph{Tree}, der zum
+Zeitpunkt des Commits aktuell war. Er enthält noch weitere Metadaten.
 
 \textbf{tag}\\
-Er ist ein Zusatznamen für ausgewählte Commits (Releases), um ohne
+Er ist ein Zusatzname für ausgewählte Commits (z.B. Releases), um ohne
 Kenntnis des Hashs darauf zugreifen zu können.
 
 \subsection{Eigene Experimente}\label{eigene-experimente}
@@ -1243,7 +1277,7 @@ im \work sind:
 
 Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
   habe absichtlich nicht index.html verwendet, weil „index`` aktuell
-  anders belegt ist.}
+  anders belegt ist.}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1252,9 +1286,9 @@ Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
 \end{Highlighting}
 \end{Shaded}
 
-Du siehst erste Änderungen im \emph{.git}-Ordner. Im Bild ist aus
-Platzgründen nur der relevante Ausschnitt angezeigt. Bei dir kann der
-Hash einen anderen Wert besitzen!
+Über ein erneutes \texttt{tree\ .git} siehst du erste Änderungen im
+\emph{.git}-Ordner. Im Bild ist aus Platzgründen nur der relevante
+Ausschnitt angezeigt. Bei dir kann der Hash einen anderen Wert besitzen!
 
 \pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/1_neue_datei.png}}
 
@@ -1279,10 +1313,10 @@ findet du oben in der Ordnerstruktur wieder.
 
 Allerdings wird mit den ersten beiden Zeichen (ce) ein Ordner erstellt
 und in diesem Ordner eine Datei, deren Name aus den restlichen Zeichen
-besteht. Zusätzlich findet man den Dateityp (100644), den Status (Das
+besteht. Zusätzlich findest du den Dateityp (100644), den Status (Das
 ist komplexer! Hier 0) und den Dateinamen.
 
-Den Hash kannst du dir übrigens auch so anzeigen lassen:
+Den Hash der Datei kannst du dir übrigens auch so anzeigen lassen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1314,7 +1348,7 @@ Beispiel seinen Hash:
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{commit}\NormalTok{ b7510dd34252cb3e42bfc82f043d9f42aa00b2f5 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)}
-\ExtensionTok{Author:}\NormalTok{ wolfgang }\OperatorTok{\textless{}}\NormalTok{hoeferwolf@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Author:}\NormalTok{ wolfgang }\OperatorTok{\textless{}}\NormalTok{lehrer@t{-}online.de}\OperatorTok{\textgreater{}}
 \ExtensionTok{Date:}\NormalTok{   Sun Jan 26 20:20:10 2025 +0100}
 
     \ExtensionTok{homepage.html}\NormalTok{ added}
@@ -1322,6 +1356,12 @@ Beispiel seinen Hash:
 \end{Shaded}
 
 Etwas kompakter wird die Darstellung mit \cmd{git log --oneline}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{b7510dd}  \ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)}  \ExtensionTok{homepage.html}\NormalTok{ added}
+\end{Highlighting}
+\end{Shaded}
 
 Der Hash b751\ldots{} scheint also ein Commit zu sein. Das kannst du mit
 \cmd{git cat-file -t b7510dd34252cb3e42bfc82f043d9f42aa00b2f5} auch noch
@@ -1337,8 +1377,8 @@ bekommst du weitere Details:
 
 \CommentTok{\# Ausgabe}
 \ExtensionTok{tree}\NormalTok{ 94eed25c4ef6cfa1384df66f28308c09dc9bf28d   }\OperatorTok{\textless{}\textless{} wichtig!}
-\StringTok{author wolfgang \textless{}hoeferwolf@t{-}online.de\textgreater{} 1737919210 +0100}
-\StringTok{committer wolfgang \textless{}hoeferwolf@t{-}online.de\textgreater{} 1737919210 +0100}
+\StringTok{author wolfgang \textless{}lehrer@t{-}online.de\textgreater{} 1737919210 +0100}
+\StringTok{committer wolfgang \textless{}lehrer@t{-}online.de\textgreater{} 1737919210 +0100}
 
 \StringTok{homepage.html added}
 \end{Highlighting}
@@ -1469,7 +1509,7 @@ Das Log zeigt uns:
 
 \CommentTok{\# Ausgabe}
 \ExtensionTok{commit}\NormalTok{ 70eaef36a87aeb8a1e2eba93577a01329aff34d8 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}\KeywordTok{)}
-\ExtensionTok{Author:}\NormalTok{ Wolfgang }\OperatorTok{\textless{}}\NormalTok{hoeferwolf@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Author:}\NormalTok{ Wolfgang }\OperatorTok{\textless{}}\NormalTok{lehrer@t{-}online.de}\OperatorTok{\textgreater{}}
 \ExtensionTok{Date:}\NormalTok{   Fri Jan 23 12:57:41 2026 +0100}
 
     \ExtensionTok{Datei}\NormalTok{ 1 erstellt}
@@ -1551,7 +1591,7 @@ nachverfolgen:
 \CommentTok{\# Ausgabe }
 \ExtensionTok{Zu}\NormalTok{ neuem Branch }\StringTok{\textquotesingle{}spielplatz\textquotesingle{}}\NormalTok{ gewechselt}
 \ExtensionTok{commit}\NormalTok{ 7c5a585...b99195e33b97ee5353ab0 }\ErrorTok{(}\ExtensionTok{HEAD} \AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ spielplatz, main}\KeywordTok{)}
-\ExtensionTok{Author:}\NormalTok{ Wolfgang }\OperatorTok{\textless{}}\NormalTok{hoeferwolf@t{-}online.de}\OperatorTok{\textgreater{}}
+\ExtensionTok{Author:}\NormalTok{ Wolfgang }\OperatorTok{\textless{}}\NormalTok{lehrer@t{-}online.de}\OperatorTok{\textgreater{}}
 \ExtensionTok{Date:}\NormalTok{   Fri Jan 23 13:38:07 2026 +0100}
 \end{Highlighting}
 \end{Shaded}
@@ -2091,7 +2131,7 @@ folgenden Befehl verwenden:
 
 Wechsle in das Buch-Fenster
 
-\phantomsection\label{annotated-cell-67}%
+\phantomsection\label{annotated-cell-68}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2124,7 +2164,7 @@ Empfohlener Befehl \cmd{git add story1.md}
 
 \textbf{Übertragen in den Stage}
 
-\phantomsection\label{annotated-cell-68}%
+\phantomsection\label{annotated-cell-69}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Eingabe}
@@ -2179,7 +2219,7 @@ Für dich bedeutet das nun das Abarbeiten folgende Schritte:
   Checke den Status: \cmd{git status}
 \end{itemize}
 
-\phantomsection\label{annotated-cell-69}%
+\phantomsection\label{annotated-cell-70}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Ausgabe}
@@ -2243,7 +2283,7 @@ erkennen:
 
 \subsection{Analyse der Differenz}\label{analyse-der-differenz}
 
-\phantomsection\label{annotated-cell-72}%
+\phantomsection\label{annotated-cell-73}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{diff} \AttributeTok{{-}{-}git}\NormalTok{ a/story1.md b/story1.md }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -4038,7 +4078,7 @@ Der nachfolgende Setup erstellt
   eine lokale Kopie des Repositories mit dem Namen \emph{max}
 \end{itemize}
 
-Öffne in einem geeigneten Ordner eine \git-Bash und führe das Script
+Öffne in einem geeigneten Ordner eine \gitbash und führe das Script
 \script{susi\_und\_max.sh} aus.
 
 Beachte, dass im oberen Teil des Scripts etwas Overhead nötig ist, damit
@@ -4159,7 +4199,7 @@ Das macht \git, indem es \emph{Pointer} auf Commits setzt (also quasi
 eine Datei im \ordner{.git}-Ordner führt, wo der aktuelle Hash enthalten
 ist.)
 
-\phantomsection\label{annotated-cell-140}%
+\phantomsection\label{annotated-cell-141}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{...}
@@ -4638,7 +4678,7 @@ Konfiguration erfolgen.
 \includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/mid1.png}
 \ecenter
 
-Am linken Rand sind auch 2 Speicherbereich zu erkennen:
+Am linken Rand sind 2 Speicherbereiche zu erkennen:
 
 \begin{itemize}
 \tightlist
@@ -4650,8 +4690,8 @@ Am linken Rand sind auch 2 Speicherbereich zu erkennen:
 
 Die Platte wurde also in zwei Bereiche unterteilt. Im \emph{local}
 Bereich werden z.B. die heruntergeladenen Images für die Installation
-aufbewahrt. Im LVM-Bereich (Logical Volume Manager) können weitere
-Speichermedien nahtlos eingebunden werden -- also micht als
+aufbewahrt, im LVM-Bereich (Logical Volume Manager) können weitere
+Speichermedien nahtlos eingebunden werden -- also nicht als
 \emph{Laufwerk K} sondern so, als wäre dieses Laufwerk jetzt einfach
 größer. Unter Windows gab (gibt?) es das als DFS (Distributed File
 System). Hier werden die die installierten Systeme gespeichert. Hier
@@ -4660,9 +4700,14 @@ können sie später auch noch wachsen, weil ausreichend Platz ist.
 \textbf{Ubuntu hochladen/herunterladen}
 
 Ein direkter Download von Ubuntu über die URL ist etwas versteckt unter
-\texttt{releases.ubuntu.com} zu finden. Wir verwenden aktuell Version
-24.04.4. Das ist eine LTS-Version (Long Term Support) mit Updates bis
-2029.
+folgender Adresse zu finden:
+
+\begin{verbatim}
+releases.ubuntu.com 
+\end{verbatim}
+
+Wir verwenden aktuell Version 24.04.4. Das ist eine LTS-Version (Long
+Term Support) mit Updates bis 2029.
 
 \begin{itemize}
 \tightlist
@@ -4684,11 +4729,11 @@ Ein direkter Download von Ubuntu über die URL ist etwas versteckt unter
 
 \texttt{https://releases.ubuntu.com/24.04.4/ubuntu-24.04.4-live-server-amd64.iso}
 
-Nach dem Download schließt du das Fenster einfach
+Nach dem Download schließt du das Fenster einfach wieder.
 
 \textbf{Neue Virtuelle Maschine (VM) erstellen}
 
-Klicke oben rechts auf \emph{Create VM}
+Klicke oben rechts auf \emph{Create VM}.
 
 Es folgt ein mehrseitiger Dialog, der bereits großteils sinnvoll
 vorbelegt ist:
@@ -4999,7 +5044,7 @@ Terminal geht das schnell über
 \end{Highlighting}
 \end{Shaded}
 
-Dieses Template musst du clonen, um weiterarbeiten zu können. Auch das
+Dieses Template musst du clonen, um weiterarbeiten zu können -- auch das
 wieder RMT im linken Bereich.\\
 Ein \emph{linked-Clone} ist super, weil er nur die Differenzen zur
 Vorlage speichert und extrem schnell erstellt ist. Ein \emph{full-Clone}
@@ -5058,7 +5103,7 @@ Seit einer der letzten Versionen von Windows ist auch hier bereits ein
 ssh-Client eingebaut. Bei Linux und MacOS gehört er seit Jahrzehnten zum
 Standard. Ich selbst bevorzuge auf Windows allerdings eher das
 (kostenlose) Programm \emph{Putty} und die gerade vorher installierte
-\git-bash.
+\gitbash.
 
 Putty kann unter
 \url{https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html} als
@@ -5287,7 +5332,7 @@ Verschlüsselung damit ad absurdum geführt ist, versteht sich von selbst!
 
 Die Schlüsselerzeugung funktioniert im Prinzip auf allen Betriebssystem
 gleich (vom Befehl) nur die Kommandozeile muss passend gewählt werden.
-Auf Windows sollte einfach die \git-bash verwendet werden, auf den
+Auf Windows sollte einfach die \gitbash verwendet werden, auf den
 anderen Systemen das Terminal.
 
 \begin{Shaded}
@@ -6064,7 +6109,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-200}%
+\phantomsection\label{annotated-cell-202}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -6121,7 +6166,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-202}%
+\phantomsection\label{annotated-cell-204}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -6155,7 +6200,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-203}%
+\phantomsection\label{annotated-cell-205}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -6227,7 +6272,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-205}%
+\phantomsection\label{annotated-cell-207}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6400,7 +6445,7 @@ In den Benutzereinstellungen auf Gitea kann nun ein neuer Schlüssel
 hinzugefügt werden.
 
 \textbf{Auf Windows}\\
-Hier verwendest du den gleichen Befehl innerhalb der git-Bash.
+Hier verwendest du den gleichen Befehl innerhalb der \gitbash.
 
 \subsection{Clonen}\label{clonen}
 
@@ -7277,7 +7322,7 @@ von leeren Repositories Folgeprobleme entstehen können.
 Erstelle eine neue Datei mit dem Namen \texttt{.gitlab-ci.yml} und trage
 ein:
 
-\phantomsection\label{annotated-cell-240}%
+\phantomsection\label{annotated-cell-242}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7394,17 +7439,48 @@ Du siehst:
 
 \subsection{Sinnvollere Anwendung}\label{sinnvollere-anwendung}
 
-Ziel ist das Erstellen eines Buches in \gitlab mit CICD. Dafür brauchen
-wir ein anderes Docker-Image und noch ein paar Erweiterungen in der
-Datei \datei{.gitlab-ci.yml}.
+Ziel ist das Erstellen eines Buches in \gitlab mit CICD. Je nach
+Situation kann das mit einem gemeinsamen Repository durchgespielt
+werden, oder du machst das alleine und schlüpfst in die Rollen
+verschiedener Schüler.
 
-Zunächst erstellst du ein neues Repository, Clonst es auf deinen Rechner
-und entpackst die Dateien aus dem Kursmaterial, die im Paket
-\emph{minibuch.zip} enthalten sind, in dieses Repository.
+Die Idee wäre, dass jeder Schüler seine eigene Kurzgeschichte in einem
+eigenen Branch schreibt und seinen Stand laufend auf \gitlab pusht. Der
+Lehrer (oder andere Schüler) lesen die Geschichte und machen
+Verbesserungsvorschläge. Dies kann auf der Online-Plattform gut mit
+\emph{Issues} (github) bzw. \emph{Pullrequests} (gitlab) in Form einer
+Online- Diskussion erfolgen, bis ein geeigneter Schlussstand erreicht
+wird. Nun kann der Lehrer die Branches auf \emph{main} mergen und die
+Pipeline zum Erstellen des Buches Triggern.
+
+Voraussetzung hierfür ist natürlich, dass die Texte im richtigen Format
+geschrieben werden (sogar online möglich), nämlich als Markdown.\\
+In der Pipline wird ein Erstellungssystem namens \emph{Quarto} als
+Docker-Image geholt und die Dateien nach einer Umwandlung nach LaTeX in
+ein PDF umgewandelt.
+
+Der Vorteil dieser Methode ist, dass es keine Probleme mit
+uneinheitlichen Formatierungen über mehrere Dokumente hinweg gibt. Auf
+\gitlab gibt es bei derartigen Projekten die Möglichkeit, den
+\emph{main}-Branch zu schützen, damit die Schüler ihr Dokument nicht
+direkt dorthin pushen können.
+
+Der Lehrer muss für die Integration der einzelnen Kurszgeschichten in
+ein Zentraldokument noch die passenden \emph{include}-Statements
+schreiben, damit die Zusammenführung funktioniert.
+
+Wenn du das Repository \emph{minibuch} clonst, dann sind die
+wesentlichen Vorbereitungen bereits getroffen.
+
+Nachfolgend beschreibe ich dennoch die wichtigen Schritte, weil du das
+eventuell bei eigenen, anderen Projekten brauchen kannst.
+
+Je nach Projekt wird ein geeignetes Docker-Image benötigt und die Datei
+\datei{.gitlab-ci.yml} entsprechend angepasst werden.
 
 Im Paket befindet sich auch bereits diese \emph{.gitlab-ci.yml}:
 
-\phantomsection\label{annotated-cell-245}%
+\phantomsection\label{annotated-cell-247}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7442,6 +7518,13 @@ Das fertige PDF muss zurück zu \gitlab übertragen werden
 \item[\circled{7}]
 An dieser Stelle befindet sich das PDF
 \end{description}
+
+Lege nun einen Branch mit deinem Namen an und erstelle eine Datei mit
+einer Geschichte im Markdown-Format. Mit einem geeigneten Prompt kann
+hier eine KI hilfreich sein.
+
+Versioniere dein Werk, committe es und führe einen Push deines Branchs
+auf den Server aus.
 
 Führe nun einen Commit aus. Nach diesem Commit sollte der Job
 durchlaufen. Auf \gitlab findest du im Menü (links) bei \emph{Jobs} nun

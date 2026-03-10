@@ -3,7 +3,7 @@
 Bevor du wirklich mit dem Server arbeiten wirst, steht die lokale Anwendung 
 von \git im Vordergrund. Du arbeitest also auf deinem Laptop, Arbeitsplatz, ...  
 
-Du kannst diese Methode verwenden um alleine Software zu entwickeln, aber auch 
+Du kannst diese Methode verwenden, um alleine Software zu entwickeln, aber auch 
 für die Verwaltung von verschiedenen Versionen deiner Unterrichtsvorbereitung.
 
 Nachfolgend besprechen wir folgende Punkte
@@ -14,26 +14,26 @@ Nachfolgend besprechen wir folgende Punkte
 * Einfache Fehlerbehebung
 
 
-Die nachfolgende Liste an Befehlen ist keineswegs vollständig,
+Die hier angegebene Liste an Befehlen ist keineswegs vollständig,
 aber mit den markierten Befehlen sind fast alle Aspekte der 
 täglichen Arbeit abgedeckt. Wir werden sie nachfolgend behandeln,
 wenn auch nicht in genau dieser Reihenfolge.
 
 | Befehl  | Befehl |
 |---|---|
-| > `git status` | `git clean`|
-| `git init`| > `git push`|
-| > `git log`| > `git pull`|
-| > `git add`| `git diff`|
-| > `git commit`| `git mergetool`|
-| `git stash`| > `git show`|
-| > `git checkout`| `git fetch`|
-| > `git merge`| `git clone`|
-| > `git branch`| > `git remote`|
-| > `git switch`| |
+| \markcmd{git status} | `git clean`|
+| \markcmd{git init}| \markcmd{git push}|
+| \markcmd{git log}| \markcmd{git pull}|
+| \markcmd{git add}| \markcmd{git diff}|
+| \markcmd{git commit}| `git mergetool`|
+| `git stash`| \markcmd{git show}|
+| \markcmd{git checkout}| \markcmd{git fetch}|
+| \markcmd{git merge}| \markcmd{git clone}|
+| \markcmd{git branch}|\markcmd{git remote}|
+| \markcmd{git switch}| |
 
-Darüber hinaus gibt es noch fortgeschrittene Befehle,
-die meist der Fehlerbehebung dienen. Auf diese Befehle 
+Darüber hinaus gibt es noch fortgeschrittenere Befehle,
+die meist der Fehlerbehebung dienen. Auf sie 
 werden wir auch einen Blick werfen, aber nicht zu sehr 
 in die Tiefe gehen.
 
@@ -73,11 +73,11 @@ git config --global user.email="susi@sandmann.de"
 
 ## Erstellen eines Repositories 
 Die Voraussetzung für die Arbeit mit \git ist ein  Projektordner, in dem die relevanten Dateien liegen sollen. 
-In diesem Ordener wirst du dein erstes (lokales) Repository erstellen.   
+In diesem Ordner wirst du dein erstes (lokales) Repository erstellen.   
 
 ### Ordner anlegen
 Ich gehe davon aus, dass das Erstellen eines Ordners 
-mit dem üblichen Werkzeugen kein Problem darstellt und
+mit den üblichen Werkzeugen kein Problem darstellt und
 zeige es hier mit Hilfe des Terminals bzw. der \gitbash.
 
 ```bash
@@ -86,7 +86,7 @@ cd versuch_1
 ```
 
 Um den Ordner auch später einfach wiederfinden zu können,
-solltes du den Pfad zum Ordner identifizieren und eventuell notieren:
+solltest du den Pfad zum Ordner identifizieren und eventuell notieren:
 
 ```bash
 pwd 
@@ -195,7 +195,7 @@ Auch sehr große Dateien sind möglich -- aber nicht sinnvoll. Hier kann auf \gi
 
 Erstelle nun mit Hilfe eines 
 Editors (notepad, notepad++, Programmierumgebung, ...) eine einfache Datei 
-mit dem Namen \datei{datei1.txt}, die als Inhalt nur ie Zeile *Version 1* enthält.
+mit dem Namen \datei{datei1.txt}, die als Inhalt nur „*Version 1*“ enthält.
 
 Auch hier wieder Version mit dem Terminal:
 
@@ -240,7 +240,7 @@ um deine Entwicklungsschritte übersichtlich zu halten.
 
 
 
-Damit der Versionierungsablauf eigentlich schon definiert:
+Damit ist der Versionierungsablauf eigentlich schon definiert:
 
 * Dateien, in denen du Änderungen vorgenommen hast, 
   sammelst du mit *add*
@@ -249,12 +249,13 @@ mit einer aussagekräftigen Beschreibung.
 
 \samplestart
 **Hinweise**  
-Wenn du die Beschreibung lieber mit dem Editor machen möchtest, rufst du *nur* \cmd{git commit} auf.  
+Wenn du die Beschreibung lieber mit dem Editor machen möchtest, rufst du   
+*nur* \cmd{git commit} auf (also ohne `-m`).  
 
-In welche Zeitabständen oder Sinnzusammenhängen du
+In welchen Zeitabständen oder Sinnzusammenhängen du
 Commits erstellst, ist alleine *deine* Entscheidung.
 Du solltest aber bedenken, dass ein Rücksprung zu einem 
-älteren Commit zunächst von *allen* Dateien die Vorgängerversion restauriert. Wenn du also zu viel 
+älteren Commit von *allen* Dateien die Vorgängerversion restauriert. Wenn du also zu viele 
 Änderungen am Code vorgenommen hast, die behalten willst, dann wirst du einiges an Handarbeit haben. Deshalb lieber mehr Commits in kürzeren Abständen! Fehlerbehebung ist aber ein komplett
 anderes Thema -- auf einem deutlich anderen Niveau!
 \sampleend
@@ -299,9 +300,9 @@ zwei Commits mehrfach ändert und *addet*.
 
 Zusätzlich kann es natürlich auch sein, dass du 
 bestimmte Dateien überhaupt nicht in die Versionsverwaltung
-aufnehmen willst. Das ist zum Beispiel dann der Fall, falls 
-sich Kennwörter und Zugangsdaten in eine Datei befinden.
-Wenn du die Namen dieser Datei(en) in eine Datei mit 
+aufnehmen willst. Das ist zum Beispiel dann der Fall, wenn 
+sich Kennwörter und Zugangsdaten in einer Datei befinden.
+Sobald du die Namen dieser Datei(en) in eine Datei mit 
 dem Namen `.gitignore` einträgst, werden sie beim *add* ignoriert.
 
 ```bash
@@ -313,8 +314,8 @@ zugangsdaten.txt
 
 \samplestart
 **Hinweis**  
-\git archiviert keine leeren Ordner, weil es in 
-ihnen keine zu archivierenden Dateien gibt.
-Soll ein leerer Ordner erhalten bleiben, musst 
+\git versioniert keine leeren Ordner, weil es in 
+ihnen keine Dateien gibt -- \git arbeitet dateibasiert! 
+Soll ein leerer Ordner versioniert werden, so musst 
 du eine Datei \datei{.gitkeep} im Ordner erstellen.
 \sampleend

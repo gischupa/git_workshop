@@ -176,7 +176,7 @@ Der nachfolgende Setup erstellt
 * eine lokale Kopie des Repositories mit dem Namen *susi*
 * eine lokale Kopie des Repositories mit dem Namen *max*
 
-Öffne in einem geeigneten Ordner eine \git-Bash und 
+Öffne in einem geeigneten Ordner eine \gitbash und 
 führe das Script \script{susi\_und\_max.sh} aus.
 
 Beachte, dass im oberen Teil des Scripts etwas Overhead

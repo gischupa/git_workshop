@@ -51,7 +51,7 @@ git log
 
 # Ausgabe
 commit 70eaef36a87aeb8a1e2eba93577a01329aff34d8 (HEAD -> main)
-Author: Wolfgang <hoeferwolf@t-online.de>
+Author: Wolfgang <lehrer@t-online.de>
 Date:   Fri Jan 23 12:57:41 2026 +0100
 
     Datei 1 erstellt
@@ -122,7 +122,7 @@ git log
 # Ausgabe 
 Zu neuem Branch 'spielplatz' gewechselt
 commit 7c5a585...b99195e33b97ee5353ab0 (HEAD -> spielplatz, main)
-Author: Wolfgang <hoeferwolf@t-online.de>
+Author: Wolfgang <lehrer@t-online.de>
 Date:   Fri Jan 23 13:38:07 2026 +0100
 ```
 
