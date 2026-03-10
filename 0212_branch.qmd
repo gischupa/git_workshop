@@ -171,13 +171,21 @@ dort arbeitest und danach das Ergebnis direkt wieder in den ursprünglichen Bran
 eigentlich gar nichts passiert, außer dass die Pointer passend umgeschrieben werden.
 
 
-TODO: BILD, wann welcher Pointer wo ist
+\bcenter
+![](bilder/branch/spielplatz.png){width=45%}
+![](bilder/branch/spielplatz1.png){width=45%}
+\ecenter
+
 
 Eine typische Fehlvorstellung ist es, dass *Branching* sofort eine Abzweigung
 erzeugt. Korrekt ist aber, dass einfach nur ein Zeiger (also eine Datei,
 die einen Hash enthält) erzeugt wird, der auf den aktuellen Commit zeigt.
 
-BILD vorher - BILD nachher
+
+\bcenter
+![](bilder/branch/spielplatz_start_1.png){width=30%}
+![](bilder/branch/spielplatz_start_2.png){width=30%}
+\ecenter
 
 Der Befehl zur Zusammenführung wird vom Zielbranch aus gegeben. Du holst dir also einen Branch an deinen aktuellen Ort:
 

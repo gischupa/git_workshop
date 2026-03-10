@@ -17,7 +17,7 @@ in der Regel alleine entwickle:
 
 * Während ich am Entwicklungs-Branch arbeite, 
   passiert auf dem Auslieferungsbranch (hier *main*) nichts,
-  außer Bug-Fixes.
+  außer vereinzelte Bug-Fixes.
 * Ich entwickle an einem völlig anderen Feature,
   das den *main*-Branch aktuell gar nicht betrifft.
   
@@ -58,7 +58,7 @@ am gleichen Commit sitzen!
 
 Durch \cmd{git log --oneline --decorate --graph} 
 (merken als „git log dog“) wird diese Sitation
-auch passend dargestellt:
+auch im Terminal passend dargestellt:
 
 ```bash
 *   70c1b21 (HEAD -> main) Merge branch 'entwicklung' into main
@@ -256,7 +256,7 @@ Der Branch \branch{arbeit}
 hängt mit seinen Commits und neuen Hashwerten also direkt 
 am Commit mit dem Hash 1af4a22 aus dem Branch \branch{main}.
 
-Damit der Rebase aber noch nicht abgeschlossen! Du musst nun
+Damit ist der Rebase aber noch nicht abgeschlossen! Du musst nun
 in den *main*-Branch wechseln und einen Merge ausführen
 
 ```bash
@@ -353,7 +353,7 @@ bei *rebase* können sich Commit-Hashes ändern.
 Als Faustregel gilt, dass du die Finger vom Rebase
 lassen solltest, wenn irgendwer außer dir Zugriff 
 auf den betroffen Branch hat (Team-Arbeit).
-Solange du nur auf deinen Rechner arbeitest gibt es 
+Solange du nur lokal auf deinem Rechner arbeitest gibt es 
 (außer Konflikten) kein Problem.
 
 
@@ -364,9 +364,9 @@ Solange du nur auf deinen Rechner arbeitest gibt es
 
 Squash ist kein eigenständiger Befehl, sondern ein Parameter von 
 *rebase*. Angenommen, du hast eine ganze Liste von filigranen
-Commits erzeugt, die du im Nachhinein zu einem Commit 
+Commits erzeugt, die du im Nachhinein zu einem einzigen Commit 
 zusammenfassen willst. In diesem Fall führst du einen 
-*interaktiven Squash* durch :
+*interaktiven Squash* durch:
 
 ```bash
 git rebase -i HEAD~3 # 3 Commits, rückwärts von HEAD

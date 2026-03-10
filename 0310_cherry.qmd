@@ -242,7 +242,7 @@ Hinweis: "git cherry-pick" zu gelangen, führen Sie
 Hinweis:  "git cherry-pick --abort" aus.
 ```
 
-In der betroffenen Datei \datei{datei\_2.html} ist aber kein Konlikt zu erkennen:
+In der betroffenen Datei \datei{datei\_2.html} ist aber kein Konflikt zu erkennen:
 
 ```bash
 Zeile 1

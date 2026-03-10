@@ -5,9 +5,10 @@ Sieh es einfach als Übung und da du dieses PDF ohnehin nicht
 ausdrucken wirst, ist die minimal erhöhte Seitenzahl auch kein Problem.
 
 Dieses Szenario ist etwas komplexer, da wir mit mehreren Dateien
-arbeiten und auch parallele Ideen verfolgen wollen (branching).   
+arbeiten und auch   
+parallele Ideen verfolgen wollen (branching).   
 Da richtiges Programmieren zu lange dauert, erstellen wir in diesem 
-Projekt ein kleines Buches mit Kurzgeschichten.
+Projekt ein kleines Buch mit Kurzgeschichten.
 Die Geschichten wurden von einer KI generiert um den Arbeitsaufwand 
 zu minimieren. 
 
@@ -31,14 +32,22 @@ git clone https://github.com/gischupa/dillingen_storyvorlage.git vorlage
 Es entsteht ein Ordner *vorlage*, in dem die 
 verschiedenen Stände des Projektes enthalten sind.
 
+\samplestart
+**Hinweis**  
+Als Alternative zum Clonen kann der aktuelle Stand des Repositories 
+auch als zip-Datei heruntergeladen und entpackt werden. Das bietet 
+sich auf für die Bereitstellung von Material an, wenn auf den 
+Computern **kein** \git installiert ist.
+\sampleend
+
 ## Labor
 Es dürfte am einfachsten sein, wenn du zwei Terminals öffnest: 
 
-* Eines für den Vorlagenordner 
-* Eines für deinen Arbeitsordner
+* Eines für das Repository des *Vorlagenordners*
+* Eines für das Repository des *Arbeitsordners*
 
-Du wirst ständig zwischen diesen Repositories wechseln müssen
-und dabei sind einzelne Fenster optimal (Wechsel z.B. mit \alt{tab}).
+Du wirst ständig zwischen diesen Terminals/Repositories wechseln müssen
+und dafür sind einzelne Fenster optimal (Wechsel z.B. mit \alt{tab}).
 
 \samplestart
 **Hinweis**  
@@ -63,7 +72,7 @@ cd buch
 # oder mkdir buch; cd buch; git init
 ```   
 
-Falls du nicht die globalen Einstellungen geändert hat:
+Falls du nicht die globalen Einstellungen geändert hast:
 
 ```bash
 git branch -m main 
@@ -148,12 +157,12 @@ protokollierter Punkt in der Projektgeschichte
 
 Du „schreibst“ an deiner Geschichte weiter und damit ändert sich der 
 Stand zwischen Arbeitsverzeichnis und Stage. Wir schreiben nicht -- wir kopieren!   
-Für dich bedeutet das nun das Abarbeiten folgende Schritte:
+Für dich bedeutet das nun das Abarbeiten folgender Schritte:
 
-* Wechsle in den Vorlagenordner (also das Fenster)
+* Wechsle in den Vorlagenordner (also das passende Fenster)
 * Checke den richtigen Stand aus: \cmd{git checkout Step\_2}
 * Kopiere die Datei: \cmd{cp story1.md ../buch/}
-* Wechsle in den Buch-Ordner (also das Fenster)
+* Wechsle in den Buch-Ordner (also das andere Fenster)
 * Checke den Status: \cmd{git status}
 
 ```bash
@@ -183,8 +192,8 @@ die in diesem Zustand sinnvoll sein können!
 \samplestart
 **Hinweis**  
 Wenn du versuchst, die Datei mit \cmd{git rm --cached story1.md} aus 
-dem Stage zu löschen, bekommst du eine Fehlermeldung. 
-Es könnte nämlich sein dass der Vorgang zu Datenverlust führt!
+dem Stage zu löschen, bekommst du eine Fehlermeldung -- es könnte 
+nämlich sein, dass der Vorgang zu Datenverlust führt!
 
 ```bash
 error: die folgende Datei hat zum Commit vorgemerkte Änderungen  
@@ -221,7 +230,7 @@ entdeckte sie den geheimnisvollen Tunnel.    # <5>
 ```
 1. Welche Dateien werden verglichen? `a/` und `b/` sind nur Kennzeichner der Dateien.
    `a/` ist die ältere (z.B. Stage) und `b/` die neuere Datei (z.B. \work).
-2. Bei 9c818e7 und 3126a18 handelt es sich um die Hash-Ids der beiden Dateien, die
+2. Bei 9c818e7 und 3126a18 handelt es sich um die Hash-IDs der beiden Dateien, die
    verglichen werden (dazu unten mehr).
 3. Soll erneut klarstellen `---` ist alt, `+++` ist neu.
 4. Die Zeile heißt *Hunk Header*. Er beginnt und endet mit `@@` 
@@ -263,9 +272,9 @@ Geschichten und Arbeitsversionen an unterschiedlichen
 
 In der Softwareentwicklung sprechen wir hier von *fertigen Produkten*, 
 die an den Kunden ausgeliefert werden und von 
-*Experimenten, Features, Bugfixes, ...*, die parallel entwickelt
+*Experimenten, Features, Bugfixes, ...*, die parallel dazu entwickelt
 werden müssen. Durch ein Experiment darf die aktuell lauffähige 
-Version Nicht beeinträchtigt werden! Du brauchst also einen *Entwicklungszweig* 
+Version nicht beeinträchtigt werden! Du brauchst also einen *Entwicklungszweig* 
 und einen *Auslieferungszweig*.
 
 ```bash
@@ -274,12 +283,12 @@ git switch -c entwicklung_story_2
 ```
 
 *Git* teilt dir mit, dass du dich nun in diesem *Zweig* (=Branch) 
-befindest. Du siehst hier immer noch deine aktuelle Story 1!
-Sie ist ebenfalls in dem Branch enthalten, du hast aber nicht vor,
+befindest. Du siehst hier immer noch deine aktuelle *Story 1*!
+Sie ist ebenfalls in dem neu erstellten Branch enthalten, du hast aber nicht vor,
 an ihr zu arbeiten. Das wäre zwar möglich, würde aber mein Szenario
 hier stören!
 
-Nun beginnst du mit Story 2, indem du sie aus dem Vorlagenordner
+Nun beginnst du mit *Story 2*, indem du sie aus dem Vorlagenordner
 kopierst (weil wir nicht schreiben).
 
 * Wechsle in den Vorlagenordner (Fenster)
@@ -288,7 +297,7 @@ kopierst (weil wir nicht schreiben).
 * Wechsle in den Buch-Ordner (Fenster)
 * Checke den Status: \cmd{git status}
 
-Das ist dein Einstieg in Story 2.
+Das ist dein Einstieg in *Story 2*.
 Du bist mit deinem bisherigen Werk ganz zufrieden,
 hast aber zwei Ideen, wie du weiter machen könntest.
 Aus diesem Grund erstellst du zunächst einen Commit
@@ -333,8 +342,7 @@ verwenden willst, arbeitest auch Idee 2 aus.
 * \cmd{git commit -m "Inhalt nach Idee 2 fortgeführt"}
 
 
-
-Nun hast du das *Problem*, dass du drei Versionen von \datei{story2.md} hast:
+Nun hast du das *Problem*, dass drei Versionen von \datei{story2.md} existieren:
 
 1. Version 1 im Entwicklungszweig.  
    Sie ist die Stufe vor der Neubearbeitung.
@@ -454,7 +462,7 @@ Nun möchtest du die beiden Branches zusammenführen.
 git merge story2_idee_1  # erster Merge
 ```
 
-Beachte, dass jetzt ein Fast-Forward-Merge nicht möglich ist, das 
+Beachte, dass jetzt ein Fast-Forward-Merge nicht möglich ist, da 
 sich beide Branches von ihrem gemeinsamen Vorfahren weg 
 entwickelt haben! Es wird also einen *Merge-Commit* geben, der 
 beide Branches zusammenführt.
@@ -493,6 +501,9 @@ git switch story2_idee_1
 sed -i -e "s/Schildkröte/Riesenschildkröte/g" story2.md
 ```
 
+(Alternativ kannst du auch die letzte Version aus der 
+Vorlage kopieren.)
+
 Zur Kontrolle machst du den Diff erneut:
 
 ```bash
@@ -500,7 +511,7 @@ Zur Kontrolle machst du den Diff erneut:
 git diff --color-words entwicklung_story_2..story2_idee_1
 ```
 
-Seltsam ... du siehst die Riesenschildkröte nicht im Diff. 
+Seltsam ... du siehst die *Riesen*schildkröte nicht im Diff!  
 Aber eigentlich ist das klar, denn es werden ja die Versionen 
 *in den Commits* verglichen und diese neue Version ist 
 noch nicht im Commit. Momentan haben wir also die 
@@ -549,13 +560,13 @@ echo "Version work" > datei.txt
 Nun wollen wir die einzelnen Versionen miteinander 
 vergleichen. Das sind 3 Befehle:
 
-1. work mit *stage*   
+1. \work mit *stage*   
    \cmd{git diff datei.txt}  
    (DAS wird wichtig)
 2. stage mit commit  
    \cmd{git diff --cached datei.txt}  oder  
    \cmd{git diff --staged datei.txt} 
-3. work mit commit  
+3. \work mit commit  
    Wenn man den Hash (z.B. 1234) vom Commit kennt, z.B. durch  
    \cmd{git log}, so kann man diesen verwenden   
    \cmd{git diff 1234 datei.txt}  
@@ -564,7 +575,7 @@ vergleichen. Das sind 3 Befehle:
 
 
 **Variante 2:**  
-Im Commit und dem Workingdir 
+Im Commit und dem \work 
 befinden sich (unterschiedliche) Versionen 
 einer Datei. *Der Stage ist aktuell leer.*
 
@@ -582,13 +593,13 @@ git commit -m "Version 1"
 echo "Version work" > datei.txt 
 ```
 
-1. work mit *commit*   
+1. \work mit *commit*   
    \cmd{git diff datei.txt}  
    (Weil der Stage leer ist)
-2. stage mit commit  
+2. Stage mit commit  
    \cmd{git diff --cached datei.txt}  oder  
    \cmd{git diff --staged datei.txt} 
-3. work mit commit  
+3. \work mit commit  
    Wenn man den Hash (z.B. 1234) vom Commit kennt, z.B. durch  
    \cmd{git log}, so kann man diesen verwenden   
    \cmd{git diff 1234 datei.txt}  
@@ -664,7 +675,7 @@ du mit ihr bisher nichts mehr gemacht hast).
 
 ![](bilder/bash/buch_2.png){width=10cm}
 
-Gut - das war ein langer Weg mit vielen Abzweigungen.
+Gut -- das war ein langer Weg mit vielen Abzweigungen.
 Es ist normal, diesen Abschnitt mehrfach lesen zu müssen!
 
 ### Fazit

@@ -11,7 +11,7 @@ wobei es zwangsläufig Überschneidungen geben wird.
 ### Infrastruktur
 Im Kern ist es egal ob wir vom Setup im Klassenzimmer
 oder im Internet sprechen -- sobald ein Netzwerk beteiligt ist, 
-sind höchstens Sicherheitsaspekte ein Thema, die Basistechnik 
+sind höchstens Sicherheitsaspekte ein Thema -- die Basistechnik 
 bleibt gleich.
 
 Für eine server-basierende Teamarbeit gibt es folgende Varianten
@@ -19,7 +19,7 @@ Für eine server-basierende Teamarbeit gibt es folgende Varianten
 * einfacher \git-Server  
   Die Installation ist einfach, die Grundkonfiguration auch.
   Der Zugriff erfolgt über ssh. Soll das ohne Kennwort 
-  funktionieren, so müssen Schlüssel erzeugt und auf den Server 
+  funktionieren, so müssen Schlüssel erzeugt und auf dem Server 
   eingepflegt werden. Später führt um die Schlüssel aber 
   ohnehin kein Weg herum.
 
@@ -38,7 +38,7 @@ Für eine server-basierende Teamarbeit gibt es folgende Varianten
 
 * Ein bezahlter DSGVO-Konformer Anbieter
 
-* Gemeinnützige Organisationen wie *codeberg.org* (kein CICD)
+* Gemeinnützige Organisationen wie *codeberg.org* (kein CICD(?) )
 
 Bei allen selbst gehosteten Varianten ist eine direkte Installation 
 auf den Server (nicht empfohlen) oder der Einsatz von Docker
@@ -48,8 +48,8 @@ befinden sich weiter hinten im Script.
 ### Änderungen am Workflow
 Bei der Arbeit im Team ändert sich im Vergleich zum 
 lokalen Arbeiten zunächst wenig. Die
-Schritte *branch, add, commit, ...* 
-funktionieren wie auch bisher. Neu sind 
+Befehle *branch, add, commit, ...* 
+funktionieren genau wie bisher. Neu sind 
 allerdings die folgenden Schritte
 
 * Initiales Holen des Repos auf den eigenen Rechner (=clone)
@@ -64,11 +64,11 @@ Jede Firma stellt für \git ihre eigenen, fest vorgeschriebenenen
 Abläufe auf, an die sich die Mitarbeiter zu halten haben.
 
 ### Mögliche Vereinbarungen
-Auch die folgenden Vereinbarungen müssen nicht in jeder Firma 
-oder jedem Projekt umgesetzt werden!
+Auch die folgenden Vereinbarungen sind nur exemplarisch zu sehen und 
+können in jeder Firma oder jedem Projekt anders umgesetzt werden!
 
 **Verantwortung**  
-Im Projekt gibt es einen \branch{main}, der aber durch 
+Im Projekt gibt es einen Branch \branch{main}, der aber durch 
 entsprechende Maßnahmen für *einfache* Mitarbeiter 
 schreibgeschützt ist. Änderungen dürfen nur nach 
 gründlichen Tests und Code-Reviews in diesen Zweig 
@@ -106,8 +106,8 @@ den aktuellen Stand zu haben.
 
 {{< include bilder/tikz/workflow1.tikz >}}
 
-Merges in die Andere Richtung -- also vom \branch{feature}- auf
-den \branch{development}-Branch sieht man noch keine. Auch der
+Merges in die andere Richtung -- also vom \branch{feature}- auf
+den \branch{development}-Branch sieht man im Bild oben noch keine. Auch der
 \branch{main}-Branch wurde noch nie aktualisiert.
 
 #### Pull und fetch
@@ -118,8 +118,8 @@ auch nicht mehr erzählen. Da aber Code von anderen
 Entwicklern auf deinen Rechner kommt, solltest du 
 diesen eventuell nicht ungesehen in deine Entwicklung
 aufnehmen. Der Befehl \cmd{git pull} macht aber genau das.  
-Willst du an dieser Stelle sicher gehen, so machst
-du zuerst \cmd{git fetch} und siehst dir die Änderungen 
+Willst du an dieser Stelle sicher gehen, so führst
+du zuerst \cmd{git fetch} aus und siehst dir die Änderungen 
 an -- siehe weiter unten. Im Anschluss kannst du
 sie dann mit \cmd{git merge} übernehmen.
 

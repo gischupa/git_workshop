@@ -8,7 +8,7 @@ erhalten bleiben, auch wenn sie später behoben wurden.
 Allerdings treten auch bei der Verwendung von \git 
 Fehler auf -- im Sinne von Bedienfehlern, zu frühem Committen, ...  
 Derartige Fehler müssen möglichst auf dem eigenen Rechner repariert 
-werden, bevor sie dem Team zur Verfügung gestellt werden. 
+werden, bevor die Dateien dem Team zur Verfügung gestellt werden. 
 Nachfolgend besprechen wir einige Szenarien mit kleinen Beispielen. 
 Aktuell ist das Arbeiten mit verschiedenen Entwicklungszweigen noch nicht 
 Thema und auch Teamarbeit lassen wir außen vor. Wenn wir die aktuellen
@@ -116,7 +116,7 @@ git show <HASH>:datei.txt > datei_alt.txt
 
 ## Größerer Fehler
 
-Du hast nach dem letztem Commit viele Fehler in einer Vilezahl 
+Du hast nach dem letztem Commit viele Fehler in einer Vielzahl 
 von Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. 
 Hier hilft \cmd{reset}. Diesen Befehl gibt es in 3 Versionen
 
@@ -202,7 +202,7 @@ git status # zeigt eine geänderte, versionierte Datei
 
 Wenn du in obigem Script das \cmd{--mixed} durch \cmd{--soft}
 ersetzt, dann passiert auf den ersten Blick nichts anderes als bei \cmd{--mixed}. Beim \cmd{status} erscheint die Datei mit den 10 Zeile 
-aber nun bereits im Stage und könnte sofort commitet werden.
+aber nun bereits im Stage und könnte sofort committet werden.
 
 
 ## Da war doch mal was

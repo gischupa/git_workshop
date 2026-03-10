@@ -119,15 +119,17 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
 % Set default figure placement to htbp
-\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 
@@ -326,7 +328,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[colback={codebgcolor}, breakable, enhanced, boxrule=0pt, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, sharp corners, colback={codebgcolor}, enhanced, breakable, frame hidden]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -345,7 +347,7 @@
 \let\LanguageShortHands\languageshorthands
 \def\languageshorthands#1{}
 \ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
+  \usepackage[german]{selnolig} % disable illegal ligatures
 \fi
 \usepackage{bookmark}
 
@@ -475,29 +477,29 @@ Version vom November 2025. Beachte, dass dieses Handout für die digitale
 Verwendung gedacht ist -- aus diesem Grund füge ich die Bilderstrecke
 hier ein. Für einen Ausdruck wäre das Verschwendung!
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_001.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_002.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_001.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_002.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_003.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_004.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_003.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_004.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_005.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_007.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_005.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_007.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_008.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_009.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_008.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_009.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_010.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_011.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_010.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_011.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_012.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_013.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_012.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_013.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_014.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_015.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_014.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_015.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_016.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_017.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_016.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_017.png}
 
 \subsection{Linux}\label{linux}
 
@@ -1262,7 +1264,7 @@ Wenn du nun die Verzeichnisstruktur des Ordners \emph{.git} genauer
 untersuchst, wirst du in etwa dies hier sehen, weil noch keine Dateien
 im \work sind:
 
-\includegraphics{bilder/git_internals/base.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/base.png}}
 
 Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
   habe absichtlich nicht index.html verwendet, weil „index`` aktuell
@@ -1279,7 +1281,7 @@ Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
 \emph{.git}-Ordner. Im Bild ist aus Platzgründen nur der relevante
 Ausschnitt angezeigt. Bei dir kann der Hash einen anderen Wert besitzen!
 
-\includegraphics{bilder/git_internals/1_neue_datei.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/1_neue_datei.png}}
 
 Die Datei \datei{index} stellt den \emph{Stage} dar. Diese Datei kannst
 du nicht direkt lesen. Das geht nur mit
@@ -1324,7 +1326,7 @@ Aber gehen wir einen Schritt weiter und committen die Datei:
 Nun sieht die Ordnerstruktur verändert aus -- die Hooks habe ich in der
 Darstellung aus Platzgründen entfernt!
 
-\includegraphics{bilder/git_internals/2_commit.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/2_commit.png}}
 
 Ab hier bekommst du sicher andere, eigene Hash-Werte! Du musst in den
 nachfolgenden Befehlen also deine eigenen Werte verwenden.
@@ -1517,7 +1519,7 @@ besteht, den wir in der Ausgabe des Log sehen.
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight]{bilder/branch_lab/mainbranch.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/branch_lab/mainbranch.png}
 \ecenter
 
 \begin{Shaded}
@@ -1565,7 +1567,8 @@ In der Datei steht nun:
 
 \bcenter
 
-\includegraphics{bilder/branch/head_main.png} \ecenter
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/branch/head_main.png}}
+\ecenter
 
 Der Pointer \emph{main} wird also von Commit zu Commit geschoben und der
 Pointer \emph{HEAD} zeigt ständig auf \emph{main}.
@@ -1603,7 +1606,7 @@ refs/heads/main} , sondern
 \end{Shaded}
 
 Da \emph{spielplatz} und \emph{main} aber auf gleichem Stand -- dem
-aktuellen Commit sind, erhalten wir:
+aktuellen Commit -- sind, erhalten wir:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1627,24 +1630,32 @@ dann also nur noch eine Änderung der Verlinkung in der Datei
 (merge)}\label{zusammenfuxfchren-von-branches-merge}
 
 Dazu kommen weiter hinten im Script noch Varianten, deshalb möchte ich
-hier nur die Grundlagen thematisieren. Merges dienen dem Abgleich
+hier nur die Grundlagen thematisieren. \emph{Merges} dienen dem Abgleich
 verschiedener Branches. Das ist nötig, wenn Änderungen am Code nicht nur
 in einem Branch verfügbar sein dürfen.
 
-Der unkomplizierteste Fall ist es, wenn man in einen Branch wechselt,
-dort arbeitet und danach das Ergebnis direkt wieder in den Branch
-\branch{main} übernimmt. Dieser Vorgang wird \emph{fast Forward (ff)}
-genannt, weil hier eigentlich gar nichts passiert, außer dass die
+Der unkomplizierteste Fall ist es, wenn du in einen Branch wechselst,
+dort arbeitest und danach das Ergebnis direkt wieder in den
+ursprünglichen Branch übernimmst. Dieser Vorgang wird \emph{fast Forward
+(ff)} genannt, weil hier eigentlich gar nichts passiert, außer dass die
 Pointer passend umgeschrieben werden.
 
-TODO: BILD, wann welcher Pointer wo ist
+\bcenter
 
-Eine typische Fehlvorstellung ist es, dass \emph{Branchig} sofort eine
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz.png}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz1.png}
+\ecenter
+
+Eine typische Fehlvorstellung ist es, dass \emph{Branching} sofort eine
 Abzweigung erzeugt. Korrekt ist aber, dass einfach nur ein Zeiger (also
 eine Datei, die einen Hash enthält) erzeugt wird, der auf den aktuellen
 Commit zeigt.
 
-BILD vorher - BILD nachher
+\bcenter
+
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_1.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_2.png}
+\ecenter
 
 Der Befehl zur Zusammenführung wird vom Zielbranch aus gegeben. Du holst
 dir also einen Branch an deinen aktuellen Ort:
@@ -1672,11 +1683,12 @@ wurden.
 Allerdings treten auch bei der Verwendung von \git  Fehler auf -- im
 Sinne von Bedienfehlern, zu frühem Committen, \ldots{}\\
 Derartige Fehler müssen möglichst auf dem eigenen Rechner repariert
-werden, bevor sie dem Team zur Verfügung gestellt werden. Nachfolgend
-besprechen wir einige Szenarien mit kleinen Beispielen. Aktuell ist das
-Arbeiten mit verschiedenen Entwicklungszweigen noch nicht Thema und auch
-Teamarbeit lassen wir außen vor. Wenn wir die aktuellen Beispiele
-behandelt haben, ist der Schritt zur Teamarbeit nur sehr kurz.
+werden, bevor die Dateien dem Team zur Verfügung gestellt werden.
+Nachfolgend besprechen wir einige Szenarien mit kleinen Beispielen.
+Aktuell ist das Arbeiten mit verschiedenen Entwicklungszweigen noch
+nicht Thema und auch Teamarbeit lassen wir außen vor. Wenn wir die
+aktuellen Beispiele behandelt haben, ist der Schritt zur Teamarbeit nur
+sehr kurz.
 
 \samplestart
 
@@ -1784,7 +1796,7 @@ Problem sieht so aus: \sampleend
 
 \section{Größerer Fehler}\label{gruxf6uxdferer-fehler}
 
-Du hast nach dem letztem Commit viele Fehler in einer Vilezahl von
+Du hast nach dem letztem Commit viele Fehler in einer Vielzahl von
 Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. Hier
 hilft \cmd{reset}. Diesen Befehl gibt es in 3 Versionen
 
@@ -1883,7 +1895,7 @@ Commits deinen Rechner vorher noch nicht verlassen hatten!
 Wenn du in obigem Script das \cmd{--mixed} durch \cmd{--soft} ersetzt,
 dann passiert auf den ersten Blick nichts anderes als bei \cmd{--mixed}.
 Beim \cmd{status} erscheint die Datei mit den 10 Zeile aber nun bereits
-im Stage und könnte sofort commitet werden.
+im Stage und könnte sofort committet werden.
 
 \section{Da war doch mal was}\label{da-war-doch-mal-was}
 
@@ -2017,10 +2029,11 @@ da du dieses PDF ohnehin nicht ausdrucken wirst, ist die minimal erhöhte
 Seitenzahl auch kein Problem.
 
 Dieses Szenario ist etwas komplexer, da wir mit mehreren Dateien
-arbeiten und auch parallele Ideen verfolgen wollen (branching).\\
+arbeiten und auch\\
+parallele Ideen verfolgen wollen (branching).\\
 Da richtiges Programmieren zu lange dauert, erstellen wir in diesem
-Projekt ein kleines Buches mit Kurzgeschichten. Die Geschichten wurden
-von einer KI generiert um den Arbeitsaufwand zu minimieren.
+Projekt ein kleines Buch mit Kurzgeschichten. Die Geschichten wurden von
+einer KI generiert um den Arbeitsaufwand zu minimieren.
 
 Die Einzelteile der Geschichten befinden sich in einem \git-Repository
 und müssen zunächst auf den lokalen Computer geclont werden. Das ist ein
@@ -2046,6 +2059,14 @@ und gib ein:
 Es entsteht ein Ordner \emph{vorlage}, in dem die verschiedenen Stände
 des Projektes enthalten sind.
 
+\samplestart
+
+\textbf{Hinweis}\\
+Als Alternative zum Clonen kann der aktuelle Stand des Repositories auch
+als zip-Datei heruntergeladen und entpackt werden. Das bietet sich auf
+für die Bereitstellung von Material an, wenn auf den Computern
+\textbf{kein} \git installiert ist. \sampleend
+
 \section{Labor}\label{labor}
 
 Es dürfte am einfachsten sein, wenn du zwei Terminals öffnest:
@@ -2053,13 +2074,13 @@ Es dürfte am einfachsten sein, wenn du zwei Terminals öffnest:
 \begin{itemize}
 \tightlist
 \item
-  Eines für den Vorlagenordner
+  Eines für das Repository des \emph{Vorlagenordners}
 \item
-  Eines für deinen Arbeitsordner
+  Eines für das Repository des \emph{Arbeitsordners}
 \end{itemize}
 
-Du wirst ständig zwischen diesen Repositories wechseln müssen und dabei
-sind einzelne Fenster optimal (Wechsel z.B. mit \alt{tab}).
+Du wirst ständig zwischen diesen Terminals/Repositories wechseln müssen
+und dafür sind einzelne Fenster optimal (Wechsel z.B. mit \alt{tab}).
 
 \samplestart
 
@@ -2086,7 +2107,7 @@ für das Buch.
 \end{Highlighting}
 \end{Shaded}
 
-Falls du nicht die globalen Einstellungen geändert hat:
+Falls du nicht die globalen Einstellungen geändert hast:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2195,18 +2216,18 @@ Projektgeschichte (=commit) erstellt.
 Du „schreibst`` an deiner Geschichte weiter und damit ändert sich der
 Stand zwischen Arbeitsverzeichnis und Stage. Wir schreiben nicht -- wir
 kopieren!\\
-Für dich bedeutet das nun das Abarbeiten folgende Schritte:
+Für dich bedeutet das nun das Abarbeiten folgender Schritte:
 
 \begin{itemize}
 \tightlist
 \item
-  Wechsle in den Vorlagenordner (also das Fenster)
+  Wechsle in den Vorlagenordner (also das passende Fenster)
 \item
   Checke den richtigen Stand aus: \cmd{git checkout Step\_2}
 \item
   Kopiere die Datei: \cmd{cp story1.md ../buch/}
 \item
-  Wechsle in den Buch-Ordner (also das Fenster)
+  Wechsle in den Buch-Ordner (also das andere Fenster)
 \item
   Checke den Status: \cmd{git status}
 \end{itemize}
@@ -2248,8 +2269,8 @@ sein können!
 
 \textbf{Hinweis}\\
 Wenn du versuchst, die Datei mit \cmd{git rm --cached story1.md} aus dem
-Stage zu löschen, bekommst du eine Fehlermeldung. Es könnte nämlich sein
-dass der Vorgang zu Datenverlust führt!
+Stage zu löschen, bekommst du eine Fehlermeldung -- es könnte nämlich
+sein, dass der Vorgang zu Datenverlust führt!
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2298,7 +2319,7 @@ Welche Dateien werden verglichen? \texttt{a/} und \texttt{b/} sind nur
 Kennzeichner der Dateien. \texttt{a/} ist die ältere (z.B. Stage) und
 \texttt{b/} die neuere Datei (z.B. \work).
 \item[\circled{2}]
-Bei 9c818e7 und 3126a18 handelt es sich um die Hash-Ids der beiden
+Bei 9c818e7 und 3126a18 handelt es sich um die Hash-IDs der beiden
 Dateien, die verglichen werden (dazu unten mehr).
 \item[\circled{3}]
 Soll erneut klarstellen \texttt{-\/-\/-} ist alt, \texttt{+++} ist neu.
@@ -2349,9 +2370,9 @@ fertige Geschichten und Arbeitsversionen an unterschiedlichen
 
 In der Softwareentwicklung sprechen wir hier von \emph{fertigen
 Produkten}, die an den Kunden ausgeliefert werden und von
-\emph{Experimenten, Features, Bugfixes, \ldots{}}, die parallel
+\emph{Experimenten, Features, Bugfixes, \ldots{}}, die parallel dazu
 entwickelt werden müssen. Durch ein Experiment darf die aktuell
-lauffähige Version Nicht beeinträchtigt werden! Du brauchst also einen
+lauffähige Version nicht beeinträchtigt werden! Du brauchst also einen
 \emph{Entwicklungszweig} und einen \emph{Auslieferungszweig}.
 
 \begin{Shaded}
@@ -2362,12 +2383,12 @@ lauffähige Version Nicht beeinträchtigt werden! Du brauchst also einen
 \end{Shaded}
 
 \emph{Git} teilt dir mit, dass du dich nun in diesem \emph{Zweig}
-(=Branch) befindest. Du siehst hier immer noch deine aktuelle Story 1!
-Sie ist ebenfalls in dem Branch enthalten, du hast aber nicht vor, an
-ihr zu arbeiten. Das wäre zwar möglich, würde aber mein Szenario hier
-stören!
+(=Branch) befindest. Du siehst hier immer noch deine aktuelle
+\emph{Story 1}! Sie ist ebenfalls in dem neu erstellten Branch
+enthalten, du hast aber nicht vor, an ihr zu arbeiten. Das wäre zwar
+möglich, würde aber mein Szenario hier stören!
 
-Nun beginnst du mit Story 2, indem du sie aus dem Vorlagenordner
+Nun beginnst du mit \emph{Story 2}, indem du sie aus dem Vorlagenordner
 kopierst (weil wir nicht schreiben).
 
 \begin{itemize}
@@ -2384,9 +2405,9 @@ kopierst (weil wir nicht schreiben).
   Checke den Status: \cmd{git status}
 \end{itemize}
 
-Das ist dein Einstieg in Story 2. Du bist mit deinem bisherigen Werk
-ganz zufrieden, hast aber zwei Ideen, wie du weiter machen könntest. Aus
-diesem Grund erstellst du zunächst einen Commit
+Das ist dein Einstieg in \emph{Story 2}. Du bist mit deinem bisherigen
+Werk ganz zufrieden, hast aber zwei Ideen, wie du weiter machen
+könntest. Aus diesem Grund erstellst du zunächst einen Commit
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2448,8 +2469,8 @@ arbeitest auch Idee 2 aus.
   \cmd{git commit -m "Inhalt nach Idee 2 fortgeführt"}
 \end{itemize}
 
-Nun hast du das \emph{Problem}, dass du drei Versionen von
-\datei{story2.md} hast:
+Nun hast du das \emph{Problem}, dass drei Versionen von
+\datei{story2.md} existieren:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -2603,7 +2624,7 @@ Nun möchtest du die beiden Branches zusammenführen.
 \end{Highlighting}
 \end{Shaded}
 
-Beachte, dass jetzt ein Fast-Forward-Merge nicht möglich ist, das sich
+Beachte, dass jetzt ein Fast-Forward-Merge nicht möglich ist, da sich
 beide Branches von ihrem gemeinsamen Vorfahren weg entwickelt haben! Es
 wird also einen \emph{Merge-Commit} geben, der beide Branches
 zusammenführt.
@@ -2642,6 +2663,8 @@ Du wechselst in den Ideen-Branch und führst die Änderung durch. Verwende
 \end{Highlighting}
 \end{Shaded}
 
+(Alternativ kannst du auch die letzte Version aus der Vorlage kopieren.)
+
 Zur Kontrolle machst du den Diff erneut:
 
 \begin{Shaded}
@@ -2651,9 +2674,9 @@ Zur Kontrolle machst du den Diff erneut:
 \end{Highlighting}
 \end{Shaded}
 
-Seltsam \ldots{} du siehst die Riesenschildkröte nicht im Diff. Aber
-eigentlich ist das klar, denn es werden ja die Versionen \emph{in den
-Commits} verglichen und diese neue Version ist noch nicht im Commit.
+Seltsam \ldots{} du siehst die \emph{Riesen}schildkröte nicht im Diff!\\
+Aber eigentlich ist das klar, denn es werden ja die Versionen \emph{in
+den Commits} verglichen und diese neue Version ist noch nicht im Commit.
 Momentan haben wir also die Situation:
 
 \begin{Shaded}
@@ -2707,7 +2730,7 @@ Nun wollen wir die einzelnen Versionen miteinander vergleichen. Das sind
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  work mit \emph{stage}\\
+  \work mit \emph{stage}\\
   \cmd{git diff datei.txt}\\
   (DAS wird wichtig)
 \item
@@ -2715,7 +2738,7 @@ Nun wollen wir die einzelnen Versionen miteinander vergleichen. Das sind
   \cmd{git diff --cached datei.txt} oder\\
   \cmd{git diff --staged datei.txt}
 \item
-  work mit commit\\
+  \work mit commit\\
   Wenn man den Hash (z.B. 1234) vom Commit kennt, z.B. durch\\
   \cmd{git log}, so kann man diesen verwenden\\
   \cmd{git diff 1234 datei.txt}\\
@@ -2723,7 +2746,7 @@ Nun wollen wir die einzelnen Versionen miteinander vergleichen. Das sind
 \end{enumerate}
 
 \textbf{Variante 2:}\\
-Im Commit und dem Workingdir befinden sich (unterschiedliche) Versionen
+Im Commit und dem \work  befinden sich (unterschiedliche) Versionen
 einer Datei. \emph{Der Stage ist aktuell leer.}
 
 \begin{Shaded}
@@ -2746,15 +2769,15 @@ einer Datei. \emph{Der Stage ist aktuell leer.}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  work mit \emph{commit}\\
+  \work mit \emph{commit}\\
   \cmd{git diff datei.txt}\\
   (Weil der Stage leer ist)
 \item
-  stage mit commit\\
+  Stage mit commit\\
   \cmd{git diff --cached datei.txt} oder\\
   \cmd{git diff --staged datei.txt}
 \item
-  work mit commit\\
+  \work mit commit\\
   Wenn man den Hash (z.B. 1234) vom Commit kennt, z.B. durch\\
   \cmd{git log}, so kann man diesen verwenden\\
   \cmd{git diff 1234 datei.txt}\\
@@ -2835,9 +2858,9 @@ Das nachfolgende Diagramm zeigt den Ablauf der Operationen zwischen den
 beiden Zweigen (Idee 2 wurde ausgeblendet, weil du mit ihr bisher nichts
 mehr gemacht hast).
 
-\includegraphics[width=10cm,height=\textheight]{bilder/bash/buch_2.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/bash/buch_2.png}
 
-Gut - das war ein langer Weg mit vielen Abzweigungen. Es ist normal,
+Gut -- das war ein langer Weg mit vielen Abzweigungen. Es ist normal,
 diesen Abschnitt mehrfach lesen zu müssen!
 
 \subsection{Fazit}\label{fazit}
@@ -2896,7 +2919,8 @@ alleine entwickle:
 \tightlist
 \item
   Während ich am Entwicklungs-Branch arbeite, passiert auf dem
-  Auslieferungsbranch (hier \emph{main}) nichts, außer Bug-Fixes.
+  Auslieferungsbranch (hier \emph{main}) nichts, außer vereinzelte
+  Bug-Fixes.
 \item
   Ich entwickle an einem völlig anderen Feature, das den
   \emph{main}-Branch aktuell gar nicht betrifft.
@@ -2910,7 +2934,7 @@ den letzten Commit des Entwicklungs-Branch geschoben. In dieser
 Situation wird der Branch im Diagramm nicht einmal als visuelle
 Abzweigung dargestellt:
 
-\includegraphics[width=16cm,height=\textheight]{bilder/bash/fast_forward.png}
+\includegraphics[width=16cm,height=\textheight,keepaspectratio]{bilder/bash/fast_forward.png}
 
 Erkennbar sind die grünen Rechtecke, die die Enden der Branches
 kennzeichnen. Im Bild links sind die Branches getrennt, im Bild rechts
@@ -2922,7 +2946,7 @@ siehst, hat sich beim Merge die Anzahl Commits nicht verändert.
 Wenn sich der \emph{main}-Branch parallel zum Entwicklungsbranch
 weiterentwickelt, sieht die Sitation ganz anders aus!
 
-\includegraphics{bilder/bash/drei_wege.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/drei_wege.png}}
 
 Du siehst, dass sich der \emph{main}-Branch noch \emph{Schritt 3} zu
 \emph{Schritt 7} weiterentwickelt hat (neuer Commit). Denk immer daran,
@@ -4666,8 +4690,8 @@ Konfiguration erfolgen.
 
 \bcenter
 
-\includegraphics[width=3cm,height=\textheight]{bilder/inst/proxmox/left1.png}
-\includegraphics[width=10cm,height=\textheight]{bilder/inst/proxmox/mid1.png}
+\includegraphics[width=3cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/left1.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/mid1.png}
 \ecenter
 
 Am linken Rand sind 2 Speicherbereiche zu erkennen:
@@ -4732,7 +4756,7 @@ vorbelegt ist:
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf1.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf1.png}}
 
 }
 
@@ -4741,7 +4765,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf2.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf2.png}}
 
 }
 
@@ -4750,7 +4774,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf3.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf3.png}}
 
 }
 
@@ -4759,7 +4783,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf4.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf4.png}}
 
 }
 
@@ -4768,7 +4792,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf5.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf5.png}}
 
 }
 
@@ -4777,7 +4801,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf6.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf6.png}}
 
 }
 
@@ -4786,7 +4810,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf7.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf7.png}}
 
 }
 
@@ -4795,7 +4819,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf8.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf8.png}}
 
 }
 
@@ -4820,11 +4844,11 @@ Auf der Console siehst du für 30 Sekunden den Startbidschirm von Ubuntu,
 bevor es weiter zur Installation geht. Bitte Beachte, dass
 \emph{Console} hier nicht (aber auch) für das Terminal einer virtuellen
 Maschine steht. Hier kann das auch eine GUI sein!.
-\includegraphics{bilder/inst/proxmox/inst_1.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_1.png}}
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_2.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_2.png}}
 
 }
 
@@ -4833,7 +4857,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_3.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_3.png}}
 
 }
 
@@ -4842,7 +4866,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_4.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_4.png}}
 
 }
 
@@ -4851,7 +4875,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_5.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_5.png}}
 
 }
 
@@ -4866,7 +4890,7 @@ Voreinstellungen.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_6.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_6.png}}
 
 }
 
@@ -4875,7 +4899,7 @@ Voreinstellungen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_7.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_7.png}}
 
 }
 
@@ -4884,7 +4908,7 @@ Voreinstellungen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_8.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_8.png}}
 
 }
 
@@ -4897,7 +4921,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_9.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_9.png}}
 
 }
 
@@ -4906,7 +4930,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_10.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_10.png}}
 
 }
 
@@ -4915,7 +4939,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_11.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_11.png}}
 
 }
 
@@ -4928,7 +4952,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_12.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_12.png}}
 
 }
 
@@ -4937,7 +4961,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_13.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_13.png}}
 
 }
 
@@ -4946,7 +4970,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_14.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_14.png}}
 
 }
 
@@ -4958,7 +4982,7 @@ Keys haben wir aktuell keine zum Importieren.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_15.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_15.png}}
 
 }
 
@@ -4967,7 +4991,7 @@ Keys haben wir aktuell keine zum Importieren.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_16.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_16.png}}
 
 }
 
@@ -4976,7 +5000,7 @@ Keys haben wir aktuell keine zum Importieren.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_17.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_17.png}}
 
 }
 
@@ -6694,9 +6718,9 @@ Terminal angezeigt werden:
 Die mehrzeilige Ausgabe in einem Stück in die Oberfläche von
 \gitea kopieren:
 
-\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key1.png}
-\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key2.png}
-\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key3.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key1.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key2.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key3.png}
 
 Damit ist die Grundkonfiguration beendet. Es sollte nun noch eingestellt
 werden, welche Anmelde- und Registrierungsvarianten erlaubt sind, um
@@ -7118,14 +7142,14 @@ Bild.
 Nach der Registrierung ist allerdings noch keine Anmeldung am System
 möglich -- sie muss erst von \emph{root} freigeschaltet werden.
 
-\includegraphics{bilder/gitlab/approve_1.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_1.png}}
 
-\includegraphics{bilder/gitlab/approve_2.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_2.png}}
 
-\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_3.png}
-\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_4.png}
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_3.png}
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_4.png}
 
-\includegraphics{bilder/gitlab/approve_5.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_5.png}}
 
 Danach ist für den Benutzer die Anmeldung möglich und er kann eigene
 Projekte erstellen. Am Startbildschirm erscheint auch ein Hinweis (mit
@@ -7939,7 +7963,8 @@ Hilfs-Scripts!)
 
 \bcenter
 
-\includegraphics{bilder/tdd/full_tree.png} \ecenter
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/tdd/full_tree.png}}
+\ecenter
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht alle
 Ordner. Sie werden bei Bedarf dynamisch von \maven angelegt.
@@ -8025,7 +8050,7 @@ Das liefert folgende Struktur:
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight]{bilder/tdd/tree_init.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/tdd/tree_init.png}
 \ecenter
 
 Dieses Projekt kann bereits (fast) compiliert werden. Zuerst müssen wir
