@@ -14,10 +14,10 @@ git add .   # DAS ist anders!
 # GEHT NICHT MEHR
 git restore datei.txt  
 
--------- LÖSUNG
+#-------- LÖSUNG
 
-git log => HASH
-git restore --source=<HASH> datei.txt 
+echo "git log => HASH"
+echo "git restore --source=<HASH> datei.txt" 
 
---------- ALTERNATIV
-git show <HASH>:datei.txt > datei_alt.txt
+#--------- ALTERNATIV
+echo "git show <HASH>:datei.txt > datei_alt.txt"
