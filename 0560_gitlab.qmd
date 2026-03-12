@@ -77,7 +77,7 @@ da es *external* ist:
 docker network create gitlab_net 
 ```
 
-Nun dem Ordner heraus ausführen 
+Nun aus dem Ordner heraus ausführen 
 
 ```bash
 docker compose up --build
@@ -126,7 +126,7 @@ git clone ssh://git@192.168.3.181:25/root/demo.git
 
 * Neues Kennwort setzen
 * Projekt demo.git erstellen
-* Deinen public-Key Account eintragen (das muss jeder Benutzer machen!)
+* Deinen public-Key in den Account eintragen (das muss jeder Benutzer machen!)
 
 Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über 
 Konsole, GitClients, ... Weboberfläche.
@@ -157,9 +157,8 @@ mir das Bild.
 Nach der Registrierung ist allerdings noch keine Anmeldung am 
 System möglich -- sie muss erst von *root* freigeschaltet werden.
 
-![](bilder/gitlab/approve_1.png)
-
-![](bilder/gitlab/approve_2.png)
+![](bilder/gitlab/approve_1.png){width=7cm}
+![](bilder/gitlab/approve_2.png){width=3cm}
 
 ![](bilder/gitlab/approve_3.png){width=7cm}
 ![](bilder/gitlab/approve_4.png){width=7cm}

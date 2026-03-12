@@ -119,17 +119,15 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\newsavebox\pandoc@box
-\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
-  \sbox\pandoc@box{#1}%
-  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
-  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
-  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
-  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
-  \else\usebox{\pandoc@box}%
-  \fi%
-}
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 % Set default figure placement to htbp
+\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 
@@ -328,7 +326,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, sharp corners, colback={codebgcolor}, enhanced, breakable, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, colback={codebgcolor}, sharp corners, enhanced, breakable, frame hidden]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -347,7 +345,7 @@
 \let\LanguageShortHands\languageshorthands
 \def\languageshorthands#1{}
 \ifLuaTeX
-  \usepackage[german]{selnolig} % disable illegal ligatures
+  \usepackage{selnolig}  % disable illegal ligatures
 \fi
 \usepackage{bookmark}
 
@@ -477,29 +475,29 @@ Version vom November 2025. Beachte, dass dieses Handout für die digitale
 Verwendung gedacht ist -- aus diesem Grund füge ich die Bilderstrecke
 hier ein. Für einen Ausdruck wäre das Verschwendung!
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_001.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_002.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_001.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_002.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_003.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_004.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_003.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_004.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_005.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_007.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_005.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_007.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_008.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_009.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_008.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_009.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_010.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_011.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_010.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_011.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_012.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_013.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_012.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_013.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_014.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_015.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_014.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_015.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_016.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_017.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_016.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_017.png}
 
 \subsection{Linux}\label{linux}
 
@@ -1264,7 +1262,7 @@ Wenn du nun die Verzeichnisstruktur des Ordners \emph{.git} genauer
 untersuchst, wirst du in etwa dies hier sehen, weil noch keine Dateien
 im \work sind:
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/base.png}}
+\includegraphics{bilder/git_internals/base.png}
 
 Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
   habe absichtlich nicht index.html verwendet, weil „index`` aktuell
@@ -1281,7 +1279,7 @@ Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
 \emph{.git}-Ordner. Im Bild ist aus Platzgründen nur der relevante
 Ausschnitt angezeigt. Bei dir kann der Hash einen anderen Wert besitzen!
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/1_neue_datei.png}}
+\includegraphics{bilder/git_internals/1_neue_datei.png}
 
 Die Datei \datei{index} stellt den \emph{Stage} dar. Diese Datei kannst
 du nicht direkt lesen. Das geht nur mit
@@ -1326,7 +1324,7 @@ Aber gehen wir einen Schritt weiter und committen die Datei:
 Nun sieht die Ordnerstruktur verändert aus -- die Hooks habe ich in der
 Darstellung aus Platzgründen entfernt!
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/2_commit.png}}
+\includegraphics{bilder/git_internals/2_commit.png}
 
 Ab hier bekommst du sicher andere, eigene Hash-Werte! Du musst in den
 nachfolgenden Befehlen also deine eigenen Werte verwenden.
@@ -1519,7 +1517,7 @@ besteht, den wir in der Ausgabe des Log sehen.
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/branch_lab/mainbranch.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/branch_lab/mainbranch.png}
 \ecenter
 
 \begin{Shaded}
@@ -1567,8 +1565,7 @@ In der Datei steht nun:
 
 \bcenter
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/branch/head_main.png}}
-\ecenter
+\includegraphics{bilder/branch/head_main.png} \ecenter
 
 Der Pointer \emph{main} wird also von Commit zu Commit geschoben und der
 Pointer \emph{HEAD} zeigt ständig auf \emph{main}.
@@ -1642,8 +1639,8 @@ Pointer passend umgeschrieben werden.
 
 \bcenter
 
-\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz.png}
-\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz1.png}
+\includegraphics[width=0.45\textwidth,height=\textheight]{bilder/branch/spielplatz.png}
+\includegraphics[width=0.45\textwidth,height=\textheight]{bilder/branch/spielplatz1.png}
 \ecenter
 
 Eine typische Fehlvorstellung ist es, dass \emph{Branching} sofort eine
@@ -1653,8 +1650,8 @@ Commit zeigt.
 
 \bcenter
 
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_1.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_2.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/branch/spielplatz_start_1.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/branch/spielplatz_start_2.png}
 \ecenter
 
 Der Befehl zur Zusammenführung wird vom Zielbranch aus gegeben. Du holst
@@ -2858,7 +2855,7 @@ Das nachfolgende Diagramm zeigt den Ablauf der Operationen zwischen den
 beiden Zweigen (Idee 2 wurde ausgeblendet, weil du mit ihr bisher nichts
 mehr gemacht hast).
 
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/bash/buch_2.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/bash/buch_2.png}
 
 Gut -- das war ein langer Weg mit vielen Abzweigungen. Es ist normal,
 diesen Abschnitt mehrfach lesen zu müssen!
@@ -2934,7 +2931,7 @@ den letzten Commit des Entwicklungs-Branch geschoben. In dieser
 Situation wird der Branch im Diagramm nicht einmal als visuelle
 Abzweigung dargestellt:
 
-\includegraphics[width=16cm,height=\textheight,keepaspectratio]{bilder/bash/fast_forward.png}
+\includegraphics[width=16cm,height=\textheight]{bilder/bash/fast_forward.png}
 
 Erkennbar sind die grünen Rechtecke, die die Enden der Branches
 kennzeichnen. Im Bild links sind die Branches getrennt, im Bild rechts
@@ -2946,7 +2943,7 @@ siehst, hat sich beim Merge die Anzahl Commits nicht verändert.
 Wenn sich der \emph{main}-Branch parallel zum Entwicklungsbranch
 weiterentwickelt, sieht die Sitation ganz anders aus!
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/drei_wege.png}}
+\includegraphics{bilder/bash/drei_wege.png}
 
 Du siehst, dass sich der \emph{main}-Branch noch \emph{Schritt 3} zu
 \emph{Schritt 7} weiterentwickelt hat (neuer Commit). Denk immer daran,
@@ -2957,7 +2954,7 @@ darstellt. Du erkennst auch, dass im Diagramm die grünen Spitzen der
 Branches nicht am gleichen Commit sitzen!
 
 Durch \cmd{git log --oneline --decorate --graph} (merken als „git log
-dog``) wird diese Sitation auch passend dargestellt:
+dog``) wird diese Sitation auch im Terminal passend dargestellt:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3167,7 +3164,7 @@ verschwunden. Der Branch \branch{arbeit} hängt mit seinen Commits und
 neuen Hashwerten also direkt am Commit mit dem Hash 1af4a22 aus dem
 Branch \branch{main}.
 
-Damit der Rebase aber noch nicht abgeschlossen! Du musst nun in den
+Damit ist der Rebase aber noch nicht abgeschlossen! Du musst nun in den
 \emph{main}-Branch wechseln und einen Merge ausführen
 
 \begin{Shaded}
@@ -3276,16 +3273,16 @@ Bei \emph{merge} kann die History verzweigter aussehen, bei
 
 Als Faustregel gilt, dass du die Finger vom Rebase lassen solltest, wenn
 irgendwer außer dir Zugriff auf den betroffen Branch hat (Team-Arbeit).
-Solange du nur auf deinen Rechner arbeitest gibt es (außer Konflikten)
-kein Problem.
+Solange du nur lokal auf deinem Rechner arbeitest gibt es (außer
+Konflikten) kein Problem.
 
 \section{Squash}\label{squash}
 
 Squash ist kein eigenständiger Befehl, sondern ein Parameter von
 \emph{rebase}. Angenommen, du hast eine ganze Liste von filigranen
-Commits erzeugt, die du im Nachhinein zu einem Commit zusammenfassen
-willst. In diesem Fall führst du einen \emph{interaktiven Squash} durch
-:
+Commits erzeugt, die du im Nachhinein zu einem einzigen Commit
+zusammenfassen willst. In diesem Fall führst du einen \emph{interaktiven
+Squash} durch:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3741,7 +3738,7 @@ Meldung:
 \end{Highlighting}
 \end{Shaded}
 
-In der betroffenen Datei \datei{datei\_2.html} ist aber kein Konlikt zu
+In der betroffenen Datei \datei{datei\_2.html} ist aber kein Konflikt zu
 erkennen:
 
 \begin{Shaded}
@@ -3856,7 +3853,7 @@ Beide Punkte sollen nachfolgend besprochen werden, wobei es zwangsläufig
 
 Im Kern ist es egal ob wir vom Setup im Klassenzimmer oder im Internet
 sprechen -- sobald ein Netzwerk beteiligt ist, sind höchstens
-Sicherheitsaspekte ein Thema, die Basistechnik bleibt gleich.
+Sicherheitsaspekte ein Thema -- die Basistechnik bleibt gleich.
 
 Für eine server-basierende Teamarbeit gibt es folgende Varianten
 
@@ -3865,7 +3862,7 @@ Für eine server-basierende Teamarbeit gibt es folgende Varianten
   einfacher \git-Server\\
   Die Installation ist einfach, die Grundkonfiguration auch. Der Zugriff
   erfolgt über ssh. Soll das ohne Kennwort funktionieren, so müssen
-  Schlüssel erzeugt und auf den Server eingepflegt werden. Später führt
+  Schlüssel erzeugt und auf dem Server eingepflegt werden. Später führt
   um die Schlüssel aber ohnehin kein Weg herum.
 \item
   \git-Server mit kennwortlosem Zugriff über http.\\
@@ -3882,7 +3879,7 @@ Für eine server-basierende Teamarbeit gibt es folgende Varianten
 \item
   Ein bezahlter DSGVO-Konformer Anbieter
 \item
-  Gemeinnützige Organisationen wie \emph{codeberg.org} (kein CICD)
+  Gemeinnützige Organisationen wie \emph{codeberg.org} (kein CICD(?) )
 \end{itemize}
 
 Bei allen selbst gehosteten Varianten ist eine direkte Installation auf
@@ -3893,8 +3890,8 @@ weiter hinten im Script.
 \subsection{Änderungen am Workflow}\label{uxe4nderungen-am-workflow}
 
 Bei der Arbeit im Team ändert sich im Vergleich zum lokalen Arbeiten
-zunächst wenig. Die Schritte \emph{branch, add, commit, \ldots{}}
-funktionieren wie auch bisher. Neu sind allerdings die folgenden
+zunächst wenig. Die Befehle \emph{branch, add, commit, \ldots{}}
+funktionieren genau wie bisher. Neu sind allerdings die folgenden
 Schritte
 
 \begin{itemize}
@@ -3916,14 +3913,14 @@ haben.
 
 \subsection{Mögliche Vereinbarungen}\label{muxf6gliche-vereinbarungen}
 
-Auch die folgenden Vereinbarungen müssen nicht in jeder Firma oder jedem
-Projekt umgesetzt werden!
+Auch die folgenden Vereinbarungen sind nur exemplarisch zu sehen und
+können in jeder Firma oder jedem Projekt anders umgesetzt werden!
 
 \textbf{Verantwortung}\\
-Im Projekt gibt es einen \branch{main}, der aber durch entsprechende
-Maßnahmen für \emph{einfache} Mitarbeiter schreibgeschützt ist.
-Änderungen dürfen nur nach gründlichen Tests und Code-Reviews in diesen
-Zweig aufgenommen werden. In der Regel gilt hier auch ein
+Im Projekt gibt es einen Branch \branch{main}, der aber durch
+entsprechende Maßnahmen für \emph{einfache} Mitarbeiter schreibgeschützt
+ist. Änderungen dürfen nur nach gründlichen Tests und Code-Reviews in
+diesen Zweig aufgenommen werden. In der Regel gilt hier auch ein
 \emph{Mehr-Augen-Prinzip} oder noch weiter gestaffelte
 Zuständigkeitshierarchien.
 
@@ -4007,8 +4004,8 @@ Stand zu haben.
 
 \end{tikzpicture}
 
-Merges in die Andere Richtung -- also vom \branch{feature}- auf den
-\branch{development}-Branch sieht man noch keine. Auch der
+Merges in die andere Richtung -- also vom \branch{feature}- auf den
+\branch{development}-Branch sieht man im Bild oben noch keine. Auch der
 \branch{main}-Branch wurde noch nie aktualisiert.
 
 \subsubsection{Pull und fetch}\label{pull-und-fetch}
@@ -4018,9 +4015,9 @@ einfach und eventuell muss man den Schülern auch nicht mehr erzählen. Da
 aber Code von anderen Entwicklern auf deinen Rechner kommt, solltest du
 diesen eventuell nicht ungesehen in deine Entwicklung aufnehmen. Der
 Befehl \cmd{git pull} macht aber genau das.\\
-Willst du an dieser Stelle sicher gehen, so machst du zuerst
-\cmd{git fetch} und siehst dir die Änderungen an -- siehe weiter unten.
-Im Anschluss kannst du sie dann mit \cmd{git merge} übernehmen.
+Willst du an dieser Stelle sicher gehen, so führst du zuerst
+\cmd{git fetch} aus und siehst dir die Änderungen an -- siehe weiter
+unten. Im Anschluss kannst du sie dann mit \cmd{git merge} übernehmen.
 
 \section{Hands on}\label{hands-on}
 
@@ -4690,8 +4687,8 @@ Konfiguration erfolgen.
 
 \bcenter
 
-\includegraphics[width=3cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/left1.png}
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/mid1.png}
+\includegraphics[width=3cm,height=\textheight]{bilder/inst/proxmox/left1.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/inst/proxmox/mid1.png}
 \ecenter
 
 Am linken Rand sind 2 Speicherbereiche zu erkennen:
@@ -4756,7 +4753,7 @@ vorbelegt ist:
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf1.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf1.png}
 
 }
 
@@ -4765,7 +4762,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf2.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf2.png}
 
 }
 
@@ -4774,7 +4771,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf3.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf3.png}
 
 }
 
@@ -4783,7 +4780,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf4.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf4.png}
 
 }
 
@@ -4792,7 +4789,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf5.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf5.png}
 
 }
 
@@ -4801,7 +4798,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf6.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf6.png}
 
 }
 
@@ -4810,7 +4807,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf7.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf7.png}
 
 }
 
@@ -4819,7 +4816,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf8.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf8.png}
 
 }
 
@@ -4844,11 +4841,11 @@ Auf der Console siehst du für 30 Sekunden den Startbidschirm von Ubuntu,
 bevor es weiter zur Installation geht. Bitte Beachte, dass
 \emph{Console} hier nicht (aber auch) für das Terminal einer virtuellen
 Maschine steht. Hier kann das auch eine GUI sein!.
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_1.png}}
+\includegraphics{bilder/inst/proxmox/inst_1.png}
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_2.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_2.png}
 
 }
 
@@ -4857,7 +4854,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_3.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_3.png}
 
 }
 
@@ -4866,7 +4863,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_4.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_4.png}
 
 }
 
@@ -4875,7 +4872,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_5.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_5.png}
 
 }
 
@@ -4890,7 +4887,7 @@ Voreinstellungen.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_6.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_6.png}
 
 }
 
@@ -4899,7 +4896,7 @@ Voreinstellungen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_7.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_7.png}
 
 }
 
@@ -4908,7 +4905,7 @@ Voreinstellungen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_8.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_8.png}
 
 }
 
@@ -4921,7 +4918,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_9.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_9.png}
 
 }
 
@@ -4930,7 +4927,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_10.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_10.png}
 
 }
 
@@ -4939,7 +4936,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_11.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_11.png}
 
 }
 
@@ -4952,7 +4949,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_12.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_12.png}
 
 }
 
@@ -4961,7 +4958,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_13.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_13.png}
 
 }
 
@@ -4970,7 +4967,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_14.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_14.png}
 
 }
 
@@ -4982,7 +4979,7 @@ Keys haben wir aktuell keine zum Importieren.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_15.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_15.png}
 
 }
 
@@ -4991,7 +4988,7 @@ Keys haben wir aktuell keine zum Importieren.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_16.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_16.png}
 
 }
 
@@ -5000,7 +4997,7 @@ Keys haben wir aktuell keine zum Importieren.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_17.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_17.png}
 
 }
 
@@ -5692,40 +5689,10 @@ Die Befehle befinden sich als Script bei den Kursmaterialien! Wegen des
 Layouts sind hier Zeilenubrüche enthalten, die das Script in der
 abgedruckten Form scheitern lassen!
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{sudo} \AttributeTok{{-}i}
-\ExtensionTok{apt}\NormalTok{ update}
-\ExtensionTok{apt}\NormalTok{ install apt{-}transport{-}https curl }\AttributeTok{{-}y} 
-
-\ExtensionTok{curl} \AttributeTok{{-}fsSL}\NormalTok{ https://download.docker.com/linux/ubuntu/gpg  }\DataTypeTok{\textbackslash{} }
-     \KeywordTok{|} \ExtensionTok{gpg} \AttributeTok{{-}{-}dearmor} \AttributeTok{{-}o}\NormalTok{ /etc/apt/keyrings/docker.gpg}
-
-\BuiltInTok{echo} \StringTok{"deb [arch=}\VariableTok{$(}\ExtensionTok{dpkg} \AttributeTok{{-}{-}print{-}architecture}\VariableTok{)}\StringTok{ \textbackslash{} }
-\StringTok{      signed{-}by=/etc/apt/keyrings/docker.gpg] \textbackslash{} }
-\StringTok{      https://download.docker.com/linux/ubuntu \textbackslash{} }
-\StringTok{      }\VariableTok{$(}\BuiltInTok{.}\NormalTok{ /etc/os{-}release }\KeywordTok{\&\&} \BuiltInTok{echo} \StringTok{"}\VariableTok{$VERSION\_CODENAME}\StringTok{"}\VariableTok{)}\StringTok{ \textbackslash{} }
-\StringTok{      stable"} \KeywordTok{|} \FunctionTok{tee}\NormalTok{ /etc/apt/sources.list.d/docker.list }\OperatorTok{\textgreater{}}\NormalTok{ /dev/null}
-
-\ExtensionTok{apt}\NormalTok{ update}
-
-\ExtensionTok{apt}\NormalTok{ install docker{-}ce docker{-}ce{-}cli }\DataTypeTok{\textbackslash{} }
-    \ExtensionTok{containerd.io}\NormalTok{ docker{-}buildx{-}plugin }\DataTypeTok{\textbackslash{} }
-    \ExtensionTok{docker{-}compose{-}plugin} \AttributeTok{{-}y}
-
-
-\VariableTok{compose\_url}\OperatorTok{=}\StringTok{"https://github.com/docker/compose/releases/download"}
-\ExtensionTok{curl} \AttributeTok{{-}L}  \VariableTok{$compose\_url}\NormalTok{/1.28.5/docker{-}compose{-}}\KeywordTok{\textasciigrave{}}\FunctionTok{uname} \DataTypeTok{\textbackslash{} }
-     \ExtensionTok{{-}s}\KeywordTok{\textasciigrave{}}\AttributeTok{{-}}\KeywordTok{\textasciigrave{}}\FunctionTok{uname} \AttributeTok{{-}m}\KeywordTok{\textasciigrave{}} \AttributeTok{{-}o}\NormalTok{ /usr/local/bin/docker{-}compose}
-
-\FunctionTok{chmod}\NormalTok{ +x /usr/local/bin/docker{-}compose}
-\end{Highlighting}
-\end{Shaded}
-
 Aktuell läuft Docker jetzt als Benutzer \emph{root} (=Administrator),
-was man im professionellen Firmenumfeld lieber vermeidet. Es gibt
-Anleitung, wie man das ändert. Im Prinzip muss nur ein weiterer Benutzer
-angelegt und den richtigen Gruppen zugeordnet werden.
+was man im professionellen Firmenumfeld lieber vermeidet. Im Prinzip
+muss nur ein weiterer Benutzer angelegt und der richtigen Gruppe
+zugeordnet werden.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5857,8 +5824,8 @@ docker rm it-tools & Container entfernen -- Image bleibt! \\
 docker rmi ``corentinth/it-tools'' & Entfernt auch das Image \\
 \end{longtable}
 
-Damit ein Container gelöscht werden kann, muss er beendet sein, damit
-ein Image gelöscht werden kann, muss der Container gelöscht sein.
+Damit ein Container gelöscht werden kann, muss er beendet sein.\\
+Damit ein Image gelöscht werden kann, muss der Container gelöscht sein.
 
 \section{Detaillierter}\label{detaillierter}
 
@@ -5872,14 +5839,14 @@ unübersichtlich. Du kannst nun in zwei Stufen die Komplexität erhöhen:
   \emph{docker run} stehen
 \item
   Verwenden von \emph{docker-compose} mit einer zusätzlichen Datei
-  \emph{docker-compose.yml} um z.B. mehrere Server im Verbund zu
-  managen. Dieses Verfahren werden wir bei der Installation von
+  \emph{docker-compose.yml} um z.B. mehrere \emph{Container} im Verbund
+  zu managen. Dieses Verfahren werden wir bei der Installation von
   \gitea und \gitlab verwenden.
 \end{itemize}
 
 Da sowohl Syntax als auch Varianten von beiden Stufen für eine schnelle
 Behandlung zu komplex sind, verweise ich auf entsprechende Tutorials auf
-youtube oder eines der vielen Bücher zum Thema -- z.B. von Michale
+youtube oder eines der vielen Bücher zum Thema -- z.B. von Michael
 Kofler.
 
 \bookmarksetup{startatroot}
@@ -5889,8 +5856,8 @@ Kofler.
 In diesem Abschnitt soll an einem sehr einfachen Beispiel der Aufbau
 eines Dockerfiles und einer docker-compose.yml Datei besprochen werden.
 Dieser Setup deckt wohlgemerkt nicht alle Sicherheitsaspekte ab, die in
-diesem Umfeld möglich sind. Weil es im Unterricht auch oft eine Rolle
-spielt, erstellen wir einen Datenbankserver mit \emph{MySQL} bzw.
+diesem Umfeld möglich sind. Weil Datenbanken im Unterricht auch oft eine
+Rolle spielen, erstellen wir einen Datenbankserver mit \emph{MySQL} bzw.
 \emph{MariaDB}.
 
 \section{Das Dockerfile}\label{das-dockerfile}
@@ -6075,20 +6042,20 @@ Container:
   Runner (Erklärung folgt)
 \end{itemize}
 
-Mit dem nachfolgenden \datei{docker-compose.yaml} können diese erstellt
-und konfiguriert werden.
+Mit der nachfolgenden Datei \datei{docker-compose.yaml} können diese
+erstellt und konfiguriert werden.
 
 \textbf{Was ist ein Runner?}\\
 In fortgeschrittenen Szenarien kann Gitea so konfiguriert werden, dass
 ein Push auf einen bestimmten Branch zu nachgelagerten Aktionen auf dem
-Server führt. Das können Unittests sein, aber auch Compilierungen,
+Server führt. Das können Unit-Tests sein, aber auch Compilierungen,
 Erstellung von Internetseiten, \ldots{} was mit dem versionierten Code
-schlussendlich geplant ist. Wir werden unser Buch-Projekt so anpassen,
-dass aus unseren Dokumenten automatisch ein druckreifes PDF erstellt
-wird. Hier sind wir dann also bei der ursprünglichen Bedeutung der
-\emph{Online-Kollaboration} angelangt.
+schlussendlich eben geplant ist. Wir werden unser Buch-Projekt so
+anpassen, dass aus unseren Dokumenten automatisch ein druckreifes PDF
+erstellt wird. Hier sind wir dann also bei der ursprünglichen Bedeutung
+der \emph{Online-Kollaboration} angelangt.
 
-Damit diese nachgelagerten Aktionen gestartet werden können, läuft eine
+Damit diese nachgelagerten Aktionen gestartet werden können, läuft ein
 \emph{Runner}-Programm in einem eigenen Container. Dieses Programm
 kommuniziert mit dem Gitea-Container und führt bei Bedarf die
 entprechende Aktion aus. In eigentlich fast allen Fällen wird zum
@@ -6097,8 +6064,8 @@ eigentliche Aktion zuständig ist. Die Details dazu folgen weiter unten.
 
 \section{Die Dateien}\label{die-dateien}
 
-Natürlich kann man für jeden benötigten Container eine eigene
-\datei{docker-compose.yaml} erstellen, es ist aber sinnvoll, alle drei
+Natürlich könnte man für jeden benötigten Container eine eigene
+\datei{docker-compose.yaml} erstellen. Es ist aber sinnvoll, alle drei
 Container gemeinsam zu konfigurieren, da dann auch Abhängigkeiten
 zwischen den Containern autmatisch berücksichtigt werden. Wir besprechen
 die verwendete \datei{docker-compose.yaml} zuerst Zeile für Zeile. Die
@@ -6107,7 +6074,7 @@ Kursmaterialien.
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-202}%
+\phantomsection\label{annotated-cell-201}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -6164,7 +6131,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-204}%
+\phantomsection\label{annotated-cell-203}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -6185,7 +6152,8 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 \begin{description}
 \tightlist
 \item[\circled{1}]
-Hier könnte auch \texttt{gitea:latest} stehen, was Upgrades vereinfacht.
+Hier könnte auch \texttt{gitea:latest} stehen, was Upgrades vereinfacht
+\ldots{} allerdings auch zu großen Problemen führen kann!\\
 \item[\circled{2}]
 Möglich sind auch \emph{postgresql} und \emph{sqlite}. Sqlite ist eine
 Alternative für kleine Installationen, da dabei kein eigener
@@ -6198,7 +6166,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-205}%
+\phantomsection\label{annotated-cell-204}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -6227,11 +6195,11 @@ Festlegen des Netzes in dem der Container läuft
 Die Daten von Gitea liegen im Ordner \datei{gitea\_data}, genauer unter
 \datei{/var/lib/docker/volumes/gitea\_data}. Über Volumes wird aber auch
 der Zugriff auf Ressourcen des Servers gesteuert, hier der Zugriff die
-Eistellungen der Zeitzone. (\emph{:ro} nur lesender Zugriff)
+Einstellungen der Zeitzone. (\emph{:ro} nur lesender Zugriff)
 \item[\circled{4}]
-IM Container läuft Gitea auf Port 3000, der Zugriff von außen (Browser)
-erfolgt über Port 4000. Ist hier eher als Demo gedacht, 3000:3000 ginge
-auch.
+\textbf{Im} Container läuft Gitea auf Port 3000, der Zugriff \textbf{von
+außen} (Browser) erfolgt über Port 4000. Das ist hier eher als Demo
+gedacht, 3000:3000 ginge auch.
 \item[\circled{5}]
 Der SSH-Server (für pull, push, \ldots) läuft im Container auf Port 22,
 Zugriff von außen über Port 222. Das ist nötig, da der Server (also der
@@ -6270,7 +6238,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-207}%
+\phantomsection\label{annotated-cell-206}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6358,11 +6326,11 @@ die Spiegelstriche. \sampleend
 
 \textbf{Das Registrierungs-Token}\\
 Bist du in Gitea eingelogged, so kannst du über das Einstellungsmenü
-(Das geht auf Instanz-, Repository- oder Userebene) nach \emph{actions}
-suchen, dort auf \emph{runner} und dann oben rechts auf \emph{neuen
-runner anlegen} (o.ä.) klicken. Dort erscheint dann das Token, das in
-die \datei{docker-compose.yaml} eingetragen werden muss. Beim Neustart
-registriert sich der Runner dann damit bei Gitea.
+(Das geht auf den Ebenen Instanz, Repository oder User) nach
+\emph{actions} suchen, dort auf \emph{runner} und dann oben rechts auf
+\emph{neuen runner anlegen} (o.ä.) klicken. Dort erscheint dann das
+Token, das in die \datei{docker-compose.yaml} eingetragen werden muss.
+Beim Neustart registriert sich der Runner dann damit bei Gitea.
 
 \subsection{Starten}\label{starten}
 
@@ -6493,10 +6461,10 @@ die folgenden Scripte :
 \section{Setup-Script}\label{setup-script}
 
 In den folgenden Abschnitten sind die relevanten Passagen der Scripte
-dokumentiert. Die Befehle müssen nicht per Hand eingegeben werden. Das
-dient lediglich der Dokumentation. Die Scripte \script{setup\_gitea.sh}
-und \script{tune.sh} müssen als \emph{root} bzw. über \emph{sudo}
-ausgeführt werden.
+dokumentiert. Die Befehle müssen nicht per Hand eingegeben werden, dafür
+sind die Scripte \script{setup\_gitea.sh} und \script{tune.sh} im
+Material. Sie müssen als \emph{root} bzw. über \emph{sudo} ausgeführt
+werden.
 
 \textbf{setup\_gitea.sh}
 
@@ -6666,7 +6634,7 @@ deaktiviert werden kann:
 \section{SSH}\label{ssh}
 
 Für den Client muss der ssh-Zugriff möglich sein (clone, push, pull). Es
-kommt hier der normalen ssh-Server auf Port 22 zum Einsatz\footnote{Gitea
+kommt hier der normale ssh-Server auf Port 22 zum Einsatz\footnote{Gitea
   würde über einen eigenen ssh-Server verfügen, den man in einigen
   speziellen Fällen verwenden könnte.}.
 
@@ -6718,9 +6686,9 @@ Terminal angezeigt werden:
 Die mehrzeilige Ausgabe in einem Stück in die Oberfläche von
 \gitea kopieren:
 
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key1.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key2.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key3.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key1.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key2.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key3.png}
 
 Damit ist die Grundkonfiguration beendet. Es sollte nun noch eingestellt
 werden, welche Anmelde- und Registrierungsvarianten erlaubt sind, um
@@ -7050,7 +7018,7 @@ Das Netz für \gitlab muss explizit angelegt werden, da es
 \end{Highlighting}
 \end{Shaded}
 
-Nun dem Ordner heraus ausführen
+Nun aus dem Ordner heraus ausführen
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7110,7 +7078,8 @@ du so (z.B. über Port 25):
 \item
   Projekt demo.git erstellen
 \item
-  Deinen public-Key Account eintragen (das muss jeder Benutzer machen!)
+  Deinen public-Key in den Account eintragen (das muss jeder Benutzer
+  machen!)
 \end{itemize}
 
 Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über Konsole,
@@ -7142,14 +7111,13 @@ Bild.
 Nach der Registrierung ist allerdings noch keine Anmeldung am System
 möglich -- sie muss erst von \emph{root} freigeschaltet werden.
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_1.png}}
+\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_1.png}
+\includegraphics[width=3cm,height=\textheight]{bilder/gitlab/approve_2.png}
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_2.png}}
+\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_3.png}
+\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_4.png}
 
-\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_3.png}
-\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_4.png}
-
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_5.png}}
+\includegraphics{bilder/gitlab/approve_5.png}
 
 Danach ist für den Benutzer die Anmeldung möglich und er kann eigene
 Projekte erstellen. Am Startbildschirm erscheint auch ein Hinweis (mit
@@ -7320,7 +7288,7 @@ von leeren Repositories Folgeprobleme entstehen können.
 Erstelle eine neue Datei mit dem Namen \texttt{.gitlab-ci.yml} und trage
 ein:
 
-\phantomsection\label{annotated-cell-242}%
+\phantomsection\label{annotated-cell-241}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7478,7 +7446,7 @@ Je nach Projekt wird ein geeignetes Docker-Image benötigt und die Datei
 
 Im Paket befindet sich auch bereits diese \emph{.gitlab-ci.yml}:
 
-\phantomsection\label{annotated-cell-247}%
+\phantomsection\label{annotated-cell-246}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7963,8 +7931,7 @@ Hilfs-Scripts!)
 
 \bcenter
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/tdd/full_tree.png}}
-\ecenter
+\includegraphics{bilder/tdd/full_tree.png} \ecenter
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht alle
 Ordner. Sie werden bei Bedarf dynamisch von \maven angelegt.
@@ -8050,7 +8017,7 @@ Das liefert folgende Struktur:
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/tdd/tree_init.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/tdd/tree_init.png}
 \ecenter
 
 Dieses Projekt kann bereits (fast) compiliert werden. Zuerst müssen wir

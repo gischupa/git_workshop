@@ -183,7 +183,7 @@ Beachte, dass im oberen Teil des Scripts etwas Overhead
 nötig ist, damit Susi und Max nicht einfach nur ein leeres Repository clonen. Es ist üblich, dass zumindest eine Datei
 enthalten ist.
 
-```{.bash include="src/hands_on_III/susi_und_max.sh"}
+```{.bash include="src/11_team_hands_on/susi_und_max.sh"}
 ```
 
 Öffne ein zweites Fenster im gleichen Ordner und entscheide 
@@ -416,7 +416,7 @@ Max das ebenfalls machen.
 
 Führe dafür das Script \datei{max\_error.sh} aus.
 
-```{.bash include="src/hands_on_III/max_error.sh"}
+```{.bash include="src/11_team_hands_on/max_error.sh"}
 ```
 
 

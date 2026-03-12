@@ -50,7 +50,7 @@ Das Script \script{cherry\_pick.sh} liefert genau dieses problemlose
 Szenario. *Problemlos* deshalb, weil in beiden Branches komplett andere 
 Dateien bearbeitet werden. Damit können die Änderungen einfach übernommen werden:
 
-```{.bash include="src/cherry/cherry_pick.sh"}
+```{.bash include="src/09_cherry/cherry_pick.sh"}
 ```
 
 **Ergebnis**
@@ -102,7 +102,7 @@ Für den Überblick: Das nachfolgende Script nimmt Änderungen
 an der gleichen Datei in zwei Branches vor. Hier der ist der 
 Inhalt von Script \script{cherry\_pick\_2.sh}:
 
-```{.bash include="src/cherry/cherry_pick_2.sh"}
+```{.bash include="src/09_cherry/cherry_pick_2.sh"}
 ```
 
 ```bash
@@ -220,7 +220,7 @@ cherry-picken. Im Tree sieht das so aus:
 
 Erzeugen können wir die Situation mit dem Script \script{cherry\_pick\_3.sh}:
 
-```{.bash include="src/cherry/cherry_pick_3.sh"}
+```{.bash include="src/09_cherry/cherry_pick_3.sh"}
 ```
 
 

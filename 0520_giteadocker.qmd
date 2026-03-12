@@ -18,21 +18,21 @@ drei Container:
 * Datenbankserver
 * Runner (Erklärung folgt)
 
-Mit dem nachfolgenden \datei{docker-compose.yaml} können diese 
+Mit der nachfolgenden Datei \datei{docker-compose.yaml} können diese 
 erstellt und konfiguriert werden.
 
 **Was ist ein Runner?**  
 In fortgeschrittenen Szenarien kann Gitea so konfiguriert werden,
 dass ein Push auf einen bestimmten Branch zu nachgelagerten Aktionen
-auf dem Server führt. Das können Unittests sein, aber auch Compilierungen,
+auf dem Server führt. Das können Unit-Tests sein, aber auch Compilierungen,
 Erstellung von Internetseiten, ... was mit dem versionierten Code 
-schlussendlich geplant ist.
+schlussendlich eben geplant ist.
 Wir werden unser Buch-Projekt so anpassen, dass aus unseren Dokumenten
 automatisch ein druckreifes PDF erstellt wird. Hier sind wir dann
 also bei der ursprünglichen Bedeutung der *Online-Kollaboration* angelangt.  
 
 Damit diese nachgelagerten Aktionen gestartet werden können, läuft
-eine *Runner*-Programm in einem eigenen Container. Dieses Programm 
+ein *Runner*-Programm in einem eigenen Container. Dieses Programm 
 kommuniziert mit dem Gitea-Container und führt bei Bedarf die 
 entprechende Aktion aus. In eigentlich fast allen Fällen wird zum
 Ausführen ein weiterer Docker-Container erstellt, der für die 
@@ -40,8 +40,8 @@ eigentliche Aktion zuständig ist. Die Details dazu folgen weiter unten.
 
 ## Die Dateien
 
-Natürlich kann man für jeden benötigten Container eine eigene
-\datei{docker-compose.yaml} erstellen, es ist aber sinnvoll, alle drei
+Natürlich könnte man für jeden benötigten Container eine eigene
+\datei{docker-compose.yaml} erstellen. Es ist aber sinnvoll, alle drei
 Container gemeinsam zu konfigurieren, da dann auch Abhängigkeiten
 zwischen den Containern autmatisch berücksichtigt werden.
 Wir besprechen die verwendete \datei{docker-compose.yaml} zuerst Zeile
@@ -113,7 +113,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
       - GITEA__database__PASSWD=gitea
 ```
 1. Hier könnte auch `gitea:latest` stehen, was
-   Upgrades vereinfacht.
+   Upgrades vereinfacht ... allerdings auch zu großen Problemen führen kann!  
 2. Möglich sind auch *postgresql* und *sqlite*.
    Sqlite ist eine Alternative für kleine Installationen,
    da dabei kein eigener Datenbankserver benötigt wird.
@@ -141,11 +141,11 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 3. Die Daten von Gitea liegen im Ordner \datei{gitea\_data},
    genauer unter \datei{/var/lib/docker/volumes/gitea\_data}.
    Über Volumes wird aber auch der Zugriff auf Ressourcen
-   des Servers gesteuert, hier der Zugriff die Eistellungen
+   des Servers gesteuert, hier der Zugriff die Einstellungen
    der Zeitzone. (*:ro* nur lesender Zugriff)
-4. IM Container läuft Gitea auf Port 3000, 
-   der Zugriff von außen (Browser) erfolgt über Port 4000.
-   Ist hier eher als Demo gedacht, 3000:3000 ginge auch.
+4. **Im** Container läuft Gitea auf Port 3000, 
+   der Zugriff **von außen** (Browser) erfolgt über Port 4000.
+   Das ist hier eher als Demo gedacht, 3000:3000 ginge auch.
 5. Der SSH-Server (für pull, push, ...) läuft im Container
    auf Port 22, Zugriff von außen über Port 222. Das ist 
    nötig, da der Server (also der gemietete Server) seinen
@@ -247,7 +247,7 @@ die Spiegelstriche.
 
 **Das Registrierungs-Token**  
 Bist du in Gitea eingelogged, so kannst du über das Einstellungsmenü
-(Das geht auf Instanz-, Repository- oder Userebene) nach *actions* 
+(Das geht auf den Ebenen Instanz, Repository oder User) nach *actions* 
 suchen, dort auf *runner* und dann oben rechts auf *neuen runner 
 anlegen* (o.ä.) klicken. Dort erscheint dann das Token, das in 
 die \datei{docker-compose.yaml} eingetragen werden muss. 

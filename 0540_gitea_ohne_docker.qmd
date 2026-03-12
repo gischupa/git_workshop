@@ -16,12 +16,11 @@ befinden sich auch die folgenden Scripte :
 
 ## Setup-Script
 In den folgenden Abschnitten sind die relevanten Passagen der Scripte dokumentiert. 
-Die Befehle müssen nicht per Hand eingegeben werden. Das dient lediglich der 
-Dokumentation. Die Scripte \script{setup\_gitea.sh} 
-und \script{tune.sh} müssen als *root* bzw. über *sudo* ausgeführt werden.
+Die Befehle müssen nicht per Hand eingegeben werden, dafür sind die Scripte \script{setup\_gitea.sh} 
+und \script{tune.sh} im Material. Sie müssen als *root* bzw. über *sudo* ausgeführt werden.
 
 **setup\_gitea.sh**  
-```{.bash include=src/gitea/setup_gitea.sh}
+```{.bash include=src/21_docker/gitea/setup_gitea.sh}
 ```
 
 ## Nacharbeiten
@@ -105,7 +104,7 @@ selfreg.sh off
 ## SSH
 
 Für den Client muss der ssh-Zugriff möglich sein (clone, push, pull).
-Es kommt hier der normalen ssh-Server auf Port 22 zum Einsatz^[Gitea
+Es kommt hier der normale ssh-Server auf Port 22 zum Einsatz^[Gitea
 würde über einen eigenen ssh-Server verfügen, den man in einigen
 speziellen Fällen verwenden könnte.].
 

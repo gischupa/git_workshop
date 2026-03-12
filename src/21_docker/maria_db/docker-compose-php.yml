@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+db:
+  image: mariadb:latest
+  container_name: mariadb_1
+  environment:
+    MYSQL_ROOT_PASSWORD: rootpassword
+    MYSQL_DATABASE: mydatabase
+    MYSQL_USER: myuser
+    MYSQL_PASSWORD: mypassword
+  ports:
+    - "3306:3306" # Host-Port:Container-Port
+  volumes:
+    - mariadb_data:/var/lib/mysql
+    - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  # Optional: SQL-Datei zum Initialisieren
+  networks:
+    - mariadb_network
+  volumes:
+    mariadb_data: # Persistente Volumes für Datenbankdaten
+
+
+# phpMyAdmin Container
+phpmyadmin:
+  image: phpmyadmin/phpmyadmin:latest
+  container_name: phpmyadmin_container
+  environment:
+    PMA_HOST: db
+    # Name des MariaDB-Services (db)
+    PMA_PORT: 3306
+    # Port von MiraiDB
+    MYSQL_ROOT_PASSWORD: rootpassword
+    # Das Passwort für den Root-Benutzer von MariaDB
+    ports:
+      - "8080:80" # Webinterface auf Port 8080 zugänglich
+
+   networks:
+    - mariadb_network
+   depends_on:
+   - db
+  volumes:
+    mariadb_data:
+   # Persistente Volumes für MariaDB-Daten
+networks:
+mariadb_network:
+driver: bridge
+
+
+  # anzulegende Networks
+  networks:
+    mariadb_network:
+      driver: bridge
