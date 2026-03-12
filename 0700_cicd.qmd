@@ -52,7 +52,7 @@ anzulegen!
 
 
 **Dennoch**  
-Ja - man kann es auch seiner Spielumgebung machen, allerdings nicht so einfach.
+Ja -- man kann es auch seiner Spielumgebung machen, allerdings nicht so einfach.
 
 * root werden
 * `nano config/gitlab.rb` 

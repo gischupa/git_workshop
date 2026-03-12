@@ -45,13 +45,11 @@ Diese Datei definiert genauer, was dieser Prozess wie erledigen soll.
 Du wirst den genauen Aufbau in einem der nächsten Schritte kennenlernen, 
 aber aktuell geht es erst einmal um das Funktionsprinzip.
 
-Wenn das System richtig konfiguriert ist, wird diese Datei einem weiteren
-Programm übergeben, dem *runner*. Dieses Programm kannn 
-auf \gitlab installiert (=shared runner und andere Varianten), aber auch auf 
+Wenn das System richtig konfiguriert ist, wird diese Datei dem *runner* übergeben. Dieser kann -- wie bereits bemerkt -- auf \gitlab installiert (=shared runner und andere Varianten), aber auch auf 
 deinem eigenen Rechner oder Server, der dann eigenständig mit \gitlab 
 kommuniziert um die Befehle in der \datei{.gitlab-ci.yml} abzuarbeiten.
 
-In vielen Fällen muss der Runner dazu einen Docker-Container erstellen.
+In vielen Fällen muss der Runner dazu einen weiteren Docker-Container erstellen.
 
 
 ### Vorbereitung
@@ -64,8 +62,7 @@ beim Clonen von leeren Repositories Folgeprobleme entstehen
 können.
 
 **Schritt 2**  
-Erstelle eine neue Datei mit dem Namen `.gitlab-ci.yml` und 
-trage ein:
+Erstelle eine neue Datei mit dem Namen `.gitlab-ci.yml` und trage ein:
 
 ```bash
 stages:  #<1>
@@ -81,6 +78,8 @@ ausgabe_1:  #<3>
 3. Abschnitt für eine Aktion einleiten
 4. Angabe, zu welchem Schritt die Aktion gehört
 5. Auszuführender Befehl. Bei mehr Befehlen werden Spiegelstriche verwendet.
+
+Diese Datei ist ebenfalls in den Materialien, allerdings ohne den führenden Punkt! 
 
 **Schritt 3**  
 Committe diese Datei.

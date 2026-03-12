@@ -28,7 +28,7 @@ hat der Befehl `systemctl restart ssh` den Dienst aber nicht
 auf den anderen Port umgestellt (wegen laufender Verbindung?).
 Linux-untypisch war ein Reboot die Lösung (im Terminal `reboot` eingeben). 
 Mittlerweile habe ich herausgefunden, dass ein vorher ausgeführtes
-`systemctl daemon-reload` das Problem löst! Damit kein Reboot mehr nötig.
+`systemctl daemon-reload` das Problem löst! Damit ist kein Reboot mehr nötig.
 
 ## Docker
 
@@ -93,7 +93,7 @@ zweiten Terminal mit dem Befehl \cmd{top}.
 
 ```bash
 sudo -i 
-fallocate -l 2G /swapfile
+fallocate -l 4G /swapfile
 chmod 600 /swapfile
 mkswap /swapfile
 swapon /swapfile
@@ -109,10 +109,9 @@ sudo cat config/initial_root_password
 
 Damit ist eine Anmeldung als *root* auf der 
 Weboberfläche möglich. Hier muss nun auch sofort 
-das Kennwort geändert werden! Auch dort brauchst du 
-diese Zeichenkette erneut!
+das Kennwort geändert werden (Wieder Erstkennwort erfoderlich!).
 
-Mit diesem docker-compose File ist ssh-clonen
+Mit diesem *docker-compose*-Setup ist ssh-clonen
 bereits möglich (sobald der ssh-Key im Profil hinterlegt ist). 
 Solltest du auf dem Host einen anderen Port 
 verwenden (gitlab arbeitet intern dennoch mit 22), dann clonst   
@@ -129,12 +128,12 @@ git clone ssh://git@192.168.3.181:25/root/demo.git
 * Deinen public-Key in den Account eintragen (das muss jeder Benutzer machen!)
 
 Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über 
-Konsole, GitClients, ... Weboberfläche.
+Konsole, GitClients, ... ,Weboberfläche.
 
 ## Einstieg in Gitlab
 
 Da für bestimmte Aspekte Bilder aussagekräftiger sind, wird dieser 
-Abschnitt deutlich bildlastig werden. An dieser Stelle sei noch 
+Abschnitt deutlich bildlastiger werden. An dieser Stelle sei noch 
 einmal betont, dass dieses Dokument eigentlich nicht für den Ausdruck 
 gedacht ist! In einer PDF-Datei ist die Anzahl der Seiten mit 
 Bildern ein geringeres ökoligisches Problem!
