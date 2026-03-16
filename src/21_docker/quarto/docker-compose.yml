@@ -1,0 +1,14 @@
+version: '3'
+services:
+ quarto:
+   build:
+     context: .
+   volumes:
+     - ./ergebnis:/ergebnis
+   networks:
+      - nginx_default
+
+networks:
+  nginx_default:
+    external: true
+

@@ -1,26 +1,29 @@
 % Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
+  ngerman,
   letterpaper,
   DIV=11]{scrreprt}
-
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else  
-    % xetex/luatex font selection
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -38,9 +41,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{xcolor}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -106,8 +106,7 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -119,17 +118,44 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
 % Set default figure placement to htbp
-\makeatletter
 \def\fps@figure{htbp}
 \makeatother
+
+
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage[german]{selnolig} % disable illegal ligatures
+\fi
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
 
 % load packages
 \usepackage{geometry}
@@ -271,6 +297,8 @@
   {\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
   {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\titlespacing*{\section}{0pt}{10pt}{10pt}
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
 \KOMAoption{captions}{tableheading}
 \makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
@@ -326,7 +354,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, colback={codebgcolor}, sharp corners, enhanced, breakable, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, enhanced, boxrule=0pt, colback={codebgcolor}, sharp corners, breakable]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -334,23 +362,9 @@
         \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
           \node[shape=circle,draw,inner sep=1pt] (char) {{\scriptsize#1}};}}  
                   
-
-\ifLuaTeX
-\usepackage[bidi=basic]{babel}
-\else
-\usepackage[bidi=default]{babel}
-\fi
-\babelprovide[main,import]{ngerman}
-% get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
-\def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
 \usepackage{bookmark}
-
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same} % disable monospaced font for URLs
+\urlstyle{same}
 \hypersetup{
   pdftitle={Git Workshop},
   pdfauthor={Wolfgang Höfer},
@@ -366,7 +380,6 @@
 \title{Git Workshop}
 \author{Wolfgang Höfer}
 \date{2026-10-03}
-
 \begin{document}
 \maketitle
 
@@ -475,29 +488,29 @@ Version vom November 2025. Beachte, dass dieses Handout für die digitale
 Verwendung gedacht ist -- aus diesem Grund füge ich die Bilderstrecke
 hier ein. Für einen Ausdruck wäre das Verschwendung!
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_001.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_002.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_001.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_002.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_003.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_004.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_003.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_004.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_005.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_007.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_005.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_007.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_008.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_009.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_008.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_009.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_010.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_011.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_010.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_011.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_012.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_013.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_012.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_013.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_014.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_015.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_014.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_015.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_016.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_017.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_016.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_017.png}
 
 \subsection{Linux}\label{linux}
 
@@ -1262,7 +1275,7 @@ Wenn du nun die Verzeichnisstruktur des Ordners \emph{.git} genauer
 untersuchst, wirst du in etwa dies hier sehen, weil noch keine Dateien
 im \work sind:
 
-\includegraphics{bilder/git_internals/base.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/base.png}}
 
 Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
   habe absichtlich nicht index.html verwendet, weil „index`` aktuell
@@ -1279,7 +1292,7 @@ Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
 \emph{.git}-Ordner. Im Bild ist aus Platzgründen nur der relevante
 Ausschnitt angezeigt. Bei dir kann der Hash einen anderen Wert besitzen!
 
-\includegraphics{bilder/git_internals/1_neue_datei.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/1_neue_datei.png}}
 
 Die Datei \datei{index} stellt den \emph{Stage} dar. Diese Datei kannst
 du nicht direkt lesen. Das geht nur mit
@@ -1324,7 +1337,7 @@ Aber gehen wir einen Schritt weiter und committen die Datei:
 Nun sieht die Ordnerstruktur verändert aus -- die Hooks habe ich in der
 Darstellung aus Platzgründen entfernt!
 
-\includegraphics{bilder/git_internals/2_commit.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/2_commit.png}}
 
 Ab hier bekommst du sicher andere, eigene Hash-Werte! Du musst in den
 nachfolgenden Befehlen also deine eigenen Werte verwenden.
@@ -1517,7 +1530,7 @@ besteht, den wir in der Ausgabe des Log sehen.
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight]{bilder/branch_lab/mainbranch.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/branch_lab/mainbranch.png}
 \ecenter
 
 \begin{Shaded}
@@ -1565,7 +1578,8 @@ In der Datei steht nun:
 
 \bcenter
 
-\includegraphics{bilder/branch/head_main.png} \ecenter
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/branch/head_main.png}}
+\ecenter
 
 Der Pointer \emph{main} wird also von Commit zu Commit geschoben und der
 Pointer \emph{HEAD} zeigt ständig auf \emph{main}.
@@ -1639,8 +1653,8 @@ Pointer passend umgeschrieben werden.
 
 \bcenter
 
-\includegraphics[width=0.45\textwidth,height=\textheight]{bilder/branch/spielplatz.png}
-\includegraphics[width=0.45\textwidth,height=\textheight]{bilder/branch/spielplatz1.png}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz.png}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz1.png}
 \ecenter
 
 Eine typische Fehlvorstellung ist es, dass \emph{Branching} sofort eine
@@ -1650,8 +1664,8 @@ Commit zeigt.
 
 \bcenter
 
-\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/branch/spielplatz_start_1.png}
-\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/branch/spielplatz_start_2.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_1.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_2.png}
 \ecenter
 
 Der Befehl zur Zusammenführung wird vom Zielbranch aus gegeben. Du holst
@@ -2855,7 +2869,7 @@ Das nachfolgende Diagramm zeigt den Ablauf der Operationen zwischen den
 beiden Zweigen (Idee 2 wurde ausgeblendet, weil du mit ihr bisher nichts
 mehr gemacht hast).
 
-\includegraphics[width=10cm,height=\textheight]{bilder/bash/buch_2.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/bash/buch_2.png}
 
 Gut -- das war ein langer Weg mit vielen Abzweigungen. Es ist normal,
 diesen Abschnitt mehrfach lesen zu müssen!
@@ -2931,7 +2945,7 @@ den letzten Commit des Entwicklungs-Branch geschoben. In dieser
 Situation wird der Branch im Diagramm nicht einmal als visuelle
 Abzweigung dargestellt:
 
-\includegraphics[width=16cm,height=\textheight]{bilder/bash/fast_forward.png}
+\includegraphics[width=16cm,height=\textheight,keepaspectratio]{bilder/bash/fast_forward.png}
 
 Erkennbar sind die grünen Rechtecke, die die Enden der Branches
 kennzeichnen. Im Bild links sind die Branches getrennt, im Bild rechts
@@ -2943,7 +2957,7 @@ siehst, hat sich beim Merge die Anzahl Commits nicht verändert.
 Wenn sich der \emph{main}-Branch parallel zum Entwicklungsbranch
 weiterentwickelt, sieht die Sitation ganz anders aus!
 
-\includegraphics{bilder/bash/drei_wege.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/drei_wege.png}}
 
 Du siehst, dass sich der \emph{main}-Branch noch \emph{Schritt 3} zu
 \emph{Schritt 7} weiterentwickelt hat (neuer Commit). Denk immer daran,
@@ -4687,8 +4701,8 @@ Konfiguration erfolgen.
 
 \bcenter
 
-\includegraphics[width=3cm,height=\textheight]{bilder/inst/proxmox/left1.png}
-\includegraphics[width=10cm,height=\textheight]{bilder/inst/proxmox/mid1.png}
+\includegraphics[width=3cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/left1.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/mid1.png}
 \ecenter
 
 Am linken Rand sind 2 Speicherbereiche zu erkennen:
@@ -4753,70 +4767,77 @@ vorbelegt ist:
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf1.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf1.png}}
 
 }
 
 \caption{Name vergeben}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf2.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf2.png}}
 
 }
 
 \caption{Image wählen}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf3.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf3.png}}
 
 }
 
 \caption{System - passt}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf4.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf4.png}}
 
 }
 
 \caption{Disks - Größe anpassen}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf5.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf5.png}}
 
 }
 
 \caption{CPU - höher gehen}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf6.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf6.png}}
 
 }
 
 \caption{Speicher - höher gehen}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf7.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf7.png}}
 
 }
 
 \caption{Netzwerk - passt}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf8.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf8.png}}
 
 }
 
@@ -4841,38 +4862,41 @@ Auf der Console siehst du für 30 Sekunden den Startbidschirm von Ubuntu,
 bevor es weiter zur Installation geht. Bitte Beachte, dass
 \emph{Console} hier nicht (aber auch) für das Terminal einer virtuellen
 Maschine steht. Hier kann das auch eine GUI sein!.
-\includegraphics{bilder/inst/proxmox/inst_1.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_1.png}}
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_2.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_2.png}}
 
 }
 
 \caption{Sprachwahl}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_3.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_3.png}}
 
 }
 
 \caption{Tastaturwahl}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_4.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_4.png}}
 
 }
 
 \caption{Servervariante - passt}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_5.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_5.png}}
 
 }
 
@@ -4887,25 +4911,27 @@ Voreinstellungen.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_6.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_6.png}}
 
 }
 
 \caption{Proxyadresse - leer}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_7.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_7.png}}
 
 }
 
 \caption{Spiegelserver - übernehmen}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_8.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_8.png}}
 
 }
 
@@ -4918,25 +4944,27 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_9.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_9.png}}
 
 }
 
 \caption{Zusammenfassung}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_10.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_10.png}}
 
 }
 
 \caption{Warnung - auf Fortfahren}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_11.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_11.png}}
 
 }
 
@@ -4949,25 +4977,27 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_12.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_12.png}}
 
 }
 
 \caption{Profil}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_13.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_13.png}}
 
 }
 
 \caption{Ubuntu-Pro - Nein Danke}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_14.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_14.png}}
 
 }
 
@@ -4979,25 +5009,27 @@ Keys haben wir aktuell keine zum Importieren.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_15.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_15.png}}
 
 }
 
 \caption{Weitere Dienste - Keine}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_16.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_16.png}}
 
 }
 
 \caption{Installation}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_17.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_17.png}}
 
 }
 
@@ -5851,7 +5883,7 @@ Kofler.
 
 \bookmarksetup{startatroot}
 
-\chapter{Docker etwas vertieft}\label{docker-etwas-vertieft}
+\chapter{Docker in Beispielen}\label{docker-in-beispielen}
 
 In diesem Abschnitt soll an einem sehr einfachen Beispiel der Aufbau
 eines Dockerfiles und einer docker-compose.yml Datei besprochen werden.
@@ -5860,36 +5892,13 @@ diesem Umfeld möglich sind. Weil Datenbanken im Unterricht auch oft eine
 Rolle spielen, erstellen wir einen Datenbankserver mit \emph{MySQL} bzw.
 \emph{MariaDB}.
 
-\section{Das Dockerfile}\label{das-dockerfile}
+\section{MariaDB (MySQL)}\label{mariadb-mysql}
 
-Im Grunde gibt es von MariaDB ein komplett vorkonfiguriertes Image, so
-dass ein Dockerfile eigentlich unnötig ist. Alle Zeilen, die mit einem
-Hash-Tag beginnen sind auskommentiert und könnten bei Änderungswünschen
-verwendet werden. Viel davon geht aber auch\\
-direkt über \emph{docker-compose} und deswegen ändern wir nichts.
+\subsection{Die Dateien}\label{die-dateien}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Verwende das offizielle MariaDB{-}Image}
-\ExtensionTok{FROM}\NormalTok{ mariadb:latest}
-
-\CommentTok{\# Optionale Konfiguration}
-\CommentTok{\# Beispiel: Anpassung der Konfiguration von MariaDB, wenn nötig}
-\CommentTok{\# COPY ./my.cnf /etc/mysql/my.cnf}
-
-\CommentTok{\# Um ein Initialisierungs{-}Skript hinzuzufügen }
-\CommentTok{\# (z.B. zum Erstellen einer Datenbank)}
-\CommentTok{\# COPY ./init.sql /docker{-}entrypoint{-}initdb.d/}
-
-\CommentTok{\# Setze Umgebungsvariablen (optional, falls nicht im docker{-}compose)}
-\CommentTok{\# ENV MYSQL\_ROOT\_PASSWORD=my{-}secret{-}pw}
-\CommentTok{\# ENV MYSQL\_DATABASE=mydatabase}
-\CommentTok{\# ENV MYSQL\_USER=myuser}
-\CommentTok{\# ENV MYSQL\_PASSWORD=mypassword}
-\end{Highlighting}
-\end{Shaded}
-
-\section{Docker Compose}\label{docker-compose}
+Für MariaDB gibt es ein komplett vorkonfiguriertes Image, so dass ein
+Dockerfile unnötig ist. Die Umgebungsvariablen setzen wir direkt über
+\emph{docker-compose.yml}.
 
 Docker-Compose ist gewissermaßen das Managementsystem für den
 Containerstart, wenn komplexere Szenarien abgebildet werden sollen. Die
@@ -5898,7 +5907,6 @@ unsicheren Kennwörter müssen in dieser Datei angepasst werden!
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{version:} \StringTok{\textquotesingle{}3.8\textquotesingle{}}
-
 \ExtensionTok{services:}
   \ExtensionTok{db:}
     \ExtensionTok{image:}\NormalTok{ mariadb:latest}
@@ -5912,21 +5920,23 @@ unsicheren Kennwörter müssen in dieser Datei angepasst werden!
       \ExtensionTok{{-}} \StringTok{"3306:3306"} \CommentTok{\# Host{-}Port:Container{-}Port}
     \ExtensionTok{volumes:}
       \ExtensionTok{{-}}\NormalTok{ mariadb\_data:/var/lib/mysql}
-      \ExtensionTok{{-}}\NormalTok{ ./init.sql:/docker{-}entrypoint{-}initdb.d/init.sql }
-      \CommentTok{\# Optional: SQL{-}Datei zum Initialisieren}
+      \ExtensionTok{{-}}\NormalTok{ ./init.sql:/docker{-}entrypoint{-}initdb.d/init.sql}
+    \CommentTok{\# Optional: SQL{-}Datei zum Initialisieren}
     \ExtensionTok{networks:}
       \ExtensionTok{{-}}\NormalTok{ mariadb\_network}
+
 
 \ExtensionTok{volumes:}
   \ExtensionTok{mariadb\_data:} \CommentTok{\# Persistente Volumes für Datenbankdaten}
 
+  \CommentTok{\# anzulegende Networks}
 \ExtensionTok{networks:}
   \ExtensionTok{mariadb\_network:}
     \ExtensionTok{driver:}\NormalTok{ bridge}
 \end{Highlighting}
 \end{Shaded}
 
-Die Datei ist weitgehend selbsterkärend -- bis auf ein paar Stellen:
+Die Datei ist weitgehend selbsterklärend -- bis auf ein paar Stellen:
 
 \textbf{Ports}\\
 Wenn auf einem Server mehrere Container mit einem Webserver oder einer
@@ -5958,17 +5968,47 @@ diesem Szenario zwar nicht benötigt -- stört aber auch nicht.
 In den einzelnen Containern wird dann auf dieses zentrale Volume
 verwiesen.
 
+\textbf{Networks}\\
+Immer wenn \emph{docker compse} einen Container (oder mehrere) startet,
+wird für diese ein eigenes Netzwerk erstellt. Es kann einen automatisch
+generierten Namen bekommen oder eben den aus dem
+\emph{docker-compose.yml}.
+
+\textbf{Bonus}\\
+Beim Erstellen des Maria-DB Containers kann auch automatisch der Inhalt
+der Datei \datei{init.sql} in die Datenbank eingespielt werden. In den
+Materialien ist das so konfiguriert, dass bereits eine Filmdatenbank
+angelegt wird.
+
+Sollte bei einem Neustart automatisch eine andere Datenbasis eingespielt
+werden, so muss beim Beenden des Containers auch das Volume gelöscht
+werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ compose down }\AttributeTok{{-}v} 
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{PHP-MyAdmin}\label{php-myadmin}
+
+In den Materialien befindet sich eine zweite Datei
+\datei{docker-compose-php.yml} die auch noch Php-MyAdmin als eigenen
+Container zur Verfügung stellt. Der Zugriff auf diesen Container ist
+aktuell über Port 8080 konfiguriert. Falls parallel weitere Container
+laufen, muss geprüft werden, ob dieser Port verfügbar ist!
+
 Die \texttt{docker-compose.yml} um PHPMyAdmin erweitert:
+
+\textbf{docker-compose-php.yml}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{version:} \StringTok{\textquotesingle{}3.8\textquotesingle{}}
-
 \ExtensionTok{services:}
-  \CommentTok{\# MariaDB Container}
   \ExtensionTok{db:}
     \ExtensionTok{image:}\NormalTok{ mariadb:latest}
-    \ExtensionTok{container\_name:}\NormalTok{ mariadb\_container}
+    \ExtensionTok{container\_name:}\NormalTok{ mariadb\_1}
     \ExtensionTok{environment:}
       \ExtensionTok{MYSQL\_ROOT\_PASSWORD:}\NormalTok{ rootpassword}
       \ExtensionTok{MYSQL\_DATABASE:}\NormalTok{ mydatabase}
@@ -5978,41 +6018,148 @@ Die \texttt{docker-compose.yml} um PHPMyAdmin erweitert:
       \ExtensionTok{{-}} \StringTok{"3306:3306"} \CommentTok{\# Host{-}Port:Container{-}Port}
     \ExtensionTok{volumes:}
       \ExtensionTok{{-}}\NormalTok{ mariadb\_data:/var/lib/mysql}
-      \ExtensionTok{{-}}\NormalTok{ ./init.sql:/docker{-}entrypoint{-}initdb.d/init.sql }
-      \CommentTok{\# Optional: SQL{-}Datei zum Initialisieren}
+      \ExtensionTok{{-}}\NormalTok{ ./init.sql:/docker{-}entrypoint{-}initdb.d/init.sql}
     \ExtensionTok{networks:}
       \ExtensionTok{{-}}\NormalTok{ mariadb\_network}
+
 
   \CommentTok{\# phpMyAdmin Container}
   \ExtensionTok{phpmyadmin:}
     \ExtensionTok{image:}\NormalTok{ phpmyadmin/phpmyadmin:latest}
     \ExtensionTok{container\_name:}\NormalTok{ phpmyadmin\_container}
     \ExtensionTok{environment:}
-      \ExtensionTok{PMA\_HOST:}\NormalTok{ db     }\CommentTok{\# Name des MariaDB{-}Services (db) }
-      \ExtensionTok{PMA\_PORT:}\NormalTok{ 3306   }\CommentTok{\# Port von MiraiDB}
-      \ExtensionTok{MYSQL\_ROOT\_PASSWORD:}\NormalTok{ rootpassword  }
-      \CommentTok{\# Das Passwort für den Root{-}Benutzer von MariaDB}
+      \ExtensionTok{PMA\_HOST:}\NormalTok{ db}
+      \ExtensionTok{PMA\_PORT:}\NormalTok{ 3306}
+      \ExtensionTok{MYSQL\_ROOT\_PASSWORD:}\NormalTok{ rootpassword}
     \ExtensionTok{ports:}
-      \ExtensionTok{{-}} \StringTok{"8080:80"}  \CommentTok{\# Webinterface auf Port 8080 zugänglich}
+      \ExtensionTok{{-}} \StringTok{"8080:80"} \CommentTok{\# Webinterface auf Port 8080 zugänglich}
+
     \ExtensionTok{networks:}
       \ExtensionTok{{-}}\NormalTok{ mariadb\_network}
     \ExtensionTok{depends\_on:}
       \ExtensionTok{{-}}\NormalTok{ db}
 
 \ExtensionTok{volumes:}
-  \ExtensionTok{mariadb\_data:}  \CommentTok{\# Persistente Volumes für MariaDB{-}Daten}
+  \ExtensionTok{mariadb\_data:}
 
+
+\CommentTok{\# anzulegende Networks}
 \ExtensionTok{networks:}
   \ExtensionTok{mariadb\_network:}
     \ExtensionTok{driver:}\NormalTok{ bridge}
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Networks}\\
-Immer wenn \emph{docker compse} einen Container (oder mehrere) startet,
-wird für diese ein eigenes Netzwerk erstellt. Es kann einen automatisch
-generierten Namen bekommen oder eben den aus dem
-\emph{docker-compose.yml}
+Um diesen Container zu starten, muss explizit die passende
+\texttt{docker-compose-php.yml} angegeben werden!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ compose }\AttributeTok{{-}f}\NormalTok{ docker{-}compose{-}php.yml up }\AttributeTok{{-}d} 
+\end{Highlighting}
+\end{Shaded}
+
+Das Kennwort für den \emph{root}-Benutzer lautet aktuell
+\emph{rootpassword}.
+
+\section{Lighttpd}\label{lighttpd}
+
+\subsection{Simple}\label{simple}
+
+Manchmal benötigt man im Unterricht einen Webserver, der über die
+schnelle Variante
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{python3} \AttributeTok{{-}m}\NormalTok{ http.server }\AttributeTok{{-}{-}bind}\NormalTok{ 0.0.0.0 1234}
+\end{Highlighting}
+\end{Shaded}
+
+hinaus geht. Hier bietet sich wieder ein kleiner Docker-Container an.
+
+\textbf{Dockerfile}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Basisimage}
+\ExtensionTok{FROM}\NormalTok{ debian:bookworm{-}slim}
+
+\CommentTok{\# Paketliste aktualisieren und Lighttpd installieren}
+\ExtensionTok{RUN}\NormalTok{ apt{-}get update }\KeywordTok{\&\&} \DataTypeTok{\textbackslash{}}
+    \ExtensionTok{apt{-}get}\NormalTok{ install }\AttributeTok{{-}y}\NormalTok{ lighttpd }\KeywordTok{\&\&} \DataTypeTok{\textbackslash{}}
+    \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ /var/lib/apt/lists/}\PreprocessorTok{*}
+
+\CommentTok{\# Config ersetzen}
+\ExtensionTok{COPY}\NormalTok{ lighttpd.conf /etc/lighttpd/lighttpd.conf}
+
+\CommentTok{\# Website kopieren}
+\ExtensionTok{COPY}\NormalTok{ index.html /var/www/html/index.html}
+
+\CommentTok{\# Port dokumentieren}
+\ExtensionTok{EXPOSE}\NormalTok{ 80}
+
+\CommentTok{\# Lighttpd im Vordergrund starten}
+\ExtensionTok{CMD}\NormalTok{ [}\StringTok{"lighttpd"}\NormalTok{, }\StringTok{"{-}D"}\NormalTok{, }\StringTok{"{-}f"}\NormalTok{, }\StringTok{"/etc/lighttpd/lighttpd.conf"}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+Zum Starten (und nach Änderungen der Konfiguration) verwendet man:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ build }\AttributeTok{{-}t}\NormalTok{ mein{-}webserver{-}image .  }\CommentTok{\# Punkt wichtig }
+\ExtensionTok{docker}\NormalTok{ run }\AttributeTok{{-}d} \AttributeTok{{-}p}\NormalTok{ 8080:80 }\AttributeTok{{-}{-}name}\NormalTok{ mein{-}webserver mein{-}webserver{-}image}
+\end{Highlighting}
+\end{Shaded}
+
+Für einen Neustart braucht man dann
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ stop mein{-}webserver}
+\ExtensionTok{docker}\NormalTok{ rm mein{-}webserver}
+\end{Highlighting}
+\end{Shaded}
+
+\samplestart
+
+\textbf{Hinweis}
+
+\texttt{docker\ run\ -d\ -\/-rm\ -p\ 8080:80\ ...}
+
+löscht den Container beim Beeden! \sampleend
+
+\subsection{Komplexer}\label{komplexer}
+
+Im Material findest du auch eine Variante, wo du eine eigene Website
+direkt in Lighttpd kopieren kannst, die du vorher mit dem Namen
+\emph{website.zip} im gleichen Ordner bereit stellst.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Basisimage}
+\ExtensionTok{FROM}\NormalTok{ debian:bookworm{-}slim}
+
+\CommentTok{\# Paketliste aktualisieren und Lighttpd installieren}
+\ExtensionTok{RUN}\NormalTok{ apt{-}get update }\KeywordTok{\&\&} \DataTypeTok{\textbackslash{}}
+    \ExtensionTok{apt{-}get}\NormalTok{ install }\AttributeTok{{-}y}\NormalTok{ lighttpd unzip }\KeywordTok{\&\&} \DataTypeTok{\textbackslash{}}
+    \FunctionTok{rm} \AttributeTok{{-}rf}\NormalTok{ /var/lib/apt/lists/}\PreprocessorTok{*}
+
+\CommentTok{\# Config kopieren}
+\ExtensionTok{COPY}\NormalTok{ lighttpd.conf /etc/lighttpd/lighttpd.conf}
+
+\CommentTok{\# ZIP kopieren}
+\ExtensionTok{COPY}\NormalTok{ website.zip /tmp/website.zip}
+
+\CommentTok{\# Entpacken}
+\ExtensionTok{RUN}\NormalTok{ unzip /tmp/website.zip }\AttributeTok{{-}d}\NormalTok{ /var/www/html }\DataTypeTok{\textbackslash{}}
+    \KeywordTok{\&\&} \FunctionTok{rm}\NormalTok{ /tmp/website.zip}
+
+\ExtensionTok{EXPOSE}\NormalTok{ 80}
+
+\ExtensionTok{CMD}\NormalTok{ [}\StringTok{"lighttpd"}\NormalTok{, }\StringTok{"{-}D"}\NormalTok{, }\StringTok{"{-}f"}\NormalTok{, }\StringTok{"/etc/lighttpd/lighttpd.conf"}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
 
 \bookmarksetup{startatroot}
 
@@ -6022,7 +6169,7 @@ generierten Namen bekommen oder eben den aus dem
 
 Wie im letzten Kapitel besprochen, wird der Einsatz von Docker durch
 vorgefertigte Dockerfiles und Composefiles sehr vereinfacht. Erstellt
-man selbst derartige Dateien, so sollte man Chatgpt nur sehr bedingt
+man selbst derartige Dateien, so sollte man ChatGPT nur sehr bedingt
 vertrauen. In seinen Kreationen tauchen oft Konfigurationsparameter auf,
 die es entweder gar nicht gibt, oder deren Schreibweise falsch ist.
 Letztendlich führt kein Weg an der Herstellerdokumentation vorbei. Die
@@ -6062,19 +6209,23 @@ entprechende Aktion aus. In eigentlich fast allen Fällen wird zum
 Ausführen ein weiterer Docker-Container erstellt, der für die
 eigentliche Aktion zuständig ist. Die Details dazu folgen weiter unten.
 
-\section{Die Dateien}\label{die-dateien}
+\section{Die Dateien}\label{die-dateien-1}
 
 Natürlich könnte man für jeden benötigten Container eine eigene
 \datei{docker-compose.yaml} erstellen. Es ist aber sinnvoll, alle drei
 Container gemeinsam zu konfigurieren, da dann auch Abhängigkeiten
 zwischen den Containern autmatisch berücksichtigt werden. Wir besprechen
 die verwendete \datei{docker-compose.yaml} zuerst Zeile für Zeile. Die
-vollständige Version steht am Ende des Kapitels und ist Teil der
-Kursmaterialien.
+vollständige Version ist Teil der Kursmaterialien und enthält noch
+einige kleine Verfeinerungen.
+
+\textbf{WICHTIG}\\
+Nicht zu früh loslegen! Hier ist es wichtig, den Abschnitt zuerst zu
+lesen, denn die Reihenfolge einzelner Schritte ist wichtig!
 
 \subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-201}%
+\phantomsection\label{annotated-cell-207}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -6131,7 +6282,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-203}%
+\phantomsection\label{annotated-cell-209}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -6155,7 +6306,7 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 Hier könnte auch \texttt{gitea:latest} stehen, was Upgrades vereinfacht
 \ldots{} allerdings auch zu großen Problemen führen kann!\\
 \item[\circled{2}]
-Möglich sind auch \emph{postgresql} und \emph{sqlite}. Sqlite ist eine
+Möglich sind auch \emph{postgresql} und \emph{sqlite}. SQLite ist eine
 Alternative für kleine Installationen, da dabei kein eigener
 Datenbankserver benötigt wird.
 \item[\circled{3}]
@@ -6166,14 +6317,14 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-204}%
+\phantomsection\label{annotated-cell-210}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
 \AttributeTok{    }\FunctionTok{networks}\KeywordTok{:}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{2}}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ gitea}
 \AttributeTok{    }\FunctionTok{volumes}\KeywordTok{:}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{3}}
-\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ gitea\_data:/data}
+\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ ./gitea\_data:/data}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ /etc/timezone:/etc/timezone:ro}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ /etc/localtime:/etc/localtime:ro}
 \AttributeTok{    }\FunctionTok{ports}\KeywordTok{:}
@@ -6192,10 +6343,10 @@ Server neu gestartet wird.
 \item[\circled{2}]
 Festlegen des Netzes in dem der Container läuft
 \item[\circled{3}]
-Die Daten von Gitea liegen im Ordner \datei{gitea\_data}, genauer unter
-\datei{/var/lib/docker/volumes/gitea\_data}. Über Volumes wird aber auch
-der Zugriff auf Ressourcen des Servers gesteuert, hier der Zugriff die
-Einstellungen der Zeitzone. (\emph{:ro} nur lesender Zugriff)
+Die Daten von Gitea liegen im Ordner \datei{./gitea\_data} innerhalb des
+aktuellen Ordners. Über Volumes wird aber auch der Zugriff auf
+Ressourcen des Servers gesteuert, hier der Zugriff die Einstellungen der
+Zeitzone. (\emph{:ro} nur lesender Zugriff)
 \item[\circled{4}]
 \textbf{Im} Container läuft Gitea auf Port 3000, der Zugriff \textbf{von
 außen} (Browser) erfolgt über Port 4000. Das ist hier eher als Demo
@@ -6230,7 +6381,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 \AttributeTok{    }\FunctionTok{networks}\KeywordTok{:}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ gitea}
 \AttributeTok{    }\FunctionTok{volumes}\KeywordTok{:}
-\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ gitea\_db\_data:/var/lib/mysql}
+\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ ./gitea\_db\_data:/var/lib/mysql}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6238,7 +6389,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-206}%
+\phantomsection\label{annotated-cell-212}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6246,7 +6397,7 @@ Es werden hier nur neue oder wichtige Einstellungen erklärt!
 \AttributeTok{    }\FunctionTok{container\_name}\KeywordTok{:}\AttributeTok{ gitea\_runner}
 \AttributeTok{    }\FunctionTok{hostname}\KeywordTok{:}\AttributeTok{ gitea\_runner}
 \AttributeTok{    }\FunctionTok{environment}\KeywordTok{:}
-\AttributeTok{      }\FunctionTok{CONFIG\_FILE}\KeywordTok{:}\AttributeTok{ /config.yaml}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
+\AttributeTok{      }\FunctionTok{GITEA\_CONFIG\_FILE}\KeywordTok{:}\AttributeTok{ /config.yaml}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
 \AttributeTok{      }\FunctionTok{GITEA\_INSTANCE\_URL}\KeywordTok{:}\AttributeTok{ }\StringTok{"http://gitea:3000"}
 \AttributeTok{      }\FunctionTok{GITEA\_RUNNER\_NAME}\KeywordTok{:}\AttributeTok{ }\StringTok{"Probe{-}runner"}
 \AttributeTok{      }\FunctionTok{GITEA\_RUNNER\_REGISTRATION\_TOKEN}\KeywordTok{:}\AttributeTok{ \textless{}ausfüllen\textgreater{}}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{2}}
@@ -6258,7 +6409,7 @@ Es werden hier nur neue oder wichtige Einstellungen erklärt!
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ gitea}
 \AttributeTok{    }\FunctionTok{volumes}\KeywordTok{:}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ ./config.yaml:/config.yaml}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{4}}
-\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ gitea\_runner\_data:/data}
+\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ ./gitea\_runner\_data:/data}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ /etc/timezone:/etc/timezone:ro}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ /etc/localtime:/etc/localtime:ro}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ /var/run/docker.sock:/var/run/docker.sock}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{5}}
@@ -6274,11 +6425,9 @@ Füllen wir später noch aus
 \item[\circled{3}]
 Dieser Container startet erst wenn die beiden anderen laufen
 \item[\circled{4}]
-Ein Volume kann auch nur eine einzige Datei sein. Beachte den
-Unterschied bei der Schreibung von \datei{./config.yaml} und
-\datei{gitea\_runner\_data}. Das \emph{./} am Anfang bedeutet, dass
-diese Datei im gleichen Ordner liegt wie die
-\datei{docker-compose.yaml}.
+Ein Volume kann auch nur eine einzige Datei sein, z.B.
+\datei{./config.yaml}.\\
+Lege eine leere Datei mit diesem Namen im aktuellen Ordner an!
 \item[\circled{5}]
 Dieser Container braucht auch selbst Zugriff auf Docker, damit er
 eigenständig neue Container starten kann.
@@ -6290,17 +6439,8 @@ Bei vielen Containern kann die Konfiguration durch Einträge in der
 für Kennwörter gibt es noch sicherere Varianten, das führt aber zu weit.
 Für den Runner werden aber noch Einstellungen nötig, die man so
 (anscheinend) nicht übergeben kann. Aus diesem Grund wird oben der
-Parameter \texttt{CONFIG\_FILE} übergeben. Diese Datei befindet sich
-ebenfalls in den Kursmaterialien und wird hier nicht abgedruckt. Für
-eine frische Datei kann man folgenden Befehl aufrufen:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ exec }\AttributeTok{{-}it}\NormalTok{ gitea\_runner act\_runner generate{-}config}
-\end{Highlighting}
-\end{Shaded}
-
-oder direkt als Datei
+Parameter \texttt{CONFIG\_FILE} übergeben (\texttt{=config.yaml}). Für
+eine frische Datei rufst du auf:
 
 \blarge
 
@@ -6319,18 +6459,10 @@ Vielleicht ist dir aufgefallen, dass einmal im Environment
 Spiegelstriche vorkommen und einmal nicht. Das ist Absicht, denn die
 Server wollen das unterschiedlich haben. Intern wird bei der
 Spiegelstrich-Variante eine Liste der Art \emph{{[}``key=value'',
-``key=vlaue'', \ldots{]}} erstellt, die der Server verarbeiten muss. Der
+``key=value'', \ldots{]}} erstellt, die der Server verarbeiten muss. Der
 Runner hätte aber lieber ein Dictionary, d.h. eine Darstellung
 \emph{\{key:value, key:value, \ldots\}} und das passiert \textbf{ohne}
 die Spiegelstriche. \sampleend
-
-\textbf{Das Registrierungs-Token}\\
-Bist du in Gitea eingelogged, so kannst du über das Einstellungsmenü
-(Das geht auf den Ebenen Instanz, Repository oder User) nach
-\emph{actions} suchen, dort auf \emph{runner} und dann oben rechts auf
-\emph{neuen runner anlegen} (o.ä.) klicken. Dort erscheint dann das
-Token, das in die \datei{docker-compose.yaml} eingetragen werden muss.
-Beim Neustart registriert sich der Runner dann damit bei Gitea.
 
 \subsection{Starten}\label{starten}
 
@@ -6339,27 +6471,50 @@ sonst kann man kein Token erstellen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{docker{-}compose}\NormalTok{ up gitea db }
+\ExtensionTok{docker{-}compose}\NormalTok{ up  }
 \end{Highlighting}
 \end{Shaded}
 
-Später wird der Befehl mit einem zusätzlichen \cmd{-d} gestartet, damit
-der Start im Hintergrund erfolgt. Ohne \cmd{-d} sieht man eventuelle
-Fehlermeldungen.
+Du wirst nun eine Menge Fehlermeldungen vom Runner sehen, weil die
+Einstellungen noch nicht alle passen -- das ist ok.
 
-Nun kannst du dich bei Gitea im Browser anmelden und den ersten Benutzer
-einrichten, den du dann auch als Administrator verwenden kannst.
+Später wird der Befehl mit einem zusätzlichen \cmd{-d} gestartet, damit
+der Start im Hintergrund erfolgt.
+
+Nun kannst du dich bei Gitea im Browser anmelden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{http://}\OperatorTok{\textless{}}\NormalTok{server{-}ip}\OperatorTok{\textgreater{}}\NormalTok{:4000}
+\end{Highlighting}
+\end{Shaded}
+
+die Felder sind bereits vorbelegt und falls du willst, kannst du ganz
+unten\\
+noch einen Administratoren-Account anlegen lassen. Vorsicht -
+\texttt{admin} geht nicht! Falls du diesen User nicht anlegen lässt,
+wird der erste (selbst)registrierte Benutzer automatisch Administrator.
 
 Im Prinzip kann man auch Mailregistrierung und andere Dinge
 konfigurieren -- für einen einfachen Betrieb genügt aber das Einrichten
 des Benutzers.
 
-Nach dem oben beschriebenen Erstellen eines Tokens kannst du den Gitea-
-und den DB-Server mit \cmd{ctrl-c} zunächst wieder beenden. Das Token
-wird nun in die \datei{docker-compose.yaml} kopiert.
+Nun kannst du dich erstmalig wirklich anmelden!
 
-Nun kann auch der Runner gestartet werden. Auch jetzt zu Testzwecken
-zuerst ohne \cmd{-d}:
+\textbf{Das Registrierungs-Token}\\
+Bist du in Gitea eingelogged, so kannst du über das Einstellungsmenü
+(Das geht auf den Ebenen \emph{Instanz, Repository oder User}) nach
+\emph{actions} suchen, dort auf \emph{runner} und dann oben rechts auf
+\emph{neuen Runner anlegen} (o.ä.) klicken. Dort erscheint dann das
+Token, das du dir kopieren musst.
+
+Fahre nun die Container mit \cmd{ctrl-c} zunächst wieder herunter und
+kopiere das Token in die datei \datei{docker-compose.yaml}. Die Stelle
+ist beim Runner eindeutig gekennzeichnet!
+
+Starte nun die Container und achte auf \emph{offensichtliche}
+Fehlermeldungen. Nicht jede Warnung ist ein Fehler und wenn das System
+nicht ständig wiederholt Beschwerden äußert, dann sollte alles passen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6428,12 +6583,6 @@ aber lieber \emph{ssh} und zwar mit folgendem Befehl:
 Die Angabe von 222 ist nötig, da wir nicht Port 22 verwenden -- man muss
 also die Adresse, die man in Gitea über dem Repository sieht, noch
 entsprechend anpassen.
-
-\section{Actions}\label{actions}
-
-Dieses Thema ist nun so groß und speziell, dass wir an unsere Genzen
-stoßen. Ich möchte nur kurz das Vorgehen für unser Szenario der
-Bucherstellung besprechen.
 
 \bookmarksetup{startatroot}
 
@@ -6686,9 +6835,9 @@ Terminal angezeigt werden:
 Die mehrzeilige Ausgabe in einem Stück in die Oberfläche von
 \gitea kopieren:
 
-\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key1.png}
-\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key2.png}
-\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key3.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key1.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key2.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key3.png}
 
 Damit ist die Grundkonfiguration beendet. Es sollte nun noch eingestellt
 werden, welche Anmelde- und Registrierungsvarianten erlaubt sind, um
@@ -6962,8 +7111,8 @@ Befehl \texttt{systemctl\ restart\ ssh} den Dienst aber nicht auf den
 anderen Port umgestellt (wegen laufender Verbindung?). Linux-untypisch
 war ein Reboot die Lösung (im Terminal \texttt{reboot} eingeben).
 Mittlerweile habe ich herausgefunden, dass ein vorher ausgeführtes
-\texttt{systemctl\ daemon-reload} das Problem löst! Damit kein Reboot
-mehr nötig.
+\texttt{systemctl\ daemon-reload} das Problem löst! Damit ist kein
+Reboot mehr nötig.
 
 \section{Docker}\label{docker-1}
 
@@ -7037,7 +7186,7 @@ Hier ist die Code-Sequenz, falls das bei dir auch nötig werden sollte.
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{sudo} \AttributeTok{{-}i} 
-\ExtensionTok{fallocate} \AttributeTok{{-}l}\NormalTok{ 2G /swapfile}
+\ExtensionTok{fallocate} \AttributeTok{{-}l}\NormalTok{ 4G /swapfile}
 \FunctionTok{chmod}\NormalTok{ 600 /swapfile}
 \ExtensionTok{mkswap}\NormalTok{ /swapfile}
 \ExtensionTok{swapon}\NormalTok{ /swapfile}
@@ -7054,13 +7203,13 @@ Mit dem nachfolgenden Befehl kann das Erstkennwort für
 \end{Shaded}
 
 Damit ist eine Anmeldung als \emph{root} auf der Weboberfläche möglich.
-Hier muss nun auch sofort das Kennwort geändert werden! Auch dort
-brauchst du diese Zeichenkette erneut!
+Hier muss nun auch sofort das Kennwort geändert werden (Wieder
+Erstkennwort erfoderlich!).
 
-Mit diesem docker-compose File ist ssh-clonen bereits möglich (sobald
-der ssh-Key im Profil hinterlegt ist). Solltest du auf dem Host einen
-anderen Port verwenden (gitlab arbeitet intern dennoch mit 22), dann
-clonst\\
+Mit diesem \emph{docker-compose}-Setup ist ssh-clonen bereits möglich
+(sobald der ssh-Key im Profil hinterlegt ist). Solltest du auf dem Host
+einen anderen Port verwenden (gitlab arbeitet intern dennoch mit 22),
+dann clonst\\
 du so (z.B. über Port 25):
 
 \begin{Shaded}
@@ -7083,12 +7232,12 @@ du so (z.B. über Port 25):
 \end{itemize}
 
 Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über Konsole,
-GitClients, \ldots{} Weboberfläche.
+GitClients, \ldots{} ,Weboberfläche.
 
 \section{Einstieg in Gitlab}\label{einstieg-in-gitlab}
 
 Da für bestimmte Aspekte Bilder aussagekräftiger sind, wird dieser
-Abschnitt deutlich bildlastig werden. An dieser Stelle sei noch einmal
+Abschnitt deutlich bildlastiger werden. An dieser Stelle sei noch einmal
 betont, dass dieses Dokument eigentlich nicht für den Ausdruck gedacht
 ist! In einer PDF-Datei ist die Anzahl der Seiten mit Bildern ein
 geringeres ökoligisches Problem!
@@ -7111,13 +7260,13 @@ Bild.
 Nach der Registrierung ist allerdings noch keine Anmeldung am System
 möglich -- sie muss erst von \emph{root} freigeschaltet werden.
 
-\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_1.png}
-\includegraphics[width=3cm,height=\textheight]{bilder/gitlab/approve_2.png}
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_1.png}
+\includegraphics[width=3cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_2.png}
 
-\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_3.png}
-\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_4.png}
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_3.png}
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_4.png}
 
-\includegraphics{bilder/gitlab/approve_5.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_5.png}}
 
 Danach ist für den Benutzer die Anmeldung möglich und er kann eigene
 Projekte erstellen. Am Startbildschirm erscheint auch ein Hinweis (mit
@@ -7192,7 +7341,7 @@ ist in unserem Umfeld aber sehr aufwändig. Besser wäre es, sich einen
 Account auf gitlab.com anzulegen! \sampleend
 
 \textbf{Dennoch}\\
-Ja - man kann es auch seiner Spielumgebung machen, allerdings nicht so
+Ja -- man kann es auch seiner Spielumgebung machen, allerdings nicht so
 einfach.
 
 \begin{itemize}
@@ -7267,14 +7416,14 @@ Diese Datei definiert genauer, was dieser Prozess wie erledigen soll. Du
 wirst den genauen Aufbau in einem der nächsten Schritte kennenlernen,
 aber aktuell geht es erst einmal um das Funktionsprinzip.
 
-Wenn das System richtig konfiguriert ist, wird diese Datei einem
-weiteren Programm übergeben, dem \emph{runner}. Dieses Programm kannn
-auf \gitlab installiert (=shared runner und andere Varianten), aber auch
-auf deinem eigenen Rechner oder Server, der dann eigenständig mit
-\gitlab  kommuniziert um die Befehle in der \datei{.gitlab-ci.yml}
-abzuarbeiten.
+Wenn das System richtig konfiguriert ist, wird diese Datei dem
+\emph{runner} übergeben. Dieser kann -- wie bereits bemerkt -- auf
+\gitlab installiert (=shared runner und andere Varianten), aber auch auf
+deinem eigenen Rechner oder Server, der dann eigenständig mit \gitlab 
+kommuniziert um die Befehle in der \datei{.gitlab-ci.yml} abzuarbeiten.
 
-In vielen Fällen muss der Runner dazu einen Docker-Container erstellen.
+In vielen Fällen muss der Runner dazu einen weiteren Docker-Container
+erstellen.
 
 \subsection{Vorbereitung}\label{vorbereitung}
 
@@ -7288,7 +7437,7 @@ von leeren Repositories Folgeprobleme entstehen können.
 Erstelle eine neue Datei mit dem Namen \texttt{.gitlab-ci.yml} und trage
 ein:
 
-\phantomsection\label{annotated-cell-241}%
+\phantomsection\label{annotated-cell-247}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7315,10 +7464,22 @@ Auszuführender Befehl. Bei mehr Befehlen werden Spiegelstriche
 verwendet.
 \end{description}
 
+Diese Datei ist ebenfalls in den Materialien, allerdings ohne den
+führenden Punkt! Du musst sie also entsprechend umbenennen.
+
 \textbf{Schritt 3}\\
 Committe diese Datei.
 
-\subsection{Runner auf GilLab}\label{runner-auf-gillab}
+Bereits jetzt sollte ein Job laufen, der diese Datei abarbeitet. Dafür
+sind die shared-Runner von \gitlab verantwortlich. Wie aber bereits
+erwähnt, lässt ihre Performance zu Wünschen übrig und langsame Runner
+reduzieren die verfügbare CICD-Zeit von kostenlosen \gitlab-Accounts.
+
+Die Ausgabe des Jobs findest du am linken Rand unter
+\texttt{Build\ -\ Jobs}. Die Ausgabe habe ich im nächsten Abschnitt
+abgedruckt, wenn du einen Versuch mit einem eigenen Runner machst.
+
+\subsection{Eigene Runner auf GitLab}\label{eigene-runner-auf-gitlab}
 
 In deinem Projekt gibt es (linker Rand) einen Menüpunkt\\
 \emph{Settings -\textgreater{} CI/CD -\textgreater{} Runner}
@@ -7333,8 +7494,8 @@ setzt und auf \emph{create runner} klickst.
 Auf der nächsten Seite siehst du dann eine Anleitung, wie du einen
 Runner mit deinem Projekt koppeln kannst. Dafür muss natürlich erst
 irgendwo ein Runner laufen! Für uns dürfte wieder Docker der schnellste
-Weg sein, du kannst einen gitlab-runner aber auch auf jeder beliebigen
-anderen Maschine installieren!
+Weg sein (Du kannst einen gitlab-runner aber auch auf jeder beliebigen
+anderen Maschine installieren!).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7372,9 +7533,9 @@ Danach verlassen wir den Container mit \strg{pq}.
 
 Nimm eine minimale Änderung in der Readme vor und Committe deine
 Änderung. Am linken Rand findest du einen Menüpunkt \menu{build}, aus
-dem du Pipeline wählst. Nun siehst du oben an der Seite das Symbol für
-einen laufenden Job. Klickst du es an, siehst du die Ausgabe im
-Docker-Container!
+dem du \texttt{Pipeline} wählst. Nun siehst du oben an der Seite das
+Symbol für einen laufenden Job. Klickst du es an, siehst du die Ausgabe
+im Docker-Container!
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7414,21 +7575,22 @@ Die Idee wäre, dass jeder Schüler seine eigene Kurzgeschichte in einem
 eigenen Branch schreibt und seinen Stand laufend auf \gitlab pusht. Der
 Lehrer (oder andere Schüler) lesen die Geschichte und machen
 Verbesserungsvorschläge. Dies kann auf der Online-Plattform gut mit
-\emph{Issues} (github) bzw. \emph{Pullrequests} (gitlab) in Form einer
-Online- Diskussion erfolgen, bis ein geeigneter Schlussstand erreicht
-wird. Nun kann der Lehrer die Branches auf \emph{main} mergen und die
-Pipeline zum Erstellen des Buches Triggern.
+\emph{Issues} in Form einer Online-Diskussion gemacht werden. Eventuell
+sind auch \emph{Merge-Requests} (gitlab) bzw. \emph{Pull-requests}
+(github) sinnvoll, bis ein geeigneter Schlussstand erreicht wird. Nun
+kann der Lehrer die Branches auf \emph{main} mergen und die Pipeline zum
+Erstellen des Buches Triggern.
 
 Voraussetzung hierfür ist natürlich, dass die Texte im richtigen Format
 geschrieben werden (sogar online möglich), nämlich als Markdown.\\
-In der Pipline wird ein Erstellungssystem namens \emph{Quarto} als
-Docker-Image geholt und die Dateien nach einer Umwandlung nach LaTeX in
-ein PDF umgewandelt.
+In der Pipline wird ein Publishing-Tool namens \emph{Quarto} als
+Docker-Image geholt und die Dateien nach einer Umwandlung durch Pandoc
+nach LaTeX in ein PDF umgewandelt.
 
 Der Vorteil dieser Methode ist, dass es keine Probleme mit
 uneinheitlichen Formatierungen über mehrere Dokumente hinweg gibt. Auf
 \gitlab gibt es bei derartigen Projekten die Möglichkeit, den
-\emph{main}-Branch zu schützen, damit die Schüler ihr Dokument nicht
+\emph{main}-Branch zu schützen, damit die Schüler ihre Dokumente nicht
 direkt dorthin pushen können.
 
 Der Lehrer muss für die Integration der einzelnen Kurszgeschichten in
@@ -7444,9 +7606,11 @@ eventuell bei eigenen, anderen Projekten brauchen kannst.
 Je nach Projekt wird ein geeignetes Docker-Image benötigt und die Datei
 \datei{.gitlab-ci.yml} entsprechend angepasst werden.
 
-Im Paket befindet sich auch bereits diese \emph{.gitlab-ci.yml}:
+Im Material befindet sich auch wieder diese \emph{.gitlab-ci.yml}. Für
+den Praxiseinsatz musst du sie wieder passend umbenennen (Führenden
+Punkt ergänzen, „quarto`` entfernen)!
 
-\phantomsection\label{annotated-cell-246}%
+\phantomsection\label{annotated-cell-252}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7492,16 +7656,19 @@ hier eine KI hilfreich sein.
 Versioniere dein Werk, committe es und führe einen Push deines Branchs
 auf den Server aus.
 
-Führe nun einen Commit aus. Nach diesem Commit sollte der Job
+Auf dem Server führst du einen Merge deines Branchs auf \emph{main}
+durch. Nun sollte die CICD-Pipeline getriggert werden und der Job
 durchlaufen. Auf \gitlab findest du im Menü (links) bei \emph{Jobs} nun
 die Möglichkeit, die Zip-Datei mit dem Artifact -- also der pdf-Datei --
 herunterzuladen.
 
-\subsection{Alles auf dem Server}\label{alles-auf-dem-server}
+\subsection{Alles auf deinem Server}\label{alles-auf-deinem-server}
 
-Wenn du ausreichend Rechnenleistung auf deinem Server hast, kannst du
+Wenn du ausreichend Rechenleistung auf deinem Server hast, kannst du
 auch einen etwas umfassenderen Setup erstellen.\\
-Ziel ist das Erstellen von Büchern und Testdriven-Development mit Java.
+Ziel ist das Erstellen von Büchern und Testdriven-Development mit Java
+-- als \gitlab verwenden wir immer noch die offizielle Instanz. Mit
+einer eigenen Instanz würde es aber analog funktionieren!
 
 Lege zunächst einen Ordner an, wo die Dateien für die Erzeugung der
 Container ablegen willst:
@@ -7931,7 +8098,8 @@ Hilfs-Scripts!)
 
 \bcenter
 
-\includegraphics{bilder/tdd/full_tree.png} \ecenter
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/tdd/full_tree.png}}
+\ecenter
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht alle
 Ordner. Sie werden bei Bedarf dynamisch von \maven angelegt.
@@ -8017,7 +8185,7 @@ Das liefert folgende Struktur:
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight]{bilder/tdd/tree_init.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/tdd/tree_init.png}
 \ecenter
 
 Dieses Projekt kann bereits (fast) compiliert werden. Zuerst müssen wir

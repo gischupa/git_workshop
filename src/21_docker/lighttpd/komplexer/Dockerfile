@@ -1,7 +1,10 @@
-FROM lighttpd:latest
+# Basisimage
+FROM debian:bookworm-slim
 
-# unzip installieren
-RUN apt-get update && apt-get install -y unzip && rm -rf /var/lib/apt/lists/*
+# Paketliste aktualisieren und Lighttpd installieren
+RUN apt-get update && \
+    apt-get install -y lighttpd unzip && \
+    rm -rf /var/lib/apt/lists/*
 
 # Config kopieren
 COPY lighttpd.conf /etc/lighttpd/lighttpd.conf

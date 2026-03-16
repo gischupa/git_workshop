@@ -79,14 +79,23 @@ ausgabe_1:  #<3>
 4. Angabe, zu welchem Schritt die Aktion gehört
 5. Auszuführender Befehl. Bei mehr Befehlen werden Spiegelstriche verwendet.
 
-Diese Datei ist ebenfalls in den Materialien, allerdings ohne den führenden Punkt! 
+Diese Datei ist ebenfalls in den Materialien, allerdings ohne den führenden Punkt! Du musst sie also entsprechend umbenennen. 
 
 **Schritt 3**  
 Committe diese Datei.
 
+Bereits jetzt sollte ein Job laufen, der diese Datei abarbeitet.
+Dafür sind die shared-Runner von \gitlab verantwortlich. Wie aber 
+bereits erwähnt, lässt ihre Performance zu Wünschen übrig und 
+langsame Runner reduzieren die verfügbare CICD-Zeit von 
+kostenlosen \gitlab-Accounts.
 
+Die Ausgabe des Jobs findest du am linken Rand unter 
+`Build - Jobs`. Die Ausgabe habe ich im nächsten Abschnitt 
+abgedruckt, wenn du einen Versuch mit einem eigenen Runner 
+machst.
 
-### Runner auf GilLab
+### Eigene Runner auf GitLab
 
 In deinem Projekt gibt es (linker Rand) einen Menüpunkt  
 *Settings -> CI/CD -> Runner*  
@@ -95,14 +104,13 @@ Hier kannst du einen Runner mit deinem Projekt verbinden. Die
 Formulierung *create project runner* (rechts oben) ist also 
 eigentlich nicht korrekt. 
 
-Im Prinzip genügt es, wenn du bei *run untagged jobs* einen Haken setzt 
-und auf *create runner* klickst.
+Im Prinzip genügt es, wenn du bei *run untagged jobs* einen Haken setzt und auf *create runner* klickst. 
 
 Auf der nächsten Seite siehst du dann eine Anleitung, wie du einen 
 Runner mit deinem Projekt koppeln kannst. Dafür muss natürlich erst 
 irgendwo ein Runner laufen! Für uns dürfte wieder Docker der schnellste 
-Weg sein, du kannst einen gitlab-runner aber auch auf jeder beliebigen 
-anderen Maschine installieren!
+Weg sein (Du kannst einen gitlab-runner aber auch auf jeder beliebigen 
+anderen Maschine installieren!).
 
 ```bash
 docker run -d --name gitlab-runner \
@@ -130,8 +138,7 @@ Danach verlassen wir den Container mit \strg{pq}.
 
 ### Ausführen des Jobs
 Nimm eine minimale Änderung in der Readme vor und Committe deine Änderung.
-Am linken Rand findest du einen Menüpunkt \menu{build}, aus dem du Pipeline
-wählst. Nun siehst du oben an der Seite das Symbol für einen laufenden Job.
+Am linken Rand findest du einen Menüpunkt \menu{build}, aus dem du `Pipeline` wählst. Nun siehst du oben an der Seite das Symbol für einen laufenden Job.
 Klickst du es an, siehst du die Ausgabe im Docker-Container!
 
 ```bash
@@ -163,20 +170,19 @@ Die Idee wäre, dass jeder Schüler seine eigene Kurzgeschichte in
 einem eigenen Branch schreibt und seinen Stand laufend auf \gitlab pusht.
 Der Lehrer (oder andere Schüler) lesen die Geschichte und machen 
 Verbesserungsvorschläge. Dies kann auf der Online-Plattform gut mit 
-*Issues* (github) bzw. *Pullrequests* (gitlab) in Form einer Online-
-Diskussion erfolgen, bis ein geeigneter Schlussstand erreicht wird.
+*Issues* in Form einer Online-Diskussion gemacht werden. Eventuell sind auch *Merge-Requests* (gitlab) bzw. *Pull-requests* (github)  sinnvoll, bis ein geeigneter Schlussstand erreicht wird.
 Nun kann der Lehrer die Branches auf *main* mergen und die Pipeline 
 zum Erstellen des Buches Triggern.
 
 Voraussetzung hierfür ist natürlich, dass die Texte im richtigen Format
 geschrieben werden (sogar online möglich), nämlich als Markdown.  
-In der Pipline wird ein Erstellungssystem namens *Quarto* als Docker-Image 
-geholt und die Dateien nach einer Umwandlung nach LaTeX in ein PDF umgewandelt.
+In der Pipline wird ein Publishing-Tool namens *Quarto* als Docker-Image 
+geholt und die Dateien nach einer Umwandlung durch Pandoc nach LaTeX in ein PDF umgewandelt.
 
 Der Vorteil dieser Methode ist, dass es keine Probleme mit uneinheitlichen 
 Formatierungen über mehrere Dokumente hinweg gibt. Auf \gitlab gibt es 
 bei derartigen Projekten die Möglichkeit, den *main*-Branch zu schützen, 
-damit die Schüler ihr Dokument nicht direkt dorthin pushen können. 
+damit die Schüler ihre Dokumente nicht direkt dorthin pushen können. 
 
 Der Lehrer muss für die Integration der einzelnen Kurszgeschichten 
 in ein Zentraldokument noch die passenden *include*-Statements schreiben, 
@@ -192,7 +198,9 @@ eventuell bei eigenen, anderen Projekten brauchen kannst.
 Je nach Projekt wird ein geeignetes Docker-Image benötigt und die Datei \datei{.gitlab-ci.yml}
 entsprechend angepasst werden.
 
-Im Paket befindet sich auch bereits diese *.gitlab-ci.yml*:
+Im Material befindet sich auch wieder diese *.gitlab-ci.yml*.
+Für den Praxiseinsatz musst du sie wieder passend umbenennen
+(Führenden Punkt ergänzen, „quarto“ entfernen)!
 
 ```bash
 variables:   #<1>
@@ -226,18 +234,20 @@ Prompt kann hier eine KI hilfreich sein.
 Versioniere dein Werk, committe es und führe einen Push deines 
 Branchs auf den Server aus. 
 
-Führe nun einen Commit aus.
-Nach diesem Commit sollte der Job durchlaufen. Auf \gitlab findest du 
+Auf dem Server führst du einen Merge deines Branchs auf *main* durch.
+Nun sollte die CICD-Pipeline getriggert werden und der Job durchlaufen. Auf \gitlab findest du 
 im Menü (links) bei *Jobs* nun die Möglichkeit, die Zip-Datei mit dem 
 Artifact -- also der pdf-Datei --  herunterzuladen.
 
 
-### Alles auf dem Server
+### Alles auf deinem Server
 
-Wenn du ausreichend Rechnenleistung auf deinem Server hast, 
+Wenn du ausreichend Rechenleistung auf deinem Server hast, 
 kannst du auch einen etwas umfassenderen Setup erstellen.  
-Ziel ist das Erstellen von Büchern und Testdriven-Development mit Java. 
-
+Ziel ist das Erstellen von Büchern und Testdriven-Development 
+mit Java -- als \gitlab verwenden wir immer noch die offizielle 
+Instanz. Mit einer eigenen Instanz würde es aber analog 
+funktionieren! 
 
 Lege zunächst einen Ordner an, wo die Dateien für die 
 Erzeugung der Container ablegen willst:

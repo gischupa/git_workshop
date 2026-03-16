@@ -1,0 +1,136 @@
+# Docker in Beispielen
+In diesem Abschnitt soll an einem sehr einfachen Beispiel 
+der Aufbau eines Dockerfiles und einer docker-compose.yml
+Datei besprochen werden. Dieser Setup deckt wohlgemerkt nicht 
+alle Sicherheitsaspekte ab, die in diesem Umfeld möglich sind.
+Weil Datenbanken im Unterricht auch oft eine Rolle spielen, erstellen 
+wir einen Datenbankserver mit *MySQL* bzw. *MariaDB*.
+
+## MariaDB (MySQL)
+### Die Dateien
+Für MariaDB gibt es ein komplett vorkonfiguriertes Image,
+so dass ein Dockerfile unnötig ist. Die Umgebungsvariablen setzen
+wir direkt über *docker-compose.yml*.
+
+Docker-Compose ist gewissermaßen das Managementsystem für den 
+Containerstart, wenn komplexere Szenarien abgebildet werden sollen.
+Die unsicheren Kennwörter müssen in dieser Datei angepasst werden! 
+
+
+```{.bash include="src/21_docker/maria_db/docker-compose.yml"}
+```
+
+Die Datei ist weitgehend selbsterklärend -- bis auf ein paar Stellen:
+
+**Ports**  
+Wenn auf einem Server mehrere Container mit einem Webserver 
+oder einer Datenbank laufen, dann kann der Port 80 oder 443 oder 3306 
+nur einmal verwendet werden. Aus diesem Grund kann man eine Art 
+von Port-Forwarding in den Container definieren. Durch 3307:3306 kann 
+von außen über Port 3307 auf den Port 3306 im Container zugegriffen werden.
+
+**Volumes**  
+Container sind flüchtig, die Nutzdaten sollten das aber nicht sein.
+Aus diesem Grund können Ordner des Servers in einen Container 
+eingebunden werden. Das sind die Volumes. Wird ein Container gelöscht,
+so bleiben dieses Volumes erhalten und überleben damit z.B. Updates.
+Bei Volumes gibt es verschiedene Varianten, die den Umfang dieser 
+Kurzdarstellung überschreiten.  
+Wichtig ist aber, dass auch verschiedene Container das gleiche 
+Volume verwenden können (geteilte Daten). In diesem Fall muss 
+das Volume in der Datei \datei{docker-compose.yml} global angegeben werden.
+Das wird in diesem Szenario zwar nicht benötigt -- stört aber auch nicht.
+
+```bash
+# unten in der Datei 
+volumes:
+  mariadb_data:
+```
+
+In den einzelnen Containern wird dann auf dieses zentrale Volume verwiesen.
+
+**Networks**  
+Immer wenn *docker compse* einen Container (oder mehrere) startet, wird
+für diese ein eigenes Netzwerk erstellt. Es kann einen automatisch 
+generierten Namen bekommen oder eben den aus dem *docker-compose.yml*.
+
+**Bonus**  
+Beim Erstellen des Maria-DB Containers kann auch automatisch der Inhalt der 
+Datei \datei{init.sql} in die Datenbank eingespielt werden. In den Materialien ist 
+das so konfiguriert, dass bereits eine Filmdatenbank angelegt wird.  
+
+Sollte bei einem Neustart automatisch eine andere Datenbasis eingespielt werden,
+so muss beim Beenden des Containers auch das Volume gelöscht werden: 
+
+```bash
+docker compose down -v 
+```
+
+### PHP-MyAdmin
+
+In den Materialien befindet sich eine zweite Datei \datei{docker-compose-php.yml} 
+die auch noch Php-MyAdmin als eigenen Container zur Verfügung stellt. 
+Der Zugriff auf diesen Container ist aktuell über Port 8080 konfiguriert. 
+Falls parallel weitere Container laufen, muss geprüft werden, ob dieser 
+Port verfügbar ist!
+
+Die `docker-compose.yml` um PHPMyAdmin erweitert:
+
+**docker-compose-php.yml**  
+```{.bash include="src/21_docker/maria_db/docker-compose-php.yml"} 
+```
+
+Um diesen Container zu starten, muss explizit die passende `docker-compose-php.yml` 
+angegeben werden!
+
+```bash
+docker compose -f docker-compose-php.yml up -d 
+```
+
+Das Kennwort für den *root*-Benutzer lautet aktuell *rootpassword*.
+
+## Lighttpd
+### Simple
+
+Manchmal benötigt man im Unterricht einen Webserver, der über die 
+schnelle Variante
+
+```bash
+python3 -m http.server --bind 0.0.0.0 1234
+```
+
+hinaus geht. Hier bietet sich wieder ein kleiner Docker-Container an.
+
+**Dockerfile**  
+```{.bash include="src/21_docker/lighttpd/simple/Dockerfile"}
+```
+
+Zum Starten (und nach Änderungen der Konfiguration) verwendet man:
+
+```bash
+docker build -t mein-webserver-image .  # Punkt wichtig 
+docker run -d -p 8080:80 --name mein-webserver mein-webserver-image
+```
+
+Für einen Neustart braucht man dann 
+
+```bash
+docker stop mein-webserver
+docker rm mein-webserver
+```
+
+\samplestart
+**Hinweis**  
+
+`docker run -d --rm -p 8080:80 ... `
+
+löscht den Container beim Beeden!
+\sampleend
+
+### Komplexer
+Im Material findest du auch eine Variante, wo du eine eigene Website direkt 
+in Lighttpd kopieren kannst, die du vorher mit dem Namen *website.zip* 
+im gleichen Ordner bereit stellst.
+
+```{.bash include="src/21_docker/lighttpd/komplexer/Dockerfile"}
+```

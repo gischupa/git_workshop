@@ -1,4 +1,8 @@
-sudo -i
+#!/bin/bash
+
+set -e
+set -x
+
 apt update
 apt install apt-transport-https curl -y 
 

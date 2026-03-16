@@ -36,10 +36,9 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
  
  {{< include 0510_docker.qmd >}}
 
-   {{< include 0515_docker_vertieft.qmd >}}
+   {{< include 0515_docker_bsp.qmd >}}
 
  {{< include 0520_giteadocker.qmd >}}
- {{< include 0530_gitea_actions.qmd >}}
  {{< include 0540_gitea_ohne_docker.qmd >}}
 
    {{< include 0560_gitlab.qmd >}}

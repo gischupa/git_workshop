@@ -1,0 +1,11 @@
+variables:
+  LATEX_IMAGE: quarto-git:latest
+build:
+  tags:
+    - quarto    # ← MUSS zum Runner-TAG passen
+  image: $LATEX_IMAGE
+  script:
+    - quarto render --to pdf
+  artifacts:
+    paths:
+      - "_book/*.pdf"

@@ -1,0 +1,10 @@
+# Inhalt der docker-compose.yml im Ordner runner
+version: '3.8'
+services:
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: quarto_runner
+    restart: always
+    volumes:
+      - ./config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
