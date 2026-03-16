@@ -1,29 +1,26 @@
 % Options for packages loaded elsewhere
-% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
-  ngerman,
   letterpaper,
   DIV=11]{scrreprt}
-\usepackage{xcolor}
+
 \usepackage{amsmath,amssymb}
-\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
+\ifPDFTeX\else  
+    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -41,6 +38,9 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -106,7 +106,8 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
-\usepackage{longtable,booktabs,array}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -118,44 +119,17 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\newsavebox\pandoc@box
-\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
-  \sbox\pandoc@box{#1}%
-  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
-  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
-  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
-  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
-  \else\usebox{\pandoc@box}%
-  \fi%
-}
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 % Set default figure placement to htbp
+\makeatletter
 \def\fps@figure{htbp}
 \makeatother
-
-
-
-\ifLuaTeX
-\usepackage[bidi=basic]{babel}
-\else
-\usepackage[bidi=default]{babel}
-\fi
-% get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
-\def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage[german]{selnolig} % disable illegal ligatures
-\fi
-
-
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-
-
- 
-
 
 % load packages
 \usepackage{geometry}
@@ -354,7 +328,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, enhanced, boxrule=0pt, colback={codebgcolor}, sharp corners, breakable]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[enhanced, sharp corners, boxrule=0pt, frame hidden, colback={codebgcolor}, breakable]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -362,9 +336,23 @@
         \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
           \node[shape=circle,draw,inner sep=1pt] (char) {{\scriptsize#1}};}}  
                   
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{ngerman}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 \usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
+\urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Git Workshop},
   pdfauthor={Wolfgang Höfer},
@@ -380,6 +368,7 @@
 \title{Git Workshop}
 \author{Wolfgang Höfer}
 \date{2026-10-03}
+
 \begin{document}
 \maketitle
 
@@ -488,29 +477,29 @@ Version vom November 2025. Beachte, dass dieses Handout für die digitale
 Verwendung gedacht ist -- aus diesem Grund füge ich die Bilderstrecke
 hier ein. Für einen Ausdruck wäre das Verschwendung!
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_001.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_002.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_001.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_002.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_003.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_004.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_003.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_004.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_005.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_007.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_005.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_007.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_008.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_009.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_008.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_009.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_010.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_011.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_010.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_011.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_012.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_013.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_012.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_013.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_014.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_015.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_014.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_015.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_016.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_017.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_016.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_017.png}
 
 \subsection{Linux}\label{linux}
 
@@ -1275,7 +1264,7 @@ Wenn du nun die Verzeichnisstruktur des Ordners \emph{.git} genauer
 untersuchst, wirst du in etwa dies hier sehen, weil noch keine Dateien
 im \work sind:
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/base.png}}
+\includegraphics{bilder/git_internals/base.png}
 
 Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
   habe absichtlich nicht index.html verwendet, weil „index`` aktuell
@@ -1292,7 +1281,7 @@ Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
 \emph{.git}-Ordner. Im Bild ist aus Platzgründen nur der relevante
 Ausschnitt angezeigt. Bei dir kann der Hash einen anderen Wert besitzen!
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/1_neue_datei.png}}
+\includegraphics{bilder/git_internals/1_neue_datei.png}
 
 Die Datei \datei{index} stellt den \emph{Stage} dar. Diese Datei kannst
 du nicht direkt lesen. Das geht nur mit
@@ -1337,7 +1326,7 @@ Aber gehen wir einen Schritt weiter und committen die Datei:
 Nun sieht die Ordnerstruktur verändert aus -- die Hooks habe ich in der
 Darstellung aus Platzgründen entfernt!
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/2_commit.png}}
+\includegraphics{bilder/git_internals/2_commit.png}
 
 Ab hier bekommst du sicher andere, eigene Hash-Werte! Du musst in den
 nachfolgenden Befehlen also deine eigenen Werte verwenden.
@@ -1530,7 +1519,7 @@ besteht, den wir in der Ausgabe des Log sehen.
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/branch_lab/mainbranch.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/branch_lab/mainbranch.png}
 \ecenter
 
 \begin{Shaded}
@@ -1578,8 +1567,7 @@ In der Datei steht nun:
 
 \bcenter
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/branch/head_main.png}}
-\ecenter
+\includegraphics{bilder/branch/head_main.png} \ecenter
 
 Der Pointer \emph{main} wird also von Commit zu Commit geschoben und der
 Pointer \emph{HEAD} zeigt ständig auf \emph{main}.
@@ -1653,8 +1641,8 @@ Pointer passend umgeschrieben werden.
 
 \bcenter
 
-\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz.png}
-\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz1.png}
+\includegraphics[width=0.45\textwidth,height=\textheight]{bilder/branch/spielplatz.png}
+\includegraphics[width=0.45\textwidth,height=\textheight]{bilder/branch/spielplatz1.png}
 \ecenter
 
 Eine typische Fehlvorstellung ist es, dass \emph{Branching} sofort eine
@@ -1664,8 +1652,8 @@ Commit zeigt.
 
 \bcenter
 
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_1.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_2.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/branch/spielplatz_start_1.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/branch/spielplatz_start_2.png}
 \ecenter
 
 Der Befehl zur Zusammenführung wird vom Zielbranch aus gegeben. Du holst
@@ -2869,7 +2857,7 @@ Das nachfolgende Diagramm zeigt den Ablauf der Operationen zwischen den
 beiden Zweigen (Idee 2 wurde ausgeblendet, weil du mit ihr bisher nichts
 mehr gemacht hast).
 
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/bash/buch_2.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/bash/buch_2.png}
 
 Gut -- das war ein langer Weg mit vielen Abzweigungen. Es ist normal,
 diesen Abschnitt mehrfach lesen zu müssen!
@@ -2945,7 +2933,7 @@ den letzten Commit des Entwicklungs-Branch geschoben. In dieser
 Situation wird der Branch im Diagramm nicht einmal als visuelle
 Abzweigung dargestellt:
 
-\includegraphics[width=16cm,height=\textheight,keepaspectratio]{bilder/bash/fast_forward.png}
+\includegraphics[width=16cm,height=\textheight]{bilder/bash/fast_forward.png}
 
 Erkennbar sind die grünen Rechtecke, die die Enden der Branches
 kennzeichnen. Im Bild links sind die Branches getrennt, im Bild rechts
@@ -2957,7 +2945,7 @@ siehst, hat sich beim Merge die Anzahl Commits nicht verändert.
 Wenn sich der \emph{main}-Branch parallel zum Entwicklungsbranch
 weiterentwickelt, sieht die Sitation ganz anders aus!
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/drei_wege.png}}
+\includegraphics{bilder/bash/drei_wege.png}
 
 Du siehst, dass sich der \emph{main}-Branch noch \emph{Schritt 3} zu
 \emph{Schritt 7} weiterentwickelt hat (neuer Commit). Denk immer daran,
@@ -4701,8 +4689,8 @@ Konfiguration erfolgen.
 
 \bcenter
 
-\includegraphics[width=3cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/left1.png}
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/mid1.png}
+\includegraphics[width=3cm,height=\textheight]{bilder/inst/proxmox/left1.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/inst/proxmox/mid1.png}
 \ecenter
 
 Am linken Rand sind 2 Speicherbereiche zu erkennen:
@@ -4767,77 +4755,70 @@ vorbelegt ist:
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf1.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf1.png}
 
 }
 
 \caption{Name vergeben}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf2.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf2.png}
 
 }
 
 \caption{Image wählen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf3.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf3.png}
 
 }
 
 \caption{System - passt}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf4.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf4.png}
 
 }
 
 \caption{Disks - Größe anpassen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf5.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf5.png}
 
 }
 
 \caption{CPU - höher gehen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf6.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf6.png}
 
 }
 
 \caption{Speicher - höher gehen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf7.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf7.png}
 
 }
 
 \caption{Netzwerk - passt}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf8.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf8.png}
 
 }
 
@@ -4862,41 +4843,38 @@ Auf der Console siehst du für 30 Sekunden den Startbidschirm von Ubuntu,
 bevor es weiter zur Installation geht. Bitte Beachte, dass
 \emph{Console} hier nicht (aber auch) für das Terminal einer virtuellen
 Maschine steht. Hier kann das auch eine GUI sein!.
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_1.png}}
+\includegraphics{bilder/inst/proxmox/inst_1.png}
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_2.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_2.png}
 
 }
 
 \caption{Sprachwahl}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_3.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_3.png}
 
 }
 
 \caption{Tastaturwahl}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_4.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_4.png}
 
 }
 
 \caption{Servervariante - passt}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_5.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_5.png}
 
 }
 
@@ -4911,27 +4889,25 @@ Voreinstellungen.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_6.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_6.png}
 
 }
 
 \caption{Proxyadresse - leer}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_7.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_7.png}
 
 }
 
 \caption{Spiegelserver - übernehmen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_8.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_8.png}
 
 }
 
@@ -4944,27 +4920,25 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_9.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_9.png}
 
 }
 
 \caption{Zusammenfassung}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_10.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_10.png}
 
 }
 
 \caption{Warnung - auf Fortfahren}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_11.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_11.png}
 
 }
 
@@ -4977,27 +4951,25 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_12.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_12.png}
 
 }
 
 \caption{Profil}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_13.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_13.png}
 
 }
 
 \caption{Ubuntu-Pro - Nein Danke}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_14.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_14.png}
 
 }
 
@@ -5009,27 +4981,25 @@ Keys haben wir aktuell keine zum Importieren.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_15.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_15.png}
 
 }
 
 \caption{Weitere Dienste - Keine}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_16.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_16.png}
 
 }
 
 \caption{Installation}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_17.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_17.png}
 
 }
 
@@ -6165,7 +6135,7 @@ direkt in Lighttpd kopieren kannst, die du vorher mit dem Namen
 
 \chapter{Gitea mit Docker}\label{gitea-mit-docker}
 
-\section{Basics}\label{basics}
+\section{Vorbemerkung}\label{vorbemerkung-1}
 
 Wie im letzten Kapitel besprochen, wird der Einsatz von Docker durch
 vorgefertigte Dockerfiles und Composefiles sehr vereinfacht. Erstellt
@@ -6173,10 +6143,28 @@ man selbst derartige Dateien, so sollte man ChatGPT nur sehr bedingt
 vertrauen. In seinen Kreationen tauchen oft Konfigurationsparameter auf,
 die es entweder gar nicht gibt, oder deren Schreibweise falsch ist.
 Letztendlich führt kein Weg an der Herstellerdokumentation vorbei. Die
-Dockerimages im Netz funktionieren aber gut, so dass man keine eigenen
-bauen muss.
+Dockerimages im Netz funktionieren aber gut, so dass man oft keine
+eigenen bauen muss.
 
-Bei einer vollwertigen Gitea-Installation brauchen wir (mindestens) drei
+Bei \gitea kommt es darauf an, ob du nur eine Plattform für einfache
+\git-Abläufe brachst, oder ob CI/CD ein Thema ist. In diesem ist der
+Aufwand deutlich höher. Hier müssen Daten zwischen verschiedenen
+Containern hin und her gereicht werden. Das erfordert Dinge wie
+gemeinsame Ordner von Containeren und eine funktionierende
+(kennwortlose) Kommunikation zwischen den Containern. Das ist etwas
+aufwändig!
+
+Bei Basis-Installation genügen
+
+\begin{itemize}
+\tightlist
+\item
+  Gitea
+\item
+  Datenbankserver
+\end{itemize}
+
+Für eine vollwertige Gitea-Installation brauchst du (mindestens) drei
 Container:
 
 \begin{itemize}
@@ -6186,11 +6174,128 @@ Container:
 \item
   Datenbankserver
 \item
+  Job-Container (Erklärung folgt)
+\item
   Runner (Erklärung folgt)
+\item
+  Webserver zum Ausliefern der Ergebnisse
 \end{itemize}
 
-Mit der nachfolgenden Datei \datei{docker-compose.yaml} können diese
-erstellt und konfiguriert werden.
+\section{Basis}\label{basis}
+
+Wenn es nur um \gitea und den Datenbankserver geht, so genügt eine
+einzige Datei \datei{docker-compose.yml} um das System zu steuern.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\ExtensionTok{version:} \StringTok{"3"}
+
+\ExtensionTok{services:}
+  \ExtensionTok{server:}
+    \ExtensionTok{image:}\NormalTok{ docker.io/gitea/gitea:1.22.6}
+    \ExtensionTok{container\_name:}\NormalTok{ gitea}
+    \ExtensionTok{hostname:}\NormalTok{ gitea}
+    \ExtensionTok{environment:}
+      \ExtensionTok{{-}}\NormalTok{ USER\_UID=1000}
+      \ExtensionTok{{-}}\NormalTok{ USER\_GID=1000}
+      \ExtensionTok{{-}}\NormalTok{ GITEA\_\_database\_\_DB\_TYPE=mysql}
+      \ExtensionTok{{-}}\NormalTok{ GITEA\_\_database\_\_HOST=db:3306}
+      \ExtensionTok{{-}}\NormalTok{ GITEA\_\_database\_\_NAME=gitea}
+      \ExtensionTok{{-}}\NormalTok{ GITEA\_\_database\_\_USER=gitea}
+      \ExtensionTok{{-}}\NormalTok{ GITEA\_\_database\_\_PASSWD=gitea}
+    \ExtensionTok{restart:}\NormalTok{ always}
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ gitea}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ ./gitea\_data:/data}
+      \ExtensionTok{{-}}\NormalTok{ /etc/timezone:/etc/timezone:ro}
+      \ExtensionTok{{-}}\NormalTok{ /etc/localtime:/etc/localtime:ro}
+    \ExtensionTok{ports:}
+      \ExtensionTok{{-}} \StringTok{"4000:3000"}
+      \ExtensionTok{{-}} \StringTok{"222:22"}
+
+    \ExtensionTok{healthcheck:}
+      \ExtensionTok{test:}\NormalTok{ [}\StringTok{"CMD"}\NormalTok{, }\StringTok{"curl"}\NormalTok{, }\StringTok{"{-}f"}\NormalTok{, }\StringTok{"http://localhost:3000"}\NormalTok{]}
+      \ExtensionTok{interval:}\NormalTok{ 5s}
+      \ExtensionTok{retries:}\NormalTok{ 20}
+
+    \ExtensionTok{depends\_on:}
+      \ExtensionTok{{-}}\NormalTok{ db}
+  \ExtensionTok{db:}
+    \ExtensionTok{image:}\NormalTok{ docker.io/library/mysql:8}
+    \ExtensionTok{restart:}\NormalTok{ always}
+    \ExtensionTok{container\_name:}\NormalTok{ db}
+    \ExtensionTok{hostname:}\NormalTok{ db}
+    \ExtensionTok{environment:}
+      \ExtensionTok{{-}}\NormalTok{ MYSQL\_ROOT\_PASSWORD=gitea}
+      \ExtensionTok{{-}}\NormalTok{ MYSQL\_USER=gitea}
+      \ExtensionTok{{-}}\NormalTok{ MYSQL\_PASSWORD=gitea}
+      \ExtensionTok{{-}}\NormalTok{ MYSQL\_DATABASE=gitea}
+    \ExtensionTok{healthcheck:}
+      \ExtensionTok{test:}\NormalTok{ [}\StringTok{"CMD"}\NormalTok{, }\StringTok{"mysqladmin"}\NormalTok{, }\StringTok{"ping"}\NormalTok{, }\StringTok{"{-}h"}\NormalTok{, }\StringTok{"localhost"}\NormalTok{]}
+      \ExtensionTok{interval:}\NormalTok{ 5s}
+      \ExtensionTok{retries:}\NormalTok{ 10}
+
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ gitea}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ ./gitea\_db\_data:/var/lib/mysql}
+
+  \ExtensionTok{runner:}
+    \ExtensionTok{image:}\NormalTok{ docker.io/gitea/act\_runner:latest}
+    \ExtensionTok{container\_name:}\NormalTok{ gitea\_runner}
+    \ExtensionTok{hostname:}\NormalTok{ gitea\_runner}
+    \ExtensionTok{environment:}
+      \ExtensionTok{GITEA\_CONFIG\_FILE:}\NormalTok{ /config.yaml}
+      \ExtensionTok{GITEA\_INSTANCE\_URL:} \StringTok{"http://gitea:3000"}
+      \ExtensionTok{GITEA\_RUNNER\_NAME:} \StringTok{"Probe{-}runner"}
+      \ExtensionTok{GITEA\_RUNNER\_REGISTRATION\_TOKEN:} \StringTok{"HIER DAS TOKEN EINFÜGEN"}
+    \ExtensionTok{restart:}\NormalTok{ always}
+    \ExtensionTok{depends\_on:}
+      \ExtensionTok{server:}
+        \ExtensionTok{condition:}\NormalTok{ service\_healthy}
+      \ExtensionTok{db:}
+        \ExtensionTok{condition:}\NormalTok{ service\_healthy}
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ gitea}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ ./config.yaml:/config.yaml}
+      \ExtensionTok{{-}}\NormalTok{ ./gitea\_runner\_data:/data}
+      \ExtensionTok{{-}}\NormalTok{ /etc/timezone:/etc/timezone:ro}
+      \ExtensionTok{{-}}\NormalTok{ /etc/localtime:/etc/localtime:ro}
+      \ExtensionTok{{-}}\NormalTok{ /var/run/docker.sock:/var/run/docker.sock}
+
+\ExtensionTok{networks:}
+  \ExtensionTok{gitea:}
+    \ExtensionTok{external:}\NormalTok{ true}
+
+\ExtensionTok{volumes:}
+  \ExtensionTok{gitea\_data:}
+    \ExtensionTok{driver:}\NormalTok{ local}
+  \ExtensionTok{gitea\_db\_data:}
+    \ExtensionTok{driver:}\NormalTok{ local}
+  \ExtensionTok{gitea\_runner\_data:}
+    \ExtensionTok{driver:}\NormalTok{ local}
+\end{Highlighting}
+\end{Shaded}
+
+Dies können wir nur bedingt mit einer einzigen Datei
+\datei{docker-compose.yaml} managen -- der Setup wird etwas größer!
+
+In den Materialien findest du im Ordner \ordner{gitea\_buch} den
+kompletten Setup, den wir nachfolgend durchsprechen müssen. Er besteht
+aus den Ordnern:
+
+\begin{itemize}
+\tightlist
+\item
+  gitea
+\item
+  gitea/runner
+\item
+  gitea/quarto
+\end{itemize}
 
 \textbf{Was ist ein Runner?}\\
 In fortgeschrittenen Szenarien kann Gitea so konfiguriert werden, dass
@@ -6205,14 +6310,20 @@ der \emph{Online-Kollaboration} angelangt.
 Damit diese nachgelagerten Aktionen gestartet werden können, läuft ein
 \emph{Runner}-Programm in einem eigenen Container. Dieses Programm
 kommuniziert mit dem Gitea-Container und führt bei Bedarf die
-entprechende Aktion aus. In eigentlich fast allen Fällen wird zum
-Ausführen ein weiterer Docker-Container erstellt, der für die
-eigentliche Aktion zuständig ist. Die Details dazu folgen weiter unten.
+entprechende Aktion aus um das Buch aus den Raw-Dateien zu erstellen. In
+eigentlich fast allen Anwendungsfällen wird zum Ausführen von Befehlen
+nach dem Push ein weiterer Docker-Container erstellt, der für die
+eigentliche Aktion zuständig ist -- der Job-Container.
 
-\section{Die Dateien}\label{die-dateien-1}
+Zuerst kommt nun eine mehr oder weniger detaillierte Beschreibung des
+Setups und danach die eigentliche Verwendung des Szenarios.
+
+\section{Setup}\label{setup}
+
+\subsection{Die Dateien}\label{die-dateien-1}
 
 Natürlich könnte man für jeden benötigten Container eine eigene
-\datei{docker-compose.yaml} erstellen. Es ist aber sinnvoll, alle drei
+\datei{docker-compose.yaml} erstellen. Es ist aber sinnvoll, mehrere
 Container gemeinsam zu konfigurieren, da dann auch Abhängigkeiten
 zwischen den Containern autmatisch berücksichtigt werden. Wir besprechen
 die verwendete \datei{docker-compose.yaml} zuerst Zeile für Zeile. Die
@@ -6220,12 +6331,12 @@ vollständige Version ist Teil der Kursmaterialien und enthält noch
 einige kleine Verfeinerungen.
 
 \textbf{WICHTIG}\\
-Nicht zu früh loslegen! Hier ist es wichtig, den Abschnitt zuerst zu
-lesen, denn die Reihenfolge einzelner Schritte ist wichtig!
+Nicht zu früh loslegen! Hier ist es wichtig, den Abschnitt zuerst ganz
+zu lesen, denn die Reihenfolge einzelner Schritte ist extrem wichtig!
 
-\subsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
+\subsubsection{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
-\phantomsection\label{annotated-cell-207}%
+\phantomsection\label{annotated-cell-208}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -6240,7 +6351,10 @@ lesen, denn die Reihenfolge einzelner Schritte ist wichtig!
 \AttributeTok{  }\FunctionTok{gitea\_db\_data}\KeywordTok{:}
 \AttributeTok{    }\FunctionTok{driver}\KeywordTok{:}\AttributeTok{ local}
 \AttributeTok{  }\FunctionTok{gitea\_runner\_data}\KeywordTok{:}
-\AttributeTok{    }\FunctionTok{driver}\KeywordTok{:}\AttributeTok{ local}
+\AttributeTok{    }\FunctionTok{driver}\KeywordTok{:}\AttributeTok{ local }
+\AttributeTok{  }\FunctionTok{giteatransfer}\KeywordTok{:}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{4}}
+\AttributeTok{    }\FunctionTok{external}\KeywordTok{:}\AttributeTok{ }\CharTok{true}
+\AttributeTok{  }
 \end{Highlighting}
 \end{Shaded}
 
@@ -6250,18 +6364,22 @@ lesen, denn die Reihenfolge einzelner Schritte ist wichtig!
 Alle drei Container müssen miteinander kommunizieren und werden deshalb
 in ein gemeinsames Netz mit dem Namen \emph{gitea} eingebunden.
 \item[\circled{2}]
-Der Basis-Setup funktioniert hier auch mit \emph{false}. Sobald der
-Runner aber einen neuen Container erstellt, klappt das nur noch mit
-\emph{true}.
+Wegen dieser Zeile müssen wir das Netzwerk selbst erstellen:\\
+\texttt{docker\ network\ create\ gitea}
 \item[\circled{3}]
 Die Daten der Benutzer und die Einstellungen sollen auch über Neustarts
 und Upgrades hinweg erhalten bleiben. Dafür dürfen sie nicht Teil des
 Containers sein, der dabei komplett neu erstellt wird. Es werden auf
 diese Weise drei Ordner mit den angegebenen Namen erstellt, die
 außerhalb des Containers liegen und in diesen hinein verlinkt werden.
+\item[\circled{4}]
+Dieser Ordner wird von zwei Containern gleichzeitig verwendet, um das
+Buch nach der Erstellung auf den Webserver zu bekommen. Auch das müssen
+wir manuell erstellen:\\
+\texttt{docker\ volume\ create\ giteatransfer}
 \end{description}
 
-\subsection{Services}\label{services}
+\subsubsection{Services}\label{services}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6272,17 +6390,20 @@ außerhalb des Containers liegen und in diesen hinein verlinkt werden.
 \AttributeTok{    ...}
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
 \AttributeTok{    ...}
+\AttributeTok{  }\FunctionTok{web}\KeywordTok{:}
+\AttributeTok{    ...}
 \end{Highlighting}
 \end{Shaded}
 
-Dieser schematische Aufbau beschreibt die drei anzulegenden Container.
+Dieser schematische Aufbau beschreibt die vier anzulegenden Container.
+Der Job-Container funktioniert anders!\\
 Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 
-\subsection{Server}\label{server}
+\subsubsection{Server}\label{server}
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-209}%
+\phantomsection\label{annotated-cell-210}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -6317,7 +6438,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-210}%
+\phantomsection\label{annotated-cell-211}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -6362,7 +6483,7 @@ Der Container wird erst gestartet, wenn der Datenbankserver erfolgreich
 hochgefahren ist.
 \end{description}
 
-\subsection{db}\label{db}
+\subsubsection{db}\label{db}
 
 Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
@@ -6385,11 +6506,11 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{runner}\label{runner}
+\subsubsection{runner}\label{runner}
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-212}%
+\phantomsection\label{annotated-cell-213}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6397,10 +6518,11 @@ Es werden hier nur neue oder wichtige Einstellungen erklärt!
 \AttributeTok{    }\FunctionTok{container\_name}\KeywordTok{:}\AttributeTok{ gitea\_runner}
 \AttributeTok{    }\FunctionTok{hostname}\KeywordTok{:}\AttributeTok{ gitea\_runner}
 \AttributeTok{    }\FunctionTok{environment}\KeywordTok{:}
-\AttributeTok{      }\FunctionTok{GITEA\_CONFIG\_FILE}\KeywordTok{:}\AttributeTok{ /config.yaml}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
+\AttributeTok{      }\FunctionTok{CONFIG\_FILE}\KeywordTok{:}\AttributeTok{ /config.yaml}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
 \AttributeTok{      }\FunctionTok{GITEA\_INSTANCE\_URL}\KeywordTok{:}\AttributeTok{ }\StringTok{"http://gitea:3000"}
 \AttributeTok{      }\FunctionTok{GITEA\_RUNNER\_NAME}\KeywordTok{:}\AttributeTok{ }\StringTok{"Probe{-}runner"}
 \AttributeTok{      }\FunctionTok{GITEA\_RUNNER\_REGISTRATION\_TOKEN}\KeywordTok{:}\AttributeTok{ \textless{}ausfüllen\textgreater{}}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{2}}
+\AttributeTok{      }\FunctionTok{SSH\_LOCATION}\KeywordTok{:}\AttributeTok{ }\StringTok{"/home/benutzer/docker/gitea/ssh\_keys"}\CommentTok{ \# kommt später}
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}
 \AttributeTok{    }\FunctionTok{depends\_on}\KeywordTok{:}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{3}}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ server}
@@ -6409,7 +6531,8 @@ Es werden hier nur neue oder wichtige Einstellungen erklärt!
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ gitea}
 \AttributeTok{    }\FunctionTok{volumes}\KeywordTok{:}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ ./config.yaml:/config.yaml}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{4}}
-\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ ./gitea\_runner\_data:/data}
+\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ ./ssh\_keys:/root/.ssh}
+\AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ runner\_data:/data}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ /etc/timezone:/etc/timezone:ro}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ /etc/localtime:/etc/localtime:ro}
 \AttributeTok{      }\KeywordTok{{-}}\AttributeTok{ /var/run/docker.sock:/var/run/docker.sock}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{5}}
@@ -6433,7 +6556,31 @@ Dieser Container braucht auch selbst Zugriff auf Docker, damit er
 eigenständig neue Container starten kann.
 \end{description}
 
-\textbf{Das Config-File}\\
+\subsubsection{web}\label{web}
+
+Hier gibt es eigentlich keine Besonderheiten.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{web:}
+    \ExtensionTok{image:}\NormalTok{ nginx}
+    \ExtensionTok{hostname:}\NormalTok{ transfer}
+    \ExtensionTok{restart:}\NormalTok{ always}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ giteatransfer:/usr/share/nginx/html}
+    \ExtensionTok{ports:}
+      \ExtensionTok{{-}} \StringTok{"4001:80"}
+    \ExtensionTok{environment:}
+      \ExtensionTok{{-}}\NormalTok{ NGINX\_HOST=transfer}
+      \ExtensionTok{{-}}\NormalTok{ NGINX\_PORT=80}
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ gitea}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Konfigurationen}\label{konfigurationen}
+
+\textbf{Runner-Config}\\
 Bei vielen Containern kann die Konfiguration durch Einträge in der
 \datei{docker-compose.yaml} erfolgen - wie z.B. die Kennwörter. Gerade
 für Kennwörter gibt es noch sicherere Varianten, das führt aber zu weit.
@@ -6452,6 +6599,28 @@ eine frische Datei rufst du auf:
 
 \elarge
 
+In dieser Datei müssen einige Dinge eingestellt werden. Im Material habe
+ich die Datei einmal als Original und einmal in einer Minimalversion
+abgelegt. Die Minimalversion ist unsere Arbeitsbasis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Wichtige Einstellungen}
+
+TODO Checken Label * Labels anpassen. ``self-hostet kann raus, letzt
+Zeile muss rein'' * \texttt{network:\ "gitea"} *
+\texttt{privileged:\ true} *
+\texttt{options:\ "-\/-rm\ -v\ \$\{SSH\_LOCATION\}:/root/.ssh"} *
+\texttt{valid\_volumes:}\\
+\texttt{-\ "**"} * Der Ort der ssh-Schlüssel wird über eine
+Umgebungsvariable gesetzt.
+
+Die Einrückungen mit Leerzeichen sind wichtig!
+
 \samplestart
 
 \textbf{Hinweis}\\
@@ -6464,13 +6633,55 @@ Runner hätte aber lieber ein Dictionary, d.h. eine Darstellung
 \emph{\{key:value, key:value, \ldots\}} und das passiert \textbf{ohne}
 die Spiegelstriche. \sampleend
 
-\subsection{Starten}\label{starten}
+\subsection{Prinzip des Runners}\label{prinzip-des-runners}
 
-Damit der Runner gestartet werden kann, muss zunächst Gitea laufen --
-sonst kann man kein Token erstellen.
+Der Runner (als eigenständige, von \gitea unabhängige Software) muss mit
+\gitea kommunizieren und bracht dafür die Berechtigung. Dafür wird im
+laufenden \gitea ein Zugriffstoken (Schlüsselzahl) erstellt, das in den
+Runner eingetragen wird. Auf diese Weise wird ihm dann Zugriff gewährt.
+
+\subsection{Starten der Umgebung}\label{starten-der-umgebung}
+
+\subsubsection{Quarto}\label{quarto}
+
+Damit die Konvertierung von Markdown zu PDF ausgeführt werden kann,
+brauchen wir für den Job-Container ein Quarto-Image.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ gitea/quarto }
+\ExtensionTok{docker}\NormalTok{ compose build }
+\end{Highlighting}
+\end{Shaded}
+
+TODO: Brauchen wir das Volume ergebnis?
+
+Der Ordner \ordner{ssh\_keys} wird benötigt, damit eine kennwortlose
+Kommunikation zwischen den Containern funktioniert. Ich erkläre das
+später noch einmal genauer!
+
+\subsubsection{Runner}\label{runner-1}
+
+Der Runner wird ebenfalls mit Hilfe eines Dockerfiles erstellt. Wenn das
+System seine Images aus dem Internet holen darf, braucht man diesen
+Aufwand nicht, meine Vorgabe war es aber, \emph{alles} lokal auf einem
+Server zu verwalten. Aus diesem Grund bekommt der Runner ein schlankes
+Betriebssystem als Basis, es wird docker-cli und openssh installiert.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ gitea/runner }
+\ExtensionTok{docker}\NormalTok{ build }\AttributeTok{{-}t}\NormalTok{ gitea/act\_runner\_dockercli:latest .}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Hauptsystem}\label{hauptsystem}
+
+Im Prinzip genügt
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ gitea}
 \ExtensionTok{docker{-}compose}\NormalTok{ up  }
 \end{Highlighting}
 \end{Shaded}
@@ -6489,8 +6700,8 @@ Nun kannst du dich bei Gitea im Browser anmelden:
 \end{Highlighting}
 \end{Shaded}
 
-die Felder sind bereits vorbelegt und falls du willst, kannst du ganz
-unten\\
+Die Felder sind alle bereits vorbelegt und falls du willst, kannst du
+ganz unten\\
 noch einen Administratoren-Account anlegen lassen. Vorsicht -
 \texttt{admin} geht nicht! Falls du diesen User nicht anlegen lässt,
 wird der erste (selbst)registrierte Benutzer automatisch Administrator.
@@ -6502,14 +6713,14 @@ des Benutzers.
 Nun kannst du dich erstmalig wirklich anmelden!
 
 \textbf{Das Registrierungs-Token}\\
-Bist du in Gitea eingelogged, so kannst du über das Einstellungsmenü
+Bist du in \gitea eingelogged, so kannst du über das Einstellungsmenü
 (Das geht auf den Ebenen \emph{Instanz, Repository oder User}) nach
 \emph{actions} suchen, dort auf \emph{runner} und dann oben rechts auf
 \emph{neuen Runner anlegen} (o.ä.) klicken. Dort erscheint dann das
 Token, das du dir kopieren musst.
 
 Fahre nun die Container mit \cmd{ctrl-c} zunächst wieder herunter und
-kopiere das Token in die datei \datei{docker-compose.yaml}. Die Stelle
+kopiere das Token in die Datei \datei{docker-compose.yaml}. Die Stelle
 ist beim Runner eindeutig gekennzeichnet!
 
 Starte nun die Container und achte auf \emph{offensichtliche}
@@ -6522,7 +6733,7 @@ nicht ständig wiederholt Beschwerden äußert, dann sollte alles passen.
 \end{Highlighting}
 \end{Shaded}
 
-Hat das ohne Fehler geklappt, dann wieder \key{strg + c} und dann ein
+Hat das ohne Fehler geklappt, dann wieder \key{strg + c} und nun ein
 richtiger Start:
 
 \begin{Shaded}
@@ -6539,7 +6750,8 @@ Im Prinzip ist Gitea bereits voll funktionsfähig. Wenn die Schüler
 \textbf{nur} über den Browser mit dem System arbeiten, sind auch keine
 weiteren Einstellungen nötig. Wird aber vollwertiger Zugriff
 (clone/pull/push) benötigt, so müssen die Benutzer noch ihren
-ssh-Schlüssel im System hinterlegen.
+ssh-Schlüssel im System hinterlegen und neuerdings anscheinend auch
+verifizieren.
 
 \subsection{Schlüssel erstellen}\label{schluxfcssel-erstellen}
 
@@ -6554,7 +6766,7 @@ ssh-Schlüssel im System hinterlegen.
 Im weiteren Verlauf wird nach einer Keyphrase gefragt -- leer lassen --
 und ein Name für den Schlüssel abgefragt -- gitea passt gut.
 
-Diesen Schlüssel lässt man sich ausgeben:
+Diesen Schlüssel lässt du dir ausgeben und kopierst ihn:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6562,27 +6774,131 @@ Diesen Schlüssel lässt man sich ausgeben:
 \end{Highlighting}
 \end{Shaded}
 
-In den Benutzereinstellungen auf Gitea kann nun ein neuer Schlüssel
-hinzugefügt werden.
+In den Benutzereinstellungen auf \gitea kann nun ein neuer Schlüssel
+hinzugefügt werden (Menü rechter Rand). Füge die Zeichenkette der
+Zwischenablage hinzu.
+
+Zum Verifizieren muss nun ein Befehl mit einem generierten Token auf
+deinem Rechner ausgeführt werden. Du kannst ihn direkt kopieren, musst
+aber den Pfad zu deinem Private-Key ergänzen.\\
+Die Bildschirmausgabe (incl.~\texttt{-\/-\/-\/-\/-begin-\/-\/-\/-} und
+\texttt{-\/-\/-\/-end-\/-\/-\/-}) kopierst du dann wieder zurück nach
+\gitea. \ldots{} und nein, das ist nicht wirklich benutzerfreundlich!
 
 \textbf{Auf Windows}\\
 Hier verwendest du den gleichen Befehl innerhalb der \gitbash.
 
 \subsection{Clonen}\label{clonen}
 
-Das Clonen eines öffentlichen Repositories über Https sollte auch ohne
+Das Clonen eines öffentlichen Repositories über HTTP sollte auch ohne
 Schlüssel funktionieren. Für einen vollwertigen Zugriff verwendet man
 aber lieber \emph{ssh} und zwar mit folgendem Befehl:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ clone ssh://git@mein\_server:222/BENUTZER/REPO.git}
+\FunctionTok{git}\NormalTok{ clone ssh://git@}\OperatorTok{\textless{}}\NormalTok{IP}\OperatorTok{\textgreater{}}\NormalTok{:222/BENUTZER/REPO.git}
 \end{Highlighting}
 \end{Shaded}
 
 Die Angabe von 222 ist nötig, da wir nicht Port 22 verwenden -- man muss
 also die Adresse, die man in Gitea über dem Repository sieht, noch
-entsprechend anpassen.
+entsprechend anpassen. Zwischen den Docker-Containern kann Port 22
+verwendet werden, da die 222 für den Zugriff von außen nach innen auf 22
+weitergeleitet wird.
+
+\bookmarksetup{startatroot}
+
+\chapter{AKTUELLER ABLAUF}\label{aktueller-ablauf}
+
+\begin{itemize}
+\item
+  in den Ordner quarto =\textgreater{} build
+\item
+  in den ordner Runner =\textgreater{} build
+\item
+  Im Ordner gitea die Comtainer starten
+\item
+  Im Interface Conf abschließen
+\item
+  Token für den Runner erstellen (in gitea)
+\item
+  Eintrage in compse.yml
+\item
+  Alle Container neu starten
+\end{itemize}
+
+docker compose down docker compose up -d
+
+\begin{itemize}
+\item
+  Repository ``dillingen'' anlegen
+\item
+  Eigene Keys erstellen, in g eintragen und verifizieren
+\end{itemize}
+
+Befehl kopieren echo -n `TOKEN' \textbar{} ssh-keygen -Y sign -n gitea
+-f \textasciitilde/.ssh/id\_rsa.pub
+
+SIGNATUR einfügen (incl ---- \ldots{} ---)
+
+\begin{itemize}
+\tightlist
+\item
+  Probe-Clonen
+\end{itemize}
+
+git clone ssh://git@gitea:222/linuxadmin/dillingen
+
+Rückfrage mit yes quittieren
+
+\begin{itemize}
+\tightlist
+\item
+  mkdir -p .gitea/workflows/
+\item
+  Vorbereitetes Taskfile kopieren
+\end{itemize}
+
+\textbf{PROBLEM}
+
+Der Runner kann nicht von gitea clonen, weil er dort keinen ssh key
+liegen hat! Das müssen wir vorbereiten:
+
+\begin{itemize}
+\item
+  Im Runner Keys erstellen
+\item
+  Key in gitea eintragen und verifizieren
+\item
+  Eine ssh-Anmeldung an gitea damit eine knownhosts entsteht
+\item
+  Den Container betreten:\\
+  \texttt{docker\ exec\ -it\ gitea\_runner\ bash}
+\item
+  Keys erzeugen:\\
+  \texttt{ssh-keygen\ -t\ rsa\ -b\ 4096}
+\item
+  Key anzeigen lassen\\
+  \texttt{cat\ /root/.ssh/id\_rsa.pub}
+\item
+  Kopieren in die Weboberfläche von gitea
+\item
+  Verifizierungslink kopieren\\
+  \texttt{echo\ -n\ \textquotesingle{}TOKEN\textquotesingle{}\ \textbar{}\ ssh-keygen\ -Y\ sign\ -n\ gitea\ -f\ /root/.ssh/id\_rsa}
+\item
+  Ausgabe zurück nach Gitea kopieren
+\item
+  Einen ``leeren'' ssh-Connect zu gitea ausführen (bricht mit Fehler
+  ab!)\\
+  \texttt{runner:/\#\ ssh\ git@gitea}\strut \\
+  (Damit ensteht eine Datei known\_hosts)
+\item
+  Probehalber conen des Repops\\
+  \texttt{git\ clone\ ssh://git@gitea/linuxadmin/dillingen}
+\item
+  Es erscheint eine Warnung, dass das Repo leer ist. Alles funktioniert
+  so weit!
+\end{itemize}
 
 \bookmarksetup{startatroot}
 
@@ -6835,9 +7151,9 @@ Terminal angezeigt werden:
 Die mehrzeilige Ausgabe in einem Stück in die Oberfläche von
 \gitea kopieren:
 
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key1.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key2.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key3.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key1.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key2.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/inst/key3.png}
 
 Damit ist die Grundkonfiguration beendet. Es sollte nun noch eingestellt
 werden, welche Anmelde- und Registrierungsvarianten erlaubt sind, um
@@ -7260,13 +7576,13 @@ Bild.
 Nach der Registrierung ist allerdings noch keine Anmeldung am System
 möglich -- sie muss erst von \emph{root} freigeschaltet werden.
 
-\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_1.png}
-\includegraphics[width=3cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_2.png}
+\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_1.png}
+\includegraphics[width=3cm,height=\textheight]{bilder/gitlab/approve_2.png}
 
-\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_3.png}
-\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_4.png}
+\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_3.png}
+\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_4.png}
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_5.png}}
+\includegraphics{bilder/gitlab/approve_5.png}
 
 Danach ist für den Benutzer die Anmeldung möglich und er kann eigene
 Projekte erstellen. Am Startbildschirm erscheint auch ein Hinweis (mit
@@ -7437,7 +7753,7 @@ von leeren Repositories Folgeprobleme entstehen können.
 Erstelle eine neue Datei mit dem Namen \texttt{.gitlab-ci.yml} und trage
 ein:
 
-\phantomsection\label{annotated-cell-247}%
+\phantomsection\label{annotated-cell-252}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -7610,7 +7926,7 @@ Im Material befindet sich auch wieder diese \emph{.gitlab-ci.yml}. Für
 den Praxiseinsatz musst du sie wieder passend umbenennen (Führenden
 Punkt ergänzen, „quarto`` entfernen)!
 
-\phantomsection\label{annotated-cell-252}%
+\phantomsection\label{annotated-cell-257}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -8098,8 +8414,7 @@ Hilfs-Scripts!)
 
 \bcenter
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/tdd/full_tree.png}}
-\ecenter
+\includegraphics{bilder/tdd/full_tree.png} \ecenter
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht alle
 Ordner. Sie werden bei Bedarf dynamisch von \maven angelegt.
@@ -8185,7 +8500,7 @@ Das liefert folgende Struktur:
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/tdd/tree_init.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/tdd/tree_init.png}
 \ecenter
 
 Dieses Projekt kann bereits (fast) compiliert werden. Zuerst müssen wir

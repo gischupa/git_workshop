@@ -1,5 +1,5 @@
 # Gitea mit Docker
-## Basics
+## Vorbemerkung
 
 Wie im letzten Kapitel besprochen, wird der Einsatz von 
 Docker durch vorgefertigte Dockerfiles und Composefiles 
@@ -8,10 +8,23 @@ so sollte man ChatGPT nur sehr bedingt vertrauen. In seinen
 Kreationen tauchen oft Konfigurationsparameter auf, die
 es entweder gar nicht gibt, oder deren Schreibweise falsch ist.
 Letztendlich führt kein Weg an der Herstellerdokumentation vorbei.
-Die Dockerimages im Netz funktionieren aber gut, so dass man
+Die Dockerimages im Netz funktionieren aber gut, so dass man oft
 keine eigenen bauen muss.
 
-Bei einer vollwertigen Gitea-Installation brauchen wir (mindestens)
+Bei \gitea kommt es darauf an, ob du nur eine Plattform für 
+einfache \git-Abläufe brachst, oder ob CI/CD ein Thema ist. 
+In diesem ist der Aufwand deutlich höher. Hier müssen Daten zwischen 
+verschiedenen Containern hin und her gereicht werden. Das erfordert 
+Dinge wie gemeinsame Ordner von Containeren und eine funktionierende
+(kennwortlose) Kommunikation zwischen den Containern. Das ist 
+etwas aufwändig!
+
+Bei Basis-Installation genügen 
+
+* Gitea
+* Datenbankserver
+
+Für eine vollwertige Gitea-Installation brauchst du (mindestens)
 drei Container:
 
 * Gitea
@@ -20,10 +33,31 @@ drei Container:
 * Runner (Erklärung folgt)
 * Webserver zum Ausliefern der Ergebnisse
 
-Dies können wir nur bedingt mit einer einzigen Datei \datei{docker-compose.yaml} 
+## Basis
+
+Wenn es nur um \gitea und den Datenbankserver geht, so 
+genügt eine einzige Datei \datei{docker-compose.yml} um 
+das System zu steuern.
+
+```{.bash include="src/21_docker/gitea_basic/docker-compose.yml"}
+TODO: Kürzen yaml auf minimum
+```
+
+Diesen Setup findest du im Material als `gitea_basic`.
+Zum Starten einfach:
+
+```bash
+docker compose up 
+```
+
+
+
+
+Dies können wir nur bedingt mit einer einzigen Datei 
+\datei{docker-compose.yaml} 
 managen -- der Setup wird etwas größer!
 
-In den Materialien findest du im Ordner \ordner{gitea_buch} den kompletten 
+In den Materialien findest du im Ordner \ordner{gitea\_buch} den kompletten 
 Setup, den wir nachfolgend durchsprechen müssen. Er besteht aus den 
 Ordnern:
 
@@ -282,6 +316,7 @@ Datei einmal als Original und einmal in einer Minimalversion abgelegt.
 Die Minimalversion ist unsere Arbeitsbasis.
 
 ```{.bash include="src/21_docker/gitea_buch/config.yaml"}
+TODO config.yml eintragen 
 ```
 
 **Wichtige Einstellungen**  
