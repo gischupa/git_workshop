@@ -1,0 +1,20 @@
+( 1/10) Installing openssh-keygen (10.2_p1-r0)
+( 2/10) Installing ncurses-terminfo-base (6.5_p20251123-r0)
+( 3/10) Installing libncursesw (6.5_p20251123-r0)
+( 4/10) Installing libedit (20251016.3.1-r0)
+( 5/10) Installing openssh-client-common (10.2_p1-r0)
+( 6/10) Installing openssh-client-default (10.2_p1-r0)
+( 7/10) Installing openssh-sftp-server (10.2_p1-r0)
+( 8/10) Installing openssh-server-common (10.2_p1-r0)
+( 9/10) Installing openssh-server (10.2_p1-r0)
+(10/10) Installing openssh (10.2_p1-r0)
+Executing busybox-1.37.0-r30.trigger
+OK: 14.9 MiB in 26 packages
+# gitea:22 SSH-2.0-OpenSSH_9.7
+gitea ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCR8IwZSNVvCJYVmjjYulMX7Aeg1/Le3uugOjvBBTNnKJ1sWRp05Ladgd7lHPlc/rjRA5bsdLPEt5/Mcx20I2dpZDdbWfVVAlwQnAe8iTWdzDWmbusCyl5377Pl+RR7NCi9xjlTR5KGUVzfPn4tqexvg42N1ClYwnWM2MvvcsYNAdoCutWiqfcLZPUFtApPOyO/kBdS1t7zdfgK1dB6Cubj1K7klHjrlzUbRKqx3udj3jHl6x7IzYnqFBRzJhyxTtRtxlHsHZt3kC1HcYgNUrLRceIrmfMbLAH8JL/+eG5BqUH0Vrjfa6QY7fuYMHfw6wRm/Ug6NR1nomV0picZ26MQCz9wG9IHKJjOBoBp8/ABmdn5d0kQ5Ye1WxWlrHe/0vVClJAb5bAlB/uSn6SLL93WPmSPxiBW2p0blNajNJmkxuvpx9uXRwneI+RSeB1zz9TgYC7N5Hl6sz0PiPVFEMcHnMExFIBjEtRvBCBlODxhSmBd2t67hYPPFTOdCxPsfOE=
+# gitea:22 SSH-2.0-OpenSSH_9.7
+gitea ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLIvIz9Bzh/ZhJGBTVyFDOrGBlGq9zr0CiQn+O8q32BUc/DnGHRyfp4DSgygXC+YaAhlCXSQboqMD72yZof8Afo=
+# gitea:22 SSH-2.0-OpenSSH_9.7
+gitea ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINwYfBcUO4HRh4+THaofBhU6UFiHcocJkfjkZLgs6m2h
+# gitea:22 SSH-2.0-OpenSSH_9.7
+# gitea:22 SSH-2.0-OpenSSH_9.7

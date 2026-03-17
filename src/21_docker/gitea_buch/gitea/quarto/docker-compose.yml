@@ -1,0 +1,15 @@
+version: '3'
+services:
+ quarto:
+   build:
+     context: .
+   volumes:
+     - ./ssh_keys:/root/.ssh
+   networks:
+      - gitea
+
+networks:
+  gitea:
+    external: true
+
+

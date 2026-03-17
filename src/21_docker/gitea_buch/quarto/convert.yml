@@ -1,0 +1,33 @@
+name: Convert Markdown to PDF
+
+on:
+  push:
+    branches:
+      - main  # Ändere das, falls ein anderer Branch genutzt wird
+
+jobs:
+  convert:
+    runs-on: self-hosted  # Läuft direkt auf deinem Server
+    container:
+      image: quarto_quarto  # Dein lokales Docker-Image
+      volumes: 
+        - /srv/docker2/gitea/shared_data:/shared_data
+
+    steps:
+      - name: Checkout Repository
+        run: |
+          git clone http://gitea:3000/linuxadmin/labor_vilshofen.git Labor                    
+
+      - name: Convert Markdown to PDF
+        run: |
+          cd Labor/anleitung
+          quarto render --to pdf --output-dir /shared_data
+          
+          
+                              
+
+      #- name: Upload PDFs
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: PDFs
+      #    path: output/*.pdf
