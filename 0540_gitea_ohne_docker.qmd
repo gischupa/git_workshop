@@ -106,60 +106,9 @@ selfreg.sh off
 Für den Client muss der ssh-Zugriff möglich sein (clone, push, pull).
 Es kommt hier der normale ssh-Server auf Port 22 zum Einsatz^[Gitea
 würde über einen eigenen ssh-Server verfügen, den man in einigen
-speziellen Fällen verwenden könnte.].
+speziellen Fällen verwenden könnte.], weil wir nicht durch Abschottung von Docker müssen.
 
-Für den kennwortlosen ssh-Zugriff für clone, push, pull wird ein
-ausreichend langer ssh-Schlüssel benötigt. Die üblichen 2048 Bit 
-genügen hier nicht! Dieser *Deploy-Key* wird später dann über die 
-graphische Benutzeroberfläche in *Gitea* eingefügt (s.u.).
-
-**Schlüssel erzeugen**  
-```bash
-IN:  ssh-keygen -t rsa -b 4096
-OUT: Generating public/private rsa key pair.
-     Enter file in which to save the key 
-     (/home/linuxadmin/.ssh/id_rsa):
-IN:  gitea_rsa
-OUT: Enter passphrase (empty for no passphrase): 
-     # leer lassen Enter
-OUT: Enter same passphrase again: ... leer lassen Enter
-OUT: Your identification has been saved in gitea_rsa
-     Your public key has been saved in gitea_rsa.pub
-     The key fingerprint is:
-     SHA256:ty5F............Q0 linuxadmin@gitserver
-     The key's randomart image is:
-     +---[RSA 4096]----+
-     |      . ..       |
-     |.      o  .      |
-     | E. . o  o o     |
-     |..*. o o+ O .    |
-     | =... *+SB.o     |
-     | ..  o =O.o.     |
-     |..     =.=.      |
-     |++ .    *+       |
-     |+ =.    .=+      |
-     +----[SHA256]-----+
-```
-
-Der Inhalt von \datei{gitea\_rsa.pub} kann durch folgenden Befehl
-im Terminal angezeigt werden:
-
-```bash
-cat ~/.ssh/gitea_rsa.pub
-```
-
-Die mehrzeilige Ausgabe in einem Stück in die Oberfläche 
-von \gitea kopieren:  
-
-![](bilder/inst/key1.png){width=30%}
-![](bilder/inst/key2.png){width=30%}
-![](bilder/inst/key3.png){width=30%}
-
-Damit ist die Grundkonfiguration beendet. Es sollte nun noch 
-eingestellt werden, welche Anmelde- und Registrierungsvarianten
-erlaubt sind, um nicht plötzlich fremde Personen in seiner
-Gitea-Instanz zu haben. 
-
+Den Abauf mit den SSH-Schlüsseln des Benutzers habe ich ja bereits oben erklärt -- daran ändert sich nichts.
 
 
 ## HTTPS
