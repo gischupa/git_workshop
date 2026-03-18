@@ -8,6 +8,7 @@ base=$PWD
 cp -r vorlagen/* .
 
 # Erstellen von Quarto
+cd $base
 cd quarto
 #docker compose build
 
@@ -22,7 +23,7 @@ cd runner
 cd $base
 docker compose up server db -d
 
-echo "Konfiguriere gitea im Frontend" 
+echo "Konfiguriere gitea im Frontend: http://<SERVER-IP>:4000 " 
 echo "Nach Fertigstellung hier die ENTER-Taste drücken"
 
 read

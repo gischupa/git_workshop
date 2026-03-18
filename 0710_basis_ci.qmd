@@ -19,7 +19,7 @@ Instanz].
 
 ### Hintergrund
 
-Damit CICD funktioniert, brauchst du ein Programm mit dem 
+Damit CI/CD funktioniert, brauchst du ein Programm mit dem 
 Namen *gitlab-runner*, kurz auch *runner* genannt. Das ist nur 
 bedingt richtig, weil *gitlab-runner* auch mehrere Jobs verwalten 
 kann, die ebenfalls als *runner* bezeichnet werden.
@@ -27,13 +27,13 @@ kann, die ebenfalls als *runner* bezeichnet werden.
 Wo und wie der *gitlab-runner* installiert wird, hängt von deinen 
 Bedürfnissen ab. Es gibt hier verschiedene Varianten:
 
-* Du verwendest das offizielle GitLab? Dann sind dort schon Runner 
+* Du verwendest das offizielle \GitLab? Dann sind dort schon Runner 
   vorhanden. Sie sind aber langsam, du kannst sie nicht beliebig oft 
   starten und höhere Geschwindigkeit kostet!
-* Du verwendest das offizielle GitLab? Dann kannst du auch einen 
+* Du verwendest das offizielle \GitLab? Dann kannst du auch einen 
   Runner verwenden, der auf deinem Server, Laptop, ... installiert ist.
   Das kann, muss aber nicht mit Docker gemacht werden.
-* Du hast dein eigenes GitLab? Dann musst du einen Runner irgendwo 
+* Du hast dein eigenes \GitLab? Dann musst du einen Runner irgendwo 
   installieren. Auch hier kann das im Prinzip jeder Computer sein.
 
 **Was macht der Runner?**  
@@ -45,9 +45,7 @@ Diese Datei definiert genauer, was dieser Prozess wie erledigen soll.
 Du wirst den genauen Aufbau in einem der nächsten Schritte kennenlernen, 
 aber aktuell geht es erst einmal um das Funktionsprinzip.
 
-Wenn das System richtig konfiguriert ist, wird diese Datei dem *runner* übergeben. Dieser kann -- wie bereits bemerkt -- auf \gitlab installiert (=shared runner und andere Varianten), aber auch auf 
-deinem eigenen Rechner oder Server, der dann eigenständig mit \gitlab 
-kommuniziert um die Befehle in der \datei{.gitlab-ci.yml} abzuarbeiten.
+Wenn das System richtig konfiguriert ist, wird diese Datei dem *runner* übergeben. Dieser kann -- wie bereits bemerkt -- auf \gitlab installiert (=shared runner und andere Varianten) sein, aber auch auf deinem eigenen Rechner oder Server. Dieser kommuniziert dann eigenständig mit \gitlab um die Befehle in der \datei{.gitlab-ci.yml} abzuarbeiten.
 
 In vielen Fällen muss der Runner dazu einen weiteren Docker-Container erstellen.
 
@@ -62,7 +60,7 @@ beim Clonen von leeren Repositories Folgeprobleme entstehen
 können.
 
 **Schritt 2**  
-Erstelle eine neue Datei mit dem Namen `.gitlab-ci.yml` und trage ein:
+Erstelle eine neue Datei mit dem Namen \datei{.gitlab-ci.yml} und trage ein:
 
 ```bash
 stages:  #<1>
@@ -86,12 +84,12 @@ Committe diese Datei.
 
 Bereits jetzt sollte ein Job laufen, der diese Datei abarbeitet.
 Dafür sind die shared-Runner von \gitlab verantwortlich. Wie aber 
-bereits erwähnt, lässt ihre Performance zu Wünschen übrig und 
-langsame Runner reduzieren die verfügbare CICD-Zeit von 
+bereits erwähnt, lässt ihre Performance zu wünschen übrig und 
+langsame Runner reduzieren die verfügbare CI/CD-Zeit von 
 kostenlosen \gitlab-Accounts.
 
 Die Ausgabe des Jobs findest du am linken Rand unter 
-`Build - Jobs`. Die Ausgabe habe ich im nächsten Abschnitt 
+\menu{Build - Jobs}. Die Ausgabe habe ich im nächsten Abschnitt 
 abgedruckt, wenn du einen Versuch mit einem eigenen Runner 
 machst.
 
@@ -126,7 +124,7 @@ docker exec -it gitlab-runner /bin/bash
 ```
 
 Hier hin kopieren wir den Befehl aus \gitlab. Die ersten Fragen beantworten
-wir mit \key{enter}. Auf die Frage nach dem Executor geben wir `docker` an.
+wir mit \key{enter}. Auf die Frage nach dem Executor geben wir \menu{docker} an.
 
 Danach starten wir den Runner
 
@@ -134,11 +132,11 @@ Danach starten wir den Runner
 gitlab-runner run
 ```
 
-Danach verlassen wir den Container mit \strg{pq}.
+Nun verlassen wir den Container wieder mit \strg{pq}.
 
 ### Ausführen des Jobs
-Nimm eine minimale Änderung in der Readme vor und Committe deine Änderung.
-Am linken Rand findest du einen Menüpunkt \menu{build}, aus dem du `Pipeline` wählst. Nun siehst du oben an der Seite das Symbol für einen laufenden Job.
+Nimm eine minimale Änderung in der \datei{Readme} vor und Committe deine Änderung.
+Am linken Rand findest du einen Menüpunkt \menu{build}, aus dem du \menu{Pipeline} wählst. Nun siehst du oben an der Seite das Symbol für einen laufenden Job.
 Klickst du es an, siehst du die Ausgabe im Docker-Container!
 
 ```bash
@@ -161,7 +159,7 @@ Du siehst:
 
 ### Sinnvollere Anwendung
 
-Ziel ist das Erstellen eines Buches in \gitlab mit CICD. 
+Ziel ist das Erstellen eines Buches in \gitlab mit CI/CD. 
 Je nach Situation kann das mit einem gemeinsamen Repository 
 durchgespielt werden, oder du machst das alleine und schlüpfst
 in die Rollen verschiedener Schüler.
@@ -184,7 +182,7 @@ Formatierungen über mehrere Dokumente hinweg gibt. Auf \gitlab gibt es
 bei derartigen Projekten die Möglichkeit, den *main*-Branch zu schützen, 
 damit die Schüler ihre Dokumente nicht direkt dorthin pushen können. 
 
-Der Lehrer muss für die Integration der einzelnen Kurszgeschichten 
+Der Lehrer muss für die Integration der einzelnen Kurzgeschichten 
 in ein Zentraldokument noch die passenden *include*-Statements schreiben, 
 damit die Zusammenführung funktioniert. 
 
@@ -192,15 +190,15 @@ Wenn du das Repository *minibuch* clonst, dann sind die wesentlichen
 Vorbereitungen bereits getroffen. 
 
 Nachfolgend beschreibe ich dennoch die wichtigen Schritte, weil du das 
-eventuell bei eigenen, anderen Projekten brauchen kannst. 
+eventuell bei anderen, eigenen Projekten brauchen kannst. 
 
 
 Je nach Projekt wird ein geeignetes Docker-Image benötigt und die Datei \datei{.gitlab-ci.yml}
-entsprechend angepasst werden.
+muss entsprechend angepasst werden.
 
-Im Material befindet sich auch wieder diese *.gitlab-ci.yml*.
+Im Material befindet sich eine Version dieser Datei.
 Für den Praxiseinsatz musst du sie wieder passend umbenennen
-(Führenden Punkt ergänzen, „quarto“ entfernen)!
+(führenden Punkt ergänzen, „quarto“ entfernen)!
 
 ```bash
 variables:   #<1>
@@ -235,7 +233,7 @@ Versioniere dein Werk, committe es und führe einen Push deines
 Branchs auf den Server aus. 
 
 Auf dem Server führst du einen Merge deines Branchs auf *main* durch.
-Nun sollte die CICD-Pipeline getriggert werden und der Job durchlaufen. Auf \gitlab findest du 
+Nun sollte die CI/CD-Pipeline getriggert werden und der Job durchlaufen. Auf \gitlab findest du 
 im Menü (links) bei *Jobs* nun die Möglichkeit, die Zip-Datei mit dem 
 Artifact -- also der pdf-Datei --  herunterzuladen.
 
@@ -253,8 +251,8 @@ Lege zunächst einen Ordner an, wo die Dateien für die
 Erzeugung der Container ablegen willst:
 
 ```bash
-mkdir -p /srv/docker
-cd /srv/docker 
+mkdir -p /home/benutzer/docker/gitlab
+cd /home/benutzer/docker/gitlab
 mkdir -p runner quarto java # 3 Ordner
 ```
 
@@ -287,7 +285,7 @@ nächsten Schritten erst erstellt -- das ist also normal und kann ignoriert werd
 
 **quarto**  
 Für diesen Container genügt ein Dockerfile im Ordner *quarto*, denn dieser Container
-wird komplett vom Runner verwaltet. `Docker Compose` ist nicht erforderlich.
+wird komplett vom Runner verwaltet -- \cmd{docker compose} ist nicht erforderlich.
 
 \blarge
 ```bash
@@ -328,9 +326,9 @@ docker build -t quarto-git:latest -f Dockerfile .
 **Java**  
 Auch für Java brauchst du ein lokales Image, wenn die 
 Geschwindigkeit stimmen soll. Ein mögliches Dockerfile
-sieht so aus, allerdings musst du zuerst unter nachfolgender 
-Adresse die aktuelle Version von *maven* in Erfahrung bringen 
-und in das Dockerfile eintragen (siehe Kommentar):
+sieht so aus, wie es unten zu sehen ist. Allerdings musst du zuerst 
+die aktuelle Version von *maven* unter nachfolgender 
+Adresse  in Erfahrung bringen und in das Dockerfile eintragen (siehe Kommentar):
 
 [https://downloads.apache.org/maven/maven-3](https://downloads.apache.org/maven/maven-3)
 

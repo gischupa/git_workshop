@@ -23,3 +23,12 @@ Screenshots erstellen
 
 
 # Blatt mit Shell-Befehlen
+
+
+
+# Geschichte bereitstellen für quarto
+
+# Testen der Gitea-Scripts für autoreg ....
+
+# Minibuch Repo erstellen
+mit verschiedenen Taskfiles!

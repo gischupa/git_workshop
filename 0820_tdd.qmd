@@ -1,4 +1,4 @@
-# TDD - Test Driven Development
+## TDD - Test Driven Development
 
 (Video mit Intellij: https://www.youtube.com/watch?v=eMU_hninZAs)
 
@@ -7,7 +7,7 @@ Ablauf bei der Software-Entwicklung. Puristen sprechen
 vom *Red-Green-Refactor* Zyklus, der in jedem Fall eingehalten 
 werden muss. 
 
-## Was versteht man darunter? 
+### Was versteht man darunter? 
 
 Grob geht es um einen Zyklus von Code schreiben, Code testen,
 Code optimieren, der die Entwicklung -- idealer Weise automatisiert -- begleitet.  

@@ -37,6 +37,7 @@ chmod 640 /etc/gitea/app.ini
 Dieses Script deaktiviert Anmeldungen über OpenID
 und setzt neue Sicherheitsschlüssel.
 
+\newpage
 **tune.sh**  
 ```bash
 # OpenID deaktivieren
@@ -106,9 +107,10 @@ selfreg.sh off
 Für den Client muss der ssh-Zugriff möglich sein (clone, push, pull).
 Es kommt hier der normale ssh-Server auf Port 22 zum Einsatz^[Gitea
 würde über einen eigenen ssh-Server verfügen, den man in einigen
-speziellen Fällen verwenden könnte.], weil wir nicht durch Abschottung von Docker müssen.
+speziellen Fällen verwenden könnte.], weil wir nicht durch die Abschottung 
+von Docker müssen.
 
-Den Abauf mit den SSH-Schlüsseln des Benutzers habe ich ja bereits oben erklärt -- daran ändert sich nichts.
+Den Ablauf mit den SSH-Schlüsseln des Benutzers habe ich ja bereits oben erklärt -- daran ändert sich nichts.
 
 
 ## HTTPS
@@ -121,8 +123,8 @@ den Rahmen dieses Workshops aber sprengen! Zur Erinnerung: Es ging um
 eine möglichst einfache Installation eines funktionsfähigen Systems.
 
 ## API
-Oft ist es effizienter, wenn Dinge über Kommandozeile erledigt werden.
-Wenn z.B. 50 Benutzerkonten erstellt und mit Passwort abgesichert werden sollen,
+Oft ist es effizienter, wenn Dinge über die Kommandozeile erledigt werden --
+zum Beispiel wenn 50 Benutzerkonten erstellt und mit Passwort abgesichert werden sollen,
 weil die Selbstregistrierung nicht gewünscht ist. In diesem Fall verwendest
 die die API von \gitea. Dies kann von jedem Rechner aus erfolgen, der auf \gitea zugreifen
 kann. Dafür braucht es aber noch zwei Anpassungen an der \datei{/etc/gitea/app.ini}:
@@ -196,7 +198,7 @@ Organistation mehr ist!
 
 Es könnte sinnvoll sein, wenn sich die einzelnen Kollegen als *Organisationen*
 sehen. Dann müssen Schüler aber mehrfach ins System eingetragen werden und das
-ist bereits bei den eMail-Adressen Probleme.
+bereitet bereits bei den eMail-Adressen Probleme, die dann doppelt wären.
 
 Sinnvoller erscheint mir eine Namenskonvention beim Erstellen von Teams!
 
@@ -205,7 +207,7 @@ Sinnvoller erscheint mir eine Namenskonvention beim Erstellen von Teams!
 ```bash
 token=1234
 name=G10a
-curl -X POST "http://192.168.3.195:3000/api/v1/admin/organizations" \
+curl -X POST "http://192.168.3.190:3000/api/v1/admin/organizations" \
 -H "Authorization: token ${token}" \
 -H "Content-Type: application/json" \
 -d '{
@@ -227,29 +229,29 @@ name=G10a
 user=susi
 url="${name}$/members/${user}"
 curl -X PUT \
-"http://192.168.3.195:3000/api/v1/orgs/"$url \
+"http://192.168.3.190:3000/api/v1/orgs/"$url \
 -H "Authorization: token ${token}"
 ```
 
-**User löschen**  
+**Benutzer löschen**  
 
 \blarge 
 ```bash
 token=1234
 user="susi"
 # In welchen Organistaionen ist der User
-curl -X GET "http://192.168.3.195:3000/api/v1/users/${user}/orgs" \
+curl -X GET "http://192.168.3.190:3000/api/v1/users/${user}/orgs" \
     -H "Authorization: token ${token}"
 
 # Einzeln austragen, sonst ist er nicht löschbar
 orga=organization1
 curl -X DELETE  \
-"http://192.168.3.195:3000/api/v1/orgs/${orga}/members/${user}" \
+"http://192.168.3.190:3000/api/v1/orgs/${orga}/members/${user}" \
 -H "Authorization: token ${token}"
 
 # Benutzer löschen 
 curl -X DELETE \
-"http://192.168.3.195:3000/api/v1/admin/users/${user}" \
+"http://192.168.3.190:3000/api/v1/admin/users/${user}" \
 -H "Authorization: token ${token}"
 ```
 \elarge
@@ -266,7 +268,7 @@ Schule anlegen.
 schule="GGP"
 token=1234
 team=G10a
-curl -X POST "http://192.168.3.195:3000/api/v1/orgs/${schule}/teams" \
+curl -X POST "http://192.168.3.190:3000/api/v1/orgs/${schule}/teams" \
 -H "Authorization: token ${token}" \
 -H "Content-Type: application/json" \
 -d '{
@@ -286,7 +288,7 @@ token=1234
 team=G10a
 user=susi
 curl -X PUT \
-"http://192.168.3.195:3000/api/v1/orgs/${schule}/teams/${team}/members/${user}" \
+"http://192.168.3.190:3000/api/v1/orgs/${schule}/teams/${team}/members/${user}" \
 -H "Authorization: token YOUR_ADMIN_TOKEN"
  ```
 \elarge

@@ -1,6 +1,6 @@
-## Maven
+### Maven
 
-### Was ist Maven
+#### Was ist Maven
 
 Bei Maven handelt es sich um ein Build-Tool, wie es viele gibt und gab (z.B. Ant).
 Mit seiner Hilfe können bei entsprechender Konfiguration viele lästige Kleinigkeiten
@@ -9,13 +9,13 @@ Abhängigkeiten.  Da dieses Tool bei CI/CD absolut üblich ist, brauchst du
 zumindest ein oberflächliches Grundverständnis.
 
 
-### Vorbereitung
+#### Vorbereitung
 Dass ein JDK installiert sein muss, sollte klar sein, denn es soll 
 ja mit Java programmiert werden. Natürlich gibt es wieder Unterschiede
 zwischen Linux, Apple und Windows.
 
 
-#### Windows{.unnumbered}
+##### Windows{.unnumbered}
 
 *Java installieren*  
 
@@ -33,7 +33,7 @@ Installiere das gewünschte JDK (z. B. Oracle JDK, Temurin).
 
 *PATH anpassen*  
 
-Systemvariable `Path` bearbeiten und hinzufügen: \datei{\%JAVA_HOME\%\\bin}
+Systemvariable `Path` bearbeiten und hinzufügen: \datei{\%JAVA\_HOME\%\\bin}
 
 
 *Überprüfen im cmd-Fenster*  
@@ -44,7 +44,7 @@ echo %JAVA_HOME%
 ```
 
 
-#### Linux{.unnumbered}
+##### Linux{.unnumbered}
 
 *Java installieren*  
 
@@ -87,7 +87,7 @@ java -version
 echo $JAVA_HOME
 ```
 
-#### macOS{.unnumbered}
+##### macOS{.unnumbered}
 
 *Java installieren*  
 
@@ -117,9 +117,9 @@ java -version
 echo $JAVA_HOME
 ```
 
-### Installation von Maven
+#### Installation von Maven
 
-#### Linux
+##### Linux
 Eine Installation über den Paketmanager ist möglich, liefert aber wahrscheinlich eine 
 veraltete Version. Am einfachsten dürfte dann wohl die Verwendung eines Hilfs-Scriptes sein:
 
@@ -143,15 +143,15 @@ mvn --version
 
 (Tipp: Im Terminal eingeben: \cmd{sdk list maven})  
 
-#### Windows{.unnumbered}
+##### Windows{.unnumbered}
 
 Hier verweise ich einfach mal auf Youtube.
 
-#### Apple{.unnumbered}
+##### Apple{.unnumbered}
 
 Auch hier sind genug Tutorials auf Youtube zu finden.
 
-### Erster Test
+#### Erster Test
 
 (Auf Linux)
 
@@ -183,7 +183,7 @@ die auf eine falsche Parameterisierung in der \datei{pom.xml}
 hinweisen -- dazu später mehr.
 \sampleend
 
-### Konventionen
+#### Konventionen
 
 Maven erwartet eine bestimmte Verzeichnisstruktur und 
 auch entsprechende Namenskonventionen (Du musst das nicht
@@ -197,7 +197,7 @@ Direkt nach dem Erstellen des Projektes existieren noch nicht
 alle Ordner. Sie werden bei Bedarf dynamisch von \maven angelegt.
 
 
-### Idee
+#### Idee
 
 \Maven kennt sogenannte LiveCyles. Damit sind bestimmte Abfolgen von Abläufen
 gemeint, die Maven ausführt, nämlich

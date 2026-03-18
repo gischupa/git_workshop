@@ -77,7 +77,7 @@ services:
     hostname: runner
     environment:
       CONFIG_FILE: /config.yaml
-      GITEA_INSTANCE_URL: "http://gitea:3000" # Verbindung zur Gitea-Instanz
+      GITEA_INSTANCE_URL: "http://gitea:3000" # Verbindung zu Gitea
       GITEA_RUNNER_NAME: "Probe-runner"
       GITEA_RUNNER_REGISTRATION_TOKEN: "RUNNERTOKEN"
     restart: always

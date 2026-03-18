@@ -257,7 +257,14 @@
 \usepackage{enumitem}
 \usepackage{changepage}
 \setlist[description]{style=nextline, leftmargin=2.5em}
-\newcommand{\cmd}[1]{\texttt{#1}\xspace}
+\newcommand{\cmdx}[1]{\texttt{#1}\xspace}
+\newcommand{\cmd}[1]{
+\tikz[baseline=(X.base)]
+  \node [draw=white,fill=gray!40,
+  semithick,rectangle,
+  inner sep=2pt, 
+  rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+
 \newcommand{\markcmd}[1]{\textbf{#1}\xspace}
 \newcommand{\menu}[1]{\textbf{\texttt{#1}}\xspace}
 \newcommand{\markcmx}[1]{
@@ -266,8 +273,16 @@
   semithick,rectangle,
   inner sep=2pt, 
   rounded corners=3pt] (X) {#1};\xspace}
-\newcommand{\script}[1]{\texttt{#1}\xspace}
-\newcommand{\key}[1]{\texttt{#1}\xspace}
+\newcommand{\script}[1]{\tikz[baseline=(X.base)]
+  \node [draw=white,fill=gray!40,
+  semithick,rectangle,
+  inner sep=2pt, 
+  rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+\newcommand{\key}[1]{\tikz[baseline=(X.base)]
+  \node [draw=white,fill=gray!40,
+  semithick,rectangle,
+  inner sep=2pt, 
+  rounded corners=3pt] (X) {\texttt{#1}};\xspace}
 \newcommand{\Git}{\textit{Git}\xspace}
 \newcommand{\git}{\textit{git}\xspace}
 \newcommand{\gitserver}{\textit{git}-Server\xspace}
@@ -279,11 +294,31 @@
 \newcommand{\gitbash}{\textit{git-Bash}\xspace}
 \newcommand{\maven}{\textit{Maven}\xspace}
 \newcommand{\Maven}{\textit{Maven}\xspace}
-\newcommand{\strg}[1]{strg + #1\xspace}
-\newcommand{\alt}[1]{alt + #1\xspace}
-\newcommand{\datei}[1]{\lstinline{#1}\xspace}
-\newcommand{\ordner}[1]{\textit{#1}\xspace}
-\newcommand{\branch}[1]{\textit{#1}\xspace}
+\newcommand{\strg}[1]{\tikz[baseline=(X.base)]
+  \node [draw=white,fill=gray!40,
+  semithick,rectangle,
+  inner sep=2pt, 
+  rounded corners=3pt] (X) {\texttt{strg+#1}};\xspace}
+\newcommand{\alt}[1]{\tikz[baseline=(X.base)]
+  \node [draw=white,fill=gray!40,
+  semithick,rectangle,
+  inner sep=2pt, 
+  rounded corners=3pt] (X) {\texttt{alt+#1}};\xspace}
+\newcommand{\datei}[1]{\tikz[baseline=(X.base)]
+  \node [draw=white,fill=gray!40,
+  semithick,rectangle,
+  inner sep=2pt, 
+  rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+\newcommand{\ordner}[1]{\tikz[baseline=(X.base)]
+  \node [draw=white,fill=gray!40,
+  semithick,rectangle,
+  inner sep=2pt, 
+  rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+\newcommand{\branch}[1]{\tikz[baseline=(X.base)]
+  \node [draw=white,fill=gray!40,
+  semithick,rectangle,
+  inner sep=2pt, 
+  rounded corners=3pt] (X) {\texttt{#1}};\xspace}
 \newcommand{\work}{\textit{Working-Directory}\xspace}
 \newcommand{\blarge}{\begin{adjustwidth}{0cm}{-1.3cm}}
 \newcommand{\elarge}{\end{adjustwidth}}
@@ -354,7 +389,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[colback={codebgcolor}, sharp corners, enhanced, breakable, boxrule=0pt, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, colback={codebgcolor}, breakable, enhanced, sharp corners, boxrule=0pt]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -4294,7 +4329,7 @@ Susi führt nun einen Push aus:
 \ExtensionTok{Schreibe}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{3/3}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ 292 Bytes }\KeywordTok{|} \ExtensionTok{292.00}\NormalTok{ KiB/s, fertig.}
 \ExtensionTok{Gesamt}\NormalTok{ 3 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Wiederverwendet 0 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,} 
 \ExtensionTok{Pack}\NormalTok{ wiederverwendet 0}
-\ExtensionTok{To}\NormalTok{ 192.168.3.154:/home/benutzer/entfernt.git}
+\ExtensionTok{To}\NormalTok{ 192.168.3.190:/home/benutzer/entfernt.git}
    \ExtensionTok{d46681d..78db34e}\NormalTok{  main }\AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main}
 \end{Highlighting}
 \end{Shaded}
@@ -4333,7 +4368,7 @@ Als Ausgabe bekommt er
 \ExtensionTok{remote:}\NormalTok{ Gesamt 3 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ Wiederverwendet 0 }\ErrorTok{(}\ExtensionTok{Delta}\NormalTok{ 0}\KeywordTok{)}\ExtensionTok{,} 
 \ExtensionTok{Pack}\NormalTok{ wiederverwendet 0}
 \ExtensionTok{Entpacke}\NormalTok{ Objekte: 100\% }\ErrorTok{(}\ExtensionTok{3/3}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ 272 Bytes }\KeywordTok{|} \ExtensionTok{272.00}\NormalTok{ KiB/s, fertig.}
-\ExtensionTok{Von}\NormalTok{ 192.168.3.154:/home/benutzer/entfernt.git}
+\ExtensionTok{Von}\NormalTok{ 192.168.3.190:/home/benutzer/entfernt.git}
    \ExtensionTok{d46681d..78db34e}\NormalTok{  main       }\AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ origin/main}
 \end{Highlighting}
 \end{Shaded}
@@ -4471,10 +4506,10 @@ Führe dafür das Script \datei{max\_error.sh} aus.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{To}\NormalTok{ 192.168.3.154:/home/benutzer/entfernt.git}
+\ExtensionTok{To}\NormalTok{ 192.168.3.190:/home/benutzer/entfernt.git}
  \OtherTok{! }\ExtensionTok{[rejected]}\NormalTok{        main }\AttributeTok{{-}}\OperatorTok{\textgreater{}}\NormalTok{ main }\ErrorTok{(}\ExtensionTok{fetch}\NormalTok{ first}\KeywordTok{)}
 \ExtensionTok{error:}\NormalTok{ Fehler beim Versenden einiger Referenzen }
-        \ExtensionTok{nach} \StringTok{\textquotesingle{}192.168.3.154:/home/benutzer/entfernt.git\textquotesingle{}}
+        \ExtensionTok{nach} \StringTok{\textquotesingle{}192.168.3.190:/home/benutzer/entfernt.git\textquotesingle{}}
 \ExtensionTok{Hinweis:}\NormalTok{ Updates were rejected because the remote contains work }
 \ExtensionTok{Hinweis:}\NormalTok{ that you do not have locally. This is usually caused}
 \ExtensionTok{Hinweis:}\NormalTok{ by another repository pushing to the same ref. }
@@ -5749,6 +5784,15 @@ Es gibt sehr viele verschiedene Szenarien, wie Docker verwendet werden
 kann und entsprechend sind auch die Befehle zahlreich und
 unterschiedlich kompliziert.
 
+\samplestart
+
+\textbf{Hinweis}\\
+Da nun Zugriffe auf verschiedene Ports des Servers erfolgen, die aktuell
+durch die Firewall blockert sind, sollten wir diese deaktivieren:
+
+\cmd{ufw disable}
+\sampleend
+
 Nachfolgend ein kleines \emph{Work-along}, wo einige Befehle verwendet
 und erklärt werden. Gib folgenden Befehl im Terminal ein:
 
@@ -6177,12 +6221,11 @@ Dockerimages im Netz funktionieren aber gut, so dass man oft keine
 eigenen bauen muss.
 
 Bei \gitea kommt es darauf an, ob du nur eine Plattform für einfache
-\git-Abläufe brachst, oder ob CI/CD ein Thema ist. In diesem ist der
-Aufwand deutlich höher. Hier müssen Daten zwischen verschiedenen
+\git-Abläufe brauchst, oder ob CI/CD ein Thema ist. In diesem Fall ist
+der Aufwand deutlich höher, denn es müssen Daten zwischen verschiedenen
 Containern hin und her gereicht werden. Das erfordert Dinge wie
-gemeinsame Ordner von Containeren und eine funktionierende
-(kennwortlose) Kommunikation zwischen den Containern. Das ist etwas
-aufwändig!
+gemeinsame Ordner von Containern und eine funktionierende (kennwortlose)
+Kommunikation zwischen den Containern. Das ist etwas aufwändig!
 
 Bei einer Basis-Installation genügen
 
@@ -6214,7 +6257,7 @@ Container:
 \section{Basis-installation}\label{basis-installation}
 
 Wenn es nur um \gitea und den Datenbankserver geht, so genügt eine
-einzige Datei \datei{docker-compose.yml} um das System zu steuern.
+einzige Datei \datei{docker-compose.yml} um das System zu steuern:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6245,13 +6288,9 @@ einzige Datei \datei{docker-compose.yml} um das System zu steuern.
       \ExtensionTok{{-}} \StringTok{"4000:3000"}
       \ExtensionTok{{-}} \StringTok{"222:22"}
 
-    \ExtensionTok{healthcheck:}
-      \ExtensionTok{test:}\NormalTok{ [}\StringTok{"CMD"}\NormalTok{, }\StringTok{"curl"}\NormalTok{, }\StringTok{"{-}f"}\NormalTok{, }\StringTok{"http://localhost:3000"}\NormalTok{]}
-      \ExtensionTok{interval:}\NormalTok{ 5s}
-      \ExtensionTok{retries:}\NormalTok{ 20}
-
     \ExtensionTok{depends\_on:}
       \ExtensionTok{{-}}\NormalTok{ db}
+      
   \ExtensionTok{db:}
     \ExtensionTok{image:}\NormalTok{ docker.io/library/mysql:8}
     \ExtensionTok{restart:}\NormalTok{ always}
@@ -6262,39 +6301,11 @@ einzige Datei \datei{docker-compose.yml} um das System zu steuern.
       \ExtensionTok{{-}}\NormalTok{ MYSQL\_USER=gitea}
       \ExtensionTok{{-}}\NormalTok{ MYSQL\_PASSWORD=gitea}
       \ExtensionTok{{-}}\NormalTok{ MYSQL\_DATABASE=gitea}
-    \ExtensionTok{healthcheck:}
-      \ExtensionTok{test:}\NormalTok{ [}\StringTok{"CMD"}\NormalTok{, }\StringTok{"mysqladmin"}\NormalTok{, }\StringTok{"ping"}\NormalTok{, }\StringTok{"{-}h"}\NormalTok{, }\StringTok{"localhost"}\NormalTok{]}
-      \ExtensionTok{interval:}\NormalTok{ 5s}
-      \ExtensionTok{retries:}\NormalTok{ 10}
 
     \ExtensionTok{networks:}
       \ExtensionTok{{-}}\NormalTok{ gitea}
     \ExtensionTok{volumes:}
       \ExtensionTok{{-}}\NormalTok{ ./gitea\_db\_data:/var/lib/mysql}
-
-  \ExtensionTok{runner:}
-    \ExtensionTok{image:}\NormalTok{ docker.io/gitea/act\_runner:latest}
-    \ExtensionTok{container\_name:}\NormalTok{ gitea\_runner}
-    \ExtensionTok{hostname:}\NormalTok{ gitea\_runner}
-    \ExtensionTok{environment:}
-      \ExtensionTok{GITEA\_CONFIG\_FILE:}\NormalTok{ /config.yaml}
-      \ExtensionTok{GITEA\_INSTANCE\_URL:} \StringTok{"http://gitea:3000"}
-      \ExtensionTok{GITEA\_RUNNER\_NAME:} \StringTok{"Probe{-}runner"}
-      \ExtensionTok{GITEA\_RUNNER\_REGISTRATION\_TOKEN:} \StringTok{"HIER DAS TOKEN EINFÜGEN"}
-    \ExtensionTok{restart:}\NormalTok{ always}
-    \ExtensionTok{depends\_on:}
-      \ExtensionTok{server:}
-        \ExtensionTok{condition:}\NormalTok{ service\_healthy}
-      \ExtensionTok{db:}
-        \ExtensionTok{condition:}\NormalTok{ service\_healthy}
-    \ExtensionTok{networks:}
-      \ExtensionTok{{-}}\NormalTok{ gitea}
-    \ExtensionTok{volumes:}
-      \ExtensionTok{{-}}\NormalTok{ ./config.yaml:/config.yaml}
-      \ExtensionTok{{-}}\NormalTok{ ./gitea\_runner\_data:/data}
-      \ExtensionTok{{-}}\NormalTok{ /etc/timezone:/etc/timezone:ro}
-      \ExtensionTok{{-}}\NormalTok{ /etc/localtime:/etc/localtime:ro}
-      \ExtensionTok{{-}}\NormalTok{ /var/run/docker.sock:/var/run/docker.sock}
 
 \ExtensionTok{networks:}
   \ExtensionTok{gitea:}
@@ -6305,10 +6316,21 @@ einzige Datei \datei{docker-compose.yml} um das System zu steuern.
     \ExtensionTok{driver:}\NormalTok{ local}
   \ExtensionTok{gitea\_db\_data:}
     \ExtensionTok{driver:}\NormalTok{ local}
-  \ExtensionTok{gitea\_runner\_data:}
-    \ExtensionTok{driver:}\NormalTok{ local}
 \end{Highlighting}
 \end{Shaded}
+
+\samplestart
+
+\textbf{Hinweis}\\
+Beachte in der Datei \datei{docker-compose.yml}, dass die verwendeten
+Volumes so konfiguriert sind, dass sie direkt in dem Ordner als
+Verzeichnisse erstellt werden, wo auch die \datei{docker-compose.yml}
+liegt. Das habe ich gemacht, damit bei der späteren Variante keine
+Probleme auftreten, wenn erneut Volumes benötigt werden. Diese werden
+dann als \emph{globale} Ordner unter \texttt{/var/lib/docker/volumes}
+erstellt. In der Konfiguration ist der Unterschied, ob der Pfad zum
+Volume mit \texttt{./} beginnt (=im Ordner) oder nicht (=global).
+\sampleend
 
 Diesen Setup findest du im Material als Ordner \ordner{gitea\_basic}.
 Kopiere ihn komplett an die gewünschte Stelle und gib dann ein:
@@ -6320,7 +6342,7 @@ Kopiere ihn komplett an die gewünschte Stelle und gib dann ein:
 \end{Highlighting}
 \end{Shaded}
 
-Nun kannst nun für die restliche Konfiguration die Weboberfläche
+Nun kannst du für die restliche Konfiguration die Weboberfläche
 aufrufen:
 
 \begin{Shaded}
@@ -6331,7 +6353,7 @@ aufrufen:
 
 Die Felder sind alle bereits vorbelegt und falls du willst, kannst du
 ganz unten\\
-noch einen Administratoren-Account anlegen lassen. Vorsicht -
+noch einen Administratoren-Account anlegen lassen. Vorsicht --
 \texttt{admin} geht nicht! Falls du diesen User nicht anlegen lässt,
 wird der erste (selbst)registrierte Benutzer automatisch Administrator.
 
@@ -6340,15 +6362,15 @@ konfigurieren -- für einen einfachen Betrieb genügt aber das Einrichten
 des Benutzers.
 
 Wenn die Konfiguration durchgelaufen ist, wirst du automatisch
-angebmeldet. Generell ist jetzt bereits ein Arbeiten mit der
-Weboberfläche möglich. Für den Einsatz von Remote-Clients musst nu nun
+angemeldet. Generell ist jetzt bereits ein Arbeiten mit der
+Weboberfläche möglich. Für den Einsatz von Remote-Clients musst du nun
 noch deinen öffentlichen SSH-Schlüssel in \gitea ablegen. Das geht in
 den Profileinstellungen des Benutzers.
 
 \textbf{Beachte}\\
 Die Standardlänge von 2048 Bit genügt \gitea nicht. Hier werden 4096 Bit
-gefordert. Du musst also eventuell einen weiteres Schlüsselpaar
-generieren:
+gefordert.\\
+Du musst also eventuell einen weiteres Schlüsselpaar generieren:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6359,18 +6381,19 @@ generieren:
 
 Für welche Funktion genau eine Verifikation des Schlüssels nötig ist,
 kann ich aktuell leider nicht sagen. Der nötige Befehl kann aber direkt
-aus der Weboberfläche kopiert werden -- passe einfach den Pfad an. Die
-Ausgabe (einschließlich der Begrenzungszeile) kopierst du dann wieder
-nach \gitea zurück.
+aus der Weboberfläche kopiert werden -- passe einfach den Pfad zum
+privaten Schlüssel an. Die Ausgabe (einschließlich der Begrenzungszeile)
+kopierst du dann wieder nach \gitea zurück.
 
 Nun kannst du auch mit externen Clients arbeiten.
 
 \samplestart
 
 \textbf{Wichtig}\\
-Da wir den Clone-Befehl außerhalb des Docker-Netzwerks geben, können wir
-nicht den Standardport 22 verwenden. Entsprechend passt auch die URL
-nicht, die uns \gitea zum Clonen eines Repos anbietet!
+Da wir den Clone-Befehl außerhalb des Docker-Netzwerks ausführen, können
+wir nicht den Standardport 22 verwenden. Docker reicht 222 extern nach
+22 intern weiter! Entsprechend passt auch die URL nicht, die uns
+\gitea zum Clonen eines Repos anbietet!
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6382,7 +6405,8 @@ nicht, die uns \gitea zum Clonen eines Repos anbietet!
 \sampleend
 
 Zum Managen von Benutzern habe ich einige kleine Scripte gebastelt, auf
-die ich im Kapitel \emph{Gitea ohne Docker} etwas eingehe!
+die ich im Kapitel \emph{Gitea ohne Docker} etwas eingehe. Du findest
+sie im Ordner \gitea im Material!
 
 \section{Setup mit Runner}\label{setup-mit-runner}
 
@@ -6391,6 +6415,26 @@ Konfigurationsdateien! Um dir den Start zu erleichtern, habe ich dem
 Material ein setup-Script hinzugefügt. Es führt die relevanten Schritte
 für dich aus. Wir gehen zunächst die einzelnen Zeilen des Scripts durch
 und im Nachgang kommen die Details für das tiefere Verständnis.
+
+\textbf{Was ist ein Runner?}\\
+In fortgeschrittenen Szenarien kann \gitea so konfiguriert werden, dass
+ein Push auf einen bestimmten Branch zu nachgelagerten Aktionen auf dem
+Server führt. Das können Unit-Tests sein, aber auch Compilierungen,
+Erstellung von Internetseiten, \ldots{} was mit dem versionierten Code
+schlussendlich eben geplant ist.\\
+Wir werden unser Buch-Projekt so anpassen, dass aus unseren Dokumenten
+automatisch ein druckreifes PDF erstellt wird. Hier sind wir dann also
+bei der ursprünglichen Bedeutung der \emph{Online-Kollaboration}
+angelangt.
+
+Damit diese nachgelagerten Aktionen gestartet werden können, benötigen
+wir ein ein \emph{Runner}-Programm in einem eigenen Container. Dieses
+Programm kommuniziert mit dem \gitea-Container und führt bei Bedarf die
+entprechende Aktion aus, um das Buch aus den Raw-Dateien zu erstellen.
+In eigentlich fast allen Anwendungsfällen wird zum Ausführen von
+Befehlen vom Runner nach dem Push ein weiterer Docker-Container
+erstellt, der für die eigentliche Aktion zuständig ist -- der
+Job-Container.
 
 \subsection{Setup-Script}\label{setup-script}
 
@@ -6401,6 +6445,7 @@ dem \emph{Benutzer} gehören:
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{ls} \AttributeTok{{-}lahR} 
+\CommentTok{\# oder  find . ! {-}user benutzer   }
 \end{Highlighting}
 \end{Shaded}
 
@@ -6416,13 +6461,15 @@ Falls das nicht der Fall ist, musst du den Besitzer passend setzen:
 
 \textbf{Das Script}
 
+Nachfolgend kommt immer zuerst der Befehl und nachfolgend die Erklärung!
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \VariableTok{base}\OperatorTok{=}\VariableTok{$PWD}
 \end{Highlighting}
 \end{Shaded}
 
-Speichert den aktuellen Ordner um mit \texttt{cd\ \$base} immer wieder
+Speichert den aktuellen Ordner um mit \cmd{cd \$base} immer wieder
 dorthin zurück zu kommen.
 
 \begin{Shaded}
@@ -6431,9 +6478,9 @@ dorthin zurück zu kommen.
 \end{Highlighting}
 \end{Shaded}
 
-In manchen Dateien sind Platzhalter untergebracht, die das Script
-passend ersetzt. Diese Vorlagen werden damit an die richtige Stelle
-kopiert.
+In manchen Vorlagedateien sind Platzhalter untergebracht, die das Script
+passend zu deiner Umgebung ersetzt. Diese Vorlagen werden mit obigem
+Befehl an die richtige Stelle kopiert.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6443,7 +6490,7 @@ kopiert.
 \end{Highlighting}
 \end{Shaded}
 
-Das Docker-Image für die PDF-Erzeugung erstellen.
+Hier wird das Docker-Image für die PDF-Erzeugung erstellt.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6453,7 +6500,7 @@ Das Docker-Image für die PDF-Erzeugung erstellen.
 \end{Highlighting}
 \end{Shaded}
 
-Das Docker-Image für das Runner-Programm erstellen.
+Hier wird das Docker-Image für das Runner-Programm erstellt.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6462,17 +6509,21 @@ Das Docker-Image für das Runner-Programm erstellen.
 \end{Highlighting}
 \end{Shaded}
 
-Nur 2 der nötigen Container starten (server und db). Du wirst vom Script
-aufgefordert, im Browser die Konfiguration zu beenden und evtl. einen
-administrativen Benutzer anzulegen (admin geht nicht!). Ist die
-Konfguration erledigt, so wirst du automatisch angemeldet. Drücke nun im
-Terminal die Enter-Taste.
+Nur zwei der nötigen Container starten (\emph{server} und \emph{db}). Du
+wirst dann vom Script aufgefordert, die Konfiguration im Browser zu
+beenden und evtl. einen administrativen Benutzer anzulegen (\emph{admin}
+geht nicht!). Ist die Konfguration erledigt, so wirst du automatisch
+angemeldet. Drücke nun im Terminal die \key{Enter}-Taste.
+
+\bxlarge
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \VariableTok{runnertoken}\OperatorTok{=}\VariableTok{$(}\ExtensionTok{docker}\NormalTok{ exec }\AttributeTok{{-}u}\NormalTok{ git gitea gitea actions  generate{-}runner{-}token}\VariableTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+\exlarge
 
 Das Runner-Programm muss mit \gitea kommunizieren können. Mit diesem
 Token (eine Art Kennwort) kann es an \gitea gekoppelt werden.
@@ -6485,8 +6536,10 @@ so geht es schneller!
 \end{Highlighting}
 \end{Shaded}
 
-In der Datei \datei{docker-compose.yml} die Variable durch das
-Runnertoken ersetzen.
+In der Datei \datei{docker-compose.yml} den Platzhalter RUNNERTOKEN
+durch das eigentliche Token ersetzen.
+
+\bxlarge
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6494,6 +6547,8 @@ Runnertoken ersetzen.
 \NormalTok{    sh }\AttributeTok{{-}c} \StringTok{"apk add {-}{-}no{-}cache openssh \&\& ssh{-}keyscan {-}p 22 gitea"} \OperatorTok{\textgreater{}}\NormalTok{ ssh\_keys/known\_hosts}
 \end{Highlighting}
 \end{Shaded}
+
+\exlarge
 
 Den aktuellen Fingerabdruck des Servers auslesen, damit bei
 ssh-Verbindungen keine Sicherheitsabfrage kommt.
@@ -6504,9 +6559,10 @@ ssh-Verbindungen keine Sicherheitsabfrage kommt.
 \end{Highlighting}
 \end{Shaded}
 
-Wieder eine Variable ersetzen. Im Config-File muss der Pfad zu den
-ssh-Keys hinterlegt sein. Da ich nicht weiß, wo du die Ordner abgelegt
-hast, müssen wir das durch die Variablenersetzung lösen.
+Wieder einen Platzhalter ersetzen, damit die SSH-Schlüssel gefunden
+werden. Im Config-File muss der Pfad zu den ssh-Keys hinterlegt sein. Da
+ich aber nicht weiß, wo du die Ordner abgelegt hast, müssen wir das über
+den Platzhalter lösen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6514,7 +6570,7 @@ hast, müssen wir das durch die Variablenersetzung lösen.
 \end{Highlighting}
 \end{Shaded}
 
-Es werden auch in \gitea die gleichen Keys verwendet.
+Es werden übrigens \gitea die gleichen Keys verwendet.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6544,42 +6600,24 @@ aus den Ordnern:
   gitea/quarto
 \end{itemize}
 
-\textbf{Was ist ein Runner?}\\
-In fortgeschrittenen Szenarien kann \gitea so konfiguriert werden, dass
-ein Push auf einen bestimmten Branch zu nachgelagerten Aktionen auf dem
-Server führt. Das können Unit-Tests sein, aber auch Compilierungen,
-Erstellung von Internetseiten, \ldots{} was mit dem versionierten Code
-schlussendlich eben geplant ist.\\
-Wir werden unser Buch-Projekt so anpassen, dass aus unseren Dokumenten
-automatisch ein druckreifes PDF erstellt wird. Hier sind wir dann also
-bei der ursprünglichen Bedeutung der \emph{Online-Kollaboration}
-angelangt.
-
-Damit diese nachgelagerten Aktionen gestartet werden können, benötigen
-wir ein ein \emph{Runner}-Programm in einem eigenen Container. Dieses
-Programm kommuniziert mit dem \gitea-Container und führt bei Bedarf die
-entprechende Aktion aus, um das Buch aus den Raw-Dateien zu erstellen.
-In eigentlich fast allen Anwendungsfällen wird zum Ausführen von
-Befehlen vom Runner nach dem Push ein weiterer Docker-Container
-erstellt, der für die eigentliche Aktion zuständig ist -- der
-Job-Container.
-
 \textbf{Was ist Quarto?}\\
-Dabei handelt es sich um ein Publishing-System, das aus Markdowndateien
-vielfache andere Formate erzeugen kann. Es erfordert einige
-Einarbeitung, wenn man es produktiv einsetzen will. Im Hintergrund
-arbeiten dabei Technologien wie pandoc, LaTeX, reveal.js, \ldots{}
-zusammen. Für unseren Zweck habe ich eine Vorlage erstellt, die bereits
-direkt einsetzbar ist.
+Dabei handelt es sich um ein Publishing-System, das aus Markdown-Dateien
+viele andere Formate erzeugen kann. Es erfordert allerdings einige
+Einarbeitung, wenn man es wirklich produktiv einsetzen will. Gerade im
+Bereich der Statistik im Zusammenspiel mit \textbf{R} ist es aber an
+vielen Universitäten Standard. Im Hintergrund arbeiten dabei
+Technologien wie pandoc, LaTeX, reveal.js, jupyter, \ldots{} zusammen.
+Für unseren Zweck habe ich in den Materialien eine Vorlage erstellt, die
+bereits direkt einsetzbar ist.
 
 \subsubsection{Die Dateien}\label{die-dateien-1}
 
 Natürlich könnte man für jeden benötigten Container eine eigene
-\datei{docker-compose.yaml} erstellen. Es ist aber sinnvoll, mehrere
-Container gemeinsam zu konfigurieren, da dann auch Abhängigkeiten
-zwischen den Containern autmatisch berücksichtigt werden. Wir besprechen
-die verwendete \datei{docker-compose.yaml} zuerst Zeile für Zeile. Falls
-dir das zu genau ist, kannst du hier auch überspringen!
+\datei{docker-compose.yml} erstellen. Es ist aber sinnvoll, mehrere
+Container gemeinsam in einer Datei zu konfigurieren, da dann auch
+Abhängigkeiten zwischen den Containern autmatisch berücksichtigt werden.
+Wir besprechen die verwendete \datei{docker-compose.yml} zuerst Zeile
+für Zeile. Falls dir das zu genau ist, kannst du hier auch überspringen!
 
 \paragraph{Allgemeine Einstellungen}\label{allgemeine-einstellungen}
 
@@ -6618,18 +6656,18 @@ in ein gemeinsames Netz mit dem Namen \emph{gitea} eingebunden.
 \item[\circled{2}]
 Wir wollen dieses Netzwerk selbst managen (=external) und müssen es
 deshalb auch selbst erstellen:\\
-\texttt{docker\ network\ create\ gitea}
+\cmd{docker network create gitea}
 \item[\circled{3}]
 Die Daten der Benutzer und die Einstellungen sollen auch über Neustarts
 und Upgrades hinweg erhalten bleiben. Dafür dürfen sie nicht Teil des
 Containers sein, der dabei komplett neu erstellt wird. Es werden deshalb
-drei Ordner mit den angegebenen Namen erstellt. Sie liegen außerhalb des
-Containers und werden in diesen hinein verlinkt.
+drei Ordner (=Volumes) mit den angegebenen Namen erstellt. Sie liegen
+außerhalb des Containers und werden in diesen hinein verlinkt.
 \item[\circled{4}]
 Dieser Ordner wird von zwei Containern gleichzeitig verwendet, um das
 Buch nach der Erstellung auf den Webserver zu bekommen. Auch das müssen
 wir manuell erstellen:\\
-\texttt{docker\ volume\ create\ giteatransfer}
+\cmd{docker volume create giteatransfer}
 \end{description}
 
 \subsubsection{Services}\label{services}
@@ -6652,8 +6690,8 @@ bezeichnet.
 \end{Shaded}
 
 Dieser schematische Aufbau beschreibt die vier anzulegenden Container.
-Der Job-Container funktioniert anders!\\
-Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
+Der Job-Container funktioniert anders! Wir besprechen die einzelnen
+Abschnitte nachfolgend getrennt.
 
 \subsubsection{Gitea-Server}\label{gitea-server}
 
@@ -6680,14 +6718,15 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
 \begin{description}
 \tightlist
 \item[\circled{1}]
-Hier könnte auch \texttt{gitea:latest} stehen, was Upgrades vereinfacht
-\ldots{} allerdings bei Upgrades auch zu großen Problemen führen kann!\\
+Hier könnte auch \cmd{gitea:latest} stehen. Das ist nicht ganz
+problemlos, da bei Upgrades mit Versionen entstehen können die nicht
+zusammenpassen.
 \item[\circled{2}]
 Möglich sind auch \emph{postgresql} und \emph{sqlite}. SQLite ist eine
 Alternative für kleine Installationen, da dabei kein eigener
 Datenbankserver benötigt wird.
 \item[\circled{3}]
-Name des Datenbankservers:Port
+Name des Datenbankservers:Port (Service-Name, nicht Container-Name!)
 \item[\circled{4}]
 Hochsicherheitskennwörter für die Fortbildung
 \end{description}
@@ -6720,27 +6759,27 @@ Hochsicherheitskennwörter für die Fortbildung
 \begin{description}
 \tightlist
 \item[\circled{1}]
-Container immer automatisch neu starten, wenn etwas schief geht oder der
-Server neu gestartet wird.
+Der Container wird immer automatisch neu starten, wenn etwas schief geht
+oder der Server neu gestartet wird.
 \item[\circled{2}]
 Festlegen des Netzes in dem der Container läuft
 \item[\circled{3}]
-Die Daten von Gitea liegen im Ordner \datei{./gitea\_data}\\
+Die Daten von \gitea liegen im Ordner \ordner{./gitea\_data}\\
 Über Volumes wird aber auch der Zugriff auf Ressourcen des Servers
 gesteuert, hier der Zugriff die Einstellungen der Zeitzone. (\emph{:ro}
 nur lesender Zugriff)
 \item[\circled{4}]
-Der Speicherort ist \texttt{/var/lib/docker/volumes/gitea\_data}
+Der Speicherort ist \ordner{/var/lib/docker/volumes/gitea\_data}
 \item[\circled{5}]
 \textbf{Im} Container läuft Gitea auf Port 3000, der Zugriff \textbf{von
 außen} (Browser) erfolgt über Port 4000. Das ist hier eher als Demo
 gedacht, 3000:3000 ginge auch.
 \item[\circled{6}]
-Der SSH-Server (für pull, push, \ldots) läuft im Container auf Port 22,
-Zugriff von außen über Port 222. Das ist nötig, da der Server (also der
-gemietete Server) seinen ssh-Server bereits auf Port 22 laufen hat. Das
-kann man zwar ändern, muss aber etwas aufpassen. Wenn man die Firewall
-nicht anpasst, kann man sich so aussperren!
+Der SSH-Server (für pull, push, \ldots) läuft \textbf{im Container} auf
+Port 22, Zugriff \textbf{von außen} über Port 222. Das ist nötig, da der
+Server (also der gemietete Server) seinen ssh-Server bereits auf Port 22
+laufen hat. Das kann man zwar ändern, muss aber etwas aufpassen. Wenn
+man die Firewall nicht anpasst, kann man sich so aussperren!
 \item[\circled{7}]
 Zwangspause, bis der Container wirklich verfügbar ist.
 \item[\circled{8}]
@@ -6775,7 +6814,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 \end{Highlighting}
 \end{Shaded}
 
-\subsubsection{runner}\label{runner}
+\subsubsection{Der Runner}\label{der-runner}
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
@@ -6853,23 +6892,136 @@ Hier gibt es eigentlich keine Besonderheiten.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\ExtensionTok{version:} \StringTok{"3"}
 
+\ExtensionTok{networks:}
+  \ExtensionTok{gitea:}
+    \ExtensionTok{external:}\NormalTok{ true}
+
+\ExtensionTok{volumes:}
+  \ExtensionTok{gitea:}
+    \ExtensionTok{driver:}\NormalTok{ local}
+  \ExtensionTok{gitea\_db:}
+    \ExtensionTok{driver:}\NormalTok{ local}
+  \ExtensionTok{runner\_data:}
+    \ExtensionTok{driver:}\NormalTok{ local}
+  \ExtensionTok{giteatransfer:}
+    \ExtensionTok{external:}\NormalTok{ true}
+
+\ExtensionTok{services:}
+  \ExtensionTok{server:}
+    \ExtensionTok{image:}\NormalTok{ docker.io/gitea/gitea:1.22.6}
+    \ExtensionTok{container\_name:}\NormalTok{ gitea}
+    \ExtensionTok{hostname:}\NormalTok{ gitea}
+    \ExtensionTok{environment:}
+      \ExtensionTok{{-}}\NormalTok{ USER\_UID=1000}
+      \ExtensionTok{{-}}\NormalTok{ USER\_GID=1000}
+      \ExtensionTok{{-}}\NormalTok{ GITEA\_\_database\_\_DB\_TYPE=mysql}
+      \ExtensionTok{{-}}\NormalTok{ GITEA\_\_database\_\_HOST=db:3306}
+      \ExtensionTok{{-}}\NormalTok{ GITEA\_\_database\_\_NAME=gitea}
+      \ExtensionTok{{-}}\NormalTok{ GITEA\_\_database\_\_USER=gitea}
+      \ExtensionTok{{-}}\NormalTok{ GITEA\_\_database\_\_PASSWD=gitea}
+
+    \ExtensionTok{restart:}\NormalTok{ always}
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ gitea}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ gitea:/data}
+      \ExtensionTok{{-}}\NormalTok{ /etc/timezone:/etc/timezone:ro}
+      \ExtensionTok{{-}}\NormalTok{ /etc/localtime:/etc/localtime:ro}
+    \ExtensionTok{ports:}
+      \ExtensionTok{{-}} \StringTok{"4000:3000"}
+      \ExtensionTok{{-}} \StringTok{"222:22"}
+
+    \ExtensionTok{healthcheck:}
+      \ExtensionTok{test:}\NormalTok{ [}\StringTok{"CMD"}\NormalTok{, }\StringTok{"curl"}\NormalTok{, }\StringTok{"{-}f"}\NormalTok{, }\StringTok{"http://localhost:3000"}\NormalTok{]}
+      \ExtensionTok{interval:}\NormalTok{ 5s}
+      \ExtensionTok{retries:}\NormalTok{ 20}
+
+    \ExtensionTok{depends\_on:}
+      \ExtensionTok{db:}
+        \ExtensionTok{condition:}\NormalTok{ service\_healthy}
+
+
+  \ExtensionTok{db:}
+    \ExtensionTok{image:}\NormalTok{ docker.io/library/mysql:8}
+    \ExtensionTok{restart:}\NormalTok{ always}
+    \ExtensionTok{container\_name:}\NormalTok{ gitea\_db}
+    \ExtensionTok{hostname:}\NormalTok{ db}
+    \ExtensionTok{environment:}
+      \ExtensionTok{{-}}\NormalTok{ MYSQL\_ROOT\_PASSWORD=gitea}
+      \ExtensionTok{{-}}\NormalTok{ MYSQL\_USER=gitea}
+      \ExtensionTok{{-}}\NormalTok{ MYSQL\_PASSWORD=gitea}
+      \ExtensionTok{{-}}\NormalTok{ MYSQL\_DATABASE=gitea}
+
+    \ExtensionTok{healthcheck:}
+      \ExtensionTok{test:}\NormalTok{ [}\StringTok{"CMD"}\NormalTok{, }\StringTok{"mysqladmin"}\NormalTok{, }\StringTok{"ping"}\NormalTok{, }\StringTok{"{-}h"}\NormalTok{, }\StringTok{"localhost"}\NormalTok{]}
+      \ExtensionTok{interval:}\NormalTok{ 5s}
+      \ExtensionTok{retries:}\NormalTok{ 10}
+
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ gitea}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ gitea\_db:/var/lib/mysql}
+
+
+  \ExtensionTok{runner:}
+    \ExtensionTok{image:}\NormalTok{ gitea/act\_runner\_dockercli:latest }\CommentTok{\# Liegt lokal vor}
+    \ExtensionTok{container\_name:}\NormalTok{ gitea\_runner}
+    \ExtensionTok{hostname:}\NormalTok{ runner}
+    \ExtensionTok{environment:}
+      \ExtensionTok{CONFIG\_FILE:}\NormalTok{ /config.yaml}
+      \ExtensionTok{GITEA\_INSTANCE\_URL:} \StringTok{"http://gitea:3000"} \CommentTok{\# Verbindung zu Gitea}
+      \ExtensionTok{GITEA\_RUNNER\_NAME:} \StringTok{"Probe{-}runner"}
+      \ExtensionTok{GITEA\_RUNNER\_REGISTRATION\_TOKEN:} \StringTok{"RUNNERTOKEN"}
+    \ExtensionTok{restart:}\NormalTok{ always}
+
+    \ExtensionTok{depends\_on:}
+      \ExtensionTok{server:}
+        \ExtensionTok{condition:}\NormalTok{ service\_healthy}
+      \ExtensionTok{db:}
+        \ExtensionTok{condition:}\NormalTok{ service\_healthy}
+
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ gitea}
+
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ ./config.yaml:/config.yaml}
+      \ExtensionTok{{-}}\NormalTok{ SSH\_LOCATION:/root/.ssh}
+      \ExtensionTok{{-}}\NormalTok{ runner\_data:/data}
+      \ExtensionTok{{-}}\NormalTok{ /etc/timezone:/etc/timezone:ro}
+      \ExtensionTok{{-}}\NormalTok{ /etc/localtime:/etc/localtime:ro}
+      \ExtensionTok{{-}}\NormalTok{ /var/run/docker.sock:/var/run/docker.sock}
+
+  \ExtensionTok{web:}
+    \ExtensionTok{image:}\NormalTok{ nginx}
+    \ExtensionTok{hostname:}\NormalTok{ transfer}
+    \ExtensionTok{restart:}\NormalTok{ always}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ giteatransfer:/usr/share/nginx/html}
+    \ExtensionTok{ports:}
+      \ExtensionTok{{-}} \StringTok{"4001:80"}
+    \ExtensionTok{environment:}
+      \ExtensionTok{{-}}\NormalTok{ NGINX\_HOST=transfer}
+      \ExtensionTok{{-}}\NormalTok{ NGINX\_PORT=80}
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ gitea}
 \end{Highlighting}
 \end{Shaded}
 
 \subsubsection{Mehr Details zur
 Konfiguration}\label{mehr-details-zur-konfiguration}
 
-Das ist wirklich nur bei Interesse an der manuelle Konfiguration
-gedacht!
+Dieser Abschnitt ist wirklich nur als Lektüre bei Interesse an der
+manuelle Konfiguration gedacht!
 
 \textbf{Runner-Config}\\
 Bei vielen Containern kann die Konfiguration durch Einträge in der
-\datei{docker-compose.yaml} erfolgen - wie z.B. die Kennwörter. Gerade
+\datei{docker-compose.yml} erfolgen - wie z.B. die Kennwörter. Gerade
 für Kennwörter gibt es noch sicherere Varianten (.env Datei), das führt
-aber zu weit. Für den Runner werden aber noch Einstellungen nötig, die
-man so (anscheinend) nicht übergeben kann. Aus diesem Grund wird eine
-eigene Datei \datei{config.yaml} benötigt. In der
+aber zu weit. Für den Runner werden aber noch weitere Einstellungen
+nötig, die man \emph{so} (anscheinend) nicht übergeben kann. Aus diesem
+Grund wird eine eigene Datei \datei{config.yaml} benötigt. In der
 \datei{docker-compose.yml} ist das der der Parameter
 \texttt{CONFIG\_FILE} im Abschnitt \emph{runner}. Für eine frische Datei
 rufst du auf:
@@ -6888,28 +7040,82 @@ In dieser Datei müssen dann einige Dinge eingestellt werden. Im Material
 habe ich die Datei einmal als Original und einmal in einer
 Minimalversion abgelegt. Die Minimalversion ist unsere Arbeitsbasis.
 
+\textbf{config.yaml}\\
+\bxlarge
+
 \begin{Shaded}
 \begin{Highlighting}[]
+\ExtensionTok{log:}
+  \ExtensionTok{level:}\NormalTok{ info}
 
+\ExtensionTok{runner:}
+  \ExtensionTok{file:}\NormalTok{ .runner}
+  \ExtensionTok{capacity:}\NormalTok{ 1}
+  \ExtensionTok{envs:}
+    \ExtensionTok{A\_TEST\_ENV\_NAME\_1:}\NormalTok{ a\_test\_env\_value\_1}
+    \ExtensionTok{A\_TEST\_ENV\_NAME\_2:}\NormalTok{ a\_test\_env\_value\_2}
+  \ExtensionTok{env\_file:}\NormalTok{ .env}
+  \ExtensionTok{timeout:}\NormalTok{ 3h}
+  \ExtensionTok{shutdown\_timeout:}\NormalTok{ 0s}
+  \ExtensionTok{insecure:}\NormalTok{ false}
+  \ExtensionTok{fetch\_timeout:}\NormalTok{ 5s}
+  \ExtensionTok{fetch\_interval:}\NormalTok{ 2s}
+  \ExtensionTok{labels:}
+    \ExtensionTok{{-}} \StringTok{"self{-}hosted"}
+    \ExtensionTok{{-}} \StringTok{"ubuntu{-}latest:docker://gitea/runner{-}images:ubuntu{-}latest"}
+    \ExtensionTok{{-}} \StringTok{"ubuntu{-}22.04:docker://gitea/runner{-}images:ubuntu{-}22.04{-}slim"}
+    \ExtensionTok{{-}} \StringTok{"ubuntu{-}20.04:docker://gitea/runner{-}images:ubuntu{-}20.04"}
+    \ExtensionTok{{-}} \StringTok{"debian{-}latest:docker://docker.io/debian:latest"}
+    \ExtensionTok{{-}} \StringTok{"quarto:docker://quarto{-}quarto:latest"}
+
+\ExtensionTok{cache:}
+  \ExtensionTok{enabled:}\NormalTok{ true}
+  \ExtensionTok{dir:} \StringTok{""}
+  \ExtensionTok{host:} \StringTok{""}
+  \ExtensionTok{port:}\NormalTok{ 0}
+  \ExtensionTok{external\_server:} \StringTok{""}
+
+\ExtensionTok{container:}
+  \ExtensionTok{network:} \StringTok{"gitea"}
+  \ExtensionTok{privileged:}\NormalTok{ true}
+  \ExtensionTok{options:} \StringTok{"{-}{-}rm {-}v /home/benutzer/docker/gitea/gitea/ssh\_keys:/root/.ssh"}
+  \ExtensionTok{workdir\_parent:}
+  \ExtensionTok{valid\_volumes:}
+    \ExtensionTok{{-}} \StringTok{"**"}
+  \ExtensionTok{docker\_host:} \StringTok{"unix:///var/run/docker.sock"}
+  \ExtensionTok{force\_pull:}\NormalTok{ false}
+  \ExtensionTok{force\_rebuild:}\NormalTok{ false}
+
+\ExtensionTok{host:}
+  \ExtensionTok{workdir\_parent:}
 \end{Highlighting}
 \end{Shaded}
 
+\exlarge
+
 \textbf{Wichtige Einstellungen}
 
-TODO Checken Label * Labels anpassen. ``self-hostet kann raus, letzt
-Zeile muss rein'' * \texttt{network:\ "gitea"} *
-\texttt{privileged:\ true} *
-\texttt{options:\ "-\/-rm\ -v\ \$\{SSH\_LOCATION\}:/root/.ssh"} *
-\texttt{valid\_volumes:}\\
-\texttt{-\ "**"} * Der Ort der ssh-Schlüssel wird über eine
-Umgebungsvariable gesetzt.
+\begin{itemize}
+\tightlist
+\item
+  Labels anpassen
+\item
+  \texttt{network:\ "gitea"}
+\item
+  \texttt{privileged:\ true}
+\item
+  \texttt{options:\ "-\/-rm\ -v\ SSH\_LOCATION:/root/.ssh"}
+\item
+  \texttt{valid\_volumes:}\strut \\
+  \texttt{-\ "**"}
+\end{itemize}
 
 Die Einrückungen mit Leerzeichen sind wichtig!
 
 \samplestart
 
 \textbf{Hinweis}\\
-Vielleicht ist dir aufgefallen, dass einmal im Environment
+Vielleicht ist dir aufgefallen, dass im Environment einmal
 Spiegelstriche vorkommen und einmal nicht. Das ist Absicht, denn die
 Server wollen das unterschiedlich haben. Intern wird bei der
 Spiegelstrich-Variante eine Liste der Art \emph{{[}``key=value'',
@@ -6921,9 +7127,10 @@ die Spiegelstriche. \sampleend
 \subsection{Prinzip des Runners}\label{prinzip-des-runners}
 
 Der Runner (als eigenständige, von \gitea unabhängige Software) muss mit
-\gitea kommunizieren und bracht dafür die Berechtigung. Dafür wird im
-laufenden \gitea ein Zugriffstoken (Schlüsselzahl) erstellt, das in den
-Runner eingetragen wird. Auf diese Weise wird ihm dann Zugriff gewährt.
+\gitea kommunizieren und braucht dafür die Berechtigung. Dafür wird im
+laufenden \gitea ein Zugriffstoken (eine Art Kennwort) erstellt, das in
+den Runner eingetragen wird. Auf diese Weise wird ihm dann Zugriff
+gewährt.
 
 \subsection{Starten der Umgebung}\label{starten-der-umgebung}
 
@@ -6939,19 +7146,27 @@ brauchen wir für den Job-Container ein Quarto-Image.
 \end{Highlighting}
 \end{Shaded}
 
-TODO: Brauchen wir das Volume ergebnis?
-
 Der Ordner \ordner{ssh\_keys} wird benötigt, damit eine kennwortlose
-Kommunikation zwischen den Containern funktioniert. Ich erkläre das
-später noch einmal genauer!
+Kommunikation zwischen den Containern funktioniert. Dort muss sich auch
+die Datei \datei{known\_hosts} befinden. Sie enthält den Fingerabdruck
+des \gitea-Servers. Da jedes neue \gitea einen eigenen Fingerabdruck
+besitzt, wird diese Datei im Setup-Script dynamisch erzeugt!
 
-\subsubsection{Runner}\label{runner-1}
+\subsubsection{Runner}\label{runner}
 
-Der Runner wird ebenfalls mit Hilfe eines Dockerfiles erstellt. Wenn das
-System seine Images aus dem Internet holen darf, braucht man diesen
-Aufwand nicht, meine Vorgabe war es aber, \emph{alles} lokal auf einem
-Server zu verwalten. Aus diesem Grund bekommt der Runner ein schlankes
-Betriebssystem als Basis, es wird docker-cli und openssh installiert.
+Der Runner wird ebenfalls mit Hilfe eines Dockerfiles erstellt -- eine
+Datei \datei{docker-compose.yml} sparen wir uns an dieser Stelle, weil
+keine komplexeren Einstellungen nötig sind.
+
+\samplestart
+
+\textbf{Hinweis}\\
+Wenn das System seine Docker-Images bei jedem Aufruf des Runners aus dem
+Internet holen darf, braucht man diesen Aufwand nicht! Meine Vorgabe war
+es aber, \emph{alles} möglichst lokal auf einem Server zu verwalten. Aus
+diesem Grund bekommt der Runner ein schlankes Betriebssystem als Basis
+und zusätzlich wird docker-cli und openssh installiert. Das steht im
+Dockerfile. \sampleend
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6963,15 +7178,19 @@ Betriebssystem als Basis, es wird docker-cli und openssh installiert.
 \subsubsection{Hauptsystem}\label{hauptsystem}
 
 \textbf{Das Registrierungs-Token}\\
+In unserem Setup wird das Registrierungstoken des Runners über die
+Kommandozeile ausgelesen. Das geht aber auch über die Weboberfläche von
+\gitea.\\
 Bist du in \gitea eingelogged, so kannst du über das Einstellungsmenü
 (Das geht auf den Ebenen \emph{Instanz, Repository oder User}) nach
 \emph{actions} suchen, dort auf \emph{runner} und dann oben rechts auf
 \emph{neuen Runner anlegen} (o.ä.) klicken. Dort erscheint dann das
 Token, das du dir kopieren musst.
 
-Fahre nun die Container mit \cmd{ctrl-c} zunächst wieder herunter und
-kopiere das Token in die Datei \datei{docker-compose.yaml}. Die Stelle
-ist beim Runner eindeutig gekennzeichnet!
+Fahre nun die Container mit \strg{c} zunächst wieder herunter und
+kopiere das Token in die Datei \datei{docker-compose.yml}. Die Stelle
+ist beim Runner eindeutig gekennzeichnet! Auch diesen Schritt erledigt
+das Setup-Script für uns automatisch.
 
 Starte nun die Container und achte auf \emph{offensichtliche}
 Fehlermeldungen. Nicht jede Warnung ist ein Fehler und wenn das System
@@ -6983,8 +7202,8 @@ nicht ständig wiederholt Beschwerden äußert, dann sollte alles passen.
 \end{Highlighting}
 \end{Shaded}
 
-Hat das ohne Fehler geklappt, dann wieder \key{strg + c} und nun ein
-richtiger Start:
+Hat das ohne Fehler geklappt, dann wieder \strg{c} und nun ein richtiger
+Start:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6994,99 +7213,58 @@ richtiger Start:
 
 Gitea sollte jetzt verwendbar sein!
 
-\bookmarksetup{startatroot}
+\subsection{Wie geht es weiter?}\label{wie-geht-es-weiter}
 
-\chapter{AKTUELLER ABLAUF}\label{aktueller-ablauf}
+Lege in \gitea ein Repository mit dem Namen \emph{Labor} an. Dieser Name
+ist nötig, da er im weiteren Verlauf an verschiedenen Stellen (auch in
+Dateien) auftritt. Verwende das Plus-Symbol rechts oben.
 
-\begin{itemize}
-\item
-  in den Ordner quarto =\textgreater{} build
-\item
-  in den ordner Runner =\textgreater{} build
-\item
-  Im Ordner gitea die Comtainer starten
-\item
-  Im Interface Conf abschließen
-\item
-  Token für den Runner erstellen (in gitea)
-\item
-  Eintrage in compse.yml
-\item
-  Alle Container neu starten
-\end{itemize}
+Dieses Repository kannst du dir nun auf deinen Rechner Clonen:
 
-docker compose down docker compose up -d
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ clone ssh://git@}\OperatorTok{\textless{}}\NormalTok{SERVER{-}IP}\OperatorTok{\textgreater{}}\NormalTok{:222/benutzer/Labor.git}
+\end{Highlighting}
+\end{Shaded}
 
-\begin{itemize}
-\item
-  Repository ``dillingen'' anlegen
-\item
-  Eigene Keys erstellen, in g eintragen und verifizieren
-\end{itemize}
+(Rückfrage mit yes quittieren)
 
-Befehl kopieren echo -n `TOKEN' \textbar{} ssh-keygen -Y sign -n gitea
--f \textasciitilde/.ssh/id\_rsa.pub
+Für unser Buch-Projekt kopierst du den Inhalt aus dem Materialordner
+\ordner{gitea\_buch/buchvorlage} in das Repository.
 
-SIGNATUR einfügen (incl ---- \ldots{} ---)
+Zusätzlich legst du eine Ordnerstuktur an:
 
-\begin{itemize}
-\tightlist
-\item
-  Probe-Clonen
-\end{itemize}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ .gitea/workflows/}
+\end{Highlighting}
+\end{Shaded}
 
-git clone ssh://git@gitea:222/linuxadmin/dillingen
+In diesen Workflow-Ordner kopierst du die Datei \datei{convert.yaml} aus
+dem Materialordner.
 
-Rückfrage mit yes quittieren
+Wenn du diesen aktuellen Stand nun committest und einen Push ausführst,
+dann sollte auf \gitea der Build-Prozess gestartet werden.
 
-\begin{itemize}
-\tightlist
-\item
-  mkdir -p .gitea/workflows/
-\item
-  Vorbereitetes Taskfile kopieren
-\end{itemize}
+In der Kopfzeile der Weboberfläche des Repositories gibt es einen Punkt
+\emph{Action} in dem du den Prozess verfolgen kannst.
 
-\textbf{PROBLEM}
+Sobald er erfolgreich beendet wurde -- was wir hoffen -- kannst du das
+fertige Dokument auf dem Webserver abrufen:
 
-Der Runner kann nicht von gitea clonen, weil er dort keinen ssh key
-liegen hat! Das müssen wir vorbereiten:
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{http://}\OperatorTok{\textless{}}\NormalTok{SERVER{-}IP}\OperatorTok{\textgreater{}}\NormalTok{:4001/output.pdf}
+\end{Highlighting}
+\end{Shaded}
 
-\begin{itemize}
-\item
-  Im Runner Keys erstellen
-\item
-  Key in gitea eintragen und verifizieren
-\item
-  Eine ssh-Anmeldung an gitea damit eine knownhosts entsteht
-\item
-  Den Container betreten:\\
-  \texttt{docker\ exec\ -it\ gitea\_runner\ bash}
-\item
-  Keys erzeugen:\\
-  \texttt{ssh-keygen\ -t\ rsa\ -b\ 4096}
-\item
-  Key anzeigen lassen\\
-  \texttt{cat\ /root/.ssh/id\_rsa.pub}
-\item
-  Kopieren in die Weboberfläche von gitea
-\item
-  Verifizierungslink kopieren\\
-  \texttt{echo\ -n\ \textquotesingle{}TOKEN\textquotesingle{}\ \textbar{}\ ssh-keygen\ -Y\ sign\ -n\ gitea\ -f\ /root/.ssh/id\_rsa}
-\item
-  Ausgabe zurück nach Gitea kopieren
-\item
-  Einen ``leeren'' ssh-Connect zu gitea ausführen (bricht mit Fehler
-  ab!)\\
-  \texttt{runner:/\#\ ssh\ git@gitea}\strut \\
-  (Damit ensteht eine Datei known\_hosts)
-\item
-  Probehalber conen des Repops\\
-  \texttt{git\ clone\ ssh://git@gitea/linuxadmin/dillingen}
-\item
-  Es erscheint eine Warnung, dass das Repo leer ist. Alles funktioniert
-  so weit!
-\end{itemize}
+\samplestart
+
+\textbf{Hinweis}\\
+Die Kooperation mit dem Webserver funktioniert über einen gemeinsamen
+Ordner der beiden Container. Quarto erstellt das Dokument in einem
+Ordner \emph{giteatransfer}, der gleichzeitig das Documentroot des
+Webservers im anderen Container ist. \sampleend
 
 \bookmarksetup{startatroot}
 
@@ -7209,6 +7387,8 @@ nur noch \emph{root} Änderungen vornehmen darf:
 Dieses Script deaktiviert Anmeldungen über OpenID und setzt neue
 Sicherheitsschlüssel.
 
+\newpage
+
 \textbf{tune.sh}
 
 \begin{Shaded}
@@ -7289,63 +7469,11 @@ deaktiviert werden kann:
 Für den Client muss der ssh-Zugriff möglich sein (clone, push, pull). Es
 kommt hier der normale ssh-Server auf Port 22 zum Einsatz\footnote{Gitea
   würde über einen eigenen ssh-Server verfügen, den man in einigen
-  speziellen Fällen verwenden könnte.}.
+  speziellen Fällen verwenden könnte.}, weil wir nicht durch die
+Abschottung von Docker müssen.
 
-Für den kennwortlosen ssh-Zugriff für clone, push, pull wird ein
-ausreichend langer ssh-Schlüssel benötigt. Die üblichen 2048 Bit genügen
-hier nicht! Dieser \emph{Deploy-Key} wird später dann über die
-graphische Benutzeroberfläche in \emph{Gitea} eingefügt (s.u.).
-
-\textbf{Schlüssel erzeugen}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{IN:}\NormalTok{  ssh{-}keygen }\AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096}
-\ExtensionTok{OUT:}\NormalTok{ Generating public/private rsa key pair.}
-     \ExtensionTok{Enter}\NormalTok{ file in which to save the key }
-     \KeywordTok{(}\ExtensionTok{/home/linuxadmin/.ssh/id\_rsa}\KeywordTok{)}\BuiltInTok{:}
-\ExtensionTok{IN:}\NormalTok{  gitea\_rsa}
-\ExtensionTok{OUT:}\NormalTok{ Enter passphrase }\ErrorTok{(}\ExtensionTok{empty}\NormalTok{ for no passphrase}\KeywordTok{)}\BuiltInTok{:} 
-     \CommentTok{\# leer lassen Enter}
-\ExtensionTok{OUT:}\NormalTok{ Enter same passphrase again: ... leer lassen Enter}
-\ExtensionTok{OUT:}\NormalTok{ Your identification has been saved in gitea\_rsa}
-     \ExtensionTok{Your}\NormalTok{ public key has been saved in gitea\_rsa.pub}
-     \ExtensionTok{The}\NormalTok{ key fingerprint is:}
-     \ExtensionTok{SHA256:ty5F............Q0}\NormalTok{ linuxadmin@gitserver}
-     \ExtensionTok{The}\NormalTok{ key}\StringTok{\textquotesingle{}s randomart image is:}
-\StringTok{     +{-}{-}{-}[RSA 4096]{-}{-}{-}{-}+}
-\StringTok{     |      . ..       |}
-\StringTok{     |.      o  .      |}
-\StringTok{     | E. . o  o o     |}
-\StringTok{     |..*. o o+ O .    |}
-\StringTok{     | =... *+SB.o     |}
-\StringTok{     | ..  o =O.o.     |}
-\StringTok{     |..     =.=.      |}
-\StringTok{     |++ .    *+       |}
-\StringTok{     |+ =.    .=+      |}
-\StringTok{     +{-}{-}{-}{-}[SHA256]{-}{-}{-}{-}{-}+}
-\end{Highlighting}
-\end{Shaded}
-
-Der Inhalt von \datei{gitea\_rsa.pub} kann durch folgenden Befehl im
-Terminal angezeigt werden:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{cat}\NormalTok{ \textasciitilde{}/.ssh/gitea\_rsa.pub}
-\end{Highlighting}
-\end{Shaded}
-
-Die mehrzeilige Ausgabe in einem Stück in die Oberfläche von
-\gitea kopieren:
-
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key1.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key2.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/inst/key3.png}
-
-Damit ist die Grundkonfiguration beendet. Es sollte nun noch eingestellt
-werden, welche Anmelde- und Registrierungsvarianten erlaubt sind, um
-nicht plötzlich fremde Personen in seiner Gitea-Instanz zu haben.
+Den Ablauf mit den SSH-Schlüsseln des Benutzers habe ich ja bereits oben
+erklärt -- daran ändert sich nichts.
 
 \section{HTTPS}\label{https}
 
@@ -7359,12 +7487,12 @@ möglichst einfache Installation eines funktionsfähigen Systems.
 
 \section{API}\label{api}
 
-Oft ist es effizienter, wenn Dinge über Kommandozeile erledigt werden.
-Wenn z.B. 50 Benutzerkonten erstellt und mit Passwort abgesichert werden
-sollen, weil die Selbstregistrierung nicht gewünscht ist. In diesem Fall
-verwendest die die API von \gitea. Dies kann von jedem Rechner aus
-erfolgen, der auf \gitea zugreifen kann. Dafür braucht es aber noch zwei
-Anpassungen an der \datei{/etc/gitea/app.ini}:
+Oft ist es effizienter, wenn Dinge über die Kommandozeile erledigt
+werden -- zum Beispiel wenn 50 Benutzerkonten erstellt und mit Passwort
+abgesichert werden sollen, weil die Selbstregistrierung nicht gewünscht
+ist. In diesem Fall verwendest die die API von \gitea. Dies kann von
+jedem Rechner aus erfolgen, der auf \gitea zugreifen kann. Dafür braucht
+es aber noch zwei Anpassungen an der \datei{/etc/gitea/app.ini}:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -7462,8 +7590,8 @@ Organistation mehr ist!
 
 Es könnte sinnvoll sein, wenn sich die einzelnen Kollegen als
 \emph{Organisationen} sehen. Dann müssen Schüler aber mehrfach ins
-System eingetragen werden und das ist bereits bei den eMail-Adressen
-Probleme.
+System eingetragen werden und das bereitet bereits bei den
+eMail-Adressen Probleme, die dann doppelt wären.
 
 Sinnvoller erscheint mir eine Namenskonvention beim Erstellen von Teams!
 
@@ -7473,7 +7601,7 @@ Sinnvoller erscheint mir eine Namenskonvention beim Erstellen von Teams!
 \begin{Highlighting}[]
 \VariableTok{token}\OperatorTok{=}\NormalTok{1234}
 \VariableTok{name}\OperatorTok{=}\NormalTok{G10a}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ POST }\StringTok{"http://192.168.3.195:3000/api/v1/admin/organizations"} \DataTypeTok{\textbackslash{}}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ POST }\StringTok{"http://192.168.3.190:3000/api/v1/admin/organizations"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Content{-}Type: application/json"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}d }\StringTok{\textquotesingle{}\{}
@@ -7498,12 +7626,12 @@ im Dokument eingeführt.)
 \VariableTok{user}\OperatorTok{=}\NormalTok{susi}
 \VariableTok{url}\OperatorTok{=}\StringTok{"}\VariableTok{$\{name\}}\StringTok{$/members/}\VariableTok{$\{user\}}\StringTok{"}
 \ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ PUT }\DataTypeTok{\textbackslash{}}
-\StringTok{"http://192.168.3.195:3000/api/v1/orgs/"}\VariableTok{$url} \DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.190:3000/api/v1/orgs/"}\VariableTok{$url} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{User löschen}
+\textbf{Benutzer löschen}
 
 \blarge
 
@@ -7512,18 +7640,18 @@ im Dokument eingeführt.)
 \VariableTok{token}\OperatorTok{=}\NormalTok{1234}
 \VariableTok{user}\OperatorTok{=}\StringTok{"susi"}
 \CommentTok{\# In welchen Organistaionen ist der User}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ GET }\StringTok{"http://192.168.3.195:3000/api/v1/users/}\VariableTok{$\{user\}}\StringTok{/orgs"} \DataTypeTok{\textbackslash{}}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ GET }\StringTok{"http://192.168.3.190:3000/api/v1/users/}\VariableTok{$\{user\}}\StringTok{/orgs"} \DataTypeTok{\textbackslash{}}
     \AttributeTok{{-}H} \StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
 
 \CommentTok{\# Einzeln austragen, sonst ist er nicht löschbar}
 \VariableTok{orga}\OperatorTok{=}\NormalTok{organization1}
 \ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ DELETE  }\DataTypeTok{\textbackslash{}}
-\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{orga\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.190:3000/api/v1/orgs/}\VariableTok{$\{orga\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
 
 \CommentTok{\# Benutzer löschen }
 \ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ DELETE }\DataTypeTok{\textbackslash{}}
-\StringTok{"http://192.168.3.195:3000/api/v1/admin/users/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.190:3000/api/v1/admin/users/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"}
 \end{Highlighting}
 \end{Shaded}
@@ -7544,7 +7672,7 @@ Schule anlegen.
 \VariableTok{schule}\OperatorTok{=}\StringTok{"GGP"}
 \VariableTok{token}\OperatorTok{=}\NormalTok{1234}
 \VariableTok{team}\OperatorTok{=}\NormalTok{G10a}
-\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ POST }\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{schule\}}\StringTok{/teams"} \DataTypeTok{\textbackslash{}}
+\ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ POST }\StringTok{"http://192.168.3.190:3000/api/v1/orgs/}\VariableTok{$\{schule\}}\StringTok{/teams"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Authorization: token }\VariableTok{$\{token\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Content{-}Type: application/json"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}d }\StringTok{\textquotesingle{}\{}
@@ -7568,7 +7696,7 @@ Schule anlegen.
 \VariableTok{team}\OperatorTok{=}\NormalTok{G10a}
 \VariableTok{user}\OperatorTok{=}\NormalTok{susi}
 \ExtensionTok{curl} \AttributeTok{{-}X}\NormalTok{ PUT }\DataTypeTok{\textbackslash{}}
-\StringTok{"http://192.168.3.195:3000/api/v1/orgs/}\VariableTok{$\{schule\}}\StringTok{/teams/}\VariableTok{$\{team\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
+\StringTok{"http://192.168.3.190:3000/api/v1/orgs/}\VariableTok{$\{schule\}}\StringTok{/teams/}\VariableTok{$\{team\}}\StringTok{/members/}\VariableTok{$\{user\}}\StringTok{"} \DataTypeTok{\textbackslash{}}
 \NormalTok{{-}H }\StringTok{"Authorization: token YOUR\_ADMIN\_TOKEN"}
 \end{Highlighting}
 \end{Shaded}
@@ -7586,15 +7714,18 @@ gestolpert. Einfach ausprobieren, was bei dir stimmt! \sampleend
 \chapter{Gitlab}\label{gitlab}
 
 Diese Software ist etwas schwergewichtiger als \gitea, aber ebenso
-problemlos zu installieren. Auch hier stellt stellt sich allerdings die
-Frage nach dem zu verwendenden ssh-Port z.B. zum Clonen. Ich selbst habe
-den ssh-Port des Servers auf 23 umgestellt, damit \gitlab die 22
-verwenden kann.
+problemlos zu installieren. Auch hier stellt sich wieder die Frage nach
+dem zu verwendenden ssh-Port z.B. zum Clonen. Ich selbst habe den
+ssh-Port des Servers auf 23 umgestellt, damit \gitlab die 22 verwenden
+kann.
+
+Nach dem komplexen Aufbau von \gitea mit seinem Runner, wirkt
+\gitlab richtig pflegeleicht!
 
 \section{Umstellen des Ports}\label{umstellen-des-ports}
 
 Melde dich auf dem Server an und werde \emph{root}. Suche in der Datei
-\texttt{/etc/ssh/sshd\_config} nach der Zeile \textbf{\# Port 22}
+\datei{/etc/ssh/sshd\_config} nach der Zeile \textbf{\# Port 22}
 (Auskommentiert). Entferne den Kommentar und ersetze 22 durch 23.
 (Speichern nicht vergessen!)
 
@@ -7611,12 +7742,12 @@ Port 23 freizuschalten:
 \end{Shaded}
 
 Nun muss der Dienst neu gestartet werden. Bei den letzten Tests hat der
-Befehl \texttt{systemctl\ restart\ ssh} den Dienst aber nicht auf den
-anderen Port umgestellt (wegen laufender Verbindung?). Linux-untypisch
-war ein Reboot die Lösung (im Terminal \texttt{reboot} eingeben).
-Mittlerweile habe ich herausgefunden, dass ein vorher ausgeführtes
-\texttt{systemctl\ daemon-reload} das Problem löst! Damit ist kein
-Reboot mehr nötig.
+Befehl \cmd{systemctl restart ssh} den Dienst aber nicht auf den anderen
+Port umgestellt (wegen laufender Verbindung?). Linux-untypisch war ein
+Reboot die Lösung (im Terminal \cmd{reboot} eingeben). Mittlerweile habe
+ich herausgefunden, dass ein vorher ausgeführtes
+\cmd{systemctl daemon-reload} das Problem löst! Damit ist kein Reboot
+mehr nötig.
 
 \section{Docker}\label{docker-1}
 
@@ -7624,12 +7755,13 @@ Erstelle einen Ordner für \gitlab
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ /srv/docker/gitlab25}
-\BuiltInTok{cd}\NormalTok{ /srv/docker/gitlab25}
+\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ /home/benutzer/docker/gitlab25}
+\BuiltInTok{cd}\NormalTok{ /home/benutzer/docker/gitlab25}
 \end{Highlighting}
 \end{Shaded}
 
-Erstelle hier eine \datei{docker-compose.yml} Datei:
+Kopiere die Datei \datei{docker-compose.yml} aus dem Materialordner
+\ordner{gitlab} an diese Stelle:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7639,10 +7771,10 @@ Erstelle hier eine \datei{docker-compose.yml} Datei:
     \ExtensionTok{image:} \StringTok{\textquotesingle{}gitlab/gitlab{-}ce:latest\textquotesingle{}}
     \ExtensionTok{container\_name:} \StringTok{\textquotesingle{}gitlab\textquotesingle{}}
     \ExtensionTok{restart:}\NormalTok{ always}
-    \ExtensionTok{hostname:} \StringTok{\textquotesingle{}192.168.3.181\textquotesingle{}}  \CommentTok{\# Im Netz \textquotesingle{}gitlab.server.de\textquotesingle{}}
+    \ExtensionTok{hostname:} \StringTok{\textquotesingle{}192.168.3.190\textquotesingle{}}  \CommentTok{\# Im Netz \textquotesingle{}gitlab.server.de\textquotesingle{}}
     \ExtensionTok{environment:}
       \ExtensionTok{GITLAB\_OMNIBUS\_CONFIG:} \KeywordTok{|}
-        \ExtensionTok{external\_url} \StringTok{\textquotesingle{}http://182.168.3.181:443\textquotesingle{}} \CommentTok{\# im Netz https}
+        \ExtensionTok{external\_url} \StringTok{\textquotesingle{}http://182.168.3.190:443\textquotesingle{}} \CommentTok{\# im Netz https}
         \VariableTok{gitlab\_rails}\OperatorTok{[}\StringTok{\textquotesingle{}gitlab\_shell\_ssh\_port\textquotesingle{}}\OperatorTok{]} \ExtensionTok{=}\NormalTok{ 22}
     \ExtensionTok{ports:}
       \ExtensionTok{{-}} \StringTok{\textquotesingle{}22:22\textquotesingle{}}  \CommentTok{\# 25:22 falls 22 nicht auf 23 umgestellt}
@@ -7663,7 +7795,7 @@ Erstelle hier eine \datei{docker-compose.yml} Datei:
 \end{Shaded}
 
 Das Netz für \gitlab muss explizit angelegt werden, da es
-\emph{external} ist:
+\emph{external} ist, aber das kennst du bereits:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7671,7 +7803,8 @@ Das Netz für \gitlab muss explizit angelegt werden, da es
 \end{Highlighting}
 \end{Shaded}
 
-Nun aus dem Ordner heraus ausführen
+Nun das Image erstellen (wird bei \cmd{docker compose up} implizit mit
+erledigt, aber wir machen es schrittweise.)
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7707,8 +7840,8 @@ Mit dem nachfolgenden Befehl kann das Erstkennwort für
 \end{Shaded}
 
 Damit ist eine Anmeldung als \emph{root} auf der Weboberfläche möglich.
-Hier muss nun auch sofort das Kennwort geändert werden (Wieder
-Erstkennwort erfoderlich!).
+Hier muss nun auch sofort das Kennwort geändert werden (Wieder ist das
+Erstkennwort erforderlich!).
 
 Mit diesem \emph{docker-compose}-Setup ist ssh-clonen bereits möglich
 (sobald der ssh-Key im Profil hinterlegt ist). Solltest du auf dem Host
@@ -7718,11 +7851,11 @@ du so (z.B. über Port 25):
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ clone ssh://git@192.168.3.181:25/root/demo.git}
+\FunctionTok{git}\NormalTok{ clone ssh://git@192.168.3.190:25/root/demo.git}
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Einstellungen auf dem Server}
+\textbf{Folgeschritte}
 
 \begin{itemize}
 \tightlist
@@ -7785,8 +7918,8 @@ tieferen Einstieg. Das Anlegen eines Repositories (=Projekts) ist
 relativ einfach, das Erstellen, Editieren und Committen von Dateien
 ebenfalls.
 
-Interessanter ist die Verwendung von \gitlab im Zusammenhang mit CICD,
-das das Thema des nächsten Abschnitts ist.
+Interessanter ist die Verwendung von \gitlab im Zusammenhang mit CI/CD,
+was das Thema des nächsten Abschnitts ist.
 
 \bookmarksetup{startatroot}
 
@@ -7811,8 +7944,9 @@ Im ersten Schritt, der Continuous Integration (CI), werden alle
 Anstatt große, unübersichtliche Updates zu veröffentlichen, integrieren
 Entwickler kleine, überschaubare Änderungen. Diese werden automatisch
 gebaut, getestet und überprüft -- so fällt sofort auf, wenn etwas nicht
-funktioniert. Git spielt hier eine zentrale Rolle, weil es die Grundlage
-für Versionskontrolle, Branches und das Zusammenführen von Code bildet.
+funktioniert. \Git spielt hier eine zentrale Rolle, weil es die
+Grundlage für Versionskontrolle, Branches und das Zusammenführen von
+Code bildet.
 
 Der zweite Schritt, die Continuous Delivery (CD), sorgt dafür, dass die
 geprüfte Software jederzeit bereit ist, ausgeliefert zu werden -- zum
@@ -7828,7 +7962,7 @@ Inhalt ihrer Arbeit konzentrieren, statt auf das „Wie`` des Deployments.
 Teams werden dadurch effizienter, und Software kann in kleineren,
 stabileren Schritten wachsen.
 
-Im Zusammenspiel mit Git entsteht so ein durchgängiger
+Im Zusammenspiel mit \git entsteht so ein durchgängiger
 Entwicklungsfluss: Vom Commit über die automatische Prüfung bis hin zur
 bereitgestellten Anwendung. CI/CD bildet damit das Rückgrat moderner
 Entwicklungsprozesse -- und ist ein Schlüsselkonzept, das jeder
@@ -7837,8 +7971,8 @@ fortgeschrittene \git-Nutzer verstehen sollte.
 \samplestart
 
 \textbf{Hinweis}\\
-Das Thema CICD ist eng mit sogenannten \emph{runner}-Programmen
-verbunden, die für die Ausführung von CICD verantwortlich sind. Leider
+Das Thema CI/CD ist eng mit sogenannten \emph{runner}-Programmen
+verbunden, die für die Ausführung von CI/CD verantwortlich sind. Leider
 erfordert die Registrierung eines solchen Runners in \gitlab eine
 funktionierende Zertifikat-Infrastruktur, da das über https erfolgt. Das
 ist in unserem Umfeld aber sehr aufwändig. Besser wäre es, sich einen
@@ -7857,7 +7991,7 @@ einfach.
 \item
   suchen nach \texttt{\#external\_url="EXTERNAL\_URL"}
 \item
-  ersetzen durch \texttt{external\_url="http://192.168.3.154"} (meine
+  ersetzen durch \texttt{external\_url="http://192.168.3.190"} (meine
   IP)
 \item
   Im Docker-Container eine Reconfiguration triggern:\\
@@ -7941,7 +8075,7 @@ von leeren Repositories Folgeprobleme entstehen können.
 Erstelle eine neue Datei mit dem Namen \texttt{.gitlab-ci.yml} und trage
 ein:
 
-\phantomsection\label{annotated-cell-265}%
+\phantomsection\label{annotated-cell-266}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -8114,7 +8248,7 @@ Im Material befindet sich auch wieder diese \emph{.gitlab-ci.yml}. Für
 den Praxiseinsatz musst du sie wieder passend umbenennen (Führenden
 Punkt ergänzen, „quarto`` entfernen)!
 
-\phantomsection\label{annotated-cell-270}%
+\phantomsection\label{annotated-cell-271}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -8314,9 +8448,7 @@ in Erfahrung bringen und in das Dockerfile eintragen (siehe Kommentar):
 \end{Highlighting}
 \end{Shaded}
 
-\bookmarksetup{startatroot}
-
-\chapter{TDD - Test Driven
+\section{TDD - Test Driven
 Development}\label{tdd---test-driven-development}
 
 (Video mit Intellij: https://www.youtube.com/watch?v=eMU\_hninZAs)
@@ -8325,7 +8457,7 @@ TDD ist eine sehr strenge Philosophie in Bezug auf den Ablauf bei der
 Software-Entwicklung. Puristen sprechen vom \emph{Red-Green-Refactor}
 Zyklus, der in jedem Fall eingehalten werden muss.
 
-\section{Was versteht man darunter?}\label{was-versteht-man-darunter}
+\subsection{Was versteht man darunter?}\label{was-versteht-man-darunter}
 
 Grob geht es um einen Zyklus von Code schreiben, Code testen, Code
 optimieren, der die Entwicklung -- idealer Weise automatisiert --
@@ -8363,9 +8495,9 @@ kleinschrittigen Weg empfiehlt Allan Mellor in Test-Driven Development
 with Java, erschienen 2023 bei packtpub.com. Dies sind allerdings noch
 lange nicht alle Sichtweisen auf dieses Thema! \sampleend
 
-\section{Maven}\label{maven}
+\subsection{Maven}\label{maven}
 
-\subsection{Was ist Maven}\label{was-ist-maven}
+\subsubsection{Was ist Maven}\label{was-ist-maven}
 
 Bei Maven handelt es sich um ein Build-Tool, wie es viele gibt und gab
 (z.B. Ant). Mit seiner Hilfe können bei entsprechender Konfiguration
@@ -8374,14 +8506,14 @@ viele lästige Kleinigkeiten im Entwicklungsprozess automatisiert werden
 CI/CD absolut üblich ist, brauchst du zumindest ein oberflächliches
 Grundverständnis.
 
-\subsection{Vorbereitung}\label{vorbereitung-1}
+\subsubsection{Vorbereitung}\label{vorbereitung-1}
 
 Dass ein JDK installiert sein muss, sollte klar sein, denn es soll ja
 mit Java programmiert werden. Natürlich gibt es wieder Unterschiede
 zwischen Linux, Apple und Windows.
 
-\subsubsection*{Windows}\label{windows-1}
-\addcontentsline{toc}{subsubsection}{Windows}
+\paragraph*{Windows}\label{windows-1}
+\addcontentsline{toc}{paragraph}{Windows}
 
 \emph{Java installieren}
 
@@ -8409,7 +8541,7 @@ Installiere das gewünschte JDK (z.\,B. Oracle JDK, Temurin).
 \emph{PATH anpassen}
 
 Systemvariable \texttt{Path} bearbeiten und hinzufügen:
-\datei{\%JAVA_HOME\%\\bin}
+\datei{\%JAVA\_HOME\%\\bin}
 
 \emph{Überprüfen im cmd-Fenster}
 
@@ -8420,8 +8552,8 @@ Systemvariable \texttt{Path} bearbeiten und hinzufügen:
 \end{Highlighting}
 \end{Shaded}
 
-\subsubsection*{Linux}\label{linux-1}
-\addcontentsline{toc}{subsubsection}{Linux}
+\paragraph*{Linux}\label{linux-1}
+\addcontentsline{toc}{paragraph}{Linux}
 
 \emph{Java installieren}
 
@@ -8472,8 +8604,8 @@ an
 \end{Highlighting}
 \end{Shaded}
 
-\subsubsection*{macOS}\label{macos-1}
-\addcontentsline{toc}{subsubsection}{macOS}
+\paragraph*{macOS}\label{macos-1}
+\addcontentsline{toc}{paragraph}{macOS}
 
 \emph{Java installieren}
 
@@ -8515,9 +8647,9 @@ Optional für Shells, die beim Login starten\\
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{Installation von Maven}\label{installation-von-maven}
+\subsubsection{Installation von Maven}\label{installation-von-maven}
 
-\subsubsection{Linux}\label{linux-2}
+\paragraph{Linux}\label{linux-2}
 
 Eine Installation über den Paketmanager ist möglich, liefert aber
 wahrscheinlich eine veraltete Version. Am einfachsten dürfte dann wohl
@@ -8549,17 +8681,17 @@ Zur Kontrolle genügt dann ein
 
 (Tipp: Im Terminal eingeben: \cmd{sdk list maven})
 
-\subsubsection*{Windows}\label{windows-2}
-\addcontentsline{toc}{subsubsection}{Windows}
+\paragraph*{Windows}\label{windows-2}
+\addcontentsline{toc}{paragraph}{Windows}
 
 Hier verweise ich einfach mal auf Youtube.
 
-\subsubsection*{Apple}\label{apple}
-\addcontentsline{toc}{subsubsection}{Apple}
+\paragraph*{Apple}\label{apple}
+\addcontentsline{toc}{paragraph}{Apple}
 
 Auch hier sind genug Tutorials auf Youtube zu finden.
 
-\subsection{Erster Test}\label{erster-test}
+\subsubsection{Erster Test}\label{erster-test}
 
 (Auf Linux)
 
@@ -8594,7 +8726,7 @@ Es kann sein, dass hier noch einige typische Warnungen erscheinen, die
 auf eine falsche Parameterisierung in der \datei{pom.xml} hinweisen --
 dazu später mehr. \sampleend
 
-\subsection{Konventionen}\label{konventionen}
+\subsubsection{Konventionen}\label{konventionen}
 
 Maven erwartet eine bestimmte Verzeichnisstruktur und auch entsprechende
 Namenskonventionen (Du musst das nicht per Hand anlegen, da gibt es
@@ -8608,7 +8740,7 @@ Hilfs-Scripts!)
 Direkt nach dem Erstellen des Projektes existieren noch nicht alle
 Ordner. Sie werden bei Bedarf dynamisch von \maven angelegt.
 
-\subsection{Idee}\label{idee-1}
+\subsubsection{Idee}\label{idee-1}
 
 \Maven kennt sogenannte LiveCyles. Damit sind bestimmte Abfolgen von
 Abläufen gemeint, die Maven ausführt, nämlich

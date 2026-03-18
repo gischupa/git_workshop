@@ -18,7 +18,7 @@ Im ersten Schritt, der Continuous Integration (CI), werden alle
 Anstatt große, unübersichtliche Updates zu veröffentlichen, integrieren 
 Entwickler kleine, überschaubare Änderungen. Diese werden automatisch 
 gebaut, getestet und überprüft -- so fällt sofort auf, wenn etwas nicht 
-funktioniert. Git spielt hier eine zentrale Rolle, weil es die Grundlage 
+funktioniert. \Git spielt hier eine zentrale Rolle, weil es die Grundlage 
 für Versionskontrolle, Branches und das Zusammenführen von Code bildet.
 
 Der zweite Schritt, die Continuous Delivery (CD), sorgt dafür, dass die 
@@ -34,7 +34,7 @@ Sicherheit und Freiraum: Sie können sich stärker auf den Inhalt ihrer Arbeit
 konzentrieren, statt auf das „Wie“ des Deployments. Teams werden dadurch 
 effizienter, und Software kann in kleineren, stabileren Schritten wachsen.
 
-Im Zusammenspiel mit Git entsteht so ein durchgängiger Entwicklungsfluss: 
+Im Zusammenspiel mit \git entsteht so ein durchgängiger Entwicklungsfluss: 
 Vom Commit über die automatische Prüfung bis hin zur bereitgestellten 
 Anwendung. CI/CD bildet damit das Rückgrat moderner Entwicklungsprozesse -- 
 und ist ein Schlüsselkonzept, das jeder fortgeschrittene \git-Nutzer 
@@ -42,8 +42,8 @@ verstehen sollte.
 
 \samplestart
 **Hinweis**  
-Das Thema CICD ist eng mit sogenannten *runner*-Programmen verbunden,
-die für die Ausführung von CICD verantwortlich sind. Leider erfordert 
+Das Thema CI/CD ist eng mit sogenannten *runner*-Programmen verbunden,
+die für die Ausführung von CI/CD verantwortlich sind. Leider erfordert 
 die Registrierung eines solchen Runners in \gitlab eine funktionierende 
 Zertifikat-Infrastruktur, da das über https erfolgt. Das ist in unserem 
 Umfeld aber sehr aufwändig. Besser wäre es, sich einen Account auf gitlab.com 
@@ -57,7 +57,7 @@ Ja -- man kann es auch seiner Spielumgebung machen, allerdings nicht so einfach.
 * root werden
 * `nano config/gitlab.rb` 
 * suchen nach `#external_url="EXTERNAL_URL"`
-* ersetzen durch `external_url="http://192.168.3.154"`  (meine IP)
+* ersetzen durch `external_url="http://192.168.3.190"`  (meine IP)
 * Im Docker-Container eine Reconfiguration triggern:  
 `docker exec -it gitlab gitlab-ctl reconfigure` 
 

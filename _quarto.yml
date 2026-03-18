@@ -30,7 +30,14 @@ format:
         \usepackage{enumitem}
         \usepackage{changepage}
         \setlist[description]{style=nextline, leftmargin=2.5em}
-        \newcommand{\cmd}[1]{\texttt{#1}\xspace}
+        \newcommand{\cmdx}[1]{\texttt{#1}\xspace}
+        \newcommand{\cmd}[1]{
+        \tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+
         \newcommand{\markcmd}[1]{\textbf{#1}\xspace}
         \newcommand{\menu}[1]{\textbf{\texttt{#1}}\xspace}
         \newcommand{\markcmx}[1]{
@@ -39,8 +46,16 @@ format:
           semithick,rectangle,
           inner sep=2pt, 
           rounded corners=3pt] (X) {#1};\xspace}
-        \newcommand{\script}[1]{\texttt{#1}\xspace}
-        \newcommand{\key}[1]{\texttt{#1}\xspace}
+        \newcommand{\script}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+        \newcommand{\key}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
         \newcommand{\Git}{\textit{Git}\xspace}
         \newcommand{\git}{\textit{git}\xspace}
         \newcommand{\gitserver}{\textit{git}-Server\xspace}
@@ -52,11 +67,31 @@ format:
         \newcommand{\gitbash}{\textit{git-Bash}\xspace}
         \newcommand{\maven}{\textit{Maven}\xspace}
         \newcommand{\Maven}{\textit{Maven}\xspace}
-        \newcommand{\strg}[1]{strg + #1\xspace}
-        \newcommand{\alt}[1]{alt + #1\xspace}
-        \newcommand{\datei}[1]{\lstinline{#1}\xspace}
-        \newcommand{\ordner}[1]{\textit{#1}\xspace}
-        \newcommand{\branch}[1]{\textit{#1}\xspace}
+        \newcommand{\strg}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{strg+#1}};\xspace}
+        \newcommand{\alt}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{alt+#1}};\xspace}
+        \newcommand{\datei}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+        \newcommand{\ordner}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+        \newcommand{\branch}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
         \newcommand{\work}{\textit{Working-Directory}\xspace}
         \newcommand{\blarge}{\begin{adjustwidth}{0cm}{-1.3cm}}
         \newcommand{\elarge}{\end{adjustwidth}}

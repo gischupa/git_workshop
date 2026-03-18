@@ -293,7 +293,7 @@ Komprimiere Objekte: 100% (2/2), fertig.
 Schreibe Objekte: 100% (3/3), 292 Bytes | 292.00 KiB/s, fertig.
 Gesamt 3 (Delta 0), Wiederverwendet 0 (Delta 0), 
 Pack wiederverwendet 0
-To 192.168.3.154:/home/benutzer/entfernt.git
+To 192.168.3.190:/home/benutzer/entfernt.git
    d46681d..78db34e  main -> main
 ``` 
 
@@ -325,7 +325,7 @@ remote: Komprimiere Objekte: 100% (2/2), fertig.
 remote: Gesamt 3 (Delta 0), Wiederverwendet 0 (Delta 0), 
 Pack wiederverwendet 0
 Entpacke Objekte: 100% (3/3), 272 Bytes | 272.00 KiB/s, fertig.
-Von 192.168.3.154:/home/benutzer/entfernt.git
+Von 192.168.3.190:/home/benutzer/entfernt.git
    d46681d..78db34e  main       -> origin/main
 ```
 
@@ -421,10 +421,10 @@ Führe dafür das Script \datei{max\_error.sh} aus.
 
 
 ```bash
-To 192.168.3.154:/home/benutzer/entfernt.git
+To 192.168.3.190:/home/benutzer/entfernt.git
  ! [rejected]        main -> main (fetch first)
 error: Fehler beim Versenden einiger Referenzen 
-        nach '192.168.3.154:/home/benutzer/entfernt.git'
+        nach '192.168.3.190:/home/benutzer/entfernt.git'
 Hinweis: Updates were rejected because the remote contains work 
 Hinweis: that you do not have locally. This is usually caused
 Hinweis: by another repository pushing to the same ref. 

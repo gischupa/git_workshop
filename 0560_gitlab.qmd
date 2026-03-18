@@ -2,14 +2,17 @@
 
 Diese Software ist etwas schwergewichtiger als \gitea,
 aber ebenso problemlos zu installieren. Auch hier stellt 
-stellt sich allerdings die Frage nach dem zu verwendenden 
+sich wieder die Frage nach dem zu verwendenden 
 ssh-Port z.B. zum Clonen. Ich selbst habe den ssh-Port des 
-Servers auf 23 umgestellt, damit \gitlab die 22 verwenden kann.
+Servers auf 23 umgestellt, damit \gitlab die 22 verwenden kann. 
+
+Nach dem komplexen Aufbau von \gitea mit seinem Runner, wirkt 
+\gitlab richtig pflegeleicht!
 
 ## Umstellen des Ports
 
 Melde dich auf dem Server an und werde *root*.
-Suche in der Datei `/etc/ssh/sshd_config` nach der 
+Suche in der Datei \datei{/etc/ssh/sshd\_config} nach der 
 Zeile **# Port 22** (Auskommentiert). Entferne den 
 Kommentar und ersetze 22 durch 23. (Speichern nicht vergessen!)
 
@@ -24,22 +27,23 @@ ufw status verbose
 ```
 
 Nun muss der Dienst neu gestartet werden. Bei den letzten Tests
-hat der Befehl `systemctl restart ssh` den Dienst aber nicht
+hat der Befehl \cmd{systemctl restart ssh} den Dienst aber nicht
 auf den anderen Port umgestellt (wegen laufender Verbindung?).
-Linux-untypisch war ein Reboot die Lösung (im Terminal `reboot` eingeben). 
+Linux-untypisch war ein Reboot die Lösung (im Terminal \cmd{reboot} eingeben). 
 Mittlerweile habe ich herausgefunden, dass ein vorher ausgeführtes
-`systemctl daemon-reload` das Problem löst! Damit ist kein Reboot mehr nötig.
+\cmd{systemctl daemon-reload} das Problem löst! Damit ist kein Reboot mehr nötig.
 
 ## Docker
 
 Erstelle einen Ordner für \gitlab 
 
 ```bash
-mkdir -p /srv/docker/gitlab25
-cd /srv/docker/gitlab25
+mkdir -p /home/benutzer/docker/gitlab25
+cd /home/benutzer/docker/gitlab25
 ```
 
-Erstelle hier eine \datei{docker-compose.yml} Datei:
+Kopiere die Datei \datei{docker-compose.yml} aus dem Materialordner \ordner{gitlab}
+an diese Stelle:
 
 ```bash
 version: '3.6'
@@ -48,10 +52,10 @@ services:
     image: 'gitlab/gitlab-ce:latest'
     container_name: 'gitlab'
     restart: always
-    hostname: '192.168.3.181'  # Im Netz 'gitlab.server.de'
+    hostname: '192.168.3.190'  # Im Netz 'gitlab.server.de'
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://182.168.3.181:443' # im Netz https
+        external_url 'http://182.168.3.190:443' # im Netz https
         gitlab_rails['gitlab_shell_ssh_port'] = 22
     ports:
       - '22:22'  # 25:22 falls 22 nicht auf 23 umgestellt
@@ -71,13 +75,14 @@ networks:
 ```
 
 Das Netz für \gitlab muss explizit angelegt werden,
-da es *external* ist:
+da es *external* ist, aber das kennst du bereits:
 
 ```bash
 docker network create gitlab_net 
 ```
 
-Nun aus dem Ordner heraus ausführen 
+Nun das Image erstellen (wird bei \cmd{docker compose up} implizit mit 
+erledigt, aber wir machen es schrittweise.)
 
 ```bash
 docker compose up --build
@@ -109,7 +114,7 @@ sudo cat config/initial_root_password
 
 Damit ist eine Anmeldung als *root* auf der 
 Weboberfläche möglich. Hier muss nun auch sofort 
-das Kennwort geändert werden (Wieder Erstkennwort erfoderlich!).
+das Kennwort geändert werden (Wieder ist das Erstkennwort erforderlich!).
 
 Mit diesem *docker-compose*-Setup ist ssh-clonen
 bereits möglich (sobald der ssh-Key im Profil hinterlegt ist). 
@@ -118,10 +123,10 @@ verwenden (gitlab arbeitet intern dennoch mit 22), dann clonst
 du so (z.B. über Port 25):
 
 ```bash
-git clone ssh://git@192.168.3.181:25/root/demo.git
+git clone ssh://git@192.168.3.190:25/root/demo.git
 ```
 
-**Einstellungen auf dem Server**
+**Folgeschritte**
 
 * Neues Kennwort setzen
 * Projekt demo.git erstellen
@@ -175,5 +180,5 @@ verzichte ich an dieser Stelle auf einen tieferen Einstieg. Das Anlegen eines
 Repositories (=Projekts) ist relativ einfach, das Erstellen, Editieren und Committen 
 von Dateien ebenfalls. 
 
-Interessanter ist die Verwendung von \gitlab im Zusammenhang mit CICD, das das Thema des 
+Interessanter ist die Verwendung von \gitlab im Zusammenhang mit CI/CD, was das Thema des 
 nächsten Abschnitts ist.

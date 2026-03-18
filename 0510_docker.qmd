@@ -85,6 +85,15 @@ docker compose version
 Es gibt sehr viele verschiedene Szenarien, wie Docker verwendet werden kann und entsprechend
 sind auch die Befehle zahlreich und unterschiedlich kompliziert.
 
+\samplestart
+**Hinweis**  
+Da nun Zugriffe auf verschiedene Ports des Servers erfolgen, die 
+aktuell durch die Firewall blockert sind, sollten wir diese 
+deaktivieren:
+
+\cmd{ufw disable}
+\sampleend
+
 Nachfolgend ein kleines *Work-along*, wo einige Befehle verwendet und erklärt werden. Gib folgenden Befehl im Terminal ein:
 
 ```bash

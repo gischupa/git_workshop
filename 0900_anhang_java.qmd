@@ -1,5 +1,5 @@
 # Anhang 
-## CICD mit Java
+## CI/CD mit Java
 
 Im Prinzip folgst du wieder den üblichen Schritten:
 
