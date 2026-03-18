@@ -1,4 +1,8 @@
 #!/bin/sh
+# Das Script ist im Container auszuführen,
+# da hier der Ordner /git auf root-Level liegt
+# Aufruf als   setup.sh <REPO-NAME>
+
 
 chmod -R 777 /git
 cd /git
