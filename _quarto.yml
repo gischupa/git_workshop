@@ -61,6 +61,7 @@ format:
         \newcommand{\gitserver}{\textit{git}-Server\xspace}
         \newcommand{\gitservers}{\textit{git}-Servers\xspace}
         \newcommand{\Gitlab}{\textit{GitLab}\xspace}
+        \newcommand{\GitLab}{\textit{GitLab}\xspace}
         \newcommand{\gitlab}{\textit{GitLab}\xspace}
         \newcommand{\gitea}{\textit{Gitea}\xspace}
         \newcommand{\Gitea}{\textit{Gitea}\xspace}

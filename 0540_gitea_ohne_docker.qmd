@@ -20,7 +20,7 @@ Die Befehle müssen nicht per Hand eingegeben werden, dafür sind die Scripte \s
 und \script{tune.sh} im Material. Sie müssen als *root* bzw. über *sudo* ausgeführt werden.
 
 **setup\_gitea.sh**  
-```{.bash include=src/21_docker/gitea/setup_gitea.sh}
+```{.bash include=src/21_docker/gitea_ohne_docker/setup_gitea.sh}
 ```
 
 ## Nacharbeiten

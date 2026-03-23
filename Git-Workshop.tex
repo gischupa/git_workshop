@@ -288,6 +288,7 @@
 \newcommand{\gitserver}{\textit{git}-Server\xspace}
 \newcommand{\gitservers}{\textit{git}-Servers\xspace}
 \newcommand{\Gitlab}{\textit{GitLab}\xspace}
+\newcommand{\GitLab}{\textit{GitLab}\xspace}
 \newcommand{\gitlab}{\textit{GitLab}\xspace}
 \newcommand{\gitea}{\textit{Gitea}\xspace}
 \newcommand{\Gitea}{\textit{Gitea}\xspace}
@@ -389,7 +390,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, colback={codebgcolor}, breakable, enhanced, sharp corners, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, colback={codebgcolor}, frame hidden, sharp corners, boxrule=0pt, enhanced]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -4657,7 +4658,7 @@ LinuxServer im Internet bei einem der typischen Anbieter wie Strato,
 Contabo, \ldots{} oder du installierst auf einem eigenen Computer
 Proxmox. Dabei handelt es sich um eine kostenlose
 Virtualisierungsplattform. Die nachfolgenden Schritte beschreiben
-lediglich eine Basisiinstallation! Für komplexere Szenarien führt an
+lediglich eine Basisinstallation! Für komplexere Szenarien führt an
 einer tieferen Beschäftigung ohnehin kein Weg vorbei.
 
 Die Anforderungen an den Rechner sind nach heutigen Maßstäben eher
@@ -4701,6 +4702,21 @@ selbsterklärend, dass eine Bilderstrecke hier reine Platzverschwendung
 wäre.
 
 \subsection{Installation Ubuntu}\label{installation-ubuntu}
+
+\samplestart
+
+\textbf{Hinweis}\\
+Da unklar ist, wie hier im Schulungszentrum die Vergabe der IP-Adressen
+erfolgt, habe ich einen separaten Leitfaden erstellt um das Ubuntu als
+virtuelle Maschine gewissermaßen \emph{unsichtbar} in einem versteckten
+Netz des Servers zu installieren. Leider sind dafür einige Änderungen am
+Proxmox nötig, die ich im Anhang zusammengefasst habe. Die Anleitung
+befindet sich auch als eigenständiges Dokument im Material (Ordner
+\textbackslash ordner\{material/proxmox).
+
+Im Rahmen dieser Anleitung wird auch gleich das iso-Image der aktuelle
+Ubuntu-Version an den richtigen Ort des Proxmox kopiert. Das Handout
+geht ab hier aber wieder vom regulären Ablauf aus. \sampleend
 
 Als Vorbereitung muss das aktuelle \emph{Ubuntu LTS 24.04} als iso-Image
 heruntergeladen werden. Das \textbf{kann} bereits auf dem Proxmox
@@ -5154,9 +5170,15 @@ sprengt das den Rahmen dieses Workshops.
 Damit du dich auf deinem Server anmelden kannst, benötigst du folgende
 Informationen:
 
-\begin{quote}
-IP-Adresse des Servers Benutzername Kennwort
-\end{quote}
+\begin{itemize}
+\tightlist
+\item
+  IP-Adresse des Servers
+\item
+  Benutzername
+\item
+  Kennwort
+\end{itemize}
 
 Diese Daten hast du vorher festgelegt oder vom Provider erhalten.
 
@@ -5178,7 +5200,7 @@ den nachfolgenden Befehl eingeben zu können:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{ssh}\NormalTok{ benutzer@IP{-}adresse }
+\FunctionTok{ssh}\NormalTok{ benutzer@}\OperatorTok{\textless{}}\NormalTok{SERVER{-}IP}\OperatorTok{\textgreater{}} 
 \end{Highlighting}
 \end{Shaded}
 
@@ -5603,7 +5625,6 @@ in seinem eigenen Account auf dem Server hinterlegt:
 \begin{Highlighting}[]
 \CommentTok{\# Auf dem Client:}
 \FunctionTok{ssh{-}keygen} \AttributeTok{{-}t}\NormalTok{ rsa }\AttributeTok{{-}b}\NormalTok{ 4096}
-
 \ExtensionTok{ssh{-}copy{-}id} \AttributeTok{{-}i}\NormalTok{ .ssh/id\_rsa.pub benutzer@}\OperatorTok{\textless{}}\NormalTok{IP}\OperatorTok{\textgreater{}}
 \end{Highlighting}
 \end{Shaded}
@@ -5753,7 +5774,7 @@ benötigt, als bei einer komplett neuen Erstellung!
 \exlarge
 
 Die Befehle befinden sich als Script bei den Kursmaterialien! Wegen des
-Layouts sind hier Zeilenubrüche enthalten, die das Script in der
+Layouts sind hier Zeilenumbrüche enthalten, die das Script in der
 abgedruckten Form scheitern lassen!
 
 Aktuell läuft Docker jetzt als Benutzer \emph{root} (=Administrator),
@@ -5767,7 +5788,7 @@ zugeordnet werden.
 \end{Highlighting}
 \end{Shaded}
 
-(Der Benutzer muss sich einmal ab- und wieder anmelden.)
+(Der Benutzer muss sich danach einmal ab- und wieder anmelden.)
 
 Teste die Installation durch folgende Befehle:
 
@@ -5882,6 +5903,7 @@ Mit nachfolgendem Befehl überprüft man den Status des Containers:
 \end{Shaded}
 
 \elarge
+\newpage
 
 \textbf{Weitere Befehle}
 
@@ -5902,6 +5924,59 @@ docker rmi ``corentinth/it-tools'' & Entfernt auch das Image \\
 
 Damit ein Container gelöscht werden kann, muss er beendet sein.\\
 Damit ein Image gelöscht werden kann, muss der Container gelöscht sein.
+
+\section{WICHTIGER HINWEIS}\label{wichtiger-hinweis}
+
+Das Pullen von Images von der Plattform Dockerhub ist in gewissen
+Grenzen kostenlos. Aktuell sind 100 Pulls in 6 Stunden ohne Anmeldung
+auf Dockerhub möglich (Stand März 2026). Mit einem Account steigt die
+Anzahl auf 200 Pulls pro 6 Stunden. Leider bezieht sich die Anzahl auf
+die IP-Adresse, von der der Pull erfolgt. In einem Schulungszentrum ist
+die Anzahl möglicher Pulls deshalb sehr schnell aufgebraucht. Bei dir
+zuhause oder in der Schule reicht diese Anzahl für Experimente aber
+durchaus.\\
+Hier im Workshop müssen wir also einen alternativen Weg gehen, um die
+Images ins System zu bekommen. Das geht in Form von Tar-Files (eine Form
+von zip). Die Beschreibung im Handout bezieht sich aber durchgehend auf
+die reguläre Arbeitsweise von Docker. Eine kleine Anleitung für das
+Arbeiten mit den Tar-Dateien befindet sich im Anhang.
+
+Einen Teil der benötigten Materialien hst du bereits aus dem
+Kurs-Repository geclont. Die nun benötigten vorbereiteten Docker-Images
+sind dafür aber zu groß und liegen deshalb auf dem USB-Stick vor.
+Folgende Schritte sind nun nötig:
+
+\begin{itemize}
+\tightlist
+\item
+  Stick im Proxmox an die VM durchreichen
+\item
+  Einbinden des Sticks in die VM (mounten)
+\item
+  Kopieren der Images in die VM
+\end{itemize}
+
+Für das Durchreichen fügst du der VM in der Weboberfläche eine neue
+Hardware (USB) hinzu.
+
+Im Terminal sollte der Stick über \cmd{lsblk} als \texttt{sdb} mit den
+Partitionen \texttt{sdb1} und \texttt{sdb2} erscheinen. Auf
+\texttt{sdb1} befindet sich \emph{Proxmox}, auf \texttt{sdb2} liegen die
+benötigten Docker-Images.
+
+Binde sie (als Root) ins System ein und kopiere die Docker-Images:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo} \AttributeTok{{-}i} 
+\BuiltInTok{cd}\NormalTok{ /mnt }
+\FunctionTok{mkdir}\NormalTok{ part2 }
+\FunctionTok{mount}\NormalTok{ /dev/sdb2 part2 }
+\FunctionTok{cp} \AttributeTok{{-}r}\NormalTok{ part2/images /home/benutzer/ }
+\FunctionTok{chown} \AttributeTok{{-}R}\NormalTok{ benutzer:benutzer /home/benutzer/images }
+\FunctionTok{umount}\NormalTok{ part2 }
+\end{Highlighting}
+\end{Shaded}
 
 \section{Detaillierter}\label{detaillierter}
 
@@ -5929,14 +6004,47 @@ Kofler.
 
 \chapter{Docker in Beispielen}\label{docker-in-beispielen}
 
-In diesem Abschnitt soll an einem sehr einfachen Beispiel der Aufbau
-eines Dockerfiles und einer docker-compose.yml Datei besprochen werden.
-Dieser Setup deckt wohlgemerkt nicht alle Sicherheitsaspekte ab, die in
-diesem Umfeld möglich sind. Weil Datenbanken im Unterricht auch oft eine
-Rolle spielen, erstellen wir einen Datenbankserver mit \emph{MySQL} bzw.
-\emph{MariaDB}.
+In diesem Abschnitt soll an einfachen Beispielen der Aufbau von
+Dockerfiles und docker-compose.yml Dateien besprochen werden. Dieser
+Setup deckt wohlgemerkt nicht alle Sicherheitsaspekte ab, die in diesem
+Umfeld möglich sind.
+
+In der Vorbereitung hast du die benötigten Dateien bereits in den Ordner
+\ordner{images} kopiert. In den eigentlichen Kursmaterialien findest du
+die jeweils benötigten Dateien (Dockerfiles, docker-compose.yml,
+Konfig-Dateien, \ldots). Die Beschreibung hier im Handout bezieht sich
+immer auf den Ablauf mit \emph{diesen} Dateien. Der erzwungene
+\emph{Workaround} in der Schulungsumgebung ist separat dokumentiert.
 
 \section{MariaDB (MySQL)}\label{mariadb-mysql}
+
+Weil Datenbanken im Unterricht auch oft eine Rolle spielen, erstellen
+wir einen Datenbankserver mit \emph{MySQL} bzw. \emph{MariaDB}. Du
+findest die Docker-Dateien im Ordner \ordner{material/maria\_db}. Führe
+dort aus:
+
+\begin{tcolorbox}[title=WARNUNG]
+Im Workshop führst du vorher unbedingt \textbf{vorher}
+diesen Befehl aus:  \newline 
+\lstinline{docker load -i ~/images/images_mariadb/mariadb_12_2.tar}
+\end{tcolorbox}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ compose up }
+\end{Highlighting}
+\end{Shaded}
+
+Mit nachfolgenden Befehlen gelangst du an das Commandline Interface von
+MariaDB, falls du auf deinem Gerät keinen Client installiert hast:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ exec }\AttributeTok{{-}it}\NormalTok{ mariadb\_1 bash}
+\ExtensionTok{mariadb} \AttributeTok{{-}h}\NormalTok{ localhost }\AttributeTok{{-}u}\NormalTok{ root }\AttributeTok{{-}p} 
+\CommentTok{\# Kennwort ist rootpassword }
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{Die Dateien}\label{die-dateien}
 
@@ -5953,7 +6061,7 @@ unsicheren Kennwörter müssen in dieser Datei angepasst werden!
 \ExtensionTok{version:} \StringTok{\textquotesingle{}3.8\textquotesingle{}}
 \ExtensionTok{services:}
   \ExtensionTok{db:}
-    \ExtensionTok{image:}\NormalTok{ mariadb:latest}
+    \ExtensionTok{image:}\NormalTok{ mariadb:8}
     \ExtensionTok{container\_name:}\NormalTok{ mariadb\_1}
     \ExtensionTok{environment:}
       \ExtensionTok{MYSQL\_ROOT\_PASSWORD:}\NormalTok{ rootpassword}
@@ -6042,7 +6150,15 @@ Container zur Verfügung stellt. Der Zugriff auf diesen Container ist
 aktuell über Port 8080 konfiguriert. Falls parallel weitere Container
 laufen, muss geprüft werden, ob dieser Port verfügbar ist!
 
-Die \texttt{docker-compose.yml} um PHPMyAdmin erweitert:
+\begin{tcolorbox}[title=WARNUNG]
+Im Workshop führst du vorher unbedingt \textbf{vorher}
+diese Befehle aus:  \newline 
+\lstinline{docker load -i ~/images/images_mariadb_php/mariadb_12_2.tar}\newline
+\lstinline{docker load -i ~/images/images_mariadb_php/phpadmin_5_2_3.tar}
+\end{tcolorbox}
+
+Die \texttt{docker-compose.yml} um PHPMyAdmin erweitert nun
+\texttt{docker-compose-php.yml}:
 
 \textbf{docker-compose-php.yml}
 
@@ -6051,7 +6167,7 @@ Die \texttt{docker-compose.yml} um PHPMyAdmin erweitert:
 \ExtensionTok{version:} \StringTok{\textquotesingle{}3.8\textquotesingle{}}
 \ExtensionTok{services:}
   \ExtensionTok{db:}
-    \ExtensionTok{image:}\NormalTok{ mariadb:latest}
+    \ExtensionTok{image:}\NormalTok{ mariadb:8}
     \ExtensionTok{container\_name:}\NormalTok{ mariadb\_1}
     \ExtensionTok{environment:}
       \ExtensionTok{MYSQL\_ROOT\_PASSWORD:}\NormalTok{ rootpassword}
@@ -6094,15 +6210,18 @@ Die \texttt{docker-compose.yml} um PHPMyAdmin erweitert:
 \end{Highlighting}
 \end{Shaded}
 
-Um diesen Container zu starten, muss explizit die passende
+Um diesen Container zu starten und zu beenden, muss explizit die
+passende\\
 \texttt{docker-compose-php.yml} angegeben werden!
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ compose }\AttributeTok{{-}f}\NormalTok{ docker{-}compose{-}php.yml up }\AttributeTok{{-}d} 
+\ExtensionTok{docker}\NormalTok{ compose }\AttributeTok{{-}f}\NormalTok{ docker{-}compose{-}php.yml up }\AttributeTok{{-}d}
+\ExtensionTok{docker}\NormalTok{ compose }\AttributeTok{{-}f}\NormalTok{ docker{-}compose{-}php.yml down }
 \end{Highlighting}
 \end{Shaded}
 
+Der Container ist über Port 8080 im Browser erreichbar.\\
 Das Kennwort für den \emph{root}-Benutzer lautet aktuell
 \emph{rootpassword}.
 
@@ -6147,37 +6266,41 @@ hinaus geht. Hier bietet sich wieder ein kleiner Docker-Container an.
 \end{Highlighting}
 \end{Shaded}
 
+Eine minimale \datei{docker-compose.yml} steuert dann den Container:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{version:} \StringTok{"3.9"}
+
+\ExtensionTok{services:}
+  \ExtensionTok{lighttpd:}
+    \ExtensionTok{build:}\NormalTok{ .}
+    \ExtensionTok{container\_name:}\NormalTok{ mein{-}webserver}
+    \ExtensionTok{ports:}
+      \ExtensionTok{{-}} \StringTok{"8080:80"}
+    \ExtensionTok{restart:}\NormalTok{ unless{-}stopped}
+\end{Highlighting}
+\end{Shaded}
+
 Zum Starten (und nach Änderungen der Konfiguration) verwendet man:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ build }\AttributeTok{{-}t}\NormalTok{ mein{-}webserver{-}image .  }\CommentTok{\# Punkt wichtig }
-\ExtensionTok{docker}\NormalTok{ run }\AttributeTok{{-}d} \AttributeTok{{-}p}\NormalTok{ 8080:80 }\AttributeTok{{-}{-}name}\NormalTok{ mein{-}webserver mein{-}webserver{-}image}
+\ExtensionTok{docker}\NormalTok{ compose build   }\CommentTok{\# nach Änderungen }
+\ExtensionTok{docker}\NormalTok{ compose up }\AttributeTok{{-}d}   \CommentTok{\# starten}
+\ExtensionTok{docker}\NormalTok{ compose down    }\CommentTok{\# beenden}
 \end{Highlighting}
 \end{Shaded}
 
-Für einen Neustart braucht man dann
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ stop mein{-}webserver}
-\ExtensionTok{docker}\NormalTok{ rm mein{-}webserver}
-\end{Highlighting}
-\end{Shaded}
-
-\samplestart
-
-\textbf{Hinweis}
-
-\texttt{docker\ run\ -d\ -\/-rm\ -p\ 8080:80\ ...}
-
-löscht den Container beim Beeden! \sampleend
+Die Konfigurationstatei für lighttpd und eine minimale index.html werden
+automatisch in den Container kopiert.
 
 \subsection{Komplexer}\label{komplexer}
 
 Im Material findest du auch eine Variante, wo du eine eigene Website
 direkt in Lighttpd kopieren kannst, die du vorher mit dem Namen
-\emph{website.zip} im gleichen Ordner bereit stellst.
+\emph{website.zip} im gleichen Ordner bereit stellst. Hier musst du den
+Zip-Befehl im Dockerfile entsprechend anpassen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6202,6 +6325,22 @@ direkt in Lighttpd kopieren kannst, die du vorher mit dem Namen
 \ExtensionTok{EXPOSE}\NormalTok{ 80}
 
 \ExtensionTok{CMD}\NormalTok{ [}\StringTok{"lighttpd"}\NormalTok{, }\StringTok{"{-}D"}\NormalTok{, }\StringTok{"{-}f"}\NormalTok{, }\StringTok{"/etc/lighttpd/lighttpd.conf"}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+Auch hier verwendest du die gleiche \datei{docker-compose.yml}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{version:} \StringTok{"3.9"}
+
+\ExtensionTok{services:}
+  \ExtensionTok{lighttpd:}
+    \ExtensionTok{build:}\NormalTok{ .}
+    \ExtensionTok{container\_name:}\NormalTok{ mein{-}webserver}
+    \ExtensionTok{ports:}
+      \ExtensionTok{{-}} \StringTok{"8080:80"}
+    \ExtensionTok{restart:}\NormalTok{ unless{-}stopped}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6257,7 +6396,15 @@ Container:
 \section{Basis-installation}\label{basis-installation}
 
 Wenn es nur um \gitea und den Datenbankserver geht, so genügt eine
-einzige Datei \datei{docker-compose.yml} um das System zu steuern:
+einzige Datei \datei{docker-compose.yml} um das System zu steuern. Du
+findest sie im Material im Ordner \ordner{gitea\_basic}.
+
+\begin{tcolorbox}[title=WARNUNG]
+Im Workshop führst du vorher unbedingt \textbf{vorher}
+diese Befehle aus:  \newline 
+\lstinline{docker load -i ~/images/images_gitea_basic/image_gitea_basic.tar}\newline
+\lstinline{docker load -i ~/images/images_gitea_basic/image_mysql.tar}
+\end{tcolorbox}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6338,6 +6485,7 @@ Kopiere ihn komplett an die gewünschte Stelle und gib dann ein:
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{cd}\NormalTok{ gitead\_basic}
+\ExtensionTok{docker}\NormalTok{ network create gitea }\CommentTok{\# weil external network}
 \ExtensionTok{docker}\NormalTok{ compose up }
 \end{Highlighting}
 \end{Shaded}
@@ -6461,20 +6609,14 @@ Falls das nicht der Fall ist, musst du den Besitzer passend setzen:
 
 \textbf{Das Script}
 
-Nachfolgend kommt immer zuerst der Befehl und nachfolgend die Erklärung!
+Nachfolgend kommt immer zuerst die Erklärung und nachfolgend der Befehl!
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\VariableTok{base}\OperatorTok{=}\VariableTok{$PWD}
-\end{Highlighting}
-\end{Shaded}
-
-Speichert den aktuellen Ordner um mit \cmd{cd \$base} immer wieder
+Wir merken uns den aktuellen Ordner um mit \cmd{cd \$base} immer wieder
 dorthin zurück zu kommen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{cp} \AttributeTok{{-}r}\NormalTok{ vorlagen/}\PreprocessorTok{*}\NormalTok{ .}
+\VariableTok{base}\OperatorTok{=}\VariableTok{$PWD}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6484,71 +6626,9 @@ Befehl an die richtige Stelle kopiert.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\BuiltInTok{cd} \VariableTok{$base}
-\BuiltInTok{cd}\NormalTok{ quarto}
-\ExtensionTok{docker}\NormalTok{ compose build}
+\FunctionTok{cp} \AttributeTok{{-}r}\NormalTok{ vorlagen/}\PreprocessorTok{*}\NormalTok{ .}
 \end{Highlighting}
 \end{Shaded}
-
-Hier wird das Docker-Image für die PDF-Erzeugung erstellt.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{cd} \VariableTok{$base}
-\BuiltInTok{cd}\NormalTok{ runner}
-\ExtensionTok{docker}\NormalTok{ build }\AttributeTok{{-}t}\NormalTok{ gitea/act\_runner\_dockercli:latest .}
-\end{Highlighting}
-\end{Shaded}
-
-Hier wird das Docker-Image für das Runner-Programm erstellt.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{cd} \VariableTok{$base}
-\ExtensionTok{docker}\NormalTok{ compose up server db }\AttributeTok{{-}d}
-\end{Highlighting}
-\end{Shaded}
-
-Nur zwei der nötigen Container starten (\emph{server} und \emph{db}). Du
-wirst dann vom Script aufgefordert, die Konfiguration im Browser zu
-beenden und evtl. einen administrativen Benutzer anzulegen (\emph{admin}
-geht nicht!). Ist die Konfguration erledigt, so wirst du automatisch
-angemeldet. Drücke nun im Terminal die \key{Enter}-Taste.
-
-\bxlarge
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\VariableTok{runnertoken}\OperatorTok{=}\VariableTok{$(}\ExtensionTok{docker}\NormalTok{ exec }\AttributeTok{{-}u}\NormalTok{ git gitea gitea actions  generate{-}runner{-}token}\VariableTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\exlarge
-
-Das Runner-Programm muss mit \gitea kommunizieren können. Mit diesem
-Token (eine Art Kennwort) kann es an \gitea gekoppelt werden.
-Normalerweise würde man diesen Schritt in der Weboberfläche machen, aber
-so geht es schneller!
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{sed} \AttributeTok{{-}i} \AttributeTok{{-}e} \StringTok{"s/RUNNERTOKEN/}\VariableTok{$runnertoken}\StringTok{/g"}\NormalTok{ docker{-}compose.yml}
-\end{Highlighting}
-\end{Shaded}
-
-In der Datei \datei{docker-compose.yml} den Platzhalter RUNNERTOKEN
-durch das eigentliche Token ersetzen.
-
-\bxlarge
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ run }\AttributeTok{{-}{-}rm} \AttributeTok{{-}{-}network}\NormalTok{ gitea alpine:latest  }\DataTypeTok{\textbackslash{}}
-\NormalTok{    sh }\AttributeTok{{-}c} \StringTok{"apk add {-}{-}no{-}cache openssh \&\& ssh{-}keyscan {-}p 22 gitea"} \OperatorTok{\textgreater{}}\NormalTok{ ssh\_keys/known\_hosts}
-\end{Highlighting}
-\end{Shaded}
-
-\exlarge
 
 Den aktuellen Fingerabdruck des Servers auslesen, damit bei
 ssh-Verbindungen keine Sicherheitsabfrage kommt.
@@ -6572,6 +6652,94 @@ den Platzhalter lösen.
 
 Es werden übrigens \gitea die gleichen Keys verwendet.
 
+Nun müssen die externen Ressourcen wie Netzwerk und Volume erzeugt
+werden.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Externes Netz und Volume}
+\ExtensionTok{docker}\NormalTok{ network create gitea}
+\ExtensionTok{docker}\NormalTok{ volume create giteatransfer}
+\end{Highlighting}
+\end{Shaded}
+
+Das Image für Quarto brauchen wir für die Dokumentenerstellung. In
+dieser Form ist es relativ klein -- bei \gitlab probieren wir eine
+vollständig LaTeX-Installation.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd} \VariableTok{$base}
+\BuiltInTok{cd}\NormalTok{ quarto}
+\ExtensionTok{docker}\NormalTok{ compose build}
+\end{Highlighting}
+\end{Shaded}
+
+Hier wird das Docker-Image für das Runner-Programm erstellt.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd} \VariableTok{$base}
+\BuiltInTok{cd}\NormalTok{ runner}
+\ExtensionTok{docker}\NormalTok{ compose build }
+\end{Highlighting}
+\end{Shaded}
+
+Nur zwei der nötigen Container starten (\emph{server} und \emph{db}). Du
+wirst dann vom Script aufgefordert, die Konfiguration im Browser zu
+beenden und evtl. einen administrativen Benutzer anzulegen (\emph{admin}
+geht nicht!). Ist die Konfguration erledigt, so wirst du automatisch
+angemeldet. Drücke dann im Terminal die \key{Enter}-Taste.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd} \VariableTok{$base}
+\ExtensionTok{docker}\NormalTok{ compose up server db }\AttributeTok{{-}d}
+\end{Highlighting}
+\end{Shaded}
+
+Das Runner-Programm muss mit \gitea kommunizieren können. Mit diesem
+Token (eine Art Kennwort) kann es an \gitea gekoppelt werden.
+Normalerweise würde man diesen Schritt in der Weboberfläche machen, aber
+so geht es schneller!
+
+\bxlarge
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{runnertoken}\OperatorTok{=}\VariableTok{$(}\ExtensionTok{docker}\NormalTok{ exec }\AttributeTok{{-}u}\NormalTok{ git gitea gitea actions  generate{-}runner{-}token}\VariableTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\exlarge
+
+In der Datei \datei{docker-compose.yml} den Platzhalter RUNNERTOKEN
+durch das eigentliche Token ersetzen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sed} \AttributeTok{{-}i} \AttributeTok{{-}e} \StringTok{"s/RUNNERTOKEN/}\VariableTok{$runnertoken}\StringTok{/g"}\NormalTok{ docker{-}compose.yml}
+\end{Highlighting}
+\end{Shaded}
+
+Den laufenden \gitea-Container als \emph{bekannten Rechner} einstufen um
+Rückfragen zu verhindern.
+
+\bxlarge
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ run }\AttributeTok{{-}{-}rm} \AttributeTok{{-}{-}network}\NormalTok{ gitea alpine:latest  }\DataTypeTok{\textbackslash{}}
+\NormalTok{    sh }\AttributeTok{{-}c} \StringTok{"apk add {-}{-}no{-}cache openssh \&\& ssh{-}keyscan {-}p 22 gitea"} \OperatorTok{\textgreater{}}\NormalTok{ ssh\_keys/known\_hosts}
+\end{Highlighting}
+\end{Shaded}
+
+\exlarge
+
+Laufende Container beenden und alle mit den neuen Einstellungen wieder
+starten. \gitea ist nun \emph{grob} einsatzbereit. Hier geht es weiter,
+wie bei der Basis-Version ohne Runner.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{cd} \VariableTok{$base} 
@@ -6579,10 +6747,6 @@ Es werden übrigens \gitea die gleichen Keys verwendet.
 \ExtensionTok{docker}\NormalTok{ compose up}
 \end{Highlighting}
 \end{Shaded}
-
-Laufende Container beenden und alle mit den neuen Einstellungen wieder
-starten. \gitea ist nun \emph{grob} einsatzbereit. Hier geht es weiter,
-wie bei der Basis-Version ohne Runner.
 
 \subsection{Details}\label{details}
 
@@ -6626,7 +6790,7 @@ um den Aufbau besser erklären zu können. Die vollständige Version steht
 am Ende des Abschnitts und befindet sich auch in den Unterlagen im
 Ordner \ordner{gitea\_buch}.
 
-\phantomsection\label{annotated-cell-225}%
+\phantomsection\label{annotated-cell-230}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{version}\KeywordTok{:}\AttributeTok{ }\StringTok{"3"}
@@ -6697,7 +6861,7 @@ Abschnitte nachfolgend getrennt.
 
 \textbf{Teil 1}
 
-\phantomsection\label{annotated-cell-227}%
+\phantomsection\label{annotated-cell-232}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{server}\KeywordTok{:}
@@ -6733,7 +6897,7 @@ Hochsicherheitskennwörter für die Fortbildung
 
 \textbf{Teil 2}
 
-\phantomsection\label{annotated-cell-228}%
+\phantomsection\label{annotated-cell-233}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{    }\FunctionTok{restart}\KeywordTok{:}\AttributeTok{ always}\CommentTok{ }\hspace*{\fill}\NormalTok{\circled{1}}
@@ -6818,7 +6982,7 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
-\phantomsection\label{annotated-cell-230}%
+\phantomsection\label{annotated-cell-235}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \AttributeTok{  }\FunctionTok{runner}\KeywordTok{:}
@@ -6966,7 +7130,7 @@ Hier gibt es eigentlich keine Besonderheiten.
 
 
   \ExtensionTok{runner:}
-    \ExtensionTok{image:}\NormalTok{ gitea/act\_runner\_dockercli:latest }\CommentTok{\# Liegt lokal vor}
+    \ExtensionTok{image:}\NormalTok{ gitea/act\_runner\_dockercli:0.3.0 }\CommentTok{\# Liegt lokal vor}
     \ExtensionTok{container\_name:}\NormalTok{ gitea\_runner}
     \ExtensionTok{hostname:}\NormalTok{ runner}
     \ExtensionTok{environment:}
@@ -6994,7 +7158,7 @@ Hier gibt es eigentlich keine Besonderheiten.
       \ExtensionTok{{-}}\NormalTok{ /var/run/docker.sock:/var/run/docker.sock}
 
   \ExtensionTok{web:}
-    \ExtensionTok{image:}\NormalTok{ nginx}
+    \ExtensionTok{image:}\NormalTok{ nginx:1.29.6}
     \ExtensionTok{hostname:}\NormalTok{ transfer}
     \ExtensionTok{restart:}\NormalTok{ always}
     \ExtensionTok{volumes:}
@@ -7061,7 +7225,6 @@ Minimalversion abgelegt. Die Minimalversion ist unsere Arbeitsbasis.
   \ExtensionTok{fetch\_timeout:}\NormalTok{ 5s}
   \ExtensionTok{fetch\_interval:}\NormalTok{ 2s}
   \ExtensionTok{labels:}
-    \ExtensionTok{{-}} \StringTok{"self{-}hosted"}
     \ExtensionTok{{-}} \StringTok{"ubuntu{-}latest:docker://gitea/runner{-}images:ubuntu{-}latest"}
     \ExtensionTok{{-}} \StringTok{"ubuntu{-}22.04:docker://gitea/runner{-}images:ubuntu{-}22.04{-}slim"}
     \ExtensionTok{{-}} \StringTok{"ubuntu{-}20.04:docker://gitea/runner{-}images:ubuntu{-}20.04"}
@@ -7078,7 +7241,7 @@ Minimalversion abgelegt. Die Minimalversion ist unsere Arbeitsbasis.
 \ExtensionTok{container:}
   \ExtensionTok{network:} \StringTok{"gitea"}
   \ExtensionTok{privileged:}\NormalTok{ true}
-  \ExtensionTok{options:} \StringTok{"{-}{-}rm {-}v /home/benutzer/docker/gitea/gitea/ssh\_keys:/root/.ssh"}
+  \ExtensionTok{options:} \StringTok{"{-}{-}rm {-}v SSH\_LOCATION:/root/.ssh"}
   \ExtensionTok{workdir\_parent:}
   \ExtensionTok{valid\_volumes:}
     \ExtensionTok{{-}} \StringTok{"**"}
@@ -7171,7 +7334,7 @@ Dockerfile. \sampleend
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{cd}\NormalTok{ gitea/runner }
-\ExtensionTok{docker}\NormalTok{ build }\AttributeTok{{-}t}\NormalTok{ gitea/act\_runner\_dockercli:latest .}
+\ExtensionTok{docker}\NormalTok{ compose build }
 \end{Highlighting}
 \end{Shaded}
 
@@ -7211,9 +7374,12 @@ Start:
 \end{Highlighting}
 \end{Shaded}
 
-Gitea sollte jetzt verwendbar sein!
+Gitea sollte jetzt verwendbar sein -- zumindest die GUI.
 
 \subsection{Wie geht es weiter?}\label{wie-geht-es-weiter}
+
+Trage in deinem Benutzer-Profil in \gitea deinen öffentlichen
+ssh-Schlüssel ein.
 
 Lege in \gitea ein Repository mit dem Namen \emph{Labor} an. Dieser Name
 ist nötig, da er im weiteren Verlauf an verschiedenen Stellen (auch in
@@ -7254,7 +7420,7 @@ fertige Dokument auf dem Webserver abrufen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{http://}\OperatorTok{\textless{}}\NormalTok{SERVER{-}IP}\OperatorTok{\textgreater{}}\NormalTok{:4001/output.pdf}
+\ExtensionTok{http://}\OperatorTok{\textless{}}\NormalTok{SERVER{-}IP}\OperatorTok{\textgreater{}}\NormalTok{:4001/book.pdf}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7729,8 +7895,8 @@ Melde dich auf dem Server an und werde \emph{root}. Suche in der Datei
 (Auskommentiert). Entferne den Kommentar und ersetze 22 durch 23.
 (Speichern nicht vergessen!)
 
-\textbf{WICHTIG WICHTIG WICHTIG} Vergiss nicht, auf der Firewall auch
-Port 23 freizuschalten:
+\textbf{WICHTIG WICHTIG WICHTIG}\\
+Vergiss nicht, auf der Firewall auch Port 23 freizuschalten:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7761,7 +7927,7 @@ Erstelle einen Ordner für \gitlab
 \end{Shaded}
 
 Kopiere die Datei \datei{docker-compose.yml} aus dem Materialordner
-\ordner{gitlab} an diese Stelle:
+\ordner{gitlab} an diese Stelle. Passe unbedingt die IP-Adresse an!
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -8022,7 +8188,7 @@ offiziellen \gitlab{} -- du benötigst also einen Account\footnote{Natürlich
 
 \subsection{Hintergrund}\label{hintergrund}
 
-Damit CICD funktioniert, brauchst du ein Programm mit dem Namen
+Damit CI/CD funktioniert, brauchst du ein Programm mit dem Namen
 \emph{gitlab-runner}, kurz auch \emph{runner} genannt. Das ist nur
 bedingt richtig, weil \emph{gitlab-runner} auch mehrere Jobs verwalten
 kann, die ebenfalls als \emph{runner} bezeichnet werden.
@@ -8033,15 +8199,15 @@ Bedürfnissen ab. Es gibt hier verschiedene Varianten:
 \begin{itemize}
 \tightlist
 \item
-  Du verwendest das offizielle GitLab? Dann sind dort schon Runner
+  Du verwendest das offizielle \GitLab? Dann sind dort schon Runner
   vorhanden. Sie sind aber langsam, du kannst sie nicht beliebig oft
   starten und höhere Geschwindigkeit kostet!
 \item
-  Du verwendest das offizielle GitLab? Dann kannst du auch einen Runner
+  Du verwendest das offizielle \GitLab? Dann kannst du auch einen Runner
   verwenden, der auf deinem Server, Laptop, \ldots{} installiert ist.
   Das kann, muss aber nicht mit Docker gemacht werden.
 \item
-  Du hast dein eigenes GitLab? Dann musst du einen Runner irgendwo
+  Du hast dein eigenes \GitLab? Dann musst du einen Runner irgendwo
   installieren. Auch hier kann das im Prinzip jeder Computer sein.
 \end{itemize}
 
@@ -8056,9 +8222,10 @@ aber aktuell geht es erst einmal um das Funktionsprinzip.
 
 Wenn das System richtig konfiguriert ist, wird diese Datei dem
 \emph{runner} übergeben. Dieser kann -- wie bereits bemerkt -- auf
-\gitlab installiert (=shared runner und andere Varianten), aber auch auf
-deinem eigenen Rechner oder Server, der dann eigenständig mit \gitlab 
-kommuniziert um die Befehle in der \datei{.gitlab-ci.yml} abzuarbeiten.
+\gitlab installiert (=shared runner und andere Varianten) sein, aber
+auch auf deinem eigenen Rechner oder Server. Dieser kommuniziert dann
+eigenständig mit \gitlab um die Befehle in der \datei{.gitlab-ci.yml}
+abzuarbeiten.
 
 In vielen Fällen muss der Runner dazu einen weiteren Docker-Container
 erstellen.
@@ -8072,10 +8239,10 @@ Der Name ist aktuell egal. Beim Initialisieren kann eine Datei
 von leeren Repositories Folgeprobleme entstehen können.
 
 \textbf{Schritt 2}\\
-Erstelle eine neue Datei mit dem Namen \texttt{.gitlab-ci.yml} und trage
+Erstelle eine neue Datei mit dem Namen \datei{.gitlab-ci.yml} und trage
 ein:
 
-\phantomsection\label{annotated-cell-266}%
+\phantomsection\label{annotated-cell-271}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -8110,11 +8277,11 @@ Committe diese Datei.
 
 Bereits jetzt sollte ein Job laufen, der diese Datei abarbeitet. Dafür
 sind die shared-Runner von \gitlab verantwortlich. Wie aber bereits
-erwähnt, lässt ihre Performance zu Wünschen übrig und langsame Runner
-reduzieren die verfügbare CICD-Zeit von kostenlosen \gitlab-Accounts.
+erwähnt, lässt ihre Performance zu wünschen übrig und langsame Runner
+reduzieren die verfügbare CI/CD-Zeit von kostenlosen \gitlab-Accounts.
 
 Die Ausgabe des Jobs findest du am linken Rand unter
-\texttt{Build\ -\ Jobs}. Die Ausgabe habe ich im nächsten Abschnitt
+\menu{Build - Jobs}. Die Ausgabe habe ich im nächsten Abschnitt
 abgedruckt, wenn du einen Versuch mit einem eigenen Runner machst.
 
 \subsection{Eigene Runner auf GitLab}\label{eigene-runner-auf-gitlab}
@@ -8155,7 +8322,7 @@ durchzuführen:
 
 Hier hin kopieren wir den Befehl aus \gitlab. Die ersten Fragen
 beantworten wir mit \key{enter}. Auf die Frage nach dem Executor geben
-wir \texttt{docker} an.
+wir \menu{docker} an.
 
 Danach starten wir den Runner
 
@@ -8165,13 +8332,13 @@ Danach starten wir den Runner
 \end{Highlighting}
 \end{Shaded}
 
-Danach verlassen wir den Container mit \strg{pq}.
+Nun verlassen wir den Container wieder mit \strg{pq}.
 
 \subsection{Ausführen des Jobs}\label{ausfuxfchren-des-jobs}
 
-Nimm eine minimale Änderung in der Readme vor und Committe deine
+Nimm eine minimale Änderung in der \datei{Readme} vor und Committe deine
 Änderung. Am linken Rand findest du einen Menüpunkt \menu{build}, aus
-dem du \texttt{Pipeline} wählst. Nun siehst du oben an der Seite das
+dem du \menu{Pipeline} wählst. Nun siehst du oben an der Seite das
 Symbol für einen laufenden Job. Klickst du es an, siehst du die Ausgabe
 im Docker-Container!
 
@@ -8204,7 +8371,7 @@ Du siehst:
 
 \subsection{Sinnvollere Anwendung}\label{sinnvollere-anwendung}
 
-Ziel ist das Erstellen eines Buches in \gitlab mit CICD. Je nach
+Ziel ist das Erstellen eines Buches in \gitlab mit CI/CD. Je nach
 Situation kann das mit einem gemeinsamen Repository durchgespielt
 werden, oder du machst das alleine und schlüpfst in die Rollen
 verschiedener Schüler.
@@ -8231,24 +8398,24 @@ uneinheitlichen Formatierungen über mehrere Dokumente hinweg gibt. Auf
 \emph{main}-Branch zu schützen, damit die Schüler ihre Dokumente nicht
 direkt dorthin pushen können.
 
-Der Lehrer muss für die Integration der einzelnen Kurszgeschichten in
-ein Zentraldokument noch die passenden \emph{include}-Statements
-schreiben, damit die Zusammenführung funktioniert.
+Der Lehrer muss für die Integration der einzelnen Kurzgeschichten in ein
+Zentraldokument noch die passenden \emph{include}-Statements schreiben,
+damit die Zusammenführung funktioniert.
 
 Wenn du das Repository \emph{minibuch} clonst, dann sind die
 wesentlichen Vorbereitungen bereits getroffen.
 
 Nachfolgend beschreibe ich dennoch die wichtigen Schritte, weil du das
-eventuell bei eigenen, anderen Projekten brauchen kannst.
+eventuell bei anderen, eigenen Projekten brauchen kannst.
 
 Je nach Projekt wird ein geeignetes Docker-Image benötigt und die Datei
-\datei{.gitlab-ci.yml} entsprechend angepasst werden.
+\datei{.gitlab-ci.yml} muss entsprechend angepasst werden.
 
-Im Material befindet sich auch wieder diese \emph{.gitlab-ci.yml}. Für
-den Praxiseinsatz musst du sie wieder passend umbenennen (Führenden
-Punkt ergänzen, „quarto`` entfernen)!
+Im Material befindet sich eine Version dieser Datei. Für den
+Praxiseinsatz musst du sie wieder passend umbenennen (führenden Punkt
+ergänzen, „quarto`` entfernen)!
 
-\phantomsection\label{annotated-cell-271}%
+\phantomsection\label{annotated-cell-276}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -8295,7 +8462,7 @@ Versioniere dein Werk, committe es und führe einen Push deines Branchs
 auf den Server aus.
 
 Auf dem Server führst du einen Merge deines Branchs auf \emph{main}
-durch. Nun sollte die CICD-Pipeline getriggert werden und der Job
+durch. Nun sollte die CI/CD-Pipeline getriggert werden und der Job
 durchlaufen. Auf \gitlab findest du im Menü (links) bei \emph{Jobs} nun
 die Möglichkeit, die Zip-Datei mit dem Artifact -- also der pdf-Datei --
 herunterzuladen.
@@ -8313,8 +8480,8 @@ Container ablegen willst:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ /srv/docker}
-\BuiltInTok{cd}\NormalTok{ /srv/docker }
+\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ /home/benutzer/docker/gitlab}
+\BuiltInTok{cd}\NormalTok{ /home/benutzer/docker/gitlab}
 \FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ runner quarto java }\CommentTok{\# 3 Ordner}
 \end{Highlighting}
 \end{Shaded}
@@ -8351,8 +8518,8 @@ werden!
 
 \textbf{quarto}\\
 Für diesen Container genügt ein Dockerfile im Ordner \emph{quarto}, denn
-dieser Container wird komplett vom Runner verwaltet.
-\texttt{Docker\ Compose} ist nicht erforderlich.
+dieser Container wird komplett vom Runner verwaltet --
+\cmd{docker compose} ist nicht erforderlich.
 
 \blarge
 
@@ -8388,19 +8555,21 @@ Servers beschrieben. Das dauert beim ersten Start einige Zeit, da der
 Container am Ende etwa 10GB groß ist!
 
 Du kannst dieses Image mit folgendem Befehl auf deinem Server verfügbar
-machen:
+machen. Starte das aus dem Ordner \ordner{quarto}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ build }\AttributeTok{{-}t}\NormalTok{ quarto{-}git:latest }\AttributeTok{{-}f}\NormalTok{ Dockerfile .}
+\ExtensionTok{docker}\NormalTok{ compose build}
+\CommentTok{\#docker build {-}t quarto{-}git:1.0 {-}f Dockerfile .}
 \end{Highlighting}
 \end{Shaded}
 
 \textbf{Java}\\
 Auch für Java brauchst du ein lokales Image, wenn die Geschwindigkeit
-stimmen soll. Ein mögliches Dockerfile sieht so aus, allerdings musst du
-zuerst unter nachfolgender Adresse die aktuelle Version von \emph{maven}
-in Erfahrung bringen und in das Dockerfile eintragen (siehe Kommentar):
+stimmen soll. Ein mögliches Dockerfile sieht so aus, wie es unten zu
+sehen ist. Allerdings musst du zuerst die aktuelle Version von
+\emph{maven} unter nachfolgender Adresse in Erfahrung bringen und in das
+Dockerfile eintragen (siehe Kommentar):
 
 \url{https://downloads.apache.org/maven/maven-3}
 
@@ -9236,7 +9405,7 @@ Aspekte beinhaltet hat.
 
 \chapter{Anhang}\label{anhang}
 
-\section{CICD mit Java}\label{cicd-mit-java}
+\section{CI/CD mit Java}\label{cicd-mit-java}
 
 Im Prinzip folgst du wieder den üblichen Schritten:
 
@@ -9494,6 +9663,133 @@ automatisch eine README erstellen lässt.
 \end{Shaded}
 
 \sampleend
+
+\section{Images mit Tar}\label{images-mit-tar}
+
+Besteht aus verschiedenen Gründen keine Möglichkeit, normale
+\emph{Docker-pulls} auszuführen, so können auch vorbereitete Images ins
+System übernommen werden.\\
+Docker kann Images speichern:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ save }\AttributeTok{{-}o}\NormalTok{ mein{-}image.tar mein{-}image:tag}
+\end{Highlighting}
+\end{Shaded}
+
+und auch wieder laden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ load }\AttributeTok{{-}i}\NormalTok{ mein{-}image.tar}
+\end{Highlighting}
+\end{Shaded}
+
+Müssen die Images über das Netz transportiert werden, so kann man sie
+vorher auch noch komprimieren:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ save nginx:latest }\KeywordTok{|} \FunctionTok{gzip} \OperatorTok{\textgreater{}}\NormalTok{ nginx.tar.gz}
+\CommentTok{\# und }
+\FunctionTok{gunzip} \AttributeTok{{-}c}\NormalTok{ nginx.tar.gz }\KeywordTok{|} \ExtensionTok{docker}\NormalTok{ load}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Proxmox mit NAT}\label{proxmox-mit-nat}
+
+Im Schulungszentrum sollen die virtuellen Maschinen (VMs) auf dem
+Proxmox in einem isolierten Netzwerk laufen, damit der DHCP-Server keine
+zusätzlichen Adressen für sie bereitstellen muss. Das könnte Probleme
+mit der örtlichen IT geben.
+
+Um diese Konfiguration herzustellen, müssen auf dem frisch installierten
+Proxmox einige Schritte im Terminal ausgeführt werden. Um Kopieren und
+Einfügen möglich zu machen bauen wir eine ssh-Verbindung zum Proxmox
+auf. Zusätzlich öffnen wir aber auch noch eine Shell auf der
+Weboberfläche. Das ist nötig, weil\\
+uns nach dem Ändern des ssh-Ports von 22 auf 222 die Verbindung abreißen
+wird -- in der Webshell trifft uns das nicht (dort kann man aber
+schlecht kopieren und einfügen).
+
+\subsection{Anpassungen}\label{anpassungen}
+
+\subsubsection{Installieren von Git}\label{installieren-von-git-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{apt}\NormalTok{ update}
+\ExtensionTok{apt}\NormalTok{ install git}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Scripte holen und starten}\label{scripte-holen-und-starten}
+
+Die Scripte sind Bestandteil des Material im Ordner \texttt{proxmox}.
+Clone das Repository
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ clone https://github.com/gischupa/dillingen\_material\_git.git}
+\BuiltInTok{cd}\NormalTok{ dillingen\_material\_git/proxmox}
+\FunctionTok{bash}\NormalTok{ change\_config.sh}
+\end{Highlighting}
+\end{Shaded}
+
+Wenn du über ssh gearbeitet hast, dürfte die Verbindung abgerissen sein.
+Schließe das Terminalfenster und baue eine neue Verbindung über Port 222
+auf:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh} \AttributeTok{{-}p}\NormalTok{ 222 root@}\OperatorTok{\textless{}}\NormalTok{SERVER{-}IP}\OperatorTok{\textgreater{}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Images holen}\label{images-holen}
+
+Die Images befinden sich auf dem USB-Stick und müssen auf den Proxmox
+kopiert werden. Dafür gibt es keine GUI-Methode!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Stick identifizieren}
+\ExtensionTok{lsblk}
+
+\CommentTok{\# Wahrscheinlich siehst du sdb1}
+\FunctionTok{mount}\NormalTok{ /dev/sdb1 /mnt}
+\FunctionTok{cp} \AttributeTok{{-}r}\NormalTok{ /mnt/}\PreprocessorTok{*}\NormalTok{ /var/lib/vz/template/iso/}
+\FunctionTok{umount}\NormalTok{ /mnt}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Änderungen}\label{uxe4nderungen}
+
+Wenn du weitere Ports weiterleiten willst, oder noch andere interne
+Netze anlegen willst, musst du genauer in die folgenden Dateien sehen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{/etc/network/interfaces}
+\ExtensionTok{/usr/local/sbin/proxmox{-}vm{-}nat.sh}
+\end{Highlighting}
+\end{Shaded}
+
+Nach Änderungen an den Firewallregeln muss ausgeführt weden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{systemctl}\NormalTok{ deamon{-}reload}
+\ExtensionTok{systemctl}\NormalTok{ restart proxmox{-}vm{-}nat.service}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Schlusswort}\label{schlusswort}
+
+Unser Docker-Host (die VM) muss bei der Installation unbedingt die IP
+172.16.100.10 bekommen, denn das gesamte Firewalling ist auf diese IP
+ausgerichtet. Anfragen an den Proxmox, die über die Ports 22, 4000 und
+8080 erfolgen, werden direkt an die VM auf diesen Ports weitergeleitet.
 
 
 

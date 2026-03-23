@@ -1,9 +1,18 @@
-FROM python:3.9
+FROM ubuntu:24.04
+# Install basics
+RUN apt-get update && apt-get install -y \
+  wget xz-utils git pandoc texlive-full \
+  curl unzip \
+  && apt-get clean
 
-RUN wget "https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.33/quarto-1.6.33-linux-amd64.deb" && dpkg -i quarto-1.6.33-linux-amd64.deb
+# Install Quarto
+RUN wget https://quarto.org/download/latest/quarto-linux-amd64.deb \
+  -O /tmp/quarto.deb \
+  && apt-get install -y /tmp/quarto.deb \
+  && rm /tmp/quarto.deb
 
-RUN pip install jupyter
-RUN quarto install tinytex
-RUN /root/.TinyTeX/bin/x86_64-linux/tlmgr install blindtext boxedminipage braille circuitikz pgf-blur svn-prov tikzlings tkz-euclide
+# Set workdir
+WORKDIR /work
 
-CMD ["tail", "-f", "/dev/null"]
+# Default command
+CMD ["bash"]

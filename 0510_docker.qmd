@@ -60,7 +60,7 @@ als bei einer komplett neuen Erstellung!
 \exlarge 
 
 Die Befehle befinden sich als Script bei den Kursmaterialien!
-Wegen des Layouts sind hier Zeilenubrüche enthalten, die das Script 
+Wegen des Layouts sind hier Zeilenumbrüche enthalten, die das Script 
 in der abgedruckten Form scheitern lassen!
 
 Aktuell läuft Docker jetzt als Benutzer *root* (=Administrator),
@@ -72,7 +72,7 @@ richtigen Gruppe zugeordnet werden.
 usermod -aG docker benutzer
 ```
 
-(Der Benutzer muss sich einmal ab- und wieder anmelden.)
+(Der Benutzer muss sich danach einmal ab- und wieder anmelden.)
 
 Teste die Installation durch folgende Befehle:
 
@@ -160,7 +160,7 @@ CONTAINER ID  IMAGE               COMMAND                gekürzt
 bd072e349cab  corentinth/it-tools "/docker-entrypoint.…" gekürzt 
 ```
 \elarge
-
+\newpage
 **Weitere Befehle**  
 
 |Befehl|Wirkung|
@@ -174,6 +174,55 @@ bd072e349cab  corentinth/it-tools "/docker-entrypoint.…" gekürzt
 
 Damit ein Container gelöscht werden kann, muss er beendet sein.  
 Damit ein Image gelöscht werden kann, muss der Container gelöscht sein.
+
+## WICHTIGER HINWEIS
+
+Das Pullen von Images von der Plattform Dockerhub ist 
+in gewissen Grenzen kostenlos. Aktuell sind 100 Pulls in 
+6 Stunden ohne Anmeldung auf Dockerhub möglich (Stand März 2026). 
+Mit einem Account steigt die Anzahl auf 200 Pulls pro 6 Stunden. Leider bezieht sich die Anzahl auf die IP-Adresse, von der der Pull erfolgt. 
+In einem Schulungszentrum ist die Anzahl möglicher Pulls 
+deshalb sehr schnell aufgebraucht. Bei dir zuhause oder 
+in der Schule reicht diese Anzahl für Experimente aber 
+durchaus.  
+Hier im Workshop müssen wir also einen alternativen 
+Weg gehen, um die Images ins System zu bekommen. Das 
+geht in Form von Tar-Files (eine Form von zip). Die 
+Beschreibung im Handout bezieht sich aber durchgehend
+auf die reguläre Arbeitsweise von Docker. Eine kleine 
+Anleitung für das Arbeiten mit den Tar-Dateien befindet sich im Anhang.
+
+
+Einen Teil der benötigten Materialien hst du bereits aus 
+dem Kurs-Repository geclont. Die nun benötigten vorbereiteten 
+Docker-Images sind dafür aber zu groß und 
+liegen deshalb auf dem USB-Stick vor. Folgende Schritte sind nun 
+nötig:
+
+* Stick im Proxmox an die VM durchreichen
+* Einbinden des Sticks in die VM (mounten)
+* Kopieren der Images in die VM
+
+Für das Durchreichen fügst du der VM in der Weboberfläche 
+eine neue Hardware (USB) hinzu.
+
+Im Terminal sollte der Stick über \cmd{lsblk} als 
+`sdb` mit den Partitionen `sdb1` und `sdb2` erscheinen.
+Auf `sdb1` befindet sich *Proxmox*, auf `sdb2` liegen 
+die benötigten Docker-Images. 
+
+Binde sie (als Root) ins System ein und kopiere die 
+Docker-Images:
+
+```bash
+sudo -i 
+cd /mnt 
+mkdir part2 
+mount /dev/sdb2 part2 
+cp -r part2/images /home/benutzer/ 
+chown -R benutzer:benutzer /home/benutzer/images 
+umount part2 
+```
 
 ## Detaillierter
 

@@ -8,7 +8,7 @@ einen LinuxServer im Internet bei einem der typischen Anbieter
 wie Strato, Contabo, ... oder du installierst auf einem eigenen 
 Computer Proxmox. Dabei handelt es sich um eine kostenlose 
 Virtualisierungsplattform. Die nachfolgenden Schritte beschreiben 
-lediglich eine Basisiinstallation! Für komplexere Szenarien führt 
+lediglich eine Basisinstallation! Für komplexere Szenarien führt 
 an einer tieferen Beschäftigung ohnehin kein Weg vorbei.
 
 Die Anforderungen an den Rechner sind nach heutigen Maßstäben 
@@ -44,6 +44,22 @@ Die einzugebenden Daten (Kennwort, IP-Adresse, Gateway, ...) sind so
 selbsterklärend, dass eine Bilderstrecke hier reine Platzverschwendung wäre.
 
 ### Installation Ubuntu
+
+\samplestart
+**Hinweis**  
+Da unklar ist, wie hier im Schulungszentrum die Vergabe der IP-Adressen erfolgt,
+habe ich einen separaten Leitfaden erstellt um das Ubuntu als virtuelle Maschine 
+gewissermaßen *unsichtbar* in einem versteckten Netz des Servers zu installieren.
+Leider sind dafür einige Änderungen am Proxmox nötig, die ich im Anhang zusammengefasst
+habe. Die Anleitung befindet sich auch als eigenständiges Dokument im Material 
+(Ordner \ordner{material/proxmox).
+
+Im Rahmen dieser Anleitung wird auch gleich das iso-Image der aktuelle Ubuntu-Version
+an den richtigen Ort des Proxmox kopiert. Das Handout geht ab hier aber wieder vom 
+regulären Ablauf aus.
+\sampleend
+
+
 
 Als Vorbereitung muss das aktuelle *Ubuntu LTS 24.04* als iso-Image heruntergeladen werden. Das **kann** bereits auf dem Proxmox gemacht werden, **falls** man die exakte URL für den Download kennt.  
 Andernfalls lädst du das Image auf dein Endgerät und machst dann einen 

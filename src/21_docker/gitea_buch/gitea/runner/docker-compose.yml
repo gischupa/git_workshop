@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  act_runner:        
+    build: .
+    image: gitea/act_runner_dockercli:0.3.0
+    container_name: act_runner
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+

@@ -1,12 +1,41 @@
 # Docker in Beispielen
-In diesem Abschnitt soll an einem sehr einfachen Beispiel 
-der Aufbau eines Dockerfiles und einer docker-compose.yml
-Datei besprochen werden. Dieser Setup deckt wohlgemerkt nicht 
+In diesem Abschnitt soll an einfachen Beispielen 
+der Aufbau von Dockerfiles und docker-compose.yml
+Dateien besprochen werden. Dieser Setup deckt wohlgemerkt nicht 
 alle Sicherheitsaspekte ab, die in diesem Umfeld möglich sind.
-Weil Datenbanken im Unterricht auch oft eine Rolle spielen, erstellen 
-wir einen Datenbankserver mit *MySQL* bzw. *MariaDB*.
+
+In der Vorbereitung hast du die benötigten Dateien bereits in 
+den Ordner \ordner{images} kopiert. In den eigentlichen 
+Kursmaterialien findest du die jeweils benötigten Dateien
+(Dockerfiles, docker-compose.yml, Konfig-Dateien, ...).
+Die Beschreibung hier im Handout bezieht sich immer auf 
+den Ablauf mit *diesen* Dateien. Der erzwungene *Workaround* 
+in der Schulungsumgebung ist separat dokumentiert.
 
 ## MariaDB (MySQL)
+Weil Datenbanken im Unterricht auch oft eine Rolle spielen, erstellen wir einen Datenbankserver mit *MySQL* bzw. *MariaDB*. Du findest die 
+Docker-Dateien im Ordner \ordner{material/maria\_db}. Führe dort aus:
+
+\begin{tcolorbox}[title=WARNUNG]
+Im Workshop führst du vorher unbedingt \textbf{vorher}
+diesen Befehl aus:  \newline 
+\lstinline{docker load -i ~/images/images_mariadb/mariadb_12_2.tar}
+\end{tcolorbox}
+
+```bash
+docker compose up 
+```
+
+Mit nachfolgenden Befehlen gelangst du an das Commandline Interface von 
+MariaDB, falls du auf deinem Gerät keinen Client installiert hast:
+
+```bash
+docker exec -it mariadb_1 bash
+mariadb -h localhost -u root -p 
+# Kennwort ist rootpassword 
+```
+
+
 ### Die Dateien
 Für MariaDB gibt es ein komplett vorkonfiguriertes Image,
 so dass ein Dockerfile unnötig ist. Die Umgebungsvariablen setzen
@@ -74,19 +103,30 @@ Der Zugriff auf diesen Container ist aktuell über Port 8080 konfiguriert.
 Falls parallel weitere Container laufen, muss geprüft werden, ob dieser 
 Port verfügbar ist!
 
-Die `docker-compose.yml` um PHPMyAdmin erweitert:
+
+\begin{tcolorbox}[title=WARNUNG]
+Im Workshop führst du vorher unbedingt \textbf{vorher}
+diese Befehle aus:  \newline 
+\lstinline{docker load -i ~/images/images_mariadb_php/mariadb_12_2.tar}\newline
+\lstinline{docker load -i ~/images/images_mariadb_php/phpadmin_5_2_3.tar}
+\end{tcolorbox}
+
+
+Die `docker-compose.yml` um PHPMyAdmin erweitert nun `docker-compose-php.yml`:
 
 **docker-compose-php.yml**  
 ```{.bash include="src/21_docker/maria_db/docker-compose-php.yml"} 
 ```
 
-Um diesen Container zu starten, muss explizit die passende `docker-compose-php.yml` 
-angegeben werden!
+Um diesen Container zu starten und zu beenden, muss explizit die passende   
+`docker-compose-php.yml` angegeben werden!
 
 ```bash
-docker compose -f docker-compose-php.yml up -d 
+docker compose -f docker-compose-php.yml up -d
+docker compose -f docker-compose-php.yml down 
 ```
 
+Der Container ist über Port 8080 im Browser erreichbar.  
 Das Kennwort für den *root*-Benutzer lautet aktuell *rootpassword*.
 
 ## Lighttpd
@@ -104,33 +144,34 @@ hinaus geht. Hier bietet sich wieder ein kleiner Docker-Container an.
 **Dockerfile**  
 ```{.bash include="src/21_docker/lighttpd/simple/Dockerfile"}
 ```
+Eine minimale \datei{docker-compose.yml} steuert dann 
+den Container:
+
+```{.bash include="src/21_docker/lighttpd/simple/docker-compose.yml"}
+```
 
 Zum Starten (und nach Änderungen der Konfiguration) verwendet man:
 
 ```bash
-docker build -t mein-webserver-image .  # Punkt wichtig 
-docker run -d -p 8080:80 --name mein-webserver mein-webserver-image
+docker compose build   # nach Änderungen 
+docker compose up -d   # starten
+docker compose down    # beenden
 ```
 
-Für einen Neustart braucht man dann 
-
-```bash
-docker stop mein-webserver
-docker rm mein-webserver
-```
-
-\samplestart
-**Hinweis**  
-
-`docker run -d --rm -p 8080:80 ... `
-
-löscht den Container beim Beeden!
-\sampleend
+Die Konfigurationstatei für lighttpd und eine minimale index.html werden automatisch in den Container kopiert.
 
 ### Komplexer
 Im Material findest du auch eine Variante, wo du eine eigene Website direkt 
 in Lighttpd kopieren kannst, die du vorher mit dem Namen *website.zip* 
-im gleichen Ordner bereit stellst.
+im gleichen Ordner bereit stellst. Hier musst du 
+den Zip-Befehl im Dockerfile entsprechend anpassen.
 
 ```{.bash include="src/21_docker/lighttpd/komplexer/Dockerfile"}
 ```
+
+Auch hier verwendest du die gleiche \datei{docker-compose.yml}
+
+
+```{.bash include="src/21_docker/lighttpd/simple/docker-compose.yml"}
+```
+

@@ -7,16 +7,24 @@ base=$PWD
 
 cp -r vorlagen/* .
 
+# Platzhalter ersetzen
+sed -i -e "s~SSH_LOCATION~${base}/ssh_keys~g" config.yaml
+sed -i -e "s~SSH_LOCATION~${base}/ssh_keys~g" docker-compose.yml
+
+# Externes Netz und Volume
+docker network create gitea
+docker volume create giteatransfer
+
 # Erstellen von Quarto
 cd $base
 cd quarto
-#docker compose build
+docker compose build
 
 
 # Erstellen des Runners
 cd $base
 cd runner
-#docker build -t gitea/act_runner_dockercli:latest .
+docker compose build
 
 
 # gitea und db Starten
@@ -41,13 +49,9 @@ echo "---------------------------------------------------------"
 sed -i -e "s/RUNNERTOKEN/$runnertoken/g" docker-compose.yml
 
 # Lesen des Host-Keys von gitea und in die Datei schießen
-docker run --rm --network gitea alpine:latest  \
+docker run --rm --network gitea alpine:3.23.3  \
     sh -c "apk add --no-cache openssh && ssh-keyscan -p 22 gitea" > ssh_keys/known_hosts
 
-
-# Im Runner-Config-file den pfad zu den Host-Keys sed-en
-sed -i -e "s~SSH_LOCATION~${base}/ssh_keys~g" config.yaml
-sed -i -e "s~SSH_LOCATION~${base}/ssh_keys~g" docker-compose.yml
 
 
 cd $base 

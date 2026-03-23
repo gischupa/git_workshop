@@ -72,7 +72,7 @@ services:
 
 
   runner:
-    image: gitea/act_runner_dockercli:latest # Liegt lokal vor
+    image: gitea/act_runner_dockercli:0.3.0 # Liegt lokal vor
     container_name: gitea_runner
     hostname: runner
     environment:
@@ -100,7 +100,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   web:
-    image: nginx
+    image: nginx:1.29.6
     hostname: transfer
     restart: always
     volumes:

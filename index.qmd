@@ -54,5 +54,8 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
  {{< include 0900_anhang_java.qmd >}}
  {{< include 0905_git_start.qmd >}}
  {{< include 0910_install_tree.qmd >}}
+ {{< include 0920_tar.qmd >}}
+  {{< include 0940_nat.qmd >}}
+
 
 

@@ -3,6 +3,7 @@ services:
  quarto:
    build:
      context: .
+   image: quarto-git:1.0
    volumes:
      - ./ergebnis:/ergebnis
    networks:

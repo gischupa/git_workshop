@@ -317,10 +317,11 @@ Servers beschrieben. Das dauert beim ersten Start einige Zeit, da der Container
 am Ende etwa 10GB groß ist!
 
 Du kannst dieses Image mit folgendem Befehl auf deinem Server 
-verfügbar machen:
+verfügbar machen. Starte das aus dem Ordner \ordner{quarto}
 
 ```bash
-docker build -t quarto-git:latest -f Dockerfile .
+docker compose build
+#docker build -t quarto-git:1.0 -f Dockerfile .
 ```
 
 **Java**  

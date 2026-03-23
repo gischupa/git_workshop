@@ -37,7 +37,15 @@ Für eine vollwertige Gitea-Installation brauchst du (mindestens)
 
 Wenn es nur um \gitea und den Datenbankserver geht, so 
 genügt eine einzige Datei \datei{docker-compose.yml} um 
-das System zu steuern:
+das System zu steuern. Du findest sie im Material im 
+Ordner \ordner{gitea\_basic}.
+
+\begin{tcolorbox}[title=WARNUNG]
+Im Workshop führst du vorher unbedingt \textbf{vorher}
+diese Befehle aus:  \newline 
+\lstinline{docker load -i ~/images/images_gitea_basic/image_gitea_basic.tar}\newline
+\lstinline{docker load -i ~/images/images_gitea_basic/image_mysql.tar}
+\end{tcolorbox}
 
 
 ```{.bash include="src/21_docker/gitea_basic/docker-compose.yml"}
@@ -60,6 +68,7 @@ Kopiere ihn komplett an die gewünschte Stelle und gib dann ein:
 
 ```bash
 cd gitead_basic
+docker network create gitea # weil external network
 docker compose up 
 ```
 
@@ -166,17 +175,13 @@ sudo chown -R benutzer:benutzer ./*
 
 **Das Script**  
 
-Nachfolgend kommt immer zuerst der Befehl und nachfolgend die Erklärung!
+Nachfolgend kommt immer zuerst die Erklärung und nachfolgend der Befehl!
 
-```bash
-base=$PWD
-```
-
-Speichert den aktuellen Ordner um mit \cmd{cd \$base} immer wieder 
+Wir merken uns den aktuellen Ordner um mit \cmd{cd \$base} immer wieder 
 dorthin zurück zu kommen.
 
 ```bash
-cp -r vorlagen/* .
+base=$PWD
 ```
 
 In manchen Vorlagedateien sind Platzhalter untergebracht, die das Script 
@@ -184,59 +189,12 @@ passend zu deiner Umgebung ersetzt.
 Diese Vorlagen werden mit obigem Befehl an die richtige Stelle kopiert.
 
 ```bash
-cd $base
-cd quarto
-docker compose build
+cp -r vorlagen/* .
 ```
-
-Hier wird das Docker-Image für die PDF-Erzeugung erstellt.
-
-```bash
-cd $base
-cd runner
-docker build -t gitea/act_runner_dockercli:latest .
-```
-
-Hier wird das Docker-Image für das Runner-Programm erstellt.
-
-```bash
-cd $base
-docker compose up server db -d
-```
-
-Nur zwei der nötigen Container starten (*server* und *db*). Du wirst dann vom Script 
-aufgefordert, die Konfiguration im Browser zu beenden und evtl. einen 
-administrativen Benutzer anzulegen (*admin* geht nicht!). 
-Ist die Konfguration erledigt, so wirst du automatisch angemeldet.
-Drücke nun im Terminal die \key{Enter}-Taste.
-
-\bxlarge
-```bash
-runnertoken=$(docker exec -u git gitea gitea actions  generate-runner-token)
-```
-\exlarge
-
-Das Runner-Programm muss mit \gitea kommunizieren können. Mit diesem 
-Token (eine Art Kennwort) kann es an \gitea gekoppelt werden. 
-Normalerweise würde man diesen Schritt in 
-der Weboberfläche machen, aber so geht es schneller!
-
-```bash
-sed -i -e "s/RUNNERTOKEN/$runnertoken/g" docker-compose.yml
-```
-
-In der Datei \datei{docker-compose.yml} den Platzhalter RUNNERTOKEN durch 
-das eigentliche Token ersetzen.
-
-\bxlarge
-```bash
-docker run --rm --network gitea alpine:latest  \
-    sh -c "apk add --no-cache openssh && ssh-keyscan -p 22 gitea" > ssh_keys/known_hosts
-``` 
-\exlarge
 
 Den aktuellen Fingerabdruck des Servers auslesen, damit bei ssh-Verbindungen 
 keine Sicherheitsabfrage kommt.
+
 
 ```bash
 sed -i -e "s~SSH_LOCATION~${base}/ssh_keys~g" config.yaml
@@ -253,6 +211,77 @@ sed -i -e "s~SSH_LOCATION~${base}/ssh_keys~g" docker-compose.yml
 
 Es werden übrigens \gitea die gleichen Keys verwendet.
 
+Nun müssen die externen Ressourcen wie Netzwerk und Volume erzeugt werden.
+
+```bash
+# Externes Netz und Volume
+docker network create gitea
+docker volume create giteatransfer
+```
+
+
+Das Image für Quarto brauchen wir für die Dokumentenerstellung.
+In dieser Form ist es relativ klein -- bei \gitlab probieren 
+wir eine vollständig LaTeX-Installation.
+
+```bash
+cd $base
+cd quarto
+docker compose build
+```
+
+Hier wird das Docker-Image für das Runner-Programm erstellt.
+
+```bash
+cd $base
+cd runner
+docker compose build 
+```
+
+
+Nur zwei der nötigen Container starten (*server* und *db*). Du wirst dann vom Script 
+aufgefordert, die Konfiguration im Browser zu beenden und evtl. einen 
+administrativen Benutzer anzulegen (*admin* geht nicht!). 
+Ist die Konfguration erledigt, so wirst du automatisch angemeldet.
+Drücke dann im Terminal die \key{Enter}-Taste.
+
+```bash
+cd $base
+docker compose up server db -d
+```
+
+Das Runner-Programm muss mit \gitea kommunizieren können. Mit diesem 
+Token (eine Art Kennwort) kann es an \gitea gekoppelt werden. 
+Normalerweise würde man diesen Schritt in 
+der Weboberfläche machen, aber so geht es schneller!
+
+\bxlarge
+```bash
+runnertoken=$(docker exec -u git gitea gitea actions  generate-runner-token)
+```
+\exlarge
+
+In der Datei \datei{docker-compose.yml} den Platzhalter RUNNERTOKEN durch 
+das eigentliche Token ersetzen.
+
+```bash
+sed -i -e "s/RUNNERTOKEN/$runnertoken/g" docker-compose.yml
+```
+
+Den laufenden \gitea-Container als *bekannten Rechner* einstufen um 
+Rückfragen zu verhindern.
+
+\bxlarge
+```bash
+docker run --rm --network gitea alpine:latest  \
+    sh -c "apk add --no-cache openssh && ssh-keyscan -p 22 gitea" > ssh_keys/known_hosts
+``` 
+\exlarge
+
+Laufende Container beenden und alle mit den neuen Einstellungen 
+wieder starten. \gitea ist nun *grob* einsatzbereit. Hier geht es 
+weiter, wie bei der Basis-Version ohne Runner.
+
 
 ```bash
 cd $base 
@@ -260,9 +289,7 @@ docker compose down
 docker compose up
 ```
 
-Laufende Container beenden und alle mit den neuen Einstellungen 
-wieder starten. \gitea ist nun *grob* einsatzbereit. Hier geht es 
-weiter, wie bei der Basis-Version ohne Runner.
+
 
 ### Details
 In den Materialien findest du im Ordner \ordner{gitea\_buch} den kompletten 
@@ -534,7 +561,7 @@ Die Minimalversion ist unsere Arbeitsbasis.
 
 **config.yaml**  
 \bxlarge
-```{.bash include="src/21_docker/gitea_buch/gitea/config.yaml"}
+```{.bash include="src/21_docker/gitea_buch/gitea/vorlagen/config.yaml"}
 ```
 \exlarge
 
@@ -601,7 +628,7 @@ Das steht im Dockerfile.
 
 ```bash
 cd gitea/runner 
-docker build -t gitea/act_runner_dockercli:latest .
+docker compose build 
 ```
 
 #### Hauptsystem
@@ -636,9 +663,11 @@ ein richtiger Start:
 docker-compose up -d
 ```
 
-Gitea sollte jetzt verwendbar sein!
+Gitea sollte jetzt verwendbar sein -- zumindest die GUI.
 
 ### Wie geht es weiter?
+
+Trage in deinem Benutzer-Profil in \gitea deinen öffentlichen ssh-Schlüssel ein.
 
 Lege in \gitea ein Repository mit dem Namen *Labor* an.
 Dieser Name ist nötig, da er im weiteren Verlauf an verschiedenen
@@ -674,7 +703,7 @@ Sobald er erfolgreich beendet wurde -- was wir hoffen -- kannst du
 das fertige Dokument auf dem Webserver abrufen:
 
 ```bash
-http://<SERVER-IP>:4001/output.pdf
+http://<SERVER-IP>:4001/book.pdf
 ```
 
 \samplestart

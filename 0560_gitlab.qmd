@@ -16,7 +16,7 @@ Suche in der Datei \datei{/etc/ssh/sshd\_config} nach der
 Zeile **# Port 22** (Auskommentiert). Entferne den 
 Kommentar und ersetze 22 durch 23. (Speichern nicht vergessen!)
 
-**WICHTIG WICHTIG WICHTIG**
+**WICHTIG WICHTIG WICHTIG**  
 Vergiss nicht, auf der Firewall auch Port 23 freizuschalten:
 
 ```bash
@@ -43,7 +43,7 @@ cd /home/benutzer/docker/gitlab25
 ```
 
 Kopiere die Datei \datei{docker-compose.yml} aus dem Materialordner \ordner{gitlab}
-an diese Stelle:
+an diese Stelle. Passe unbedingt die IP-Adresse an!
 
 ```bash
 version: '3.6'

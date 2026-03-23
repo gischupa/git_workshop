@@ -3,6 +3,7 @@ services:
  quarto:
    build:
      context: .
+   image: quarto-small:1.0
    volumes:
      - ./ssh_keys:/root/.ssh
    networks:
