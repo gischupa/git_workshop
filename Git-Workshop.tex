@@ -1,29 +1,26 @@
 % Options for packages loaded elsewhere
-% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
-  ngerman,
   letterpaper,
   DIV=11]{scrreprt}
-\usepackage{xcolor}
+
 \usepackage{amsmath,amssymb}
-\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
+\ifPDFTeX\else  
+    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -41,6 +38,9 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -106,7 +106,8 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
-\usepackage{longtable,booktabs,array}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -131,31 +132,6 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
-
-
-
-\ifLuaTeX
-\usepackage[bidi=basic]{babel}
-\else
-\usepackage[bidi=default]{babel}
-\fi
-% get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
-\def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage[german]{selnolig} % disable illegal ligatures
-\fi
-
-
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-
-
- 
-
 
 % load packages
 \usepackage{geometry}
@@ -390,7 +366,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, colback={codebgcolor}, enhanced, boxrule=0pt, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, sharp corners, colback={codebgcolor}, enhanced, frame hidden, breakable]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -398,9 +374,23 @@
         \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
           \node[shape=circle,draw,inner sep=1pt] (char) {{\scriptsize#1}};}}  
                   
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{ngerman}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage[german]{selnolig} % disable illegal ligatures
+\fi
 \usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
+\urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Git Workshop},
   pdfauthor={Wolfgang Höfer},
@@ -416,6 +406,7 @@
 \title{Git Workshop}
 \author{Wolfgang Höfer}
 \date{2026-10-03}
+
 \begin{document}
 \maketitle
 
@@ -452,10 +443,10 @@ schwerpunktmäßig um folgende Punkte:
 Für den reinen Client-Aspekt ist die Verwendung von \git auf Windows
 problemlos. Sobald es aber um einen \git-Server geht, sind bessere
 Systeme wie Linux oder MacOS sinnvoller\footnote{Ich habe bisher noch
-  keinen Server im Internet getroffen, auf dem MacOS als Sytem verwendet
-  wird. Das kann sich aber natürlich jederzeit ändern!} Wir werden uns
-also mit beiden Welten (Windows und Linux) beschäftigen müssen. Wer hier
-noch keine Erfahrung hat, wird viel profitieren!
+  keinen Server im Internet getroffen, auf dem MacOS als System
+  verwendet wird. Das kann sich aber natürlich jederzeit ändern!} Wir
+werden uns also mit beiden Welten (Windows und Linux) beschäftigen
+müssen. Wer hier noch keine Erfahrung hat, wird viel profitieren!
 
 \bookmarksetup{startatroot}
 
@@ -478,7 +469,7 @@ Computer zu installieren.
 \section{Client-Installation}\label{client-installation}
 
 Für die ersten Schritte mit \git ist es sehr sinnvoll, eine ganz
-einfache Client\_Software (kurz Client) zu verwenden. Hier ist
+einfache Client-Software (kurz Client) zu verwenden. Hier ist
 \emph{einfach} nicht im Sinne von \emph{einfacher Bedienung} sondern
 eher im Sinne von \emph{ursprünglicher Version} gemeint. Mittlerweile
 bringt jede Entwicklungsumgebung bereits eine eigene Version eines
@@ -488,7 +479,7 @@ eventuell noch mit eigenen Features, besprechen.
 Faktisch gibt es eigentlich keinen reinen \git-Client, weil immer
 automatisch Client und Server installiert werden. Gerade bei Windows
 bedeutet das aber nicht, dass man den Server auch verwenden kann. Hier
-hat Microsoft so viele Hindernisse in den Weg gelagt, dass man besser
+hat Microsoft so viele Hindernisse in den Weg gelegt, dass man besser
 die Finger davon lässt!
 
 \subsection{Windows}\label{windows}
@@ -640,8 +631,8 @@ Befehl & Befehl \\
 Öffne die \gitbash\footnote{bzw. das Terminal deines Systems. Das setze
   ich in Zukunft stillschweigend voraus}. Da es sich um globale
 Einstellungen handelt, muss das nicht unbedingt im Projektordner
-sein!\footnote{Sollte dir die Schrift im Fenter zu klein sein, kannst du
-  sie mit \strg{+} vergrößern.}.
+sein!\footnote{Sollte dir die Schrift im Fenster zu klein sein, kannst
+  du sie mit \strg{+} vergrößern.}.
 
 \textbf{Aktuelle Einstellungen ansehen}
 
@@ -698,7 +689,7 @@ den Pfad zum Ordner identifizieren und eventuell notieren:
 
 Da auch die \gitbash eine Form von abgespecktem Linux darstellt, gelten
 die nachfolgenden Befehle auf allen drei Systemen in gleicher Weise. Es
-sinnvoll, wenn du dir diese Liste bereit legst (oder die Befehle
+ist sinnvoll, wenn du dir diese Liste bereit legst (oder die Befehle
 lernst).
 
 \textbf{Wichtige Befehle}
@@ -1038,7 +1029,7 @@ du im Wesentlichen die gleichen Befehle wie vorher verwenden, allerdings
 untersuchen wir einige Varianten, die für das Verständnis wichtig sind.
 
 Du bist immer noch im aktuellen Ordner \ordner{versuch\_1}. Er sollte
-akutell eine Datei und zwei Commits enthalten.\\
+aktuell eine Datei und zwei Commits enthalten.\\
 Das kannst du mit folgenden Befehlen überprüfen:
 
 \begin{Shaded}
@@ -1142,7 +1133,7 @@ Stage}/\emph{in den Stage}:
 \CommentTok{\# Dateien aufnehmen}
 \FunctionTok{git}\NormalTok{ add .}
 
-\CommentTok{\# Status abzeigen}
+\CommentTok{\# Status anzeigen}
 \FunctionTok{git}\NormalTok{ status }
 
 \CommentTok{\# Ausgabe  }
@@ -1358,7 +1349,7 @@ Den Hash der Datei kannst du dir übrigens auch so anzeigen lassen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{git}\NormalTok{ hash{-}object homepage.htm }
+\FunctionTok{git}\NormalTok{ hash{-}object homepage.html }
 \end{Highlighting}
 \end{Shaded}
 
@@ -1555,9 +1546,9 @@ Das Log zeigt uns:
 \end{Highlighting}
 \end{Shaded}
 
-In der ersten Zeile sehen, dass es um den Branch \branch{main} geht und
-dass es einen \texttt{HEAD} gibt, der auf \texttt{main} zeigt. Das ist
-wichtig, denn \emph{zeigen} ist genau das benötigte Verb. Bei
+In der ersten Zeile sehen wir, dass es um den Branch \branch{main} geht
+und dass es einen \texttt{HEAD} gibt, der auf \texttt{main} zeigt. Das
+ist wichtig, denn \emph{zeigen} ist genau das benötigte Verb. Bei
 \texttt{HEAD} handelt es sich um einen Zeiger (Pointer), der auf
 \texttt{main} zeigt. Das hast du im Prinzip bereits bei unserem Blick
 hinter die Kulissen gesehen. Im Ordner \ordner{.git} gibt es eine Datei
@@ -1843,7 +1834,7 @@ Problem sieht so aus: \sampleend
 
 \section{Größerer Fehler}\label{gruxf6uxdferer-fehler}
 
-Du hast nach dem letztem Commit viele Fehler in einer Vielzahl von
+Du hast nach dem letzten Commit viele Fehler in einer Vielzahl von
 Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. Hier
 hilft \cmd{reset}. Diesen Befehl gibt es in 3 Versionen
 
@@ -1950,7 +1941,7 @@ Manchmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man
 gerne die Version zurück, die man vor einigen Tagen gelöscht hat. Bei
 \git hast du Zugriff auf alle alten Versionen! Allerdings ist oft die
 Frage, in welchem Commit sich die Version versteckt. Hier wird es nötig,
-sich rückwärts durch die ensprechenden Commits zu arbeiten. Dabei gibt
+sich rückwärts durch die entsprechenden Commits zu arbeiten. Dabei gibt
 es allerdings eine Besonderheit, die du kennen musst. Nachfolgendes
 Script erzeugt das passende Szenario:
 
@@ -2110,7 +2101,7 @@ des Projektes enthalten sind.
 
 \textbf{Hinweis}\\
 Als Alternative zum Clonen kann der aktuelle Stand des Repositories auch
-als zip-Datei heruntergeladen und entpackt werden. Das bietet sich auf
+als zip-Datei heruntergeladen und entpackt werden. Das bietet sich auch
 für die Bereitstellung von Material an, wenn auf den Computern
 \textbf{kein} \git installiert ist. \sampleend
 
@@ -4824,8 +4815,7 @@ vorbelegt ist:
 
 \caption{Name vergeben}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf2.png}}
@@ -4834,8 +4824,7 @@ vorbelegt ist:
 
 \caption{Image wählen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf3.png}}
@@ -4844,8 +4833,7 @@ vorbelegt ist:
 
 \caption{System - passt}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf4.png}}
@@ -4854,8 +4842,7 @@ vorbelegt ist:
 
 \caption{Disks - Größe anpassen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf5.png}}
@@ -4864,8 +4851,7 @@ vorbelegt ist:
 
 \caption{CPU - höher gehen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf6.png}}
@@ -4874,8 +4860,7 @@ vorbelegt ist:
 
 \caption{Speicher - höher gehen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf7.png}}
@@ -4884,8 +4869,7 @@ vorbelegt ist:
 
 \caption{Netzwerk - passt}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf8.png}}
@@ -4923,8 +4907,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 
 \caption{Sprachwahl}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_3.png}}
@@ -4933,8 +4916,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 
 \caption{Tastaturwahl}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_4.png}}
@@ -4943,8 +4925,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 
 \caption{Servervariante - passt}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_5.png}}
@@ -4968,8 +4949,7 @@ Voreinstellungen.
 
 \caption{Proxyadresse - leer}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_7.png}}
@@ -4978,8 +4958,7 @@ Voreinstellungen.
 
 \caption{Spiegelserver - übernehmen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_8.png}}
@@ -5001,8 +4980,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 
 \caption{Zusammenfassung}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_10.png}}
@@ -5011,8 +4989,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 
 \caption{Warnung - auf Fortfahren}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_11.png}}
@@ -5034,8 +5011,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 
 \caption{Profil}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_13.png}}
@@ -5044,8 +5020,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 
 \caption{Ubuntu-Pro - Nein Danke}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_14.png}}
@@ -5066,8 +5041,7 @@ Keys haben wir aktuell keine zum Importieren.
 
 \caption{Weitere Dienste - Keine}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_16.png}}
@@ -5076,8 +5050,7 @@ Keys haben wir aktuell keine zum Importieren.
 
 \caption{Installation}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_17.png}}
@@ -7890,7 +7863,7 @@ Nach dem komplexen Aufbau von \gitea mit seinem Runner, wirkt
 
 \section{Umstellen des Ports}\label{umstellen-des-ports}
 
-Melde dich auf dem Server an und werde \emph{root}. Suche in der Datei
+Melde dich auf dem Ubuntu an und werde \emph{root}. Suche in der Datei
 \datei{/etc/ssh/sshd\_config} nach der Zeile \textbf{\# Port 22}
 (Auskommentiert). Entferne den Kommentar und ersetze 22 durch 23.
 (Speichern nicht vergessen!)
@@ -8012,8 +7985,7 @@ Erstkennwort erforderlich!).
 Mit diesem \emph{docker-compose}-Setup ist ssh-clonen bereits möglich
 (sobald der ssh-Key im Profil hinterlegt ist). Solltest du auf dem Host
 einen anderen Port verwenden (gitlab arbeitet intern dennoch mit 22),
-dann clonst\\
-du so (z.B. über Port 25):
+dann clonst du so (z.B. über Port 25):
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -8035,7 +8007,7 @@ du so (z.B. über Port 25):
 \end{itemize}
 
 Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über Konsole,
-GitClients, \ldots{} ,Weboberfläche.
+GitClients, \ldots{} , Weboberfläche.
 
 \section{Einstieg in Gitlab}\label{einstieg-in-gitlab}
 
@@ -9053,7 +9025,7 @@ Hilfs-Scripts!)
 
 \bcenter
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/tdd/full_tree.png}}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/tdd/full_tree.png}
 \ecenter
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht alle
@@ -9853,13 +9825,13 @@ Proxmox in einem isolierten Netzwerk laufen, damit der DHCP-Server keine
 zusätzlichen Adressen für sie bereitstellen muss. Das könnte Probleme
 mit der örtlichen IT geben.
 
-Um diese Konfiguration herzustellen, müssen auf dem frisch installierten
-Proxmox einige Schritte im Terminal ausgeführt werden. Um Kopieren und
-Einfügen möglich zu machen bauen wir eine ssh-Verbindung zum Proxmox
-auf. Zusätzlich öffnen wir aber auch noch eine Shell auf der
+Um diese Konfiguration herzustellen, musst du auf dem frisch
+installierten Proxmox einige Schritte im Terminal ausgeführen. Um
+Kopieren und Einfügen möglich zu machen bauen wir eine ssh-Verbindung
+zum Proxmox auf. Zusätzlich öffnen wir aber auch noch eine Shell auf der
 Weboberfläche. Das ist nötig, weil\\
 uns nach dem Ändern des ssh-Ports von 22 auf 222 die Verbindung abreißen
-wird -- in der Webshell trifft uns das nicht (dort kann man aber
+kann -- in der Webshell trifft uns das nicht (dort kann man aber
 schlecht kopieren und einfügen).
 
 \subsection{Anpassungen}\label{anpassungen}

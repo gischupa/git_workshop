@@ -190,7 +190,7 @@ auch entsprechende Namenskonventionen (Du musst das nicht
 per Hand anlegen, da gibt es Hilfs-Scripts!)
 
 \bcenter
-![](bilder/tdd/full_tree.png)
+![](bilder/tdd/full_tree.png){width=50%}
 \ecenter
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht

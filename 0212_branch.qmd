@@ -57,7 +57,7 @@ Date:   Fri Jan 23 12:57:41 2026 +0100
     Datei 1 erstellt
 ```
 
-In der ersten Zeile sehen, dass es um den Branch \branch{main} geht 
+In der ersten Zeile sehen wir, dass es um den Branch \branch{main} geht 
 und dass es einen `HEAD` gibt, der auf `main` zeigt. Das ist wichtig,
 denn *zeigen* ist genau das benötigte Verb. Bei `HEAD` handelt es 
 sich um einen Zeiger (Pointer), der auf `main` zeigt. Das hast du 

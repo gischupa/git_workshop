@@ -50,7 +50,7 @@ in die Tiefe gehen.
 Das setze ich in Zukunft stillschweigend voraus]. Da es sich um
 globale Einstellungen handelt, muss das nicht unbedingt im 
 Projektordner sein!^[Sollte dir 
-die Schrift im Fenter zu klein sein,
+die Schrift im Fenster zu klein sein,
 kannst du sie mit \strg{+} vergrößern.].
 
 **Aktuelle Einstellungen ansehen**  
@@ -94,7 +94,7 @@ pwd
 
 Da auch die \gitbash eine Form von abgespecktem Linux darstellt, 
 gelten die nachfolgenden Befehle auf allen drei Systemen in gleicher Weise. 
-Es sinnvoll, wenn du dir diese Liste bereit legst (oder die Befehle lernst).
+Es ist sinnvoll, wenn du dir diese Liste bereit legst (oder die Befehle lernst).
 
 **Wichtige Befehle**  
 

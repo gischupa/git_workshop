@@ -36,7 +36,7 @@ verschiedenen Stände des Projektes enthalten sind.
 **Hinweis**  
 Als Alternative zum Clonen kann der aktuelle Stand des Repositories 
 auch als zip-Datei heruntergeladen und entpackt werden. Das bietet 
-sich auf für die Bereitstellung von Material an, wenn auf den 
+sich auch für die Bereitstellung von Material an, wenn auf den 
 Computern **kein** \git installiert ist.
 \sampleend
 

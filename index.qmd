@@ -14,7 +14,7 @@ Punkte:
 Für den reinen Client-Aspekt ist die Verwendung von \git auf Windows problemlos. 
 Sobald es aber um einen \git-Server geht, sind bessere Systeme wie Linux oder 
 MacOS sinnvoller^[Ich habe bisher noch keinen Server im 
-Internet getroffen, auf dem MacOS als Sytem verwendet wird. Das kann 
+Internet getroffen, auf dem MacOS als System verwendet wird. Das kann 
 sich aber natürlich jederzeit ändern!]
 Wir werden uns also mit beiden Welten (Windows und Linux) beschäftigen müssen.
 Wer hier noch keine Erfahrung hat, wird viel profitieren!
