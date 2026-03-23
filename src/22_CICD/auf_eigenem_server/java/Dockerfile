@@ -2,8 +2,8 @@
 # Basisimage mit Java 21 (Temurin JDK)
 FROM eclipse-temurin:21-jdk
 
-# Maven-Version festlegen
-ARG MAVEN_VERSION=3.9.12
+# Maven-Version festlegen ... immer aktuell suchen !!!
+ARG MAVEN_VERSION=3.9.14
 ARG USER_HOME_DIR="/root"
 ARG SHA=8d25376b58a36454bedc70ed87c1a507
 
