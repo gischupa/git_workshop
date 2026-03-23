@@ -119,6 +119,9 @@ iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 8080 -j DNAT --to-destinat
 # Für ssh zur VM
 iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 22 -j DNAT --to-destination \$VM_IP:22
 
+# Verbogener Port wegen gitlab
+iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 23 -j DNAT --to-destination \$VM_IP:23
+
 # GitLab
 iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 443 -j DNAT --to-destination $VM_IP:443
 

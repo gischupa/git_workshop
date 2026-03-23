@@ -11,7 +11,7 @@ Nach dem komplexen Aufbau von \gitea mit seinem Runner, wirkt
 
 ## Umstellen des Ports
 
-Melde dich auf dem Server an und werde *root*.
+Melde dich auf dem Ubuntu an und werde *root*.
 Suche in der Datei \datei{/etc/ssh/sshd\_config} nach der 
 Zeile **# Port 22** (Auskommentiert). Entferne den 
 Kommentar und ersetze 22 durch 23. (Speichern nicht vergessen!)
