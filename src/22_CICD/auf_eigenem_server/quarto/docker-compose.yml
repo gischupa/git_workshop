@@ -10,6 +10,6 @@ services:
       - gitlab_default
 
 networks:
-  nginx_default:
+  gitlab_default:
     external: true
 

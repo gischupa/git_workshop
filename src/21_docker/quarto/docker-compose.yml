@@ -7,9 +7,9 @@ services:
    volumes:
      - ./ergebnis:/ergebnis
    networks:
-      - nginx_default
+      - gitlab_default
 
 networks:
-  nginx_default:
+  gitlab_default:
     external: true
 
