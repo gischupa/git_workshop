@@ -7,14 +7,14 @@ damit der DHCP-Server keine zusätzlichen Adressen
 für sie bereitstellen muss. Das könnte Probleme mit
 der örtlichen IT geben.
 
-Um diese Konfiguration herzustellen, müssen auf 
+Um diese Konfiguration herzustellen, musst du auf 
 dem frisch installierten Proxmox einige Schritte 
-im Terminal ausgeführt werden. Um Kopieren und 
+im Terminal ausgeführen. Um Kopieren und 
 Einfügen möglich zu machen bauen wir eine ssh-Verbindung 
 zum Proxmox auf. Zusätzlich öffnen wir aber auch noch 
 eine Shell auf der Weboberfläche. Das ist nötig, weil  
 uns nach dem Ändern des ssh-Ports von 22 auf 222 die 
-Verbindung abreißen wird -- in der Webshell trifft uns 
+Verbindung abreißen kann -- in der Webshell trifft uns 
 das nicht (dort kann man aber schlecht kopieren und einfügen). 
 
 

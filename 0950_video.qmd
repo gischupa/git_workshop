@@ -1,0 +1,7 @@
+## Tipps
+
+Installation und Basis-Konfiguration  
+[Video 1](https://www.youtube.com/watch?v=_cUFK8YrukQ&t=34s)
+
+Helper-Scripts
+[Proxmox-Helper Scripts](https://community-scripts.org/scripts) 
