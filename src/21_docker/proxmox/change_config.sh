@@ -102,6 +102,8 @@ function erstelle_nat_script {
 # Aktiviert IP Forwarding
 echo 1 > /proc/sys/net/ipv4/ip_forward
 
+iptables -F
+
 # NAT für VM-Bridge
 iptables -t nat -A POSTROUTING -s '$VM_SUBNET' -o vmbr0 -j MASQUERADE
 
@@ -122,7 +124,7 @@ iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 443 -j DNAT --to-destinati
 
 # nginx
 iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 81 -j DNAT --to-destination $VM_IP:81
-iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 88 -j DNAT --to-destination $VM_IP:80
+iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 80 -j DNAT --to-destination $VM_IP:80
 
 # Rückweg
 iptables -t nat -A POSTROUTING -s $VM_IP -o vmbr0 -j MASQUERADE
