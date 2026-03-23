@@ -16,7 +16,7 @@ format:
         \newcommand{\cmd}[1]{\texttt{#1}\xspace}
 jupyter: python3
 ---
-
+# Proxmox mit NAT
 ## Situation
 
 Im Schulungszentrum sollen die virtuellen Maschinen (VMs) 
