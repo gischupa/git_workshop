@@ -390,7 +390,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, colback={codebgcolor}, frame hidden, sharp corners, boxrule=0pt, enhanced]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, colback={codebgcolor}, enhanced, boxrule=0pt, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -8302,6 +8302,32 @@ irgendwo ein Runner laufen! Für uns dürfte wieder Docker der schnellste
 Weg sein (Du kannst einen gitlab-runner aber auch auf jeder beliebigen
 anderen Maschine installieren!).
 
+Du kannst entweder diese \datei{docker-compose.yml} verwenden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{version:} \StringTok{\textquotesingle{}3.8\textquotesingle{}}
+
+\ExtensionTok{services:}
+  \ExtensionTok{gitlab{-}runner:}
+    \ExtensionTok{image:}\NormalTok{ gitlab/gitlab{-}runner:latest}
+    \ExtensionTok{container\_name:}\NormalTok{ gitlab{-}runner}
+    \ExtensionTok{restart:}\NormalTok{ always}
+    \ExtensionTok{volumes:}
+      \ExtensionTok{{-}}\NormalTok{ ./config:/etc/gitlab{-}runner}
+      \ExtensionTok{{-}}\NormalTok{ /var/run/docker.sock:/var/run/docker.sock}
+    \ExtensionTok{networks:}
+      \ExtensionTok{{-}}\NormalTok{ gitlab\_net}
+
+\ExtensionTok{networks:}
+  \ExtensionTok{gitlab\_net:}
+    \ExtensionTok{external:}\NormalTok{ true}
+\end{Highlighting}
+\end{Shaded}
+
+oder den nachfolgenden Befehl (als Script \datei{runner\_install.sh} im
+Material):
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{docker}\NormalTok{ run }\AttributeTok{{-}d} \AttributeTok{{-}{-}name}\NormalTok{ gitlab{-}runner }\DataTypeTok{\textbackslash{}}
@@ -8324,15 +8350,17 @@ Hier hin kopieren wir den Befehl aus \gitlab. Die ersten Fragen
 beantworten wir mit \key{enter}. Auf die Frage nach dem Executor geben
 wir \menu{docker} an.
 
-Danach starten wir den Runner
+Nun verlassen wir den Container wieder mit \strg{pq}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{gitlab{-}runner}\NormalTok{ run}
+\ExtensionTok{docker}\NormalTok{ compose down }
+\ExtensionTok{docker}\NormalTok{ compose up  }\CommentTok{\# wahlweise mit {-}d }
 \end{Highlighting}
 \end{Shaded}
 
-Nun verlassen wir den Container wieder mit \strg{pq}.
+Der Runner sollte nun in \gitlab sichtbar sein (Administration -- CICD
+-- Runner).
 
 \subsection{Ausführen des Jobs}\label{ausfuxfchren-des-jobs}
 
@@ -8415,7 +8443,7 @@ Im Material befindet sich eine Version dieser Datei. Für den
 Praxiseinsatz musst du sie wieder passend umbenennen (führenden Punkt
 ergänzen, „quarto`` entfernen)!
 
-\phantomsection\label{annotated-cell-276}%
+\phantomsection\label{annotated-cell-277}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -8470,7 +8498,8 @@ herunterzuladen.
 \subsection{Alles auf deinem Server}\label{alles-auf-deinem-server}
 
 Wenn du ausreichend Rechenleistung auf deinem Server hast, kannst du
-auch einen etwas umfassenderen Setup erstellen.\\
+auch einen etwas umfassenderen Setup erstellen.
+
 Ziel ist das Erstellen von Büchern und Testdriven-Development mit Java
 -- als \gitlab verwenden wir immer noch die offizielle Instanz. Mit
 einer eigenen Instanz würde es aber analog funktionieren!
@@ -8488,7 +8517,7 @@ Container ablegen willst:
 
 In diesen Ordnern liegen dann Startdateien.
 
-\textbf{runner}
+\subsubsection{Der Runner}\label{der-runner-1}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -8509,17 +8538,21 @@ In diesen Ordnern liegen dann Startdateien.
 Starte diesen Container \textbf{noch nicht}, denn wir wollen erst die
 Vorbereitungsarbeiten abschließen.
 
-In dieser Version liegt der Konfigurationsordner \ordner{config} im
-Verzeichnis des Runners. Beim ersten Start -- vor dem Registrieren des
-Runners auf \gitlab{} -- wird ein Fehler gemeldet, dass die Datei
+In dieser Version liegt der Konfigurationsordner \ordner{config} direkt
+im Verzeichnis des Runners. Beim ersten Start -- vor dem Registrieren
+des Runners auf \gitlab{} -- wird ein Fehler gemeldet, dass die Datei
 \datei{config.toml} in diesem Ordner fehlt. Sie wird bei den nächsten
 Schritten erst erstellt -- das ist also normal und kann ignoriert
-werden!
+werden! Wir beschäftigen uns mit dieser Datei nach dem Erstellen der
+nächsten beiden Images für Quarto und Java!
 
-\textbf{quarto}\\
-Für diesen Container genügt ein Dockerfile im Ordner \emph{quarto}, denn
-dieser Container wird komplett vom Runner verwaltet --
-\cmd{docker compose} ist nicht erforderlich.
+\subsubsection{Quarto}\label{quarto-1}
+
+Dieses Image muss auf deinem Server vorliegen, damit der Runner daraus
+einen Container erstellen kann. Du selbst brauchst dieses Image nie
+direkt zu starten und deshalb genügt ein Dockerfile im Ordner
+\emph{quarto} -- eine \datei{docker-compose.yml} ist \emph{nicht}
+erforderlich.
 
 \blarge
 
@@ -8550,21 +8583,29 @@ dieser Container wird komplett vom Runner verwaltet --
 
 \elarge
 
-In dieser Datei wird die Installation eines kompletten Quarto/Latex
-Servers beschrieben. Das dauert beim ersten Start einige Zeit, da der
-Container am Ende etwa 10GB groß ist!
+\samplestart
+
+\textbf{Hinweis}\\
+Für einfache Dokumente genügt aber auch das Image
+\datei{quarto-small:1.0}, das wir bereits im \gitea-Abschnitt verwendet
+haben! \sampleend
+
+In dieser Datei wird die Installation eines \emph{kompletten}
+Quarto/Latex Servers beschrieben. Das dauert beim ersten Start einige
+Zeit, da der Container am Ende etwa 10GB groß ist!
 
 Du kannst dieses Image mit folgendem Befehl auf deinem Server verfügbar
-machen. Starte das aus dem Ordner \ordner{quarto}
+machen. Starte den Build im Ordner \ordner{quarto}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{docker}\NormalTok{ compose build}
-\CommentTok{\#docker build {-}t quarto{-}git:1.0 {-}f Dockerfile .}
+\CommentTok{\#ergibt das Image quarto{-}git:1.0 }
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Java}\\
+\subsubsection{Java}\label{java}
+
 Auch für Java brauchst du ein lokales Image, wenn die Geschwindigkeit
 stimmen soll. Ein mögliches Dockerfile sieht so aus, wie es unten zu
 sehen ist. Allerdings musst du zuerst die aktuelle Version von
@@ -8611,11 +8652,120 @@ Dockerfile eintragen (siehe Kommentar):
 
 \elarge
 
+Auch dieses Image erstellst du wieder mit
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ build }\AttributeTok{{-}t}\NormalTok{ java:latest }\AttributeTok{{-}f}\NormalTok{ Dockerfile .}
+\ExtensionTok{docker}\NormalTok{ compose bulid }
+\CommentTok{\#ergibt das Image java{-}git:1.0}
 \end{Highlighting}
 \end{Shaded}
+
+\subsubsection{Weitere Schritte}\label{weitere-schritte}
+
+Der Runner muss nun -- wie bereits besprochen -- in einem
+\gitlab registriert werden. Wie gesagt spielt es keine Rolle, ob das ein
+lokales oder das offizielle \gitlab ist!\\
+Dafür werden die Registrierungsschritte in \gitlab durchlaufen und der
+Registrierungsbefehl in die Zwischenablage übernommen. Dann startst du
+den Runner auf deinem Docker-Server:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ compose up }
+\end{Highlighting}
+\end{Shaded}
+
+Du solltest nun viele Fehlermeldungen wegen der Datei
+\datei{config.toml} sehen. Detatche das Terminal und betrete den
+Container:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ exec }\AttributeTok{{-}it}\NormalTok{ gitlab{-}runner bash }
+\end{Highlighting}
+\end{Shaded}
+
+Füge nun hier den Befehl ein und beantworte die Fragen. Als Executor
+solltest du \emph{Docker} wählen.
+
+Verlasse den Container mit \strg{pq} und starte den Runner neu:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{docker}\NormalTok{ compose down }
+\ExtensionTok{docker}\NormalTok{ compose up }\CommentTok{\# wahlweise mit {-}d }
+\end{Highlighting}
+\end{Shaded}
+
+Bevor du nun Jobs auf \gitlab erstellen kannst, muss in der
+Konfiguration des Runners noch eine Änderung vorgenommen werden, damit
+er nicht immer zuerst auf \emph{dockerhub} nach dem angeforderten Image
+sucht. Ergänze die Datei \datei{config/config.yml}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo}\NormalTok{ nano config/config.yml}
+
+\CommentTok{\# Inhalt}
+\ExtensionTok{...}
+\ExtensionTok{[runners.docker]}
+    \ExtensionTok{tls\_verify}\NormalTok{ = false}
+    \ExtensionTok{image}\NormalTok{ = }\StringTok{"quarto{-}small:1.0"}      \OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ Je nach Runner }
+    \ExtensionTok{pull\_policy}\NormalTok{ = }\StringTok{"if{-}not{-}present"}  \OperatorTok{\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}}\NormalTok{ DAS HIER}
+    \ExtensionTok{privileged}\NormalTok{ = false}
+    \ExtensionTok{disable\_entrypoint\_overwrite}\NormalTok{ = false}
+\ExtensionTok{...}
+\end{Highlighting}
+\end{Shaded}
+
+Nun kannst du Jobs auf \gitlab erstellen.
+
+\subsubsection{Wieder das Buch mit
+Quarto}\label{wieder-das-buch-mit-quarto}
+
+Kopiere dir den Inhalt des Ordners \ordner{Buchvorlage} aus dem
+\gitea-Projekt in vorher geclonten Ordner von \gitlab. Passe die Datei
+\datei{.gitlab-ci.yml} so an:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{variables:}
+  \ExtensionTok{DOCKER\_IMAGE:}\NormalTok{ quarto{-}small:1.0}
+
+\ExtensionTok{stages:}
+  \ExtensionTok{{-}}\NormalTok{ build}
+
+\ExtensionTok{ausgabe\_1:}
+  \ExtensionTok{stage:}\NormalTok{ build}
+  \ExtensionTok{image:}\NormalTok{ quarto{-}small:1.0}
+  \ExtensionTok{script:} 
+    \ExtensionTok{{-}}\NormalTok{ echo }\StringTok{"Ich bin die erste Ausgabe"}
+    \ExtensionTok{{-}}\NormalTok{ ls }\AttributeTok{{-}lah}
+    \ExtensionTok{{-}}\NormalTok{ sleep 10}
+    \ExtensionTok{{-}}\NormalTok{ quarto render }\AttributeTok{{-}{-}to}\NormalTok{ pdf}
+  \ExtensionTok{artifacts:}
+    \ExtensionTok{paths:}
+      \ExtensionTok{{-}} \StringTok{"\_book/*pdf"}
+\end{Highlighting}
+\end{Shaded}
+
+Nach einem \emph{add}, \emph{commit} und \emph{push} sollte der Job
+rasch abgearbeitet werden. Die Befehle \emph{ls} und \emph{sleep} sollen
+es dir nur ermöglichen, den Ablauf zu verfolgen!
+
+\subsubsection{Was ist mit Java?}\label{was-ist-mit-java}
+
+Hier endet meine \emph{Zuständigkeit}. Mit dem vorbereiteten Image
+\emph{kannst} du über \gitlab z.B. einen Testzyklus mit \emph{maven}
+erstellen, dir Jar-Dateien erstellen lassen und vieles mehr. Mein
+Problem ist, dass ich eigentlich kaum mit Java arbeite, weil mit diese
+Jahrgangsstufen fehlen. Hier bist du kompetenter als ich -- die
+Grundlagen für CI/CD hast du nun.
+
+Allerdings wollen wir dennoch in den nächsten Abschnitten etwas in das
+Thema \emph{Testdriven Development} (TDD) und \emph{maven} hinein
+schnuppern.
 
 \section{TDD - Test Driven
 Development}\label{tdd---test-driven-development}
@@ -8950,9 +9100,9 @@ Prinzip macht Maven genau das, wenn du \emph{install} aufrufst.
 LINK-Tipp: \url{https://www.youtube.com/watch?v=T00NKLQvwYE} -
 Windows-lastig
 
-\section{Java}\label{java}
+\subsection{Java}\label{java-1}
 
-\subsection{Idee}\label{idee-2}
+\subsubsection{Idee}\label{idee-2}
 
 Im Zusammenspiel von TDD und \git wäre ein Unterrichtsprojekt denkbar,
 wo Schüler alleine oder in Gruppen verschiedene Methoden der
@@ -8961,7 +9111,7 @@ im \emph{main}-Branch zusammengeführt werden. Hier soll aber nicht \git
 im Fokus stehen, sondern der TDD-Zyklus. Exemplarisch implementieren wir
 eine minimale Cäsar-Verschlüsselung.
 
-\subsection{Erstellen des Projektes}\label{erstellen-des-projektes}
+\subsubsection{Erstellen des Projektes}\label{erstellen-des-projektes}
 
 Im Terminal wird bei bereits installiertem Maven eine korrekte
 Ordnerstruktur initialisiert.
@@ -9117,7 +9267,7 @@ Umbenennungen vornimmst:
 Zur Kontrolle führst du gleich wieder ein \cmd{mvn package} aus. Wenn
 das ohne Fehler abgearbeitet wird, kannst du mit TDD beginnen.
 
-\subsection{Schrittweises TDD}\label{schrittweises-tdd}
+\subsubsection{Schrittweises TDD}\label{schrittweises-tdd}
 
 Es gibt viele Regeln beim TDD und eine davon ist, dass triviale Getter
 und Setter nicht getestet werden. Das einfache Setzen einer (privaten)

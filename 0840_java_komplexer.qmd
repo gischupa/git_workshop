@@ -1,6 +1,6 @@
-## Java 
+### Java 
 
-### Idee 
+#### Idee 
 
 Im Zusammenspiel von TDD und \git wäre ein Unterrichtsprojekt 
 denkbar, wo Schüler alleine oder in Gruppen
@@ -11,7 +11,7 @@ im Fokus stehen, sondern der TDD-Zyklus. Exemplarisch implementieren
 wir eine minimale Cäsar-Verschlüsselung.
 
 
-### Erstellen des Projektes
+#### Erstellen des Projektes
 
 Im Terminal wird bei bereits installiertem Maven eine 
 korrekte Ordnerstruktur initialisiert.
@@ -138,7 +138,7 @@ Zur Kontrolle führst du gleich wieder ein \cmd{mvn package} aus.
 Wenn das ohne Fehler abgearbeitet wird, kannst du mit TDD beginnen.
 
 
-### Schrittweises TDD
+#### Schrittweises TDD
 
 Es gibt viele Regeln beim TDD und eine davon ist, dass triviale 
 Getter und Setter nicht getestet werden. Das einfache Setzen einer 
