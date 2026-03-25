@@ -67,8 +67,8 @@ user.name=
 **Einstellungen anpassen**  
 ```bash
 # eigene Phantasiedaten verwenden
-git config --global user.name="Susi Sandmann" 
-git config --global user.email="susi@sandmann.de"
+git config --global user.name "Susi Sandmann" 
+git config --global user.email "susi@sandmann.de"
 ```
 
 ## Erstellen eines Repositories 
