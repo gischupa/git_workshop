@@ -1,4 +1,14 @@
+
 # Vorbemerkung{.unnumbered}
+
+\samplestart
+**Hinweis**
+Dieses Werk ist lizenziert unter der Creative Commons Lizenz BY-SA 4.0  
+\href{https://creativecommons.org/licenses/by-sa/4.0/}{%
+    \includegraphics[height=0.8cm]{bilder/cc-by-sa.png}
+}
+\sampleend
+
 Git ist das aktuell wohl gängigste Versionskontrollsystem auf dem Markt.
 Allerdings gibt es im Zusammenhang mit \git so viele verschiedene Aspekte
 zu betrachten, dass eine stringente Einführung in das Thema relativ 
@@ -14,7 +24,7 @@ Punkte:
 Für den reinen Client-Aspekt ist die Verwendung von \git auf Windows problemlos. 
 Sobald es aber um einen \git-Server geht, sind bessere Systeme wie Linux oder 
 MacOS sinnvoller^[Ich habe bisher noch keinen Server im 
-Internet getroffen, auf dem MacOS als Sytem verwendet wird. Das kann 
+Internet getroffen, auf dem MacOS als System verwendet wird. Das kann 
 sich aber natürlich jederzeit ändern!]
 Wir werden uns also mit beiden Welten (Windows und Linux) beschäftigen müssen.
 Wer hier noch keine Erfahrung hat, wird viel profitieren!
@@ -54,5 +64,8 @@ Wer hier noch keine Erfahrung hat, wird viel profitieren!
  {{< include 0900_anhang_java.qmd >}}
  {{< include 0905_git_start.qmd >}}
  {{< include 0910_install_tree.qmd >}}
+ {{< include 0920_tar.qmd >}}
+  {{< include 0940_nat.qmd >}}
+ {{< include 0950_video.qmd >}}
 
 

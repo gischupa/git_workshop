@@ -15,7 +15,7 @@ mit Hilfe von Virtualbox auf dem eigenen Computer zu installieren.
 ## Client-Installation
 
 Für die ersten Schritte mit \git ist es sehr sinnvoll, eine ganz einfache 
-Client_Software (kurz Client) zu verwenden. Hier ist *einfach* nicht im Sinne 
+Client-Software (kurz Client) zu verwenden. Hier ist *einfach* nicht im Sinne 
 von *einfacher Bedienung* sondern eher im Sinne von *ursprünglicher Version* gemeint. 
 Mittlerweile bringt jede Entwicklungsumgebung bereits
 eine eigene Version eines \git-Clients mit und wir können beim besten Willen 
@@ -24,7 +24,7 @@ nicht jede Variante, eventuell noch mit eigenen Features, besprechen.
 Faktisch gibt es eigentlich keinen reinen \git-Client, weil immer 
 automatisch Client und Server installiert werden. Gerade bei Windows 
 bedeutet das aber nicht, dass man den Server auch verwenden kann. Hier 
-hat Microsoft so viele Hindernisse in den Weg gelagt, dass man besser die 
+hat Microsoft so viele Hindernisse in den Weg gelegt, dass man besser die 
 Finger davon lässt!
 
 ### Windows

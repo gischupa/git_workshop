@@ -116,7 +116,7 @@ git show <HASH>:datei.txt > datei_alt.txt
 
 ## Größerer Fehler
 
-Du hast nach dem letztem Commit viele Fehler in einer Vielzahl 
+Du hast nach dem letzten Commit viele Fehler in einer Vielzahl 
 von Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. 
 Hier hilft \cmd{reset}. Diesen Befehl gibt es in 3 Versionen
 
@@ -209,7 +209,7 @@ aber nun bereits im Stage und könnte sofort committet werden.
 Manchmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man gerne 
 die Version zurück, die man vor einigen Tagen gelöscht hat. Bei \git hast du 
 Zugriff auf alle alten Versionen! Allerdings ist oft die Frage, in welchem Commit 
-sich die Version versteckt. Hier wird es nötig, sich rückwärts durch die ensprechenden
+sich die Version versteckt. Hier wird es nötig, sich rückwärts durch die entsprechenden
 Commits zu arbeiten. Dabei gibt es allerdings eine Besonderheit, die du kennen musst.
 Nachfolgendes Script erzeugt das passende Szenario:
 

@@ -54,7 +54,7 @@ allerdings untersuchen wir einige Varianten, die für das Verständnis
 wichtig sind.
 
 Du bist immer noch im aktuellen Ordner \ordner{versuch\_1}. 
-Er sollte akutell eine Datei und zwei Commits enthalten.  
+Er sollte aktuell eine Datei und zwei Commits enthalten.  
 Das kannst du mit folgenden Befehlen überprüfen:
 
 ```bash
@@ -146,7 +146,7 @@ werden -- \datei{datei2.txt} würde also ignoriert.
 # Dateien aufnehmen
 git add .
 
-# Status abzeigen
+# Status anzeigen
 git status 
 
 # Ausgabe  
@@ -333,7 +333,7 @@ Hier 0) und den Dateinamen.
 
 Den Hash der Datei kannst du dir übrigens auch so anzeigen lassen:
 ```bash
-git hash-object homepage.htm 
+git hash-object homepage.html 
 ```
 
 Aber gehen wir einen Schritt weiter und committen die Datei:

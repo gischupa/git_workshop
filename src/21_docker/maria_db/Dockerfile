@@ -1,5 +1,5 @@
 # Verwende das offizielle MariaDB-Image
-FROM mariadb:latest
+FROM mariadb:8
 # Optionale Konfiguration
 # Beispiel: Anpassung der Konfiguration von MariaDB, wenn nötig
 # COPY ./my.cnf /etc/mysql/my.cnf

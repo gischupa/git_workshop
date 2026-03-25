@@ -9,7 +9,7 @@ Im Ordner *quarto* ausführen
 
 Im Ordner *runner*
 
-    docker build -t gitea/act_runner_dockercli:latest .
+    docker build -t gitea/act_runner_dockercli:0.3.0 .
 
 
 Im Ordner *gitea* ausführen

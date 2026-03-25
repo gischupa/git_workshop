@@ -25,9 +25,9 @@ den Rahmen dieses Workshops.
 Damit du dich auf deinem Server anmelden kannst, benötigst du 
 folgende Informationen:
 
-> IP-Adresse des Servers
-> Benutzername
-> Kennwort
+* IP-Adresse des Servers
+* Benutzername
+* Kennwort
 
 Diese Daten hast du vorher festgelegt oder vom Provider erhalten.
 
@@ -46,7 +46,7 @@ den nachfolgenden Befehl eingeben zu können:
 
 
 ```bash
-ssh benutzer@IP-adresse 
+ssh benutzer@<SERVER-IP> 
 ```
 
 Du erhältst eine Sicherheitsabfrage um zukünftige Man-in-the-middle Angriffe 
@@ -261,8 +261,6 @@ Je nach persönlichem Vertrauen kann auch ein Online-Schlüsselgenerator verwend
 Die Inhalte der (öffentlichen) Schlüsseldateien der Schüler müssen dann in einer Datei mit dem Namen \datei{authorized\_keys} 
 gesammelt und im Ordner \ordner{.ssh} des \git-Benutzers abgelegt werden. Die Datei muss dann auch noch die passende Berechtungen erhalten!
 
-
-
 ##### Benutzer anlegen  {.unnumbered}
 
 ```bash
@@ -387,7 +385,8 @@ seinem eigenen Account auf dem Server hinterlegt:
 ```bash
 # Auf dem Client:
 ssh-keygen -t rsa -b 4096
-
 ssh-copy-id -i .ssh/id_rsa.pub benutzer@<IP>
 ```
+
+
 

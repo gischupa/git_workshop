@@ -1,0 +1,578 @@
+# Tortendiagramme {.unnumbered}
+
+Vor nicht allzu langer Zeit erhielt ich eine E-Mail von
+einer Kollegin, die die Anbieter von Business Intelligence
+überwacht und ihre Produkte bewertet. Sie war verwirrt,
+dass ein bestimmtes Produkt, das ich zufällig mag, keine
+Tortendiagramme unterstützt, ein Feature, das sie als
+grundlegend und unverzichtbar ansah. Aufgrund früherer
+Diskussionen zwischen uns, in denen ich ineffektive
+Praktiken bei der Darstellung von Grafiken in vielen
+BI-Produkten aufzeigte, fragte sie sich, ob es auch ein
+Problem mit Tortendiagrammen geben könnte. Könnte die
+Auslassung von Tortendiagrammen durch diesen Anbieter
+absichtlich und gerechtfertigt sein? Ich erklärte, dass
+dies tatsächlich der Fall sei, und lobte das Design-Team
+des Anbieters für ihren guten Sinn.
+
+Hier sitzt das freundliche Tortendiagramm:
+
+![](bilder/smile.png){width=5cm}
+
+Seine Schnitte sind zu einem einladenden Lächeln
+gewendet. Sein einfacher Charme ist von fast allen geliebt,
+aber nur von wenigen willkommen; überall vertraut und
+selten bedrohlich. Von allen Diagrammen, die eine wichtige
+Rolle im Vokabular der quantitativen Kommunikation spielen,
+ist das Tortendiagramm jedoch bei weitem am wenigsten
+effektiv. Seine bunte Stimme wird oft gehört, aber selten
+verstanden. Es murmelt, wenn es spricht.
+
+Nichts in meinem Grafikdesign-Kurs, den ich unterrichte,
+ist kontroverser als das, was ich über Tortendiagramme
+sage. Die Leute lieben sie innig und sind oft schockiert,
+mich schlecht über sie sprechen zu hören. Wenn die
+Studierenden in meinem Kurs nicht sofort Einwände erheben,
+trotz des Schocks in ihren Gesichtern, kommen sie oft
+in einer Pause auf mich zu, um ihre häufige Verwendung
+von Torten zu verteidigen. Viele, vermute ich, reagieren
+so, weil sie sich nicht vorstellen können, wie sie die
+Menschen an ihrem Arbeitsplatz dazu bringen könnten,
+ihre geliebten Torten aufzugeben.
+
+Tortendiagramme sind nicht ohne ihre Stärken. Die
+Hauptstärke eines Tortendiagramms besteht darin, dass
+die Botschaft "Teil-Ganz-Verhältnis" offensichtlich
+in ihm eingebaut ist. Kinder lernen Brüche, indem sie
+sich Torten in verschiedenen Schnitten ansehen und das
+Verhältnis (Viertel, Hälfte, drei Viertel usw.) jedes
+Schnitts entschlüsseln. Ein Balkendiagramm hat diesen
+offensichtlichen Zweck nicht direkt in sein Design
+eingebaut. Nicht so direkt, jedenfalls, aber er kann in
+Balkendiagrammen so eingebaut werden, dass die Menschen
+in Bezug auf ein Ganzes und seine Teile denken. Dies kann
+teilweise durch Verwendung einer Prozentskala erreicht
+werden. Es ist einfach und natürlich, in Bezug auf
+verschiedene Prozentsätze im Verhältnis zum Ganzen von
+100% zu denken. Das Sehen einer Leiste, die sich entlang
+einer quantitativen Skala bis zu 25% erstreckt, vermittelt
+ein Teil-Ganz-Verhältnis nur geringfügig weniger
+effektiv als ein Tortendiagramm mit einem Viertelschnitt,
+besonders wenn der Titel des Balkendiagramms erklärt,
+dass es die Teile eines Gesamten anzeigt (zum Beispiel
+"Regionale Aufschlüsselung des Gesamtumsatzes"). Trotz
+der offensichtlichen Botschaft eines Tortendiagramms
+bieten Balkendiagramme eine wesentlich bessere
+Möglichkeit, die Größenordnungen jedes Teils zu
+vergleichen. Tortendiagramme machen es nur leicht, die
+Größe eines Schnitts zu beurteilen, wenn er nahe bei
+0%, 25%, 50%, 75% oder 100% liegt. Alle Prozentsätze
+außerhalb dieser Bereiche sind in einem Tortendiagramm
+schwer zu erkennen, können jedoch in einem Balkendiagramm
+genau erkannt werden, dank der quantitativen Skala.
+
+Erlauben Sie mir, dies zu veranschaulichen. Hier ist
+ein Tortendiagramm mit sechs Schnitten. Beachten Sie, wie
+einfach es ist festzustellen, dass der Wert von Unternehmen
+C (der grüne Schnitt) 25% beträgt, ein Viertel der Torte.
+
+
+![](bilder/Auswahl_072.png){width=10cm}
+
+
+
+Nun beachten Sie, wie selbst der grüne Schnitt, der oben
+leicht als 25% zu lesen war, in der Abbildung unten nicht
+mehr so leicht als 25% zu erkennen ist.
+
+![](bilder/Auswahl_073.png){width=10cm}
+
+Keine der Werte hat sich geändert. Ich habe einfach die
+Schnitte nach ihrer Größe sortiert. In dem vorherigen
+Beispiel wurde unsere Fähigkeit, den grünen Schnitt
+als 25% zu erkennen, durch die Tatsache unterstützt,
+dass der grüne Schnitt bei 6 Uhr begann und ordentlich
+bis 9 Uhr verlief. Positionen am äußersten oberen,
+rechten, unteren und linken Rand eines Kreises markieren
+90-Grad-Intervalle voneinander, von denen jedes einen
+rechten Winkel bildet. Diese vier Positionen sowie die 90
+rechten Winkel, die die Intervalle bilden, sind unseren
+Augen und unserem Verstand sehr vertraut. Im zweiten
+Beispiel jedoch, weil der grüne Schnitt nun an einer
+weniger erkennbaren Position beginnt, ist die Größe des
+Schnitts schwieriger zu beurteilen.
+
+Man könnte argumentieren, dass dieses Problem leicht
+gelöst werden kann, indem man die Werte jedes Schnitts
+beschriftet, wie hier gezeigt:
+
+![](bilder/Auswahl_074.png){width=10cm}
+
+Warum hier stoppen? Bei diesem Tortendiagramm sind wir gezwungen, Zeit
+damit zu verschwenden, unsere Augen zwischen der Legende
+rechts und den Schnitten der Torte hin und her zu bewegen,
+um herauszufinden, welcher Schnitt welches Unternehmen
+repräsentiert. Dieses Problem können wir lösen, indem
+wir die Schnitte direkt mit den Unternehmensnamen und den
+Werten beschriften, wie hier gezeigt:
+
+
+![](bilder/Auswahl_075.png){width=10cm}
+
+
+Realisieren Sie, was wir gerade getan haben? Weil das
+Tortendiagramm schwer zu lesen war, haben wir Werte
+hinzugefügt, damit wir die Größen der Schnitte
+nicht vergleichen müssen, und wir haben direkte
+Unternehmensetiketten hinzugefügt, damit wir uns
+nicht auf eine Legende verlassen müssen. Wir haben das
+Tortendiagramm in eine ungeschickt angeordnete Entsprechung
+einer Tabelle aus Etiketten und Werten umgewandelt. Hier
+sind dieselben Informationen als ordentlich gestaltete
+Tabelle angeordnet:
+
+
+![](bilder/Auswahl_076.png){width=10cm}
+
+
+Diese Informationen lassen sich viel einfacher lesen, wenn
+sie in einer Tabelle präsentiert werden, als wenn sie
+umständlich um den Rand der Torte angeordnet sind. Warum
+überhaupt ein Diagramm verwenden? Warum ein Bild der Daten
+zeigen, wenn das Bild nicht decodiert werden kann und die
+Informationen nicht sinnvoller präsentiert? Die Antwort
+lautet: Das sollten Sie nicht. Diagramme sind nützlich,
+wenn ein Bild der Daten sinnvolle Beziehungen sichtbar
+macht (Muster, Trends und Ausnahmen), die nicht leicht
+aus einer Tabelle mit denselben Daten zu erkennen wären.
+
+Aber was ist, wenn wir dieselben Informationen in einem
+Diagramm anzeigen könnten, das leicht zu lesen ist;
+eines, das nützliche Bedeutung hinzufügt, indem es
+uns ermöglicht, die Größenordnungen der Werte zu
+vergleichen, ohne sie zu beschriften? Hier sind dieselben
+Daten in einem Balkendiagramm dargestellt:
+
+
+![](bilder/Auswahl_077.png){width=10cm}
+
+
+Nun können die Werte relativ einfach und präzise
+verglichen werden, nur auf das Diagramm gestützt, ohne
+die Werte zu beschriften. Welchen Wert bietet dieses
+Balkendiagramm im Vergleich zu einer Tabelle? Mit nur einem
+Blick vermittelt es ein Bild der Beziehungen zwischen sechs
+Unternehmen im Hinblick auf den Marktanteil. Nicht nur ihre
+relative Rangfolge ist offensichtlich, sondern auch die
+Unterschiede im Wert von einem Unternehmen zum nächsten
+stehen unseren Augen leicht zur Verfügung. Könnten wir
+dasselbe Bild in unseren Köpfen aus einer Tabelle mit
+denselben Werten erstellen? Vielleicht, aber es würde viel
+Aufwand und Zeit erfordern. Warum sich die Mühe machen,
+wenn ein Diagramm die Arbeit für Sie erledigen kann und
+die Geschichte auf eine Weise erzählen kann, die direkt an
+den leistungsstarken, parallel arbeitenden Bildprozessor
+in Ihrem Gehirn appelliert, der viel schneller arbeitet
+als der Teil Ihres Gehirns, der Text verarbeitet und für
+die Verarbeitung von Tabellen benötigt wird?
+
+Wenige Menschen, wenn überhaupt, wissen mehr über
+Diagramme als William Cleveland, der sie umfassend studiert
+hat. Cleveland schreibt:
+
+>Wenn ein Diagramm erstellt wird, wird quantitative und
+kategoriale Information durch eine Anzeigemethode
+codiert. Dann wird die Information visuell
+dekodiert. Diese visuelle Wahrnehmung ist eine
+entscheidende Verbindung. Egal wie clever die Wahl der
+Informationen ist und wie technologisch beeindruckend
+die Codierung ist, eine Visualisierung scheitert,
+wenn die Dekodierung scheitert. Einige Anzeigemethoden
+führen zu effizienter, genauer Dekodierung, und andere
+führen zu ineffizienter, ungenauer Dekodierung. Nur durch
+wissenschaftliche Untersuchung der visuellen Wahrnehmung
+können fundierte Urteile über Anzeigemethoden getroffen
+werden. (William S. Cleveland, The Elements of Graphing
+Data, Hobart Press, 1994, S. 1)
+
+Und was hält Cleveland von Tortendiagrammen? Er
+bezeichnet sie als "Pop-Charts", weil sie häufig in
+der Populärkultur vorkommen, aber viel weniger in der
+Wissenschafts- und Technologiemedien. "Tortendiagramme
+[zusammen mit anderen Formen von Flächendiagrammen]
+ermöglichen keine effiziente Erkennung geometrischer
+Objekte, die Informationen über Wertunterschiede
+vermitteln." (Ebd., S. 268)
+
+
+Ich fürchte, ich bin in unserer Geschichte ein wenig
+vorausgesprungen. Ich habe vor, die Tortendiagramme
+eingehender zu erforschen, beginnend mit ihrer
+Geschichte. Um das zusammenzufassen, was ich bisher
+gesagt habe:
+
+>Unzählige Menschen kaufen die Vorstellung, dass dieses
+vertraute Diagramm ein freundlicher Kerl ist. Diese
+Meinung ist jedoch viel zu hoch; er ist schließlich eine
+bescheidene Torte.
+
+## Die Geschichte, Verwendung und Funktionsweise von Tortendiagrammen 
+
+Das Tortendiagramm erschien erstmals 1801
+in einer Veröffentlichung mit dem Titel "The Statistical
+Breviary" von William Playfair. In dieser Veröffentlichung
+verwendete Playfair verschiedene Diagramme, um geografische
+Gebiete, Bevölkerungen und Einnahmen europäischer Staaten
+darzustellen. Wir haben Playfair für viele der heute
+verwendeten beliebten Diagramme zu danken, einschließlich
+des Balkendiagramms. Obwohl er das Liniendiagramm nicht
+erfunden hat, hat seine innovative Arbeit dazu beigetragen,
+es als Mittel zur Darstellung quantitativer Werte über die
+Zeit zu popularisieren. Mehr als jeder vor ihm verließ
+sich Playfair auf grafische Darstellungen quantitativer
+Daten, weil er glaubte, dass "sich an das Auge zu wenden,
+wenn Proportion und Größe betroffen sind, die beste
+und schnellste Methode ist, eine klare Vorstellung zu
+vermitteln" (William Playfair, The Statistical Breviary,
+T. Bensley, 1801, S. 4).  Der Begriff "Tortendiagramm"
+wurde erst Jahre später geprägt, und es ist nicht die
+einzige metaphorische Bezeichnung aus dem Bereich der
+Lebensmittel. Die Franzosen nannten es nach ihrem weichen
+runden Käse - Camembert. Playfair verwendete Kreise
+auf verschiedene Weisen, um quantitative Beziehungen
+darzustellen, indem er ihre Größen variierte, sie in
+Sektoren unterteilte und sie überlappte, ähnlich wie bei
+Venn-Diagrammen. Das Diagramm auf der nächsten Seite von
+"The Statistical Breviary" zeigt eine Reihe von Kreisen,
+die nebeneinander angeordnet sind, mit ausgerichteten
+Zentren. Jeder Kreis repräsentiert eine geopolitische
+Region, manchmal unterteilt in Sektoren durch die
+Verwendung von Teilen des Osmanischen Reiches im zweiten
+Kreis von links.
+
+
+![](bilder/pic-000.png)
+
+
+Obwohl Playfair in der Regel kluge Urteile über grafische
+Bilder und deren Verwendung zur Darstellung von Daten traf,
+hatte er 1801 nicht den Nutzen der großen Sammlung von
+Forschung, die seitdem die Wirksamkeit verschiedener
+grafischer Geräte untersucht hat. Er verstand die
+intuitive Fähigkeit eines unterteilten Kreises,
+Beziehungen von Teil zu Ganzem darzustellen, jedoch nicht
+die Wahrnehmungsprobleme, denen wir begegnen, wenn wir
+seine Teile vergleichen.  Tortendiagramme codieren
+quantitative Werte hauptsächlich auf zwei Arten:
+zweidimensionale Flächen der Sektoren und die Winkel,
+die die Sektoren bilden, während sie sich vom Zentrum der
+Torte aus erstrecken. Heute wissen wir, dass keines dieser
+visuellen Merkmale einfach zu vergleichen ist. Unsere Augen
+sind gut darin, Unterschiede in der zweidimensionalen
+Position und Unterschiede in der Längenmessung zu
+vergleichen, aber nicht in Flächen und Winkeln. Im
+folgenden Beispiel verwendet das Diagramm auf der linken
+Seite die zweidimensionalen Positionen der Datenpunkte, und
+das auf der rechten Seite verwendet die Längen (in diesem
+Fall die Längen der Balken), um Werte zu codieren. Wie Sie
+sehen können, machen beide es sehr einfach, Unterschiede
+zwischen Werten zu sehen und zu interpretieren.
+
+![](bilder/Auswahl_078.png)
+
+
+Man könnte geneigt sein zu glauben, dass man einen
+besseren Job machen kann als die meisten beim Beurteilen
+von Unterschieden in Werten, die als zweidimensionale
+Flächen codiert sind. Hier ist ein einfacher Test. Wenn
+die Fläche des kleinen Kreises unten einem Wert von 1
+entspricht, was ist die Fläche des großen Kreises?
+
+![](bilder/Auswahl_079.png){width=10cm}
+
+
+Nicht einfach, oder? Wenn ich Studenten frage, die
+Größe des großen Kreises zu schätzen, erhalte ich
+Antworten im Bereich von etwa 6 bis 50. Die Fläche des
+großen Kreises ist tatsächlich 16-mal so groß wie die
+Fläche des kleinen Kreises. Stephen Kosslyn schreibt:
+
+>Die systematische Verzerrung der Fläche wird durch
+das "Stevens Power Law" erfasst, das besagt, dass der
+psychologische Eindruck eine Funktion der tatsächlichen
+physischen Größe ist, die mit einem Exponenten (und
+multipliziert mit einer Skalierungskonstanten) erhoben
+wird. Um genau zu sein, ist die wahrgenommene Fläche
+normalerweise gleich der tatsächlichen Fläche, die
+mit einem Exponenten von etwa 0,8 multipliziert wird,
+mal einer Skalierungskonstante... Im Gegensatz dazu wird
+die relative Linienlänge [wie die Längen der Balken]
+fast perfekt wahrgenommen, vorausgesetzt, die Linien sind
+in dieselbe Richtung orientiert. (Kosslyn, Stephen, Graph
+Design for the Eye and Mind, Oxford University Press,
+2006, S. 40) 
+
+
+Vielleicht haben Sie Einwände dagegen,
+dass Sie sich nur auf relative zweidimensionale Flächen
+verlassen mussten, um die oben genannten Unterschiede zu
+erkennen, ohne auch relative Winkel zu berücksichtigen,
+die bei Tortendiagrammen eine Rolle spielen. Hier ist
+ein weiterer Test, diesmal mit einem tatsächlichen
+Tortendiagramm. Schauen Sie sich das Tortendiagramm unten
+an und versuchen Sie, die Sektoren in der Reihenfolge von
+größtem bis kleinstem zu platzieren.
+
+![](bilder/Auswahl_080.png){width=10cm}
+
+Cabernet Sauvignon Sangiovese Prosecco Chardonnay Syrah
+Tempranillo Pinot Grigio
+
+Schwierigkeiten? Wie Sie sehen können, macht es das
+Vergleichen der Winkel der Sektoren nicht einfacher.
+
+Naomi Robbins schreibt: 
+
+>Wir treffen Winkelentscheidungen,
+wenn wir ein Tortendiagramm lesen, aber wir beurteilen
+Winkel nicht sehr gut. Diese Urteile sind voreingenommen; 
+wir unterschätzen spitze Winkel (Winkel unter 90°)
+und überschätzen stumpfe Winkel (Winkel über 90°). Auch
+Winkel mit horizontalen Bisektoren (wenn die Linie, die den
+Winkel in zwei Hälften teilt, horizontal ist) erscheinen
+größer als Winkel mit vertikalen Bisektoren. (Naomi
+Robbins, Creating More Effective Graphs, Wiley, 2005,
+S. 49) 
+
+Wenn ein Diagramm seine Aufgabe erfüllt, sollten
+Sie nicht kämpfen müssen. Schauen Sie, wie einfach es
+ist, die Prozentsätze mit dem Balkendiagramm unten zu
+vergleichen, das dieselben Werte anzeigt: Gesamteinnahmen
+nach Produkt 
+
+
+![](bilder/Auswahl_081.png){width=10cm}
+
+Sangiovese Pinot Grigio Prosecco Cabernet Sauvignon
+Chardonnay Syrah Tempranillo
+
+## Torten in all ihrer modernen Pracht 
+
+Das Tortendiagramm,
+wie alle Diagramme, die die Position, Länge oder Fläche
+von Objekten verwenden, um die Menge darzustellen, enthält
+eine Achse mit einer quantitativen Skala, die jedoch nie
+angezeigt wird. Die Achse und Skala eines Tortendiagramms
+sind nicht linear wie bei den meisten Diagrammen, sondern
+kreisförmig, da sie entlang des Umfangs des Kreises
+liegen. So würde ein Tortendiagramm aussehen, wenn seine
+Achse und Skala sichtbar wären: 
+
+![](bilder/Auswahl_082.png){width=10cm}
+
+
+
+
+Menschen lieben es heute, ihre Tortendiagramme ansprechend
+zu gestalten. Warum bei einem einfachen 2-D-Tortendiagramm
+bleiben, wenn Sie dem Bild eine dritte Dimension der Tiefe
+hinzufügen und dazu noch Lichteffekte und konturierte
+Kanten einfügen können, wie hier gezeigt?
+
+![](bilder/Auswahl_083.png){width=10cm}
+
+Es ist hübsch und auffällig, aber ist es sinnvoller
+oder leichter zu interpretieren? Tatsächlich haben wir
+durch das Hinzufügen von Tiefe zur Torte und Ändern ihres
+Winkels die Interpretation erschwert. Der grüne Abschnitt
+scheint jetzt größer zu sein, als er tatsächlich ist,
+aufgrund der hinzugefügten Tiefe. Die Abschnitte sind
+jetzt schwieriger zu vergleichen, weil der Winkel ihr
+Aussehen verzerrt.
+
+Für diejenigen unter Ihnen, die nicht widerstehen können,
+ihre Torten zu neigen (schließlich ist das Neigen von
+Torten ein alter und respektierter Sport in Kulturen,
+die für ihr Talent mit Gebäck bekannt sind), möchte
+ich die Wirkung illustrieren, die Sie erzeugen. Hier sind
+drei Tortendiagramme, die genau gleich sind, außer dass
+das obere 2-D ist und die anderen beiden 3-D und geneigt
+sind. Beachten Sie, wie unterschiedlich die Beziehungen
+zwischen den Abschnitten von einer Version zur nächsten
+erscheinen.
+
+![](bilder/Auswahl_084.png){width=10cm}
+
+Warum hier aufhören? Basierend auf dem, was viele
+Softwareanbieter bewerben, werden wir ermutigt, sie
+nach Belieben anzupassen. Mit Excel und mehreren anderen
+Produkten können Sie jetzt zum Beispiel die Transparenz
+der Torte einfach manipulieren und völlig nutzlose
+Diagramme erstellen, wie dieses:
+
+
+![](bilder/Auswahl_085.png){width=10cm}
+
+Glauben Sie es oder nicht, das ist dasselbe Tortendiagramm
+wie das oben gezeigte. Der einzige Unterschied ist,
+dass Sie jetzt hindurchsehen können. Sind Sie nicht
+glücklich, dass Microsoft diese schicke Funktion
+hinzugefügt hat? Glauben Sie mir, wenn ich sage, dass
+ich hier nichts tue, was nicht stolz von zahlreichen
+Softwareanbietern vermarktet wird. Hier ist ein Crystal
+Xcelsius Tortendiagramm, das auf Hochglanz poliert wurde:
+
+![](bilder/Auswahl_086.png){width=10cm}
+
+Ich habe dieses Beispiel aus einem Dashboard gezogen. Eines
+der Ziele eines Dashboards ist es, Informationen so
+zu präsentieren, dass sie schnell gelesen und leicht
+verstanden werden können. Wenn Sie jedoch zu schnell
+darauf schauen, neigen Sie dazu zu denken, dass es drei
+Abschnitte enthält. Diese Fehlwahrnehmung resultiert
+aus der simulierten Lichtreflexion auf der glänzenden
+Oberfläche der Torte. Wenn Licht in der realen Welt so
+von Objekten reflektiert wird, finden wir es lästig. Wir
+müssen die Augen zusammenkneifen, um den Glanz zu
+blockieren und das Objekt klar zu sehen. Warum sollten
+wir diesen lästigen und irreführenden Effekt jemals auf
+einem Computerbildschirm reproduzieren wollen?
+
+Manchmal werden trotz ihrer offensichtlichen
+Einschränkungen absurde Anforderungen an Tortendiagramme
+gestellt, um weit mehr zu zeigen als üblich. Auf
+der folgenden Seite gibt es ein Beispiel von Advizor
+Analyst/X (ein ansonsten gutes Produkt), das versucht,
+gleichzeitig zwei Ebenen von Teil-zu-Ganz-Beziehungen
+darzustellen: eine pro Land (die Abschnitte) und eine pro
+Produkttyp (die kreisförmigen Farbbänder innerhalb jedes
+Landes). Es wäre unmöglich, Mengen eines Produkttyps
+zwischen Ländern zu vergleichen, da sie aufgrund ihrer
+unterschiedlichen Formen sehr unterschiedlich geformt sind.
+
+![](bilder/Auswahl_087.png){width=10cm}
+
+Betrachten wir eine weitere ineffektive Verwendung von
+Tortendiagrammen. Edward Tufte sagte einmal, dass "das
+einzige schlechtere Design als ein Tortendiagramm mehrere
+davon ist, denn dann wird der Betrachter aufgefordert,
+Mengen zu vergleichen, die räumlich durcheinander liegen,
+sowohl innerhalb als auch zwischen den Torten" (Edward
+Tufte, The Visual Display of Quantitative Information,
+Graphics Press, 1983, S. 178). Ich teile Tufte's Meinung,
+dass dies eine ineffektive Möglichkeit ist, mehrere
+Teil-zu-Ganz-Beziehungen zu vergleichen.
+
+![](bilder/Auswahl_088.png)
+
+
+Versuchen Sie, die Veränderungen dieser verschiedenen
+Unternehmen und ihre Vergleiche im Laufe der Zeit zu
+verfolgen. Es ist fast unmöglich. Beachten Sie jedoch,
+wie leicht Sie es mit der folgenden Anzeige tun können:
+
+
+![](bilder/Auswahl_089.png)
+
+
+
+Dies ist eine erhebliche Verbesserung gegenüber der
+oben gezeigten Serie von Tortendiagrammen, aber es ist
+immer noch nicht so einfach, die Veränderungen in den
+Teil-Ganz-Prozenten von Jahr zu Jahr zu erkennen, wie es
+sein sollte. Nichts zeigt Veränderungen im Laufe der
+Zeit besser als eine Linie. Hier sind dieselben Daten,
+diesmal als einzelnes Liniendiagramm dargestellt:
+
+![](bilder/Auswahl_090.png){width=10cm}
+
+Jetzt ist es einfach, die Veränderungen zu sehen
+und die Größen der Teile in einem bestimmten Jahr zu
+vergleichen. Was wir in diesem Beispiel jedoch nicht sehen
+können, sind die Gesamtmarkteinnahmen und wie sie von
+Jahr zu Jahr variiert haben. Für diese Ansicht können
+wir ein Flächendiagramm verwenden (siehe unten):
+
+
+![](bilder/Auswahl_091.png){width=10cm}
+
+
+Denken Sie daran, dass jedes einzelne Diagramm
+möglicherweise besonders gut für einen bestimmten Zweck
+geeignet ist, jedoch Probleme haben kann, wenn es für
+andere Zwecke verwendet wird. Dieses Flächendiagramm macht
+zum Beispiel einen guten Job, um zu zeigen, wie sich die
+Gesamtumsätze von Jahr zu Jahr verändert haben, und gibt
+auch einen Eindruck vom Anteil jedes Unternehmens an den
+Gesamtumsätzen in einem bestimmten Jahr. Sie möchten es
+jedoch nicht verwenden, um zu erkennen, wie sich der Anteil
+jedes Unternehmens am Ganzen von Jahr zu Jahr verändert
+hat. Dies liegt daran:
+
+1. Die Maßeinheit sind Dollar, nicht Prozentsätze,
+sodass eine Steigerung der Dollar-Einnahmen eines einzelnen
+Unternehmens von einem Jahr zum nächsten tatsächlich
+eine Abnahme seines Prozentsatzes am Ganzen darstellen
+könnte.  2. Mit Ausnahme von Unternehmen C, das unten
+im Diagramm positioniert ist und eine flache Basis hat,
+können Sie nicht den oberen Rand jeder farbigen Fläche
+eines Landes verfolgen, um zu bestimmen, wie sich seine
+Einnahmen verändert haben. Stattdessen müssen Sie die
+Höhe der Fläche in einem bestimmten Jahr von unten nach
+oben betrachten, was schwieriger zu beurteilen ist.
+
+## Die geheime Stärke der Torten 
+
+Sie fragen sich vielleicht,
+abgesehen von der natürlichen Art und Weise, wie
+Tortendiagramme eine Teil-Ganz-Beziehung nahelegen,
+haben sie noch etwas anderes für sich? Ich habe jede
+Forschungsstudie gelesen, die ich finden konnte, die die
+Wirksamkeit von Tortendiagrammen im Vergleich zu anderen
+Mitteln zur Darstellung quantitativer Daten getestet hat,
+angefangen bei einer Studie von 1926 von W. C. Ells,
+und habe nur einen Vorteil gefunden, der sicherlich
+Tortendiagrammen zugeschrieben werden kann. Leider ist
+diese eine Stärke selten oder gar nicht nützlich. Ian
+Spence von der University of Toronto war seit 1989 an
+mehreren dieser Studien beteiligt. Im Jahr 1991 führten
+Spence und Stephan Lewandowky eine Reihe von Experimenten
+durch, um die relative Wirksamkeit verschiedener Mittel zur
+Darstellung derselben Teil-Ganz-Beziehung zu vergleichen -
+ein Tortendiagramm, ein Balkendiagramm und eine Tabelle -
+für verschiedene Aufgaben.
+
+Die Studie trug den Titel "Displaying Proportions and
+Percentages" und wurde in Applied Cognitive Psychology
+(Band 5, Seiten 61-77) veröffentlicht. Für jede Aufgabe
+wurde die Geschwindigkeit und Genauigkeit der Antworten der
+Testpersonen gemessen. Der einzige geringfügige Vorteil
+eines Tortendiagramms gegenüber einem Balkendiagramm
+bestand in einer Aufgabe, bei der die Testpersonen die
+Frage beantworten mussten: "Welches ist größer, A+B
+oder C+D?", während sie eines der drei unten stehenden
+Diagramme betrachteten:
+
+![](bilder/Auswahl_092.png){width=10cm}
+
+Manchmal waren die Teile, die die Probanden addieren
+sollten, benachbart (zum Beispiel A+B) und manchmal nicht
+(zum Beispiel A+C). Es ist nicht schwer zu glauben, dass
+es etwas einfacher ist, die Flächen von Tortenstücken
+zu summieren, als sich die kombinierten Höhen von
+aufeinander gestapelten Balken vorzustellen. Ich frage mich
+jedoch, ob der Vorteil, den Tortendiagramme gegenüber
+Balkendiagrammen hatten, beseitigt worden wäre, wenn
+die Teile, die addiert wurden, nicht benachbart gewesen
+wären und das Balkendiagramm vollständig mit seiner
+quantitativen Skala angezeigt worden wäre (siehe unten).
+
+![](bilder/Auswahl_093.png){width=10cm}
+
+Unabhängig davon bleibt die Tatsache bestehen, dass
+ein Vergleich von zwei Sätzen von summierten Teilen in
+der realen Welt selten ist. Aber wenn Sie jemals Daten
+zu diesem Zweck anzeigen müssen, würde Ihnen ein
+Tortendiagramm gut dienen. Andernfalls sparen Sie die
+Torten für das Dessert auf.
+

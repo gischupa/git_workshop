@@ -1,0 +1,29 @@
+## Images mit Tar
+
+Besteht aus verschiedenen Gründen keine
+Möglichkeit, normale *Docker-pulls* auszuführen, so 
+können auch vorbereitete Images ins System übernommen 
+werden.  
+Docker kann Images speichern:
+
+```bash
+docker save -o mein-image.tar mein-image:tag
+```
+
+und auch wieder laden:
+
+```bash
+docker load -i mein-image.tar
+```
+
+Müssen die Images über das Netz transportiert werden,
+so kann man sie vorher auch noch komprimieren:
+
+```bash
+docker save nginx:latest | gzip > nginx.tar.gz
+# und 
+gunzip -c nginx.tar.gz | docker load
+```
+
+
+

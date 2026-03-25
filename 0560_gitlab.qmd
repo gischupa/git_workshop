@@ -11,12 +11,12 @@ Nach dem komplexen Aufbau von \gitea mit seinem Runner, wirkt
 
 ## Umstellen des Ports
 
-Melde dich auf dem Server an und werde *root*.
+Melde dich auf dem Ubuntu an und werde *root*.
 Suche in der Datei \datei{/etc/ssh/sshd\_config} nach der 
 Zeile **# Port 22** (Auskommentiert). Entferne den 
 Kommentar und ersetze 22 durch 23. (Speichern nicht vergessen!)
 
-**WICHTIG WICHTIG WICHTIG**
+**WICHTIG WICHTIG WICHTIG**  
 Vergiss nicht, auf der Firewall auch Port 23 freizuschalten:
 
 ```bash
@@ -43,7 +43,7 @@ cd /home/benutzer/docker/gitlab25
 ```
 
 Kopiere die Datei \datei{docker-compose.yml} aus dem Materialordner \ordner{gitlab}
-an diese Stelle:
+an diese Stelle. Passe unbedingt die IP-Adresse an!
 
 ```bash
 version: '3.6'
@@ -119,7 +119,7 @@ das Kennwort geändert werden (Wieder ist das Erstkennwort erforderlich!).
 Mit diesem *docker-compose*-Setup ist ssh-clonen
 bereits möglich (sobald der ssh-Key im Profil hinterlegt ist). 
 Solltest du auf dem Host einen anderen Port 
-verwenden (gitlab arbeitet intern dennoch mit 22), dann clonst   
+verwenden (gitlab arbeitet intern dennoch mit 22), dann clonst 
 du so (z.B. über Port 25):
 
 ```bash
@@ -133,7 +133,7 @@ git clone ssh://git@192.168.3.190:25/root/demo.git
 * Deinen public-Key in den Account eintragen (das muss jeder Benutzer machen!)
 
 Ab jetzt kann vollwertig mit \gitlab gearbeitet werden -- über 
-Konsole, GitClients, ... ,Weboberfläche.
+Konsole, GitClients, ... , Weboberfläche.
 
 ## Einstieg in Gitlab
 
