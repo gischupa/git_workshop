@@ -1,26 +1,29 @@
 % Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
+  ngerman,
   letterpaper,
   DIV=11]{scrreprt}
-
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else  
-    % xetex/luatex font selection
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -38,9 +41,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{xcolor}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -106,8 +106,7 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -132,6 +131,31 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
+
+
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage[german]{selnolig} % disable illegal ligatures
+\fi
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
 
 % load packages
 \usepackage{geometry}
@@ -170,6 +194,7 @@
   \fancyhf{}
   \renewcommand\headrulewidth{0pt}
   \fancyfoot[R]{\thepage}
+
   \fancyfootoffset{3.5cm}
 }
 \setlength{\footskip}{20pt}
@@ -178,9 +203,9 @@
   \fancyhf{}
   \renewcommand\headrulewidth{0pt}
   \fancyfoot[R]{\thepage}
+
   \fancyfootoffset{3.5cm}
 }
-
 
 
 %% style the chapter/section fonts
@@ -366,7 +391,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, sharp corners, colback={codebgcolor}, enhanced, frame hidden, breakable]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[colback={codebgcolor}, boxrule=0pt, breakable, enhanced, sharp corners, frame hidden]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -374,23 +399,9 @@
         \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
           \node[shape=circle,draw,inner sep=1pt] (char) {{\scriptsize#1}};}}  
                   
-
-\ifLuaTeX
-\usepackage[bidi=basic]{babel}
-\else
-\usepackage[bidi=default]{babel}
-\fi
-\babelprovide[main,import]{ngerman}
-% get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
-\def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage[german]{selnolig} % disable illegal ligatures
-\fi
 \usepackage{bookmark}
-
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same} % disable monospaced font for URLs
+\urlstyle{same}
 \hypersetup{
   pdftitle={Git Workshop},
   pdfauthor={Wolfgang Höfer},
@@ -406,7 +417,6 @@
 \title{Git Workshop}
 \author{Wolfgang Höfer}
 \date{2026-10-03}
-
 \begin{document}
 \maketitle
 
@@ -419,6 +429,14 @@
 \addcontentsline{toc}{chapter}{Vorbemerkung}
 
 \markboth{Vorbemerkung}{Vorbemerkung}
+
+\samplestart
+
+\textbf{Hinweis} Dieses Werk ist lizenziert unter der Creative Commons
+Lizenz BY-SA 4.0\\
+\href{https://creativecommons.org/licenses/by-sa/4.0/}{%
+    \includegraphics[height=0.8cm]{bilder/cc-by-sa.png}
+} \sampleend
 
 Git ist das aktuell wohl gängigste Versionskontrollsystem auf dem Markt.
 Allerdings gibt es im Zusammenhang mit \git so viele verschiedene
@@ -4815,7 +4833,8 @@ vorbelegt ist:
 
 \caption{Name vergeben}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf2.png}}
@@ -4824,7 +4843,8 @@ vorbelegt ist:
 
 \caption{Image wählen}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf3.png}}
@@ -4833,7 +4853,8 @@ vorbelegt ist:
 
 \caption{System - passt}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf4.png}}
@@ -4842,7 +4863,8 @@ vorbelegt ist:
 
 \caption{Disks - Größe anpassen}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf5.png}}
@@ -4851,7 +4873,8 @@ vorbelegt ist:
 
 \caption{CPU - höher gehen}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf6.png}}
@@ -4860,7 +4883,8 @@ vorbelegt ist:
 
 \caption{Speicher - höher gehen}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf7.png}}
@@ -4869,7 +4893,8 @@ vorbelegt ist:
 
 \caption{Netzwerk - passt}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf8.png}}
@@ -4907,7 +4932,8 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 
 \caption{Sprachwahl}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_3.png}}
@@ -4916,7 +4942,8 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 
 \caption{Tastaturwahl}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_4.png}}
@@ -4925,7 +4952,8 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 
 \caption{Servervariante - passt}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_5.png}}
@@ -4949,7 +4977,8 @@ Voreinstellungen.
 
 \caption{Proxyadresse - leer}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_7.png}}
@@ -4958,7 +4987,8 @@ Voreinstellungen.
 
 \caption{Spiegelserver - übernehmen}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_8.png}}
@@ -4980,7 +5010,8 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 
 \caption{Zusammenfassung}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_10.png}}
@@ -4989,7 +5020,8 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 
 \caption{Warnung - auf Fortfahren}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_11.png}}
@@ -5011,7 +5043,8 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 
 \caption{Profil}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_13.png}}
@@ -5020,7 +5053,8 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 
 \caption{Ubuntu-Pro - Nein Danke}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_14.png}}
@@ -5041,7 +5075,8 @@ Keys haben wir aktuell keine zum Importieren.
 
 \caption{Weitere Dienste - Keine}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_16.png}}
@@ -5050,7 +5085,8 @@ Keys haben wir aktuell keine zum Importieren.
 
 \caption{Installation}
 
-\end{figure}%%
+\end{figure}%
+
 \begin{figure}[H]
 
 {\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_17.png}}
@@ -9912,6 +9948,14 @@ Unser Docker-Host (die VM) muss bei der Installation unbedingt die IP
 172.16.100.10 bekommen, denn das gesamte Firewalling ist auf diese IP
 ausgerichtet. Anfragen an den Proxmox, die über die Ports 22, 4000 und
 8080 erfolgen, werden direkt an die VM auf diesen Ports weitergeleitet.
+
+\section{Tipps}\label{tipps}
+
+Installation und Basis-Konfiguration\\
+\href{https://www.youtube.com/watch?v=_cUFK8YrukQ&t=34s}{Video 1}
+
+Helper-Scripts
+\href{https://community-scripts.org/scripts}{Proxmox-Helper Scripts}
 
 
 

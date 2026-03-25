@@ -1,4 +1,14 @@
+
 # Vorbemerkung{.unnumbered}
+
+\samplestart
+**Hinweis**
+Dieses Werk ist lizenziert unter der Creative Commons Lizenz BY-SA 4.0  
+\href{https://creativecommons.org/licenses/by-sa/4.0/}{%
+    \includegraphics[height=0.8cm]{bilder/cc-by-sa.png}
+}
+\sampleend
+
 Git ist das aktuell wohl gängigste Versionskontrollsystem auf dem Markt.
 Allerdings gibt es im Zusammenhang mit \git so viele verschiedene Aspekte
 zu betrachten, dass eine stringente Einführung in das Thema relativ 
