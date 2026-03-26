@@ -442,19 +442,16 @@ Nun kannst du Jobs auf \gitlab erstellen.
 #### Wieder das Buch mit Quarto 
 
 Kopiere dir den Inhalt des Ordners \ordner{Buchvorlage} 
-aus dem \gitea-Projekt in vorher geclonten Ordner von \gitlab.
+aus dem \gitea-Projekt in den vorher geclonten Ordner von \gitlab.
 Passe die Datei \datei{.gitlab-ci.yml} so an:
 
 ```bash
-variables:
-  DOCKER_IMAGE: quarto-small:1.0
-
 stages:
   - build
 
 ausgabe_1:
   stage: build
-  image: quarto-small:1.0
+  image: quarto-git:1.0
   script: 
     - echo "Ich bin die erste Ausgabe"
     - ls -lah

@@ -1,29 +1,26 @@
 % Options for packages loaded elsewhere
-% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
-  ngerman,
   letterpaper,
   DIV=11]{scrreprt}
-\usepackage{xcolor}
+
 \usepackage{amsmath,amssymb}
-\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
+\ifPDFTeX\else  
+    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -41,6 +38,9 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -106,7 +106,8 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
-\usepackage{longtable,booktabs,array}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -118,44 +119,17 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\newsavebox\pandoc@box
-\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
-  \sbox\pandoc@box{#1}%
-  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
-  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
-  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
-  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
-  \else\usebox{\pandoc@box}%
-  \fi%
-}
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 % Set default figure placement to htbp
+\makeatletter
 \def\fps@figure{htbp}
 \makeatother
-
-
-
-\ifLuaTeX
-\usepackage[bidi=basic]{babel}
-\else
-\usepackage[bidi=default]{babel}
-\fi
-% get rid of language-specific shorthands (see #6817):
-\let\LanguageShortHands\languageshorthands
-\def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage[german]{selnolig} % disable illegal ligatures
-\fi
-
-
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-
-
- 
-
 
 % load packages
 \usepackage{geometry}
@@ -391,7 +365,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[colback={codebgcolor}, boxrule=0pt, breakable, enhanced, sharp corners, frame hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, enhanced, breakable, colback={codebgcolor}, frame hidden, boxrule=0pt]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -399,9 +373,23 @@
         \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
           \node[shape=circle,draw,inner sep=1pt] (char) {{\scriptsize#1}};}}  
                   
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{ngerman}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 \usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
+\urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Git Workshop},
   pdfauthor={Wolfgang Höfer},
@@ -417,6 +405,7 @@
 \title{Git Workshop}
 \author{Wolfgang Höfer}
 \date{2026-10-03}
+
 \begin{document}
 \maketitle
 
@@ -533,29 +522,29 @@ Version vom November 2025. Beachte, dass dieses Handout für die digitale
 Verwendung gedacht ist -- aus diesem Grund füge ich die Bilderstrecke
 hier ein. Für einen Ausdruck wäre das Verschwendung!
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_001.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_002.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_001.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_002.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_003.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_004.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_003.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_004.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_005.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_007.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_005.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_007.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_008.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_009.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_008.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_009.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_010.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_011.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_010.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_011.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_012.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_013.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_012.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_013.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_014.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_015.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_014.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_015.png}
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_016.png}
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_017.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_016.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_017.png}
 
 \subsection{Linux}\label{linux}
 
@@ -671,8 +660,8 @@ sein!\footnote{Sollte dir die Schrift im Fenster zu klein sein, kannst
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# eigene Phantasiedaten verwenden}
-\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.name=}\StringTok{"Susi Sandmann"} 
-\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.email=}\StringTok{"susi@sandmann.de"}
+\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.name }\StringTok{"Susi Sandmann"} 
+\FunctionTok{git}\NormalTok{ config }\AttributeTok{{-}{-}global}\NormalTok{ user.email }\StringTok{"susi@sandmann.de"}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1320,7 +1309,7 @@ Wenn du nun die Verzeichnisstruktur des Ordners \emph{.git} genauer
 untersuchst, wirst du in etwa dies hier sehen, weil noch keine Dateien
 im \work sind:
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/base.png}}
+\includegraphics{bilder/git_internals/base.png}
 
 Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
   habe absichtlich nicht index.html verwendet, weil „index`` aktuell
@@ -1337,7 +1326,7 @@ Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
 \emph{.git}-Ordner. Im Bild ist aus Platzgründen nur der relevante
 Ausschnitt angezeigt. Bei dir kann der Hash einen anderen Wert besitzen!
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/1_neue_datei.png}}
+\includegraphics{bilder/git_internals/1_neue_datei.png}
 
 Die Datei \datei{index} stellt den \emph{Stage} dar. Diese Datei kannst
 du nicht direkt lesen. Das geht nur mit
@@ -1382,7 +1371,7 @@ Aber gehen wir einen Schritt weiter und committen die Datei:
 Nun sieht die Ordnerstruktur verändert aus -- die Hooks habe ich in der
 Darstellung aus Platzgründen entfernt!
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/2_commit.png}}
+\includegraphics{bilder/git_internals/2_commit.png}
 
 Ab hier bekommst du sicher andere, eigene Hash-Werte! Du musst in den
 nachfolgenden Befehlen also deine eigenen Werte verwenden.
@@ -1575,7 +1564,7 @@ besteht, den wir in der Ausgabe des Log sehen.
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/branch_lab/mainbranch.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/branch_lab/mainbranch.png}
 \ecenter
 
 \begin{Shaded}
@@ -1623,8 +1612,7 @@ In der Datei steht nun:
 
 \bcenter
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/branch/head_main.png}}
-\ecenter
+\includegraphics{bilder/branch/head_main.png} \ecenter
 
 Der Pointer \emph{main} wird also von Commit zu Commit geschoben und der
 Pointer \emph{HEAD} zeigt ständig auf \emph{main}.
@@ -1698,8 +1686,8 @@ Pointer passend umgeschrieben werden.
 
 \bcenter
 
-\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz.png}
-\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz1.png}
+\includegraphics[width=0.45\textwidth,height=\textheight]{bilder/branch/spielplatz.png}
+\includegraphics[width=0.45\textwidth,height=\textheight]{bilder/branch/spielplatz1.png}
 \ecenter
 
 Eine typische Fehlvorstellung ist es, dass \emph{Branching} sofort eine
@@ -1709,8 +1697,8 @@ Commit zeigt.
 
 \bcenter
 
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_1.png}
-\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_2.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/branch/spielplatz_start_1.png}
+\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/branch/spielplatz_start_2.png}
 \ecenter
 
 Der Befehl zur Zusammenführung wird vom Zielbranch aus gegeben. Du holst
@@ -2914,7 +2902,7 @@ Das nachfolgende Diagramm zeigt den Ablauf der Operationen zwischen den
 beiden Zweigen (Idee 2 wurde ausgeblendet, weil du mit ihr bisher nichts
 mehr gemacht hast).
 
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/bash/buch_2.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/bash/buch_2.png}
 
 Gut -- das war ein langer Weg mit vielen Abzweigungen. Es ist normal,
 diesen Abschnitt mehrfach lesen zu müssen!
@@ -2990,7 +2978,7 @@ den letzten Commit des Entwicklungs-Branch geschoben. In dieser
 Situation wird der Branch im Diagramm nicht einmal als visuelle
 Abzweigung dargestellt:
 
-\includegraphics[width=16cm,height=\textheight,keepaspectratio]{bilder/bash/fast_forward.png}
+\includegraphics[width=16cm,height=\textheight]{bilder/bash/fast_forward.png}
 
 Erkennbar sind die grünen Rechtecke, die die Enden der Branches
 kennzeichnen. Im Bild links sind die Branches getrennt, im Bild rechts
@@ -3002,7 +2990,7 @@ siehst, hat sich beim Merge die Anzahl Commits nicht verändert.
 Wenn sich der \emph{main}-Branch parallel zum Entwicklungsbranch
 weiterentwickelt, sieht die Sitation ganz anders aus!
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/drei_wege.png}}
+\includegraphics{bilder/bash/drei_wege.png}
 
 Du siehst, dass sich der \emph{main}-Branch noch \emph{Schritt 3} zu
 \emph{Schritt 7} weiterentwickelt hat (neuer Commit). Denk immer daran,
@@ -4761,8 +4749,8 @@ Konfiguration erfolgen.
 
 \bcenter
 
-\includegraphics[width=3cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/left1.png}
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/mid1.png}
+\includegraphics[width=3cm,height=\textheight]{bilder/inst/proxmox/left1.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/inst/proxmox/mid1.png}
 \ecenter
 
 Am linken Rand sind 2 Speicherbereiche zu erkennen:
@@ -4827,77 +4815,70 @@ vorbelegt ist:
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf1.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf1.png}
 
 }
 
 \caption{Name vergeben}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf2.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf2.png}
 
 }
 
 \caption{Image wählen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf3.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf3.png}
 
 }
 
 \caption{System - passt}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf4.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf4.png}
 
 }
 
 \caption{Disks - Größe anpassen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf5.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf5.png}
 
 }
 
 \caption{CPU - höher gehen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf6.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf6.png}
 
 }
 
 \caption{Speicher - höher gehen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf7.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf7.png}
 
 }
 
 \caption{Netzwerk - passt}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf8.png}}
+{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf8.png}
 
 }
 
@@ -4922,41 +4903,38 @@ Auf der Console siehst du für 30 Sekunden den Startbidschirm von Ubuntu,
 bevor es weiter zur Installation geht. Bitte Beachte, dass
 \emph{Console} hier nicht (aber auch) für das Terminal einer virtuellen
 Maschine steht. Hier kann das auch eine GUI sein!.
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_1.png}}
+\includegraphics{bilder/inst/proxmox/inst_1.png}
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_2.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_2.png}
 
 }
 
 \caption{Sprachwahl}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_3.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_3.png}
 
 }
 
 \caption{Tastaturwahl}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_4.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_4.png}
 
 }
 
 \caption{Servervariante - passt}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_5.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_5.png}
 
 }
 
@@ -4971,27 +4949,25 @@ Voreinstellungen.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_6.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_6.png}
 
 }
 
 \caption{Proxyadresse - leer}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_7.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_7.png}
 
 }
 
 \caption{Spiegelserver - übernehmen}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_8.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_8.png}
 
 }
 
@@ -5004,27 +4980,25 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_9.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_9.png}
 
 }
 
 \caption{Zusammenfassung}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_10.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_10.png}
 
 }
 
 \caption{Warnung - auf Fortfahren}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_11.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_11.png}
 
 }
 
@@ -5037,27 +5011,25 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_12.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_12.png}
 
 }
 
 \caption{Profil}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_13.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_13.png}
 
 }
 
 \caption{Ubuntu-Pro - Nein Danke}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_14.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_14.png}
 
 }
 
@@ -5069,27 +5041,25 @@ Keys haben wir aktuell keine zum Importieren.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_15.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_15.png}
 
 }
 
 \caption{Weitere Dienste - Keine}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_16.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_16.png}
 
 }
 
 \caption{Installation}
 
-\end{figure}%
-
+\end{figure}%%
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_17.png}}
+{\centering \includegraphics{bilder/inst/proxmox/inst_17.png}
 
 }
 
@@ -7899,13 +7869,45 @@ Nach dem komplexen Aufbau von \gitea mit seinem Runner, wirkt
 
 \section{Umstellen des Ports}\label{umstellen-des-ports}
 
-Melde dich auf dem Ubuntu an und werde \emph{root}. Suche in der Datei
-\datei{/etc/ssh/sshd\_config} nach der Zeile \textbf{\# Port 22}
-(Auskommentiert). Entferne den Kommentar und ersetze 22 durch 23.
-(Speichern nicht vergessen!)
+\begin{itemize}
+\tightlist
+\item
+  Verbinde dich auf ein Terminal deines Ubuntu\\
+  z.B. ssh oder Console des Proxmox
+\item
+  Diese Schritte müssen alle als \emph{root} erfolgen, also wechsle die
+  Rolle mit \cmd{sudo -i}. Das gilt jetzt bis zur Abmeldung.
+\item
+  Suche in der Datei \datei{/etc/ssh/sshd\_config} nach der Zeile
+  \textbf{\# Port 22} (Auskommentiert). Das geht gut mit \cmd{nano}:\\
+  \cmd{nano /etc/ssh/sshd\_config}
+\item
+  Entferne den Hashtag (Kommentar) und ersetze 22 durch 23.
+\item
+  Speichere mit \strg{o} und beende mit \strg{x}
+\item
+  Starte ssh neu:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{systemctl}\NormalTok{ daemon{-}reload }
+\ExtensionTok{systemctl}\NormalTok{ restart ssh }
+\end{Highlighting}
+\end{Shaded}
+
+Die aktuelle Session läuft weiter (Port 22), neue Verbindungen müssen ab
+jetzt über Port 23 laufen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ssh} \AttributeTok{{-}p}\NormalTok{ 23 benutzer@}\OperatorTok{\textless{}}\NormalTok{IP}\OperatorTok{\textgreater{}}
+\end{Highlighting}
+\end{Shaded}
 
 \textbf{WICHTIG WICHTIG WICHTIG}\\
-Vergiss nicht, auf der Firewall auch Port 23 freizuschalten:
+Vergiss nicht, auf der Firewall auch Port 23 freizuschalten, falls du
+sie aktiviert hast!
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7916,27 +7918,24 @@ Vergiss nicht, auf der Firewall auch Port 23 freizuschalten:
 \end{Highlighting}
 \end{Shaded}
 
-Nun muss der Dienst neu gestartet werden. Bei den letzten Tests hat der
-Befehl \cmd{systemctl restart ssh} den Dienst aber nicht auf den anderen
-Port umgestellt (wegen laufender Verbindung?). Linux-untypisch war ein
-Reboot die Lösung (im Terminal \cmd{reboot} eingeben). Mittlerweile habe
-ich herausgefunden, dass ein vorher ausgeführtes
-\cmd{systemctl daemon-reload} das Problem löst! Damit ist kein Reboot
-mehr nötig.
-
 \section{Docker}\label{docker-1}
 
-Erstelle einen Ordner für \gitlab 
+Wechsle in den Material-Ordner vom Kurs:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{mkdir} \AttributeTok{{-}p}\NormalTok{ /home/benutzer/docker/gitlab25}
-\BuiltInTok{cd}\NormalTok{ /home/benutzer/docker/gitlab25}
+\BuiltInTok{cd}\NormalTok{ \textasciitilde{}/dilligen\_material\_git/material/docker/gitLab }
 \end{Highlighting}
 \end{Shaded}
 
-Kopiere die Datei \datei{docker-compose.yml} aus dem Materialordner
-\ordner{gitlab} an diese Stelle. Passe unbedingt die IP-Adresse an!
+Dort findest du die \datei{docker-compose.yml}. In dieser Datei findest
+eine IP-Adresse. Hier im Kurs unbedingt die IP-Adresse vom Ubuntu
+stehen. Im Praxiseinsatz würdest du den Domain-Name deines
+\Gitlab verwenden und auf https wechseln.
+
+\textbf{WICHTIG}\\
+Da hier im Kurs bei jedem Reboot die IP-Adresse wechselt, müssen wir ab
+jetzt unbedingt Reboots vermeiden!!!!
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7946,13 +7945,13 @@ Kopiere die Datei \datei{docker-compose.yml} aus dem Materialordner
     \ExtensionTok{image:} \StringTok{\textquotesingle{}gitlab/gitlab{-}ce:latest\textquotesingle{}}
     \ExtensionTok{container\_name:} \StringTok{\textquotesingle{}gitlab\textquotesingle{}}
     \ExtensionTok{restart:}\NormalTok{ always}
-    \ExtensionTok{hostname:} \StringTok{\textquotesingle{}192.168.3.190\textquotesingle{}}  \CommentTok{\# Im Netz \textquotesingle{}gitlab.server.de\textquotesingle{}}
+    \ExtensionTok{hostname:}\NormalTok{ gitlab  }\CommentTok{\# Im Netz \textquotesingle{}gitlab.server.de\textquotesingle{}}
     \ExtensionTok{environment:}
       \ExtensionTok{GITLAB\_OMNIBUS\_CONFIG:} \KeywordTok{|}
-        \ExtensionTok{external\_url} \StringTok{\textquotesingle{}http://182.168.3.190:443\textquotesingle{}} \CommentTok{\# im Netz https}
+        \ExtensionTok{external\_url} \StringTok{\textquotesingle{}http://192.168.3.190:443\textquotesingle{}} \CommentTok{\# im Netz https}
         \VariableTok{gitlab\_rails}\OperatorTok{[}\StringTok{\textquotesingle{}gitlab\_shell\_ssh\_port\textquotesingle{}}\OperatorTok{]} \ExtensionTok{=}\NormalTok{ 22}
     \ExtensionTok{ports:}
-      \ExtensionTok{{-}} \StringTok{\textquotesingle{}22:22\textquotesingle{}}  \CommentTok{\# 25:22 falls 22 nicht auf 23 umgestellt}
+      \ExtensionTok{{-}} \StringTok{\textquotesingle{}22:22\textquotesingle{}}  \CommentTok{\# 23:22 falls 22 auf 23 umgestellt}
       \ExtensionTok{{-}} \StringTok{\textquotesingle{}80:80\textquotesingle{}}
       \ExtensionTok{{-}} \StringTok{\textquotesingle{}443:443\textquotesingle{}}
     \ExtensionTok{volumes:}
@@ -7970,7 +7969,7 @@ Kopiere die Datei \datei{docker-compose.yml} aus dem Materialordner
 \end{Shaded}
 
 Das Netz für \gitlab muss explizit angelegt werden, da es
-\emph{external} ist, aber das kennst du bereits:
+\emph{external} ist, aber das kennst du bereits von \gitea:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7989,7 +7988,7 @@ erledigt, aber wir machen es schrittweise.)
 
 Hier ist nun eine längere Kaffepause angebracht!\\
 Das \emph{länger} ist im Sinne von 20 Minuten+ gemeint und hängt stark
-vom verfügbaren Hauptspeicher ab. Mit 2GB bin ich an die Wand gelaufen
+vom verfügbaren Hauptspeicher ab. Mit 4GB bin ich an die Wand gelaufen
 und musste im Nachhinein Auslagerungsspeicher zur Verfügung stellen.
 Hier ist die Code-Sequenz, falls das bei dir auch nötig werden sollte.
 Überwache den Speicherverbrauch in einem zweiten Terminal mit dem Befehl
@@ -8015,13 +8014,14 @@ Mit dem nachfolgenden Befehl kann das Erstkennwort für
 \end{Shaded}
 
 Damit ist eine Anmeldung als \emph{root} auf der Weboberfläche möglich.
-Hier muss nun auch sofort das Kennwort geändert werden (Wieder ist das
+Hier solltest Du nun auch sofort das Kennwort ändern (Wieder ist das
 Erstkennwort erforderlich!).
 
 Mit diesem \emph{docker-compose}-Setup ist ssh-clonen bereits möglich
-(sobald der ssh-Key im Profil hinterlegt ist). Solltest du auf dem Host
-einen anderen Port verwenden (gitlab arbeitet intern dennoch mit 22),
-dann clonst du so (z.B. über Port 25):
+(sobald der ssh-Key im Profil hinterlegt ist).
+
+Solltest du auf dem Host einen anderen Port verwenden (gitlab arbeitet
+intern dennoch mit 22), dann clonst du so (z.B. über Port 25):
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -8051,7 +8051,7 @@ Da für bestimmte Aspekte Bilder aussagekräftiger sind, wird dieser
 Abschnitt deutlich bildlastiger werden. An dieser Stelle sei noch einmal
 betont, dass dieses Dokument eigentlich nicht für den Ausdruck gedacht
 ist! In einer PDF-Datei ist die Anzahl der Seiten mit Bildern ein
-geringeres ökoligisches Problem!
+geringeres ökologisches Problem!
 
 \subsection{Anmeldung}\label{anmeldung}
 
@@ -8071,13 +8071,13 @@ Bild.
 Nach der Registrierung ist allerdings noch keine Anmeldung am System
 möglich -- sie muss erst von \emph{root} freigeschaltet werden.
 
-\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_1.png}
-\includegraphics[width=3cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_2.png}
+\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_1.png}
+\includegraphics[width=3cm,height=\textheight]{bilder/gitlab/approve_2.png}
 
-\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_3.png}
-\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_4.png}
+\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_3.png}
+\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_4.png}
 
-\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_5.png}}
+\includegraphics{bilder/gitlab/approve_5.png}
 
 Danach ist für den Benutzer die Anmeldung möglich und er kann eigene
 Projekte erstellen. Am Startbildschirm erscheint auch ein Hinweis (mit
@@ -8250,7 +8250,7 @@ von leeren Repositories Folgeprobleme entstehen können.
 Erstelle eine neue Datei mit dem Namen \datei{.gitlab-ci.yml} und trage
 ein:
 
-\phantomsection\label{annotated-cell-271}%
+\phantomsection\label{annotated-cell-273}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{stages:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -8451,7 +8451,7 @@ Im Material befindet sich eine Version dieser Datei. Für den
 Praxiseinsatz musst du sie wieder passend umbenennen (führenden Punkt
 ergänzen, „quarto`` entfernen)!
 
-\phantomsection\label{annotated-cell-277}%
+\phantomsection\label{annotated-cell-279}%
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{variables:} \hspace*{\fill}\NormalTok{\circled{1}}
@@ -8733,20 +8733,17 @@ Nun kannst du Jobs auf \gitlab erstellen.
 Quarto}\label{wieder-das-buch-mit-quarto}
 
 Kopiere dir den Inhalt des Ordners \ordner{Buchvorlage} aus dem
-\gitea-Projekt in vorher geclonten Ordner von \gitlab. Passe die Datei
-\datei{.gitlab-ci.yml} so an:
+\gitea-Projekt in den vorher geclonten Ordner von \gitlab. Passe die
+Datei \datei{.gitlab-ci.yml} so an:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{variables:}
-  \ExtensionTok{DOCKER\_IMAGE:}\NormalTok{ quarto{-}small:1.0}
-
 \ExtensionTok{stages:}
   \ExtensionTok{{-}}\NormalTok{ build}
 
 \ExtensionTok{ausgabe\_1:}
   \ExtensionTok{stage:}\NormalTok{ build}
-  \ExtensionTok{image:}\NormalTok{ quarto{-}small:1.0}
+  \ExtensionTok{image:}\NormalTok{ quarto{-}git:1.0}
   \ExtensionTok{script:} 
     \ExtensionTok{{-}}\NormalTok{ echo }\StringTok{"Ich bin die erste Ausgabe"}
     \ExtensionTok{{-}}\NormalTok{ ls }\AttributeTok{{-}lah}
@@ -9061,7 +9058,7 @@ Hilfs-Scripts!)
 
 \bcenter
 
-\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/tdd/full_tree.png}
+\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/tdd/full_tree.png}
 \ecenter
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht alle
@@ -9148,7 +9145,7 @@ Das liefert folgende Struktur:
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/tdd/tree_init.png}
+\includegraphics[width=10cm,height=\textheight]{bilder/tdd/tree_init.png}
 \ecenter
 
 Dieses Projekt kann bereits (fast) compiliert werden. Zuerst müssen wir

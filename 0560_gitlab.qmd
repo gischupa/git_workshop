@@ -11,13 +11,33 @@ Nach dem komplexen Aufbau von \gitea mit seinem Runner, wirkt
 
 ## Umstellen des Ports
 
-Melde dich auf dem Ubuntu an und werde *root*.
-Suche in der Datei \datei{/etc/ssh/sshd\_config} nach der 
-Zeile **# Port 22** (Auskommentiert). Entferne den 
-Kommentar und ersetze 22 durch 23. (Speichern nicht vergessen!)
+* Verbinde dich auf ein Terminal deines Ubuntu  
+  z.B. ssh oder Console des Proxmox
+* Diese Schritte müssen alle als *root* erfolgen, 
+  also wechsle die Rolle mit \cmd{sudo -i}. Das gilt 
+  jetzt bis zur Abmeldung.
+* Suche in der Datei \datei{/etc/ssh/sshd\_config} nach der 
+  Zeile **# Port 22** (Auskommentiert). Das geht gut mit \cmd{nano}:  
+  \cmd{nano /etc/ssh/sshd\_config} 
+* Entferne den Hashtag (Kommentar) und ersetze 22 durch 23. 
+* Speichere mit \strg{o} und beende mit \strg{x}
+* Starte ssh neu:
+
+```bash
+systemctl daemon-reload 
+systemctl restart ssh 
+```
+
+Die aktuelle Session läuft weiter (Port 22), neue 
+Verbindungen müssen ab jetzt über Port 23 laufen:
+
+```bash
+ssh -p 23 benutzer@<IP>
+```
 
 **WICHTIG WICHTIG WICHTIG**  
-Vergiss nicht, auf der Firewall auch Port 23 freizuschalten:
+Vergiss nicht, auf der Firewall auch Port 23 freizuschalten,
+falls du sie aktiviert hast!
 
 ```bash
 ufw disable 
@@ -26,24 +46,23 @@ ufw enable
 ufw status verbose
 ```
 
-Nun muss der Dienst neu gestartet werden. Bei den letzten Tests
-hat der Befehl \cmd{systemctl restart ssh} den Dienst aber nicht
-auf den anderen Port umgestellt (wegen laufender Verbindung?).
-Linux-untypisch war ein Reboot die Lösung (im Terminal \cmd{reboot} eingeben). 
-Mittlerweile habe ich herausgefunden, dass ein vorher ausgeführtes
-\cmd{systemctl daemon-reload} das Problem löst! Damit ist kein Reboot mehr nötig.
-
 ## Docker
 
-Erstelle einen Ordner für \gitlab 
+Wechsle in den Material-Ordner vom Kurs:
 
-```bash
-mkdir -p /home/benutzer/docker/gitlab25
-cd /home/benutzer/docker/gitlab25
+```bash 
+cd ~/dilligen_material_git/material/docker/gitLab 
 ```
 
-Kopiere die Datei \datei{docker-compose.yml} aus dem Materialordner \ordner{gitlab}
-an diese Stelle. Passe unbedingt die IP-Adresse an!
+Dort findest du die \datei{docker-compose.yml}. In dieser 
+Datei findest eine IP-Adresse. Hier im Kurs unbedingt die IP-Adresse 
+vom Ubuntu stehen. Im Praxiseinsatz würdest du den Domain-Name 
+deines \Gitlab verwenden und auf https wechseln.
+
+**WICHTIG**  
+Da hier im Kurs bei jedem Reboot die IP-Adresse wechselt,
+müssen wir ab jetzt unbedingt Reboots vermeiden!!!!
+
 
 ```bash
 version: '3.6'
@@ -52,13 +71,13 @@ services:
     image: 'gitlab/gitlab-ce:latest'
     container_name: 'gitlab'
     restart: always
-    hostname: '192.168.3.190'  # Im Netz 'gitlab.server.de'
+    hostname: gitlab  # Im Netz 'gitlab.server.de'
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://182.168.3.190:443' # im Netz https
+        external_url 'http://192.168.3.190:443' # im Netz https
         gitlab_rails['gitlab_shell_ssh_port'] = 22
     ports:
-      - '22:22'  # 25:22 falls 22 nicht auf 23 umgestellt
+      - '22:22'  # 23:22 falls 22 auf 23 umgestellt
       - '80:80'
       - '443:443'
     volumes:
@@ -75,7 +94,7 @@ networks:
 ```
 
 Das Netz für \gitlab muss explizit angelegt werden,
-da es *external* ist, aber das kennst du bereits:
+da es *external* ist, aber das kennst du bereits von \gitea:
 
 ```bash
 docker network create gitlab_net 
@@ -90,7 +109,7 @@ docker compose up --build
 
 Hier ist nun eine längere Kaffepause angebracht!  
 Das *länger* ist im Sinne von 20 Minuten+ gemeint und hängt
-stark vom verfügbaren Hauptspeicher ab. Mit 2GB bin ich an die 
+stark vom verfügbaren Hauptspeicher ab. Mit 4GB bin ich an die 
 Wand gelaufen und musste im Nachhinein Auslagerungsspeicher 
 zur Verfügung stellen. Hier ist die Code-Sequenz, falls das bei dir 
 auch nötig werden sollte. Überwache den Speicherverbrauch in einem 
@@ -113,11 +132,12 @@ sudo cat config/initial_root_password
 ```
 
 Damit ist eine Anmeldung als *root* auf der 
-Weboberfläche möglich. Hier muss nun auch sofort 
-das Kennwort geändert werden (Wieder ist das Erstkennwort erforderlich!).
+Weboberfläche möglich. Hier solltest Du nun auch sofort 
+das Kennwort ändern (Wieder ist das Erstkennwort erforderlich!).
 
 Mit diesem *docker-compose*-Setup ist ssh-clonen
 bereits möglich (sobald der ssh-Key im Profil hinterlegt ist). 
+
 Solltest du auf dem Host einen anderen Port 
 verwenden (gitlab arbeitet intern dennoch mit 22), dann clonst 
 du so (z.B. über Port 25):
@@ -141,7 +161,7 @@ Da für bestimmte Aspekte Bilder aussagekräftiger sind, wird dieser
 Abschnitt deutlich bildlastiger werden. An dieser Stelle sei noch 
 einmal betont, dass dieses Dokument eigentlich nicht für den Ausdruck 
 gedacht ist! In einer PDF-Datei ist die Anzahl der Seiten mit 
-Bildern ein geringeres ökoligisches Problem!
+Bildern ein geringeres ökologisches Problem!
 
 ### Anmeldung
 
