@@ -1,0 +1,125 @@
+## Wie beginnt man mit einem neuen Repository
+
+Ganz allgemein kann man sagen, dass hier immer noch Inkonsistenzen 
+zwischen verschiedenen Versionen von \git existieren. In manchen 
+Fällen müssen Branches umbenannt werden, in anderen nicht.  
+Ich habe diese Anleitung bereits mehrfach umgeschrieben, weil 
+sich das Verhalten zwischenzeitlich minimal geändert hat.  
+
+Das nachfolgende Verfahren sollte aber in jedem Fall 
+funktionieren, auch wenn manche Schritte überflüssig sein 
+können.
+
+### Reiner Git-Server (nicht GitLab)
+
+Auf dem Server kannst du auf zwei Varianten ein 
+neues Server-Repository anlegen. In einem solchen
+Repository wirst du nie wirklich Dateien im Sinne 
+eines Arbeitsordners sehen.
+
+```bash
+git init --bare projekt.git 
+cd projekt.git
+git branch -m main  # WICHTIG
+```
+
+oder länger
+
+```bash
+rm -rf projekt
+mkdir projekt.git
+cd projekt.git
+git init --bare 
+git branch -m main  # WICHTIG
+```
+
+Dieses Repository ist noch leer und das kann auf Benutzerseite 
+zu Irritatationen führen. Aus diesem Grund solltest du selbst dafür 
+sorgen, dass bereits (mindestens) eine Datei enthalten ist. 
+Das geht aber nur vom Client aus:
+
+```bash
+rm -rf projekt
+git clone <IP>:/tmp/projekt.git
+cd projekt   # kommt ohne .git an 
+```
+
+\samplestart
+**Hinweis**  
+Sollte der git-Server nicht auf Port 22 laufen, so ist der 
+Aufruf etwas anders:
+
+```bash
+git clone ssh://<ip>:port/tmp/projekt.git
+
+# oder 
+git clone ssh://benutzer@<ip>:port/tmp/projekt.git
+```
+
+\sampleend
+
+Ein \cmd{git status} zeigt dir, dass du (trotz Umbenennung auf dem Server)
+auf dem Branch \branch{master} bist. Das ist also eine Client-Einstellung!
+
+```bash
+git branch -m main  # WICHTIG
+echo "Welcome" > README.txt 
+git add README.txt 
+git commit -m "Initial"
+git push -u origin main
+```
+
+Wenn nun ein Anwender das Repository clont, kann er sofort aktiv 
+mit dem richtigen Banch arbeiten.
+
+### Gitlab
+Hier erstellt das System beim Anlegen des Repositories auf Wunsch automatisch eine 
+README.md und du hast die gleiche Situation wie oben.
+
+### Problemfälle
+
+Wovon ich dringend abrate, ist folgende Variante:
+
+* Entwicklungsbeginn auf lokalen Rechner mit lokalem \git-Repository  
+  (also nicht geclont, sondern selbst erstellt und verwaltet)
+* Dann erkennen, dass es auf dem Server doch besser aufgehoben wäre
+* Auf GitLab ein Reopsitory erstellen (mit README.md)
+* Das Server-Repository im lokalen Repository als *remote* eintragen
+
+```bash
+git remote add origin benutzer@<ip>:/pfad/zum/projekt.git
+
+# bei abweichendem Port 
+git remote add origin ssh://benutzer@<ip>:25/pfad/zum/projekt.git
+```
+
+Natürlich geht das im Prinzip, hängt aber im Detail wieder von 
+*reinem* \git oder GitLab ab. Problematisch ist dabei, dass 
+zwei *main*-Zweige aufeinander treffen, die voneinander unabhängig sind.
+
+Bei einem ganz frischen Server-Repository -- also ohne *wertvollen*
+Inhalt kann man vom lokalen Rechner aus den eigenen Stand als verbindlich 
+kennzeichnen, indem man den Serverinhalt duch folgenden Befehl überschreibt:  
+
+```bash
+git push -u origin main --force
+```
+
+Das Force kann entfallen, wenn das neu erzeugte Repository auf dem Server 
+noch komplett neu und ohne Inhalt ist!
+
+Du siehst also, es gibt eine ganze Menge von Varianten mit 
+untschiedlichen Vorgehensweise. In meinen Augen ist es am sinnvollsten,
+wenn man direkt mit einem Server-Repository beginnt und sich ein 
+lokales Repository clont.
+
+Einen Fall möchte ich noch erwähnen, wenn man zwar schon einige Zeit mit 
+\git lokal gearbeitet hat, aber keine wertvollen Commits oder Branches 
+in seiner History vorliegen hat. Es ist dann eine Option, den kompletten Quellcode 
+einfach in ein frisch geclontes Server-Repository zu kopieren.
+
+### GitLab / GitHub
+
+Wenn du ein Repository auf einer dieser Plattformen erstellst, dann 
+kannst du sofort mit der geclonten Version arbeiten, falls du dort 
+automatisch eine README erstellen lässt.  

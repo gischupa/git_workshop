@@ -1,0 +1,128 @@
+# Unter der Haube
+
+https://www.youtube.com/watch?v=RxHJdapz2p0&t=13s
+
+Wenn ich auf main einen Branch erstelle, läuft er im Bild zunächst 
+linear weiter, so lange sich auf main nichts ändert.
+Hier kann man main einfach *vorspulen* (merge ... ff)
+Das ist reines verschieben des Pointers
+
+Angenommen, der Branch wird in C erstellt:
+
+A-B-C
+     \D-E 
+
+Nun wird im Mainbranch (=c) ein Bug entdeckt, der weg muss.
+Wir erstellen einen WEITEREN Branch (Hot)
+
+     /F-G-H
+A-B-C
+     \D-E 
+
+Dann Mergen wir den Hotfix auf Main und der Entwicklungszweig 
+ist dann 
+
+A-B-C-F-G-H 
+     \D-E  
+
+Wenn das Feature in E fertig ist, dann muss es (irgendwie) 
+auf Main. Ein reines Verschieben des Pointers "main" auf E  
+würde ergeben
+
+A-B-C-D-E 
+
+Der Hotfix wäre weg! Wir verlieren die Änderungen F und G.
+Theoretisches Vorgehen per Hand ...
+
+Protokollieren der Änderungen C-F-G-H und C-D-E  
+Im Prinzip genügt der Vergleich H->C und E->C 
+
+Das wäre `D1 = git diff E..C` und `D2=git diff H..C`  
+
+Überlappen D1 und D2 nicht -- unterschiedliche Zeilen oder Dateien -- einfach 
+3Way-Merge ohne Konflikt.
+
+Überlappen sich D1 und D2 -- gleicher Textbereich oder auch nur gleiche Datei(?)-- CONFLICT
+
+Merges *verunreinigen* die History wegen Commits mit 2 Parents. Alternative Rebase
+
+
+Rebase
+
+A-B-C-D    (main)
+     \E-F  (feature)
+
+Das Feature wird *auf den main ge-rebase-ed. (also vom Branch auf Main geschoben, Merge zieht auf main)
+
+Arbeitsweise:   
+
+* Welche Commits fehlen auf main?
+* Diff D..E anwenden => E'
+* Diff E'..F Anwenden => F' 
+* Pointer neu setzen
+
+Der Branch ist zwar noch da, ist aber überflüssig.
+
+
+Cherry-Picking
+
+Klingt einfach, ist es nicht
+
+
+A-B-C-D    (main)
+     \E-F  (feature)
+
+Commits sind komplette Snapshots einer Situation. Beim *kopieren* eines 
+Commits wird der gesamte Snapshot geholt!
+
+Betrachtung von Commit und seinem Parent
+
+git diff E..F = D1  Änderungen zwischen E und F   
+
+Soll F hinter D kopiert werden, so muss D1 auf D angewendet werden.
+Das geht nicht immer.
+
+Beispiel
+
+Die Datei xxx wird in allen 3 Commits bearbeitet und enthält
+
+D: L1, L2, L3, L4
+E: L2, L3, L4
+F: L2, L4
+
+D1 = L3 entfernt
+
+Angewendet auf D liefert das L1, L2, L4
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx unschlüssig -------------------------------
+
+
+
+## Reset
+
+https://www.youtube.com/watch?v=S7XpTAnSDL4&t=123s
+
+git reset --hard <hash> ... alles ist weg 
+git reset --soft <hash> ... die commits sind weg, die inhalte aber im stage
+git reset --mixed <hash> ... -"- aber die Inhalte sind noch im WorkingDir
+git reset <hash> entspricht mixed
+
+### Hard
+
+Ist klar
+
+### Soft
+
+Erstelle eine Datei mit den Zeilen 1-10 und nach jeder Zeile einen Commit.
+Gehe Soft zurück auf 3
+Im log sind 3 Commits
+Die Datei enthält immer noch 10 Zeilen!
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,114 @@
+version: "3"
+
+networks:
+  gitea:
+    external: true
+
+volumes:
+  gitea:
+    driver: local
+  gitea_db:
+    driver: local
+  runner_data:
+    driver: local
+  giteatransfer:
+    external: true
+
+services:
+  server:
+    image: docker.io/gitea/gitea:1.22.6
+    container_name: gitea
+    hostname: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=mysql
+      - GITEA__database__HOST=db:3306
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=gitea
+      - GITEA__database__PASSWD=gitea
+
+    restart: always
+    networks:
+      - gitea
+    volumes:
+      - gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "4000:3000"
+      - "222:22"
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 5s
+      retries: 20
+
+    depends_on:
+      - db
+
+
+  db:
+    image: docker.io/library/mysql:8
+    restart: always
+    container_name: gitea_db
+    hostname: db
+    environment:
+      - MYSQL_ROOT_PASSWORD=gitea
+      - MYSQL_USER=gitea
+      - MYSQL_PASSWORD=gitea
+      - MYSQL_DATABASE=gitea
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 10
+
+    networks:
+      - gitea
+    volumes:
+      - gitea_db:/var/lib/mysql
+
+
+  runner:
+    image: gitea/act_runner_dockercli:latest # Liegt lokal vor
+    container_name: gitea_runner
+    hostname: runner
+    environment:
+      CONFIG_FILE: /config.yaml
+      GITEA_INSTANCE_URL: "http://gitea:3000" # Verbindung zur Gitea-Instanz
+      GITEA_RUNNER_NAME: "Probe-runner"
+      GITEA_RUNNER_REGISTRATION_TOKEN: "lkGcznBFiVNw6xnRTIaTrkKL5dXYVI4XxOzkhHGk"
+      SSH_LOCATION: "/home/benutzer/docker/gitea/ssh_keys"
+    restart: always
+
+    depends_on:
+      server:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+
+    networks:
+      - gitea
+
+    volumes:
+      - ./config.yaml:/config.yaml
+      - ./ssh_keys:/root/.ssh
+      - runner_data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  web:
+    image: nginx
+    hostname: transfer
+    restart: always
+    volumes:
+      - giteatransfer:/usr/share/nginx/html
+    ports:
+      - "4001:80"
+    environment:
+      - NGINX_HOST=transfer
+      - NGINX_PORT=80
+    networks:
+      - gitea

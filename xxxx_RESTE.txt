@@ -1,0 +1,445 @@
+## Grundkonfiguration
+
+### Installation
+
+Dieser Abschnitt dient nur als Hilfe, falls die benötigte
+Software auf dem Remote-System noch nicht installiert ist.
+
+```bash
+java --version # Falls keine Ausgabe erfolgt, muss installiert werden
+```
+
+
+
+### Kurze Wiederholung zum Projektaufbau
+
+In (klassischem) Java werden Quelldateien mit der Endung *java* 
+erstellt und mit dem Befehl *javac* in *Class*-Dateien übersetzt, 
+die dann mai *java* gestartet werden können. Das Erstellen von 
+Jar-Archiven ist hier erst einmal nicht Thema.
+
+Für TDD sollten wir -- besonders im Hinblick auf den späteren 
+Einsatz des Build-Systems *Maven* bereits die passende 
+Ordnerstruktur auch für einfache Projekte verwenden.
+
+Durch das Script \datei{Java_ordner.sh} kann eine entsprechende
+Ordnerstruktur für ein Projekt mit dem Namen \ordner{java\_01}
+erstellt werden.
+
+Der eigentliche Source-Code liegt dann im Ordner
+
+```bash
+java_01/src/main/java/de/dillingen/alp/kurs
+```
+
+und die späteren Tests analog unter
+
+```bash
+java_01/src/test/java/de/dillingen/alp/kurs
+```
+
+Für die Tests werden die *jar*-Dateien im Ordner \ordner{src/lib}
+abgelegt.
+
+Das Compilieren der Quelldateien erfolgt mit folgendem Befehl:
+
+``bash
+javac -d out $(find src/main/java -name "*.java")
+javac -d out -cp "out:lib/*" $(find src/test/java -name "*.java")
+```
+
+\samplestart
+**Hinweis**  
+Bei Windows müssen die Befehle anders lauten, das *find* 
+Befehl dort in dieser Form nich existiert.
+Gerade bei sehr wenigen Dateien kann es eine Alternative sein,
+die Dateien dediziert per Hand anzugeben. Statt dem Doppelpunkt 
+muss übrigens ein Semicolon verwendete werden!
+\sampleend
+
+```bash
+javac -d out src/main/java/de/dillingen/alp/kurs/Main.java
+javac -d out -cp "out;lib/*" src/test/java/de/dillingen/alp/kurs/MainTest.java
+java -cp "out;lib/*" org.junit.platform.console.ConsoleLauncher --scan-class-path
+```
+
+Wir starten mit der einfachst möglichen Konfiguration, bestehend aus 
+
+* StringFlipper.java = Java-Klasse
+* StringFlipperTest.java = Testdatei
+* junit5.jar
+
+Die drei Dateien befinden sich in einem Ordner und können für den 
+Workshop aus dem \git-Repository, Ordner \datei{tdd} entnommen werden.
+Die Zip-Datei muss dafür entpackt werden! Es entstehen die oben 
+angeführten Dateien. Bei der Datei \datei{junit5.jar} handelt es sich 
+um die Version 1.10.0, die von der Maven-Seite geladen werden kann:
+
+TODO: Java-Repo einrichten
+
+[maven-junit](https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.0/junit-platform-console-standalone-1.10.0.jar)
+
+Wir arbeiten nun aus dem Ordner heraus, in dem die Dateien enpackt 
+wurden mit dem Terminal.
+
+```bash
+javac -d . StringFlipper.java StringFlipperTest.java
+```
+
+Dieser Befehl compiliert die beiden Dateien und erzeugt 
+dabei die Ordnerstruktur, die das *Package* repräsentiert:
+
+```bash
+.
+├── de
+│   └── alp
+│       └── kurs
+│           ├── StringFlipper.class
+│           └── StringFlipperTest.class
+```
+
+Nun kann die Testklasse ausgeführt werden:
+
+```bash
+java -jar junit5.jar --class-path . --scan-class-path
+```
+
+Die Ausgabe liefert einen (absichtlich) versagenden Test
+und etwas Statistik:
+
+```bash
+Failures (1):
+  JUnit Jupiter:StringFlipperTest:testSwapLastChars()
+    MethodSource [className = 'de.alp.kurs.StringFlipperTest', 
+    methodName = 'testSwapLastChars', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: beabsichtigt
+       org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils
+       .java:38)
+       org.junit.jupiter.api.Assertions.fail(Assertions.java:134)
+       de.alp.kurs.StringFlipperTest.testSwapLastChars(
+        StringFlipperTest.java:11)
+       java.base/java.lang.reflect.Method.invoke(Method.java:580)
+       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+       java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+Test run finished after 92 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[         1 tests found           ]
+[         0 tests skipped         ]
+[         1 tests started         ]
+[         0 tests aborted         ]
+[         0 tests successful      ]
+[         1 tests failed          ]
+```
+
+In einem Produktionsumfeld sollte die Verzeichnisstruktur etwas *aufgeräumter*
+aussehen, damit Tests und Produktionscode voneinander sauber getrennt sind, 
+z.B. so (wir werden später aber mit einem anderen Layout arbeiten):
+
+```bash
+.
+├── projekt
+│   ├── pom.xml
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── de
+│       │           └── alp
+│       │               └── kurs
+│       │                   └── StringFlipper.java
+│       └── test
+│           └── java
+│               └── de
+│                   └── alp
+│                       └── kurs
+│                           └── StringFlipperTest.java
+```
+
+Bleiben wir aber bei unserem einfachen Lauyout und sehen uns das Testen 
+genauer an und zwar die Testklasse. Es geht um eine Funktion, die die
+letzten beiden Buchstaben eines Strings vertauschen soll. Das ist zwar 
+relativ unsinnig, dafür aber übersichtlich. Wir können sofort identifizieren,
+welche Fälle als Tests geprüft werden müssen:
+
+* Ein ganz normaler String wie Hallo
+* Strings der Längen 2, 1, 0
+
+Da TDD von einer Minimalismus-Strategie ausgeht, beginnen wir mit dem leeren String.
+Werfen wir also einen Blick in die Testdatei:
+
+```bash
+package de.alp.kurs;
+
+
+ import org.junit.jupiter.api.Test;
+ import static org.junit.jupiter.api.Assertions.*;
+
+
+public class StringFlipperTest{
+   @Test 
+   public void testSwapLastChars(){
+      fail("beabsichtigt");
+   }
+}
+```
+
+Der Test soll (nach TDD-Philosophie) Code testen, den es noch nicht gibt und 
+deshalb versagen. Wir entfernen die *fail*-Zeile und ersetzen sie durch 
+sinnvolleren Inhalt:
+
+```bash
+@Test
+public void testSwapLastCcharsInEmptyString(){
+    StringFlipper stringFlipper = new StringFlipper();
+    res = stringFlipper("");
+    assertEquals("", res);
+    }
+```
+
+Die Ausführung des Test scheitert wie gewünscht, da die Funktion noch 
+nicht existiert. Ändern wir das:
+
+```bash
+public String swapChars(String s) {
+        return "";
+```
+
+Minimale Problemlösung -- und wirkt wie eine *Veräppelung*.
+Dennoch ist das absolut ernst gemeint! Schreiben wir den nächsten Test!
+
+```bash
+@Test
+public void testSwapLastTwoCharsOnSingleCharString(){
+    StringFlipper stringFlipper = new StringFlipper();
+    String res = stringFlipper.swapChars("A");
+    assertEquals("A",res);
+    }
+```
+
+Wir können den Test laufen lassen und beobachten sein Scheitern.
+Die Funktion muss also verfeinert werden. Beim aktuellen Stand 
+wäre das z.B. so möglich:
+
+```bash
+public String swapChars(String s) {
+    return s;
+```
+
+Beide Tests liefern grünen Status! Probieren wir einen String 
+mit zwei Buchstaben. 
+
+```bash
+ @Test
+ public void testSwapLastTwoCharsOnTwoCharString(){
+    StringFlipper stringFlipper = new StringFlipper();
+    String res = stringFlipper.swapChars("AB");
+    assertEquals("BA",res);
+    }
+```
+
+Der Test scheitert und wir verfeinern die Funktion erneut.
+Da es sich um eine neue Situation handelt, trennen wir die Fälle:
+
+```bash
+public String swapChars(String s) {
+    int length = s.length();
+    if (length < 2) {
+        return s;
+        }
+    StringBuilder sb = new StringBuilder();
+    sb.append(2);
+    sb.append(1);
+    return sb.toString();
+```
+
+
+Und wieder *grün*! Nun wollen wir einen vollwertigen 
+String probieren!
+
+```bash
+@Test
+    public void testSwapLastTwoCharsOnNormalString(){
+    StringFlipper stringFlipper = new StringFlipper();
+    String res = stringFlipper.swapChars("Hallo");
+    assertEquals("Halol",res);
+    }
+```
+
+Wieder zum Verfeinern:
+
+```bash
+public String swapChars(String s) {
+    int length = s.length();
+    if (length < 2) {
+        return s;
+        }
+    StringBuilder sb = new StringBuilder();
+    for (int i=0; i < length-2; i++){
+        sb.append(s.charAt(i));
+    }
+    sb.append(s.charAt(length - 1));
+    sb.append(s.charAt(length - 2));
+    String res = sb.toString();
+    return res;
+    }
+```
+
+Damit haben wir alle Fälle abgehakt, die uns zum Testen eingefallen sind.
+Ja -- dieser Prozess ist langatmig und verführt zum Verwenden von 
+Abkürzungen. Leider führen diese Abkürzungen am Ende zu schlecht 
+programmierter Software! Ein Beispiel ist der Computer der Bosch-eBikes.
+Hier ist es möglich, dass negative Fahrzeiten auftreten, wenn man keine 
+regelmäßigen Resets der Daten durchführt -- ein Fall, der bei gutem Testing aufgefallen
+wäre.
+
+Da Testing so wichtig ist, wird es mittlerweile von allen IDEs unterstützt 
+und Build-Tools wie Maven haben es ebenfalls integriert. Für unser eigentliches
+Thema CI/CD werden wir aber gleich *Maven* verwenden und uns deshalb vom
+manuellen Testen weitgehend verabschieden.
+
+
+
+
+
+```bash
+public class StringFlipperTest{
+   @Test 
+   public void testSwapLastChars(){
+      StringFlipper stringflipper = new StringFlipper();
+      assertEquals(1, 1);
+   }
+}
+```
+
+Rerun -- definitiv Red, da es die Klasse noch nicht gibt -- also erstellen wir sie im Ordner \datei{src/java/de/alp/kurs}
+
+```bash
+nano ../java/de/alp/kurs/StringFlipper.java 
+```
+
+Der Aufruf zum Compilieren muss nun allerdings einen Level nach oben springen!
+
+```bash
+javac ../java/de/alp/kurs/StringFlipper.java
+```
+
+
+
+
+### Gewohnheiten
+
+* Zuerst das Kriteium formulieren und davon rückwärts arbeiten
+* Jeder Test muss zuerst gegen einen definierten Fail laufen.
+* Ein Test bekommt nur einen Grund zum Versagen
+
+
+
+
+ERLEDIGEN:  
+
+Man kann alles speichern - aber sollte man?
+
+Git Large File Storage (LFS)
+
+https://www.youtube.com/watch?v=JOIL6gof2BA
+
+11:36 Auflistung der Befehle
+
+
+Unter der Haube
+
+https://www.youtube.com/watch?v=RxHJdapz2p0&t=13s
+
+
+
+
+
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Damit ein Benutzer einen Text codieren kann, muss zunächst Text
+eingegeben werden. Das Programm braucht also eine Eingabe-Methode.
+
+
+
+Aus diesem Grund schreibst du jetzt bereits den ersten Test und zwar 
+direkt in die \datei{CaesarTest.java}. Die Erklärungen findest du 
+unter dem Code :
+
+```java
+//imports
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import java.lang.reflect.*;
+
+... bisheriger Code ...
+
+@Test
+public void inputShouldExist(){  
+    Method method = null;       
+    try {
+        method = Caesar.class.getDeclaredMethod("input"); 
+    }
+    catch (NoSuchMethodException ignore){
+        System.out.println("Methode input fehlt");
+    }
+    assertNotNull(method, "Methode input fehlt");
+}
+```
+
+Die Inputs wurden mit WildeCards formuliert, um den Code kürzer 
+zu halten. In einer IDE werden die Imports automatisch optimiert!  
+In früheren jUnit-Versoinen mussten die Testmethoden sollten mit 
+dem Wort *test* beginnen. Das ist mittlerweile wegen `@Test` überflüssig.  
+
+Der Variablentyp *Method* stammt aus dem *reflect*-Package. Die 
+Variable *method* wird am Ende verwendet, um den Test als erfolreich 
+einstufen zu können. Nimmt sie einen Wert ungleich *null* an, so existiert 
+die Methode *input*. Möglicherweise auftretende Fehler werden einfach ignoriert.
+
+Da die Methode noch nicht geschrieben ist, *muss* der Test scheitern. 
+Nach TDD-Paradigma musst du den Test ausführen, um ihn scheitern zu sehen.
+
+```bash
+mvn test
+```
+
+Nun schreibst du den minimalen Code, damit der Test erfolgreich sein wird:
+
+```java
+# In der Caesar.java in der Caesar Klasse 
+public void input(){}
+```
+
+Die Methode macht gar nichts, aber der Test läuft erfolgreich durch.  
+Zeit, einen weiteren Test zu schreiben.  
+
+Eine Input-Funktion sollte dazu führen, dass in der Klasse einer Varaiblen ein 
+Wert zugewiesen wird. Das soll der nächste Test überprüfen. Da eine derartige 
+Variable aber im Regelfall als *private* deklariert ist, kommen wir nicht so einfach 
+an sie ran. Ein Getter wäre eine Möglichkeit, besitzt aber im Kontext 
+des Programms keinen Sinn.
+
+
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxx Ausgliedern xxxxxxxxxxxxxxxxxxxxxxxx
+
+Wir werden dieses Konzept nur am Beispiel eines winzigen Java-Programms 
+durchspielen, da bereits im Vorfeld neben \git diverse andere Voraussetzungen 
+klären müssen:
+
+* TDD (Test-Driven-Development)
+* Arbeiten mit einem Build-System (Maven)
+* Anbinden an \git via Docker
+
+[Tutorial auf digitalocean.com](https://www.digitalocean.com/community/tutorials/install-maven-linux-ubuntu)
+
+xxxxxxxxxxxxxxxxxxxxxxx Ausgliedern ENDE xxxxxxxxxxxxxxxxxxxxxxxx

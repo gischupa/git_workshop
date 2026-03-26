@@ -1,0 +1,110 @@
+# cicd Buch 
+
+## Gitlab Runners
+
+Runners are small programs that are installed separately 
+from the main GitLab application. Their purpose is to receive 
+new CI/CD jobs published by GitLab and follow the jobs’ 
+instructions as specified in the .gitlab-ci.yml file. 
+Runners can be installed and configured to work with a 
+variety of types of infrastructure, including standalone 
+servers, VMs, containers, and others.
+
+
+Zusätzlich zu einem GitLab-Account braucht man ein 
+Gerät, auf dem dem der GitLab Runner (Agent) läuft.
+Das kann *jeder* Rechner sein (Auch der Server)!
+
+CICD Pipelines laufen NICHT innerhalb von GitLab,
+da jeder Job ganz individuelle Einstellungen erfordert.
+
+Runners akzeptieren Jobs von GitLab und liefern das Ergebnis
+zurück an GitLab.
+
+Was der Runner macht, ist in der .gitlab-ci.yml definiert.
+
+Jeder Commit triggert einen neuen Lauf der Pipeline.
+
+Bekommt ein Runner einen Job zugewiesen, so holt sich 
+der Runner den Commit aus dem Repo.
+
+### Terminiologie
+
+GitLab Runner:   Die Runner-Software auf einem Rechner   
+Runner:  Das sind quasi registreierte Instanzen, die dann Jobs abarbeiten.  
+         Im Prinzip zur Laufzeit ein Runner-Prozess, der einen Job abarbeitet.
+
+Die Gitlab Runner - Software übernimmt die Jobs von GitHub 
+und startet daraufhin die passenden Runner-Anwendungen.
+
+### Runner Agent 
+
+Eine Art von Relais, wenn der runner nicht direkt über einen 
+anstehenden Job informiert werden kann. Der Agent pollt in 
+konfigurierbaren Abständen den GitLab-Server.
+
+Runner können auf verschiedenen Leveln in GitLab registriert werden.
+Das schließt Projekte, Gruppen, ... ein.
+
+ 
+
+ Shared Runners Only Apply to Self-Managed GitLab
+
+Administrators can only configure shared runners on self-managed GitLab instances. GitLab.com customers can choose to use SaaS runners provided by GitLab, as well as register their own group or specific runners. A certain number of pipeline minutes for SaaS runners are included in each GitLab license tier, with additional minutes available for purchase. There is never a charge to use your own group or specific runners.
+
+### Mögliche Executors
+
+#### Docker
+
+In diesem Fall muss Docker auf dem gleichen Rechner wie der GitLab Runner 
+installiert sein. Meistgenutzter Typ auch bei den SaaS Runners von GitLab.
+Perfekt für reproduzierbare Umgebungen.
+
+Welches Image verwendete wird, kann auf verschiedenen Ebenen festgelegt werden 
+(default, pipeline, job).
+
+Das Image kann nicht nur auf Dockerhub gehostet sein! 
+
+#### Shell 
+
+Stellt im Prinzip eine Shell-Session auf dem Host dar, auf dem der 
+GitLab-Runner installiert ist. Im Prinzip wird ein Keyboard simuliert.
+
+Hier bekommt man leider keine *suabere* Umgebung und es können Reste 
+vom letzten Lauf zurückbleiben, die den Ablauf stören. Besser Finger weg.
+
+#### Hypervisoren
+VB, Parallels, Kubernetes, ...  
+Für spezielle Anwendungen -- spezieller als unsere Szenarien.
+
+#### Docker Machine 
+Simuliert einen kompletten Docker-Host und nicht nur einen Container.
+Wird von Docker nicht mehr aktiv weiter entwickelt.
+
+#### SSH 
+Damit können Remote-Befehle auf anderen Rechnern ausgeführt werden.
+Wir sprechen von „bash-Level“. Kann sinnvoll sein, um auf einen 
+Server zu grätschen, auf dem man keinen Runner installieren will / kann.
+
+## Runner Tags 
+
+Ein Runner kann mit einem Tag versehen werden, analog zu Jobs.
+Damit passen Job und Runner zusammen.
+
+```bash 
+deploy-to-staging:
+    stage: staging
+    script: ./deploy-staging.sh
+    tags:
+        - windows
+        - staging
+```
+
+Dieser Job kann nur (default) von Runnern ausgeführt werden, die 
+ebenfalls die Tags *windows* und *staging* besitzen. Das kann in den 
+Einstellungen eines Runners aber deaktiviert werden.
+(Vorsicht: Runner-Tags haben nichts mit Git-Tags zu tun)
+
+
+
+

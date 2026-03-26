@@ -1,30 +1,32 @@
-# Merge, Rebase, Squash
+# Fortgeschritten: Merge, Rebase, Squash
+
 Im letzten Abschnitt hast du einfaches Arbeiten 
 mit Branches gelernt und wie man sie mit Hilfe eines *Merge* 
 zusammengeführt. Das wollen wir uns jetzt genauer ansehen.
-Offen geblieben sind aber folgende Fragen:
+Offen geblieben sind folgende Fragen:
 
+* Details zu Merges
 * Was passiert mit alten Branches?
-* Was mache ich mit zu vielen Commits?
 * Wie sieht die Alternative zu *Merge* aus?
+* Was mache ich mit zu vielen Commits?
+
 
 ## Verschiedene Merges
-In der Praxis treten^[Bei mir] meist zwei Fälle auf, da ich 
+In meinem Alltag treten meist drei Fälle auf, da ich 
 in der Regel alleine entwickle:
 
 * Während ich am Entwicklungs-Branch arbeite, 
-  passiert auf dem Auslieferungsbranch nichts.
+  passiert auf dem Auslieferungsbranch (hier *main*) nichts,
+  außer vereinzelte Bug-Fixes.
 * Ich entwickle an einem völlig anderen Feature,
-  das den Auslieferungsbranch gar nicht betrifft.
-  Weil das oft aus Zeitgründen länger dauert, kann
-  es im Auslieferungsbranch Änderungen geben, die im
-  Entwicklungsbranch nicht interessieren.
+  das den *main*-Branch aktuell gar nicht betrifft.
+  
 
 ### Fast-Forward 
-Ohne Änderung im Auslieferungsbranch wird der der 
-Entwicklungsbranch einfach (schnell davor) vor den 
-letzten Commit des Auslieferungsbranchs gesetzt. 
-In dieser Situation wird im Diagramm der Branch nicht 
+Befindest du dich auf dem (unveränderten) *main*-Branch
+und holst den Entwicklungsbranch mit Merge, so wird der Pointer *main*
+auf den letzten Commit des Entwicklungs-Branch geschoben.
+In dieser Situation wird der Branch im Diagramm nicht 
 einmal als visuelle Abzweigung dargestellt:
 
 ![](bilder/bash/fast_forward.png){width=16cm}
@@ -33,28 +35,30 @@ Erkennbar sind die grünen Rechtecke, die
 die Enden der Branches kennzeichnen.
 Im Bild links sind die Branches getrennt, 
 im Bild rechts sind beide Branch-Enden nach 
-dem Merge an der gleichen Stelle.  
+dem Merge an der gleichen Stelle. 
 Wie du siehst, hat sich beim Merge die 
 Anzahl Commits nicht verändert.
 
 ### Drei-Wege Merge
-Wenn sich der Auslieferungsbranch parallel
+Wenn sich der *main*-Branch parallel
 zum Entwicklungsbranch weiterentwickelt,
 sieht die Sitation ganz anders aus!
 
 ![](bilder/bash/drei_wege.png)
 
-Du siehst, dass sich der *main*-Branch 
-zu *Schritt 7* weiterentwickelt hat. Beim 
-Merge entsteht ein neuer Commit, der 
+Du siehst, dass sich der *main*-Branch noch *Schritt 3*
+zu *Schritt 7* weiterentwickelt hat (neuer Commit).
+Denk immer daran, dir die Branchnamen wie Etiketten
+am jeweils letzten Commit des Branchs vorzustellen!   
+Beim Merge entsteht ein neuer Commit, der 
 die Spitze beider Branches darstellt.
 Du erkennst auch, dass im Diagramm 
 die grünen Spitzen der Branches nicht
 am gleichen Commit sitzen!
 
-Durch `git log --oneline --decorate --graph` 
+Durch \cmd{git log --oneline --decorate --graph} 
 (merken als „git log dog“) wird diese Sitation
-auch passend dargestellt:
+auch im Terminal passend dargestellt:
 
 ```bash
 *   70c1b21 (HEAD -> main) Merge branch 'entwicklung' into main
@@ -69,16 +73,19 @@ auch passend dargestellt:
 * 66dcd4f Schritt 1
 ```
 
+(Welcher Branch (main oder entwicklung) als Abzweigung erscheint, entscheidet die jeweilige Git-Software abhängig von der aktuellen
+Situation!)
+
 ## Alte Branches
 Die Commits eines Branches stellen eine Dokumentation 
-des Projektverlaufes dar, die für das Verständnis der
-erfolgten Änderungen eventuell notwendig sind. 
+des Projektverlaufs dar, die für das Verständnis der
+erfolgten Änderungen eventuell notwendig ist. 
 Zu viele Branches und Commits erschweren auf der anderen 
 Seite den Überblick. 
 
 Es geht also darum, alte Branches zu löschen, 
 die *wichtigen* Commits aber zu behalten. 
-Für den schulischen ist das aber weniger relevant.
+Für den schulischen Kontext ist das aber weniger relevant.
 
 Um einen lokalen Branch zu löschen, gibt es 
 folgenden Befehl:
@@ -91,8 +98,8 @@ Er scheitert aber, wenn \git den Branch noch nicht
 als abgeschlossen betrachtet.
 
 Probieren wir das beim letzten Szenario aus. 
-Sieh dir die Abbildung oben nich einmal an und
-dann lösche den Branche
+Sieh dir die Abbildung oben noch einmal an und
+dann lösche den Branch
 
 ```bash
 git branch -d entwicklung 
@@ -115,8 +122,33 @@ Du siehst eine minimale Änderung
 Das *Etikett* vom Entwicklungsbranch wurde gelöscht,
 die Commits bleiben aber in exakt der gleichen 
 Anordnung erhalten! Der Branch ist nicht mehr über seinen 
-Namen zugänglich, die History ist aber weiterhin vorhanden.
+Namen zugänglich, die History ist aber weiterhin vorhanden,
+d.h. ein *checkout* der Commits ist immer noch möglich.
 
+Anders ist das allerdings, wenn du einen Branch löschst, der 
+*nicht* in einen Merge verwickelt ist. Er existiert dann 
+zwar anscheinend weiter, wird aber nach einiger Zeit vom 
+Garbage-Collector (GC) von \git endgültig entfernt.
+(Der Zeitrahmen ist einstellbar). Im Prinzip passiert 
+das mit allen Commits, die nicht nicht mehr *erreichbar* sind.
+
+**Beispiel**
+
+```bash
+A - B - C - D  <-- main 
+      \ E - F - G  <-- feature
+```
+
+Wird der Branch *feature* gelöscht, dann wird der Pointer auf G 
+entfernt:
+
+```bash
+A - B - C - D  <-- main 
+      \ E - F - G 
+```
+
+Da jeder Commit nur seinen Vorgänger kennt, kommst du zwar 
+von D nach A, aber nicht *rückwärts* nach E, F oder G.
 
 ## Rebase
 
@@ -128,15 +160,14 @@ ein Werkzeug für fortgeschrittene Benutzer. Mit seiner
 Hilfe können auch mehrere Commits zusammengefasst werden, 
 um die Branches zu verkürzen. Gerade bei der Zusammenarbeit 
 im Team kann das aber sehr problematisch werden, wenn 
-man nicht genau weiß, was man macht. Das liegt daran, dass
+man nicht ganz genau weiß, was man macht. Das liegt daran, dass
 sich die Hashwerte von Commits ändern können und wenn 
-sich ein anderer Mitarbeiter den früheren Stand kopiert hat,
-dann kann das zu großem Chaos führen.
+sich ein anderer Mitarbeiter den früheren Stand auf den 
+eigenen Rechner geholt hat, dann passt nichts mehr zusammen.
 
 https://www.youtube.com/watch?v=CtyLg10aHN0
 https://www.youtube.com/watch?v=1TNK-OkaelI
 
-![](bilder/bash/rebase_nach_branch_delete.png)
 
 Bei einem Rebase wird der entsprechende Branch 
 *verpflanzt* -- d.h. gewissermaßen *ausgerupft* 
@@ -144,88 +175,210 @@ und an anderer Stelle wieder *angedockt*.
 Bei diesem Vorgang werden die Hashwerte aller 
 Commits im Branch geändert.
 
+Betrachte nachfolgendes Script. 
+Nach dem ersten Commit wird ein Branch *arbeit* mit mehreren Commits
+erstellt und im Anschluss ein Commit wieder im *main*-Branch, 
+**der eine andere Datei betrifft**.
+
+```bash 
+cd /tmp
+rm -rf rebase_lab
+git init rebase_lab
+cd rebase_lab
+git branch -m main
+
+echo "start" >> datei.txt
+git add . && git commit -m "Start"
+
+# Branch-Wechsel
+git switch -c arbeit
+
+for i in {1..10};do
+  echo "inhalt $i" >> datei.txt
+  git add . && git commit -m "Inhalt $i"
+done
+
+# Branch-Wechsel
+git switch main 
+
+
+echo "Zwischenstopp" >> datei2.txt
+git add . && git commit -m "Zwischenstopp"
+```
+
+
+Ziel ist nun ein *rebase* von *arbeit* auf *main*.  
+
+Vor dem Rebase 
+
 ```bash
-* 10f8d8d (HEAD -> arbeit) Neuer Inhalt 10
-* e0ae3ce Neuer Inhalt 9
-* 1eac6f3 Neuer Inhalt 8
-* fa76537 Neuer Inhalt 7
-* da22859 Neuer Inhalt 6
-* 7903aaf Neuer Inhalt 5
-* 33428f1 Neuer Inhalt 4
-* 80db22a Neuer Inhalt 3
-* 4a642a8 Neuer Inhalt 2
-* a3645f3 Neuer Inhalt 1
-| * 2c58be7 (main) Zwischenstopp
+* 0834b9d (arbeit) Inhalt 10
+* 4cdd087 Inhalt 9
+* ebfa1db Inhalt 8
+* d078d5a Inhalt 7
+* a65af00 Inhalt 6
+* cfb81ab Inhalt 5
+* 7fc30db Inhalt 4
+* 493cb05 Inhalt 3
+* 4648598 Inhalt 2
+* cff48d7 Inhalt 1
+| * 1af4a22 (HEAD -> main) Zwischenstopp
 |/  
-* 7fea00c Start
+* af7e60c Start
 ```
-Du siehst einen Branch \branch{arbeit} mit mehreren Commits
-und einen neuen Commit im \branch{main}-Branch.
 
-Wenn du nun vom Branch \branch{arbeit} einen Rebase 
-auf den Branch \branch{main} ausführst:
+Nun der Rebase 
 
 ```bash
-git switch arbeit 
-git rebase main 
-```
+# aktueller Branch ist arbeit
+git switch arbeit
+git rebase main
+git log --oneline --decorate --graph --all
 
-dann sieht das Ergebnis so aus:
+# Ausgabe 
+* 43add76 (HEAD -> arbeit) Inhalt 10
+* 117f222 Inhalt 9
+* 9057374 Inhalt 8
+* 71ec034 Inhalt 7
+* 66852df Inhalt 6
+* f144368 Inhalt 5
+* cdba6cf Inhalt 4
+* d059b1b Inhalt 3
+* d1b3718 Inhalt 2
+* c591dc2 Inhalt 1
+* 1af4a22 (main) Zwischenstopp << Hash unverändert 
+* af7e60c Start                << Hash unverändert 
+``` 
 
-```bash
-* 1cad272 (HEAD -> arbeit) Neuer Inhalt 10
-* 130c5b0 Neuer Inhalt 9
-* 5b84ab1 Neuer Inhalt 8
-* 56d74ea Neuer Inhalt 7
-* 9255c1d Neuer Inhalt 6
-* 412fa37 Neuer Inhalt 5
-* cb91e55 Neuer Inhalt 4
-* 3ab37b7 Neuer Inhalt 3
-* dc4b1b0 Neuer Inhalt 2
-* 9591035 Neuer Inhalt 1
-* 2c58be7 (main) Zwischenstopp
-* 7fea00c Start
-```
+Nach dem *rebase* befindet du dich immer noch auf dem Branch *arbeit*
+(Siehe HEAD Pointer), die *Abzweigung* nach Start ist verschwunden.
+Der Branch \branch{arbeit}
+hängt mit seinen Commits und neuen Hashwerten also direkt 
+am Commit mit dem Hash 1af4a22 aus dem Branch \branch{main}.
 
-Die Verzeigung ist verschwunden und der Branch \branch{arbeit}
-hängt mit seinen Commits und neuen Hashwerten  
-am Commit mit dem Hash 2c58be7 aus dem Branch \branch{main}.
-
-Auch wenn es nicht so wirkt: Der Branch \branch{arbeit} 
-ist immer noch vorhanden! Das kannst du auch einfach
-testen, indem du auf den \branch{main}-Branch wechselst
-und dort einen neuen Commit erstellst:
+Damit ist der Rebase aber noch nicht abgeschlossen! Du musst nun
+in den *main*-Branch wechseln und einen Merge ausführen
 
 ```bash
 git switch main 
-echo "kontrolle" > kontrolle.txt 
-git add kontrolle.txt 
-git commit -m "Kontrolle"
+git merge arbeit 
+
+# Ausgabe 
+
+git merge arbeit 
+Aktualisiere 1af4a22..43add76
+Fast-forward
+ datei.txt | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 ```
 
-Das Log zeigt dann
+Damit ist der HEAD wieder an der korrekten Stelle:
 
 ```bash
-* 3508cce (HEAD -> main) kkkddd
-| * f4ba9f7 (arbeit) kkk
-| * 1cad272 Neuer Inhalt 10
-....
-| * dc4b1b0 Neuer Inhalt 2
-| * 9591035 Neuer Inhalt 1
-|/  
-* 2c58be7 Zwischenstopp
-* 7fea00c Start
+git log --oneline --decorate --graph --all
+
+# Ausgabe 
+* 43add76 (HEAD -> main, arbeit) Inhalt 10
+* 117f222 Inhalt 9
+* 9057374 Inhalt 8
+* 71ec034 Inhalt 7
+* 66852df Inhalt 6
+* f144368 Inhalt 5
+* cdba6cf Inhalt 4
+* d059b1b Inhalt 3
+* d1b3718 Inhalt 2
+* c591dc2 Inhalt 1
+* 1af4a22 Zwischenstopp
+* af7e60c Start
 ```
 
-Die Branches laufen also wieder auseinander.
-Möchte man den Branch \branch{arbeit} loswerden,
-dann würdest du hier eher den Rebase von \branch{main}
-auf \branch{arbeit} ausführen. \git versucht dann, 
-den \branch{main}-Branch hinter den Branch \branch{arbeit}
-zu hängen. Aus dieser Situation heraus kannst du dann 
-auch den Branch \branch{arbeit} löschen:
+Wie du siehst, ist der Branch *arbeit* aber noch existent!
+Lösche ihn mit folgendem Befehl:
 
 ```bash
 git branch -d arbeit 
+git log --oneline --decorate --graph --all
+
+# Ausgabe
+* 43add76 (HEAD -> main) Inhalt 10
+* 117f222 Inhalt 9
+* 9057374 Inhalt 8
+* 71ec034 Inhalt 7
+* 66852df Inhalt 6
+* f144368 Inhalt 5
+* cdba6cf Inhalt 4
+* d059b1b Inhalt 3
+* d1b3718 Inhalt 2
+* c591dc2 Inhalt 1
+* 1af4a22 Zwischenstopp
+* af7e60c Start
 ```
+
+Damit ist der Rebase komplett beendet und das Repository wieder aufgeräumt.
+Das lief so reibungslos, weil der Commit *Zwischenstop* eine andere 
+Datei betroffen hat (\datei{datei2.txt}). Hätten Änderungen an \datei{datei.txt}
+stattgefunden, so hätten wir einen Konflikt bekommen, den wir hätten lösen müssen.
+
+
+Führe das Script \datei{rebase\_mit\_konflikt.sh} aus und versuche 
+dann einen Rebase:
+
+```bash
+git rebase main 
+automatischer Merge von datei.txt
+KONFLIKT (Inhalt): Merge-Konflikt in datei.txt
+error: Konnte 2f5968f... (Inhalt 1) nicht anwenden
+Hinweis: Resolve all conflicts manually, mark them as resolved with
+Hinweis: "git add/rm <conflicted_files>", then run "git rebase --continue".
+Hinweis: run "git rebase --continue". 
+Hinweis: You can instead skip this commit: run "git rebase --skip".
+Hinweis: To abort and get back to the state before "git rebase", 
+Hinweis: run "git rebase --abort".
+Konnte 2f5968f... (Inhalt 1) nicht anwenden
+```
+
+Die Hinweiszeilen beschreiben eigentlich sehr genau, was zu tun ist:
+
+* Konflikt manuell lösen
+* \cmd{git add datei.txt}
+* \cmd{git rebase --continue} ausführen
+* Commit-Nachricht anpassen
+
+
+### Merge oder Rebase
+
+Bei *merge* kann die History verzweigter aussehen, 
+bei *rebase* können sich Commit-Hashes ändern.  
+
+Als Faustregel gilt, dass du die Finger vom Rebase
+lassen solltest, wenn irgendwer außer dir Zugriff 
+auf den betroffen Branch hat (Team-Arbeit).
+Solange du nur lokal auf deinem Rechner arbeitest gibt es 
+(außer Konflikten) kein Problem.
+
+
+
+
+
+## Squash
+
+Squash ist kein eigenständiger Befehl, sondern ein Parameter von 
+*rebase*. Angenommen, du hast eine ganze Liste von filigranen
+Commits erzeugt, die du im Nachhinein zu einem einzigen Commit 
+zusammenfassen willst. In diesem Fall führst du einen 
+*interaktiven Squash* durch:
+
+```bash
+git rebase -i HEAD~3 # 3 Commits, rückwärts von HEAD
+git rebase -i <hash> # der älteste Commit zum Squashen
+```
+
+Als Reaktion wird dein Editor gestartet, der dir in den 
+ersten Zeile die zum Squash verfügbaren Commits anzeigt.
+Angenommen, es geht um 3 Commits, dann ersetzt du beim 
+allen **bis auf den neuesten** Commits das *pick* durch
+ein *s* (für Squash).  
+Mit dem Speichern der Datei wird dies durchgeführt und du
+bekommst ein neues Editor-Fenster für eine Commit-Message.
+Hast du diese gespeichert, ist der Squash beendet.
 

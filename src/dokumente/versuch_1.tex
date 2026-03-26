@@ -1,0 +1,217 @@
+\documentclass[]{scrreprt}
+\usepackage{arbeitsblatt}
+
+\title{Physik}
+\ohead{Datum:...................}
+\ihead{Klasse:...........}
+
+
+\begin{document}
+\section*{Arbeiten mit dem Ordner Versuch\_1}
+
+\begin{lstlisting}
+mkdir versuch_1
+cd versuch_1
+pwd   # Ausgabe merken
+
+git init
+git branch -m main
+git status
+
+echo "Version 1" > datei1.txt
+git add datei1.txt
+git commit -m "Erste Datei erstellt"
+
+echo "Version 2" >> datei1.txt
+git add datei1.txt
+git commit -m "Erläuterung"
+
+git log --oneline
+
+ls
+git log
+git status
+
+
+
+echo "Version 3" >> datei1.txt
+echo "Version 1" >> datei2.txt
+git status
+
+
+git add .
+git status
+
+git commit -m "nur Stage"
+
+git add .
+
+git status
+
+\end{lstlisting}
+
+\newpage
+\section*{Internals}
+\begin{lstlisting}
+cd .. 
+git init demo
+cd demo
+git branch -m main
+
+tree
+
+echo "Etwas HTML" >> homepage.html
+git add homepage.html
+
+tree
+
+git ls-files --stage
+
+git hash-object homepage.htm
+
+git commit -m "homepage.html added"
+
+tree
+
+git cat-file -p  <HASH COMMIT>
+
+
+git cat-file -p <HASH TREE>
+
+
+git cat-file -p <HASH BLOB>
+
+
+git cat-file -t <HASH BLOB>
+
+\end{lstlisting}
+
+
+
+\section*{Kleiner Fehler 1}
+\begin{lstlisting}
+git init beispiel_1
+cd beispiel_1
+git branch -m main
+
+echo "Alles gut" > datei.txt
+git add .
+git commit -m "alles gut"
+
+# Hier kommt der Fehler
+echo "Mist gebaut" >> datei.txt
+
+# Alte Version vom Stage wieder herstellen
+git restore datei.txt  
+\end{lstlisting}
+
+
+\section*{Kleiner Fehler 2}
+\begin{lstlisting}
+git init beispiel_2
+cd beispiel_2
+git branch -m main
+
+echo "Alles gut" > datei.txt
+git add .
+git commit -m "alles gut"
+
+# Hier kommt der Fehler
+echo "Mist gebaut" >> datei.txt
+
+git add .   # DAS ist anders!
+
+# GEHT NICHT MEHR
+git restore datei.txt  
+
+-------- LÖSUNG
+
+git log => HASH
+git restore --source=<HASH> datei.txt 
+
+--------- ALTERNATIV
+git show <HASH>:datei.txt > datei_alt.txt
+
+\end{lstlisting}
+
+
+\section*{Großer Fehler}
+\begin{lstlisting}
+git init beispiel_3
+cd beispiel_3
+git branch -m main
+
+# alles funktioniert
+echo "Alles gut datei1" > datei1.txt
+echo "Alles gut datei2" > datei2.txt
+# ... viele Dateien
+git add .
+git commit -m "alles gut"
+
+# Hier kommen DIE Fehler
+echo "Mist gebaut" >> datei1.txt
+echo "Mist gebaut" >> datei2.txt
+# ... viele Fehler in vielen Dateien
+
+# Rücksetzen des kompletten Projekts auf den letzten Commit 
+git reset --hard HEAD 
+\end{lstlisting}
+
+\newpage
+
+\section*{Buchprojekt}
+\begin{lstlisting}
+
+mkdir fortbildung
+cd fortbildung
+git clone https://TODO
+
+
+mkdir buch
+git init buch
+cd buch
+
+git branch -m main
+
+----
+
+# Fenster VORLAGE                  # Fenster BUCH
+-----------------                  --------------  
+git checkout Step_1
+cp story1.md ../buch/                      
+                                   git status
+                                   git add story1.md
+                                   git status
+git checkout Step_2
+cp story1.md ../buch/                      
+                                   git status
+                                   git diff story1.md
+                                   git add story1.md
+                                   git commit -m 'Guter Ansatz'                                              
+
+                                   git switch -c entwicklung_story_2
+git checkout Step_3
+cp story2.md ../buch/
+                                   git status
+                                   git add story2.md
+                                   git commit -m "Story 2 begonnen"
+                                   
+                                   git switch -c story2_idee_1
+                                   git switch entwicklung_story_2
+                                   git switch -c story2_idee_2
+                                   
+                                   git switch story_2_idee_1
+git checkout Step               
+cp story2.md ../buch/
+                                   git add story2.md
+                                   git commit -m "Inhalt nach Idee1 fortgeführt"
+                                   
+                                   git switch story_2_idee_2
+git checkout Step_5                                
+cp story2.md ../buch/
+                                   git add story2.md
+                                   git commit -m "Inhalt nach Idee 2 fortgeführt"
+
+\end{lstlisting}
+\end{document}
+

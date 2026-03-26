@@ -4,12 +4,10 @@ project:
 book:
   title: "Git Workshop"
   author: "Wolfgang Höfer"
-  date: "10.4.2025"
+  date: "10.03.2026"
   chapters:
     - index.qmd
-    - intro.qmd
-    - summary.qmd
-    - references.qmd
+    
   
 
 bibliography: references.bib
@@ -29,17 +27,84 @@ format:
     include-in-header: 
       text: |
         \usepackage{my_quarto_tools}
-        \newcommand{\cmd}[1]{\texttt{#1}\xspace}
-        \newcommand{\script}[1]{\texttt{#1}\xspace}
-        \newcommand{\key}[1]{\texttt{#1}\xspace}
+        \usepackage{enumitem}
+        \usepackage{changepage}
+        \setlist[description]{style=nextline, leftmargin=2.5em}
+        \newcommand{\cmdx}[1]{\texttt{#1}\xspace}
+        \newcommand{\cmd}[1]{
+        \tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+
+        \newcommand{\markcmd}[1]{\textbf{#1}\xspace}
+        \newcommand{\menu}[1]{\textbf{\texttt{#1}}\xspace}
+        \newcommand{\markcmx}[1]{
+        \tikz[baseline=(X.base)]
+          \node [draw=red,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {#1};\xspace}
+        \newcommand{\script}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+        \newcommand{\key}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+        \newcommand{\Git}{\textit{Git}\xspace}
         \newcommand{\git}{\textit{git}\xspace}
         \newcommand{\gitserver}{\textit{git}-Server\xspace}
         \newcommand{\gitservers}{\textit{git}-Servers\xspace}
-        \newcommand{\strg}[1]{strg + #1\xspace}
-        \newcommand{\alt}[1]{alt + #1\xspace}
-        \newcommand{\datei}[1]{\textit{#1}\xspace}
-        \newcommand{\ordner}[1]{\textit{#1}\xspace}
-        \newcommand{\branch}[1]{\textit{#1}\xspace}
-        \newcommand{\work}{\textit{Workingdir}\xspace}
-
-
+        \newcommand{\Gitlab}{\textit{GitLab}\xspace}
+        \newcommand{\GitLab}{\textit{GitLab}\xspace}
+        \newcommand{\gitlab}{\textit{GitLab}\xspace}
+        \newcommand{\gitea}{\textit{Gitea}\xspace}
+        \newcommand{\Gitea}{\textit{Gitea}\xspace}
+        \newcommand{\gitbash}{\textit{git-Bash}\xspace}
+        \newcommand{\maven}{\textit{Maven}\xspace}
+        \newcommand{\Maven}{\textit{Maven}\xspace}
+        \newcommand{\strg}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{strg+#1}};\xspace}
+        \newcommand{\alt}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{alt+#1}};\xspace}
+        \newcommand{\datei}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+        \newcommand{\ordner}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+        \newcommand{\branch}[1]{\tikz[baseline=(X.base)]
+          \node [draw=white,fill=gray!40,
+          semithick,rectangle,
+          inner sep=2pt, 
+          rounded corners=3pt] (X) {\texttt{#1}};\xspace}
+        \newcommand{\work}{\textit{Working-Directory}\xspace}
+        \newcommand{\blarge}{\begin{adjustwidth}{0cm}{-1.3cm}}
+        \newcommand{\elarge}{\end{adjustwidth}}
+        \newcommand{\bxlarge}{\begin{adjustwidth}{0cm}{-2.3cm}}
+        \newcommand{\exlarge}{\end{adjustwidth}}
+        \newcommand{\bcenter}{\begin{center}}
+        \newcommand{\ecenter}{\end{center}}
+        \usepackage{titlesec}
+        \titleformat{\paragraph}
+          {\normalfont\normalsize\bfseries}
+          {\theparagraph}{1em}{}
+        \titlespacing*{\paragraph}
+          {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+        \titlespacing*{\section}{0pt}{10pt}{10pt}
+        \titlespacing*{\chapter}{0pt}{0pt}{20pt}

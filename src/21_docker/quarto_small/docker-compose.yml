@@ -1,0 +1,14 @@
+version: '3'
+services:
+ quarto:
+   build:
+     context: .
+   volumes:
+     - ./ergebnis:/ergebnis
+   networks:
+      - gitlab_default
+
+networks:
+  gitlab_default:
+    external: true
+

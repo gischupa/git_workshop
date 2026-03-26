@@ -1,0 +1,15 @@
+version: '3'
+services:
+ quarto:
+   build:
+     context: .
+   image: quarto-git:1.0
+   volumes:
+     - ./ergebnis:/ergebnis
+   networks:
+      - nginx_default
+
+networks:
+  nginx_default:
+    external: true
+

@@ -1,0 +1,15 @@
+variables:
+  DOCKER_IMAGE: benfret/quarto-minimal
+
+stages:
+  - build
+
+projekt_uebersetzen:
+  stage: build
+  image: DOCKER_IMAGE
+  script:
+    - quarto install tinytex
+    - quarto render --to pdf
+  artifacts:
+    paths:
+      - "_book/*pdf"

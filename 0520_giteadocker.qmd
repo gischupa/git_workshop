@@ -1,54 +1,328 @@
 # Gitea mit Docker
-## Basics
+## Vorbemerkung
 
 Wie im letzten Kapitel besprochen, wird der Einsatz von 
 Docker durch vorgefertigte Dockerfiles und Composefiles 
 sehr vereinfacht. Erstellt man selbst derartige Dateien,
-so sollte man Chatgpt nur sehr bedingt vertrauen. In seinen
+so sollte man ChatGPT nur sehr bedingt vertrauen. In seinen
 Kreationen tauchen oft Konfigurationsparameter auf, die
 es entweder gar nicht gibt, oder deren Schreibweise falsch ist.
 Letztendlich führt kein Weg an der Herstellerdokumentation vorbei.
-Die Dockerimages im Netz funktionieren aber gut, so dass man
+Die Dockerimages im Netz funktionieren aber gut, so dass man oft
 keine eigenen bauen muss.
 
-Bei einer vollwertigen Gitea-Installation brauchen wir (mindestens)
-drei Container:
+Bei \gitea kommt es darauf an, ob du nur eine Plattform für 
+einfache \git-Abläufe brauchst, oder ob CI/CD ein Thema ist. 
+In diesem Fall ist der Aufwand deutlich höher, denn es müssen Daten zwischen 
+verschiedenen Containern hin und her gereicht werden. Das erfordert 
+Dinge wie gemeinsame Ordner von Containern und eine funktionierende
+(kennwortlose) Kommunikation zwischen den Containern. Das ist 
+etwas aufwändig!
+
+Bei einer Basis-Installation genügen 
 
 * Gitea
 * Datenbankserver
-* Runner (Erklärung folgt)
 
-Mit dem nachfolgenden `docker-compose.yaml` können diese 
-erstellt und konfiguriert werden.
+Für eine vollwertige Gitea-Installation brauchst du (mindestens)
+4 Container:
+
+* Gitea
+* Datenbankserver
+* Job-Container (Erklärung folgt)
+* Runner (Erklärung folgt)
+* Webserver zum Ausliefern der Ergebnisse (sinnvoll)
+
+## Basis-installation
+
+Wenn es nur um \gitea und den Datenbankserver geht, so 
+genügt eine einzige Datei \datei{docker-compose.yml} um 
+das System zu steuern. Du findest sie im Material im 
+Ordner \ordner{gitea\_basic}.
+
+\begin{tcolorbox}[title=WARNUNG]
+Im Workshop führst du vorher unbedingt \textbf{vorher}
+diese Befehle aus:  \newline 
+\lstinline{docker load -i ~/images/images_gitea_basic/image_gitea_basic.tar}\newline
+\lstinline{docker load -i ~/images/images_gitea_basic/image_mysql.tar}
+\end{tcolorbox}
+
+
+```{.bash include="src/21_docker/gitea_basic/docker-compose.yml"}
+```
+
+\samplestart
+**Hinweis**  
+Beachte in der Datei \datei{docker-compose.yml}, dass die verwendeten 
+Volumes so konfiguriert sind, dass sie direkt in dem Ordner als 
+Verzeichnisse erstellt werden, wo auch die \datei{docker-compose.yml} 
+liegt. Das habe ich gemacht, damit bei der späteren Variante keine 
+Probleme auftreten, wenn erneut Volumes benötigt werden. Diese werden 
+dann als *globale* Ordner unter `/var/lib/docker/volumes` erstellt.
+In der Konfiguration ist der Unterschied, ob der Pfad zum Volume
+mit `./` beginnt (=im Ordner) oder nicht (=global).
+\sampleend
+
+Diesen Setup findest du im Material als Ordner \ordner{gitea\_basic}.
+Kopiere ihn komplett an die gewünschte Stelle und gib dann ein:
+
+```bash
+cd gitead_basic
+docker network create gitea # weil external network
+docker compose up 
+```
+
+Nun kannst du für die restliche Konfiguration die Weboberfläche aufrufen:
+
+```bash
+http://<server-ip>:4000
+```
+
+Die Felder sind alle bereits vorbelegt und falls du willst, kannst du ganz unten  
+noch einen Administratoren-Account anlegen lassen. Vorsicht -- `admin` geht nicht!
+Falls du diesen User nicht anlegen lässt, wird der erste (selbst)registrierte
+Benutzer automatisch Administrator.
+
+Im Prinzip kannst du auch Mailregistrierung und andere Dinge 
+konfigurieren -- für einen einfachen Betrieb genügt aber 
+das Einrichten des Benutzers.  
+
+Wenn die Konfiguration durchgelaufen ist, wirst du automatisch angemeldet.
+Generell ist jetzt bereits ein Arbeiten mit der Weboberfläche möglich. Für den
+Einsatz von Remote-Clients musst du nun noch deinen öffentlichen SSH-Schlüssel 
+in \gitea ablegen. Das geht in den Profileinstellungen des Benutzers.
+
+**Beachte**  
+Die Standardlänge von 2048 Bit genügt \gitea nicht. Hier werden 4096 Bit 
+gefordert.  
+Du musst also eventuell einen weiteres Schlüsselpaar generieren:
+
+```bash
+cd ~/.ssh
+ssh-keygen -t rsa -b 4096 -f gitea_pub
+```
+
+Für welche Funktion genau eine Verifikation des Schlüssels nötig ist,
+kann ich aktuell leider nicht sagen. Der nötige Befehl kann aber direkt 
+aus der Weboberfläche kopiert werden -- passe einfach den Pfad zum privaten Schlüssel an.
+Die Ausgabe (einschließlich der Begrenzungszeile) kopierst du dann wieder 
+nach \gitea zurück.
+
+Nun kannst du auch mit externen Clients arbeiten.
+
+\samplestart
+**Wichtig**  
+Da wir den Clone-Befehl außerhalb des Docker-Netzwerks ausführen, können 
+wir nicht den Standardport 22 verwenden. Docker reicht 222 extern nach 22 intern
+weiter! Entsprechend passt auch die 
+URL nicht, die uns \gitea zum Clonen eines Repos anbietet!
+
+```bash
+# korrekt
+git clone ssh://git@<SERVER>:222/<BENUTZER>/<REPO.git>
+```
+\sampleend
+
+Zum Managen von Benutzern habe ich einige kleine Scripte gebastelt, 
+auf die ich im Kapitel *Gitea ohne Docker* etwas eingehe. Du findest 
+sie im Ordner \gitea im Material!
+
+
+## Setup mit Runner
+
+Dieser Setup ist nun etwas größer und erfordert mehrere Ordner und 
+Konfigurationsdateien! Um dir den Start zu erleichtern, habe ich dem 
+Material ein setup-Script hinzugefügt. Es führt die relevanten Schritte 
+für dich aus. Wir gehen zunächst die einzelnen Zeilen des Scripts durch
+und im Nachgang kommen die Details für das tiefere Verständnis.
 
 **Was ist ein Runner?**  
-In fortgeschrittenen Szenarien kann Gitea so konfiguriert werden,
+In fortgeschrittenen Szenarien kann \gitea so konfiguriert werden,
 dass ein Push auf einen bestimmten Branch zu nachgelagerten Aktionen
-auf dem Server führt. Das können Unittests sein, aber auch Compilierungen,
+auf dem Server führt. Das können Unit-Tests sein, aber auch Compilierungen,
 Erstellung von Internetseiten, ... was mit dem versionierten Code 
-schlussendlich geplant ist.
+schlussendlich eben geplant ist.  
 Wir werden unser Buch-Projekt so anpassen, dass aus unseren Dokumenten
 automatisch ein druckreifes PDF erstellt wird. Hier sind wir dann
 also bei der ursprünglichen Bedeutung der *Online-Kollaboration* angelangt.  
 
-Damit diese nachgelagerten Aktionen gestartet werden können, läuft
-eine *Runner*-Programm in einem eigenen Container. Dieses Programm 
-kommuniziert mit dem Gitea-Container und führt bei Bedarf die 
-entprechende Aktion aus. In eigentlich fast allen Fällen wird zum
-Ausführen ein weiterer Docker-Container erstellt, der für die 
-eigentliche Aktion zuständig ist. Die Details dazu folgen weiter unten.
+Damit diese nachgelagerten Aktionen gestartet werden können, benötigen wir ein
+ein *Runner*-Programm in einem eigenen Container. Dieses Programm 
+kommuniziert mit dem \gitea-Container und führt bei Bedarf die 
+entprechende Aktion aus, um das Buch aus den Raw-Dateien zu erstellen. 
+In eigentlich fast allen Anwendungsfällen wird zum
+Ausführen von Befehlen vom Runner nach dem Push ein weiterer Docker-Container erstellt, 
+der für die eigentliche Aktion zuständig ist -- der Job-Container.
 
-## Die Dateien
+### Setup-Script 
 
-Natürlich kann man für jeden benötigten Container eine eigene
-`docker-compose.yaml` erstellen, es ist aber sinnvoll, alle drei
-Container gemeinsam zu konfigurieren, da dann auch Abhängigkeiten
+Ich gehe davon aus, dass du dir den Ordner \ordner{gitea\_buch}
+an einen geeigneten Ort auf dem Server kopiert hast. Überprüfe, 
+ob alle Dateien dem *Benutzer* gehören:
+
+```bash 
+ls -lahR 
+# oder  find . ! -user benutzer   
+```
+
+Falls das nicht der Fall ist, musst du den Besitzer passend setzen:
+
+```bash 
+cd gitea_buch 
+sudo chown -R benutzer:benutzer ./*
+# Kennwort ist immer noch "gitkurs"
+```
+
+**Das Script**  
+
+Nachfolgend kommt immer zuerst die Erklärung und nachfolgend der Befehl!
+
+Wir merken uns den aktuellen Ordner um mit \cmd{cd \$base} immer wieder 
+dorthin zurück zu kommen.
+
+```bash
+base=$PWD
+```
+
+In manchen Vorlagedateien sind Platzhalter untergebracht, die das Script 
+passend zu deiner Umgebung ersetzt. 
+Diese Vorlagen werden mit obigem Befehl an die richtige Stelle kopiert.
+
+```bash
+cp -r vorlagen/* .
+```
+
+Den aktuellen Fingerabdruck des Servers auslesen, damit bei ssh-Verbindungen 
+keine Sicherheitsabfrage kommt.
+
+
+```bash
+sed -i -e "s~SSH_LOCATION~${base}/ssh_keys~g" config.yaml
+```
+
+Wieder einen Platzhalter ersetzen, damit die SSH-Schlüssel gefunden werden.
+Im Config-File muss der Pfad zu den ssh-Keys hinterlegt sein.
+Da ich aber nicht weiß, wo du die Ordner abgelegt hast, müssen wir
+das über den Platzhalter lösen.
+
+```bash
+sed -i -e "s~SSH_LOCATION~${base}/ssh_keys~g" docker-compose.yml
+```
+
+Es werden übrigens \gitea die gleichen Keys verwendet.
+
+Nun müssen die externen Ressourcen wie Netzwerk und Volume erzeugt werden.
+
+```bash
+# Externes Netz und Volume
+docker network create gitea
+docker volume create giteatransfer
+```
+
+
+Das Image für Quarto brauchen wir für die Dokumentenerstellung.
+In dieser Form ist es relativ klein -- bei \gitlab probieren 
+wir eine vollständig LaTeX-Installation.
+
+```bash
+cd $base
+cd quarto
+docker compose build
+```
+
+Hier wird das Docker-Image für das Runner-Programm erstellt.
+
+```bash
+cd $base
+cd runner
+docker compose build 
+```
+
+
+Nur zwei der nötigen Container starten (*server* und *db*). Du wirst dann vom Script 
+aufgefordert, die Konfiguration im Browser zu beenden und evtl. einen 
+administrativen Benutzer anzulegen (*admin* geht nicht!). 
+Ist die Konfguration erledigt, so wirst du automatisch angemeldet.
+Drücke dann im Terminal die \key{Enter}-Taste.
+
+```bash
+cd $base
+docker compose up server db -d
+```
+
+Das Runner-Programm muss mit \gitea kommunizieren können. Mit diesem 
+Token (eine Art Kennwort) kann es an \gitea gekoppelt werden. 
+Normalerweise würde man diesen Schritt in 
+der Weboberfläche machen, aber so geht es schneller!
+
+\bxlarge
+```bash
+runnertoken=$(docker exec -u git gitea gitea actions  generate-runner-token)
+```
+\exlarge
+
+In der Datei \datei{docker-compose.yml} den Platzhalter RUNNERTOKEN durch 
+das eigentliche Token ersetzen.
+
+```bash
+sed -i -e "s/RUNNERTOKEN/$runnertoken/g" docker-compose.yml
+```
+
+Den laufenden \gitea-Container als *bekannten Rechner* einstufen um 
+Rückfragen zu verhindern.
+
+\bxlarge
+```bash
+docker run --rm --network gitea alpine:latest  \
+    sh -c "apk add --no-cache openssh && ssh-keyscan -p 22 gitea" > ssh_keys/known_hosts
+``` 
+\exlarge
+
+Laufende Container beenden und alle mit den neuen Einstellungen 
+wieder starten. \gitea ist nun *grob* einsatzbereit. Hier geht es 
+weiter, wie bei der Basis-Version ohne Runner.
+
+
+```bash
+cd $base 
+docker compose down
+docker compose up
+```
+
+
+
+### Details
+In den Materialien findest du im Ordner \ordner{gitea\_buch} den kompletten 
+Setup, den wir nachfolgend durchsprechen werden. Er besteht aus den 
+Ordnern:
+
+* gitea
+* gitea/runner
+* gitea/quarto
+
+ 
+
+**Was ist Quarto?**  
+Dabei handelt es sich um ein Publishing-System, das aus Markdown-Dateien 
+viele andere Formate erzeugen kann. Es erfordert allerdings einige Einarbeitung, wenn man es wirklich produktiv einsetzen will. Gerade im 
+Bereich der Statistik im Zusammenspiel mit **R** ist es aber an vielen Universitäten Standard. Im Hintergrund arbeiten dabei Technologien
+wie pandoc, LaTeX, reveal.js, jupyter, ... zusammen. Für unseren Zweck habe ich in den Materialien eine Vorlage erstellt, die bereits direkt einsetzbar ist.
+
+#### Die Dateien
+
+Natürlich könnte man für jeden benötigten Container eine eigene
+\datei{docker-compose.yml} erstellen. Es ist aber sinnvoll, mehrere 
+Container gemeinsam in einer Datei zu konfigurieren, da dann auch Abhängigkeiten
 zwischen den Containern autmatisch berücksichtigt werden.
-Wir besprechen die verwendete `docker-compose.yaml` zuerst Zeile
-für Zeile. Die vollständige Version steht am Ende des Kapitels und 
-ist Teil der Kursmaterialien.
+Wir besprechen die verwendete \datei{docker-compose.yml} zuerst Zeile
+für Zeile. Falls dir das zu genau ist, kannst du hier auch überspringen!
 
-### Allgemeine Einstellungen
+##### Allgemeine Einstellungen
+
+Ich habe die Datei \datei{docker-compose.yml} in kleinere Teile zerlegt,
+um den Aufbau besser erklären zu können. Die vollständige Version steht am Ende 
+des Abschnitts und befindet sich auch in den Unterlagen im Ordner \ordner{gitea\_buch}.
+
 
 ```yaml
 version: "3"
@@ -63,26 +337,32 @@ volumes:  #<3>
   gitea_db_data:
     driver: local
   gitea_runner_data:
-    driver: local
+    driver: local 
+  giteatransfer:  #<4>
+    external: true
+  
 ```
 1. Alle drei Container müssen miteinander kommunizieren
    und werden deshalb in ein gemeinsames Netz mit dem 
    Namen *gitea* eingebunden.
-2. Der Basis-Setup funktioniert hier auch mit `false`.
-   Sobald der Runner aber einen neuen Container erstellt,
-   klappt das nur noch mit `true`.
+2. Wir wollen dieses Netzwerk selbst managen (=external) und müssen es 
+   deshalb auch selbst erstellen:  
+   \cmd{docker network create gitea}
 3. Die Daten der Benutzer und die Einstellungen sollen auch
    über Neustarts und Upgrades hinweg erhalten bleiben.
    Dafür dürfen sie nicht Teil des Containers sein, der dabei
-   komplett neu erstellt wird. Es werden auf diese Weise 
-   drei Ordner mit den angegebenen Namen erstellt, die 
-   außerhalb des Containers liegen und in diesen hinein 
-   verlinkt werden.
+   komplett neu erstellt wird. Es werden deshalb 
+   drei Ordner (=Volumes) mit den angegebenen Namen erstellt. Sie liegen 
+   außerhalb des Containers und werden in diesen hinein 
+   verlinkt.
+4. Dieser Ordner wird von zwei Containern gleichzeitig verwendet, 
+   um das Buch nach der Erstellung auf den Webserver zu bekommen.
+   Auch das müssen wir manuell erstellen:   
+   \cmd{docker volume create giteatransfer}
 
-ToDo: Was hat es genau mit dem exteral:false auf sich?
-ToDo: Welche andere Driver haben Volumens noch?
+#### Services
 
-### Services
+Die einzelnen Container des Setups werden als *Services* bezeichnet.
 
 ```yaml
 services:
@@ -92,12 +372,15 @@ services:
     ...
   runner:
     ...
+  web:
+    ...
 ```
 
-Dieser schematische Aufbau beschreibt die drei anzulegenden Container.
-Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
+Dieser schematische Aufbau beschreibt die vier anzulegenden Container.
+Der Job-Container funktioniert anders! Wir besprechen die einzelnen 
+Abschnitte nachfolgend getrennt.
 
-### Server
+#### Gitea-Server
 
 **Teil 1**  
 ```yaml
@@ -114,12 +397,12 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
       - GITEA__database__USER=gitea
       - GITEA__database__PASSWD=gitea
 ```
-1. Hier könnte auch `gitea:latest` stehen, was
-   Upgrades vereinfacht.
+1. Hier könnte auch \cmd{gitea:latest} stehen. Das ist nicht ganz problemlos, da 
+   bei Upgrades mit Versionen entstehen können die nicht zusammenpassen. 
 2. Möglich sind auch *postgresql* und *sqlite*.
-   Sqlite ist eine Alternative für kleine Installationen,
+   SQLite ist eine Alternative für kleine Installationen,
    da dabei kein eigener Datenbankserver benötigt wird.
-3. Name des Datenbankservers:Port
+3. Name des Datenbankservers:Port (Service-Name, nicht Container-Name!)
 4. Hochsicherheitskennwörter für die Fortbildung
 
 **Teil 2**  
@@ -128,37 +411,42 @@ Wir besprechen die einzelnen Abschnitte nachfolgend getrennt.
     networks:         #<2>
       - gitea
     volumes:          #<3>
-      - gitea_data:/data
+      - gitea_data:/data   #<4>
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "4000:3000"   #<4> 
-      - "222:22"      #<5>
-    depends_on:       #<6>
-      - db
+      - "4000:3000"   #<5> 
+      - "222:22"      #<6>
+    healthcheck:      #<7>
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 5s
+      retries: 20
+    depends_on:       #<8>
+      db:
+        condition: service_healthy
 ```
-1. Container immer automatisch neu starten, wenn etwas 
+1. Der Container wird immer automatisch neu starten, wenn etwas 
    schief geht oder der Server neu gestartet wird.
 2. Festlegen des Netzes in dem der Container läuft
-3. Die Daten von Gitea liegen im Ordner `gitea_data`,
-   genauer unter `/var/lib/docker/volumes/gitea_data`.
+3. Die Daten von \gitea liegen im Ordner \ordner{./gitea\_data}  
    Über Volumes wird aber auch der Zugriff auf Ressourcen
-   des Servers gesteuert, hier der Zugriff die Eistellungen
-   der Zeitzone. (`:ro` nur lesender Zugriff)
-4. IM Container läuft Gitea auf Port 3000, 
-   der Zugriff von außen (Browser) erfolgt über Port 4000.
-   Ist hier eher als Demo gedacht, 3000:3000 ginge auch.
-5. Der SSH-Server (für pull, push, ...) läuft im Container
-   auf Port 22, Zugriff von außen über Port 222. Das ist 
+   des Servers gesteuert, hier der Zugriff die Einstellungen
+   der Zeitzone. (*:ro* nur lesender Zugriff)
+4. Der Speicherort ist \ordner{/var/lib/docker/volumes/gitea\_data}
+5. **Im** Container läuft Gitea auf Port 3000, 
+   der Zugriff **von außen** (Browser) erfolgt über Port 4000.
+   Das ist hier eher als Demo gedacht, 3000:3000 ginge auch.
+6. Der SSH-Server (für pull, push, ...) läuft **im Container**
+   auf Port 22, Zugriff **von außen** über Port 222. Das ist 
    nötig, da der Server (also der gemietete Server) seinen
    ssh-Server bereits auf Port 22 laufen hat. Das kann man
-   zwar ändern, muss aber etwas aufpassen, dass man sich
-   nit versehentlich aussperrt, weil man die Firewall 
-   nicht angepasst hat.
-6. Der Container wird erst gestartet, wenn der Datenbankserver
+   zwar ändern, muss aber etwas aufpassen. Wenn man die Firewall
+   nicht anpasst, kann man sich so aussperren!
+7. Zwangspause, bis der Container wirklich verfügbar ist.
+8. Der Container wird erst gestartet, wenn der Datenbankserver
    erfolgreich hochgefahren ist.
 
-### db
+#### Datenbankserver db
 
 Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
 
@@ -166,174 +454,264 @@ Alle relevanten Zeilen sind analog zum obigen Beispiel zu lesen.
   db:
     image: docker.io/library/mysql:8
     restart: always
-    container_name: db
+    container_name: gitea_db
     hostname: db
     environment:
       - MYSQL_ROOT_PASSWORD=gitea
       - MYSQL_USER=gitea
       - MYSQL_PASSWORD=gitea
       - MYSQL_DATABASE=gitea
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 10
     networks:
       - gitea
     volumes:
-      - gitea_db_data:/var/lib/mysql
+      - gitea_db:/var/lib/mysql
 ```
 
-### runner
+#### Der Runner
 
 Es werden hier nur neue oder wichtige Einstellungen erklärt!
 
 ```yaml
   runner:
-    image: docker.io/gitea/act_runner:latest
+    image: gitea/act_runner_dockercli:latest
     container_name: gitea_runner
-    hostname: gitea_runner
+    hostname: runner
     environment:
       CONFIG_FILE: /config.yaml   #<1>
       GITEA_INSTANCE_URL: "http://gitea:3000"
       GITEA_RUNNER_NAME: "Probe-runner"
-      GITEA_RUNNER_REGISTRATION_TOKEN: <ausfüllen>   #<2>
+      GITEA_RUNNER_REGISTRATION_TOKEN: RUNNERTOKEN   #<2>
     restart: always
     depends_on:   #<3>
-      - server
-      - db
+      server:
+        condition: service_healthy
+      db:
+        condition: service_healthy
     networks:
       - gitea
     volumes:
       - ./config.yaml:/config.yaml   #<4>
-      - gitea_runner_data:/data
+      - SSH_LOCATION:/root/.ssh #<5>
+      - runner_data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock   #<5>
+      - /var/run/docker.sock:/var/run/docker.sock   #<6>
 ```
 1. Dazu kommt unten mehr!
 2. Füllen wir später noch aus
 3. Dieser Container startet erst wenn die beiden anderen laufen
-4. Ein Volume kann auch nur eine einzige Datei sein. Beachte
-   den Unterschied bei der Schreibung von `./config.yaml` und
-   `gitea_runner_data`. Das `./` am Anfang bedeutet, dass diese 
-   Datei im gleichen Ordner liegt wie die `docker-compose.yaml`.
-5. Dieser Container braucht auch selbst Zugriff auf Docker, damit
-   er selbst neue Container starten kann.
+4. Ein Volume kann auch nur eine einzige Datei sein, z.B. \datei{./config.yaml}.  
+5. Wieder wird beim Setup eine Variable ersetzt.
+6. Dieser Container braucht auch selbst Zugriff auf Docker, damit
+   er eigenständig neue Container starten kann.
 
-**Das Config-File**  
-Bei vielen Containern kann die Konfiguration durch Einträge
-in der `docker-compose.yaml` erfolgen - wie z.B. die Kennwörter.
-Gerade für Kennwörter gibt es noch sicherere Varianten, das führt aber zu weit. Für den Runner werden aber noch Einstellungen nötig, die man
-so (anscheinend) nicht übergeben kann. Aus diesem Grund wird oben
-der Parameter `CONFIG_FILE` übergeben. Diese Datei befindet sich 
-ebenfalls in den Kursmaterialien und wird hier nicht abgedruckt.
-Für eine frische Datei kann man folgenden Befehl aufrufen:
+#### Webserver web
+
+Hier gibt es eigentlich keine Besonderheiten.
 
 ```bash
-docker exec -it gitea_runner act_runner generate-config
+web:
+    image: nginx
+    hostname: transfer
+    restart: always
+    volumes:
+      - giteatransfer:/usr/share/nginx/html
+    ports:
+      - "4001:80"
+    environment:
+      - NGINX_HOST=transfer
+      - NGINX_PORT=80
+    networks:
+      - gitea
 ```
-oder direkt als Datei
+
+#### Komplette Version
+
+```{.bash include="src/21_docker/gitea_buch/gitea/vorlagen/docker-compose.yml"}
+```
+
+
+#### Mehr Details zur Konfiguration
+
+Dieser Abschnitt ist wirklich nur als Lektüre bei Interesse an der manuelle Konfiguration gedacht!
+
+**Runner-Config**  
+Bei vielen Containern kann die Konfiguration durch Einträge
+in der \datei{docker-compose.yml} erfolgen - wie z.B. die Kennwörter.
+Gerade für Kennwörter gibt es noch sicherere Varianten (.env Datei), das führt 
+aber zu weit. Für den Runner werden aber noch weitere Einstellungen nötig, die man
+*so* (anscheinend) nicht übergeben kann. Aus diesem Grund wird eine eigene
+Datei \datei{config.yaml} benötigt. In der \datei{docker-compose.yml} 
+ist das der der Parameter `CONFIG_FILE` im Abschnitt *runner*. 
+Für eine frische Datei rufst du auf:
+
+\blarge
 ```bash
 docker exec -it gitea_runner act_runner generate-config > config.yaml
 ```
+\elarge
+
+In dieser Datei müssen dann einige Dinge eingestellt werden. Im Material habe ich die 
+Datei einmal als Original und einmal in einer Minimalversion abgelegt. 
+Die Minimalversion ist unsere Arbeitsbasis.
+
+**config.yaml**  
+\bxlarge
+```{.bash include="src/21_docker/gitea_buch/gitea/vorlagen/config.yaml"}
+```
+\exlarge
+
+**Wichtige Einstellungen**  
+
+* Labels anpassen
+* `network: "gitea"`
+* `privileged: true`
+* `options: "--rm -v SSH_LOCATION:/root/.ssh"`
+*  `valid_volumes:`  
+   `  - "**"`
+
+Die Einrückungen mit Leerzeichen sind wichtig!
+
 
 \samplestart
 **Hinweis**  
-Vielleicht ist dir aufgafallen, dass einmal im Environment Spiegelstriche
+Vielleicht ist dir aufgefallen, dass im Environment einmal Spiegelstriche
 vorkommen und einmal nicht. Das ist Absicht, denn die Server wollen das 
 unterschiedlich haben. Intern wird bei der Spiegelstrich-Variante
-eine Liste der Art `["key=value", "key=vlaue", ...] erstellt, die der 
+eine Liste der Art *["key=value", "key=value", ...]* erstellt, die der 
 Server verarbeiten muss. Der Runner hätte aber lieber ein Dictionary,
-d.h. eine Darstellung `{key:value, key:value, ...}` und das passiert **ohne**
+d.h. eine Darstellung *{key:value, key:value, ...}* und das passiert **ohne**
 die Spiegelstriche.
 \sampleend
 
-**Das Registrierungs-Token**  
-Bist du in Gitea eingelogged, so kannst du über das Einstellungsmenü
-(Das geht auf Instanz-, Repository- oder Userebene) nach *actions* 
-suchen, dort auf *runner* und dann oben rechts auf *neuen runner anlegen* (o.ä.). Dort erscheint dann das Token, das in die `docker-compose.yaml` eingetragen werden muss. Beim Neustart registriert sich der Runner 
-dann damit bei Gitea.
+### Prinzip des Runners
+Der Runner (als eigenständige, von \gitea unabhängige Software) muss mit 
+\gitea kommunizieren und braucht dafür die Berechtigung. Dafür wird im 
+laufenden \gitea ein Zugriffstoken (eine Art Kennwort) erstellt, das in den 
+Runner eingetragen wird. Auf diese Weise wird ihm dann Zugriff gewährt.
 
-### Starten
-Damit der Runner gestartet werden kann, muss zunächst Gitea laufen -- 
-sonst kann man kein Token erstellen.
+### Starten der Umgebung
+
+#### Quarto
+Damit die Konvertierung von Markdown zu PDF ausgeführt werden kann,
+brauchen wir für den Job-Container ein Quarto-Image.  
 
 ```bash
-docker-compose up gitea db 
+cd gitea/quarto 
+docker compose build 
 ```
 
-Später wird der Befehl mit einem zusätzlichen `-d` gestartet, damit
-der Start im Hintergrund erfolgt. Ohne `-d` sieht man eventuelle
-Fehlermeldungen.
+Der Ordner \ordner{ssh\_keys} wird benötigt, damit eine kennwortlose
+Kommunikation zwischen den Containern funktioniert. Dort muss sich auch
+die Datei \datei{known\_hosts} befinden. Sie enthält den Fingerabdruck
+des \gitea-Servers. Da jedes neue \gitea einen eigenen Fingerabdruck 
+besitzt, wird diese Datei im Setup-Script dynamisch erzeugt!
 
-Nun kannst du dich bei Gitea im Browser anmelden und den ersten Benutzer
-einrichten, den du dann auch als Administrator verwenden kannst.
+#### Runner
 
-TODO: Anmeldescreen
+Der Runner wird ebenfalls mit Hilfe eines Dockerfiles erstellt -- eine
+Datei \datei{docker-compose.yml} sparen wir uns an dieser Stelle, weil 
+keine komplexeren Einstellungen nötig sind.  
 
-Im Prinzip kann man auch Mailregistrierung und andere Dinge 
-konfigurieren -- für einen einfachen Betrieb genügt aber 
-das Einrichten des Benutzers.
+\samplestart
+**Hinweis**  
+Wenn das System seine Docker-Images bei jedem Aufruf des Runners aus dem Internet holen darf, braucht man diesen Aufwand nicht! Meine Vorgabe war 
+es aber, *alles* möglichst lokal auf einem Server zu verwalten. 
+Aus diesem Grund bekommt der Runner ein schlankes Betriebssystem 
+als Basis und zusätzlich wird docker-cli und openssh installiert.
+Das steht im Dockerfile.
+\sampleend
 
-Nach dem oben beschriebenen Erstellen eines Tokens kannst
-du den Gitea und den DB-Server mit `ctrl-c` zunächst wieder beenden.
-Das Token wird nun in die `docker-compose.yaml` kopiert.
+```bash
+cd gitea/runner 
+docker compose build 
+```
 
-Nun kann auch der Runner gestartet werden. Auch jetzt zu Testzwecken
-zuerst ohne `-d`:
+#### Hauptsystem
+
+
+**Das Registrierungs-Token**  
+In unserem Setup wird das Registrierungstoken des Runners über die 
+Kommandozeile ausgelesen. Das geht aber auch über die Weboberfläche 
+von \gitea.  
+Bist du in \gitea eingelogged, so kannst du über das Einstellungsmenü
+(Das geht auf den Ebenen *Instanz, Repository oder User*) nach *actions* 
+suchen, dort auf *runner* und dann oben rechts auf *neuen Runner 
+anlegen* (o.ä.) klicken. Dort erscheint dann das Token, das du dir kopieren musst.
+
+Fahre nun die Container mit \strg{c} zunächst wieder herunter und
+kopiere das Token in die Datei \datei{docker-compose.yml}. Die Stelle 
+ist beim Runner eindeutig gekennzeichnet! Auch diesen Schritt erledigt 
+das Setup-Script für uns automatisch.
+
+Starte nun die Container und achte auf *offensichtliche* Fehlermeldungen.
+Nicht jede Warnung ist ein Fehler und wenn das System nicht ständig wiederholt 
+Beschwerden äußert, dann sollte alles passen.
 
 ```bash
 docker-compose up
 ```
 
-Hat das ohne Fehler geklappt, dann wieder `strg + c` und dann
+Hat das ohne Fehler geklappt, dann wieder \strg{c} und nun
 ein richtiger Start:
 
 ```bash
 docker-compose up -d
 ```
 
-Gitea sollte jetzt verwendbar sein!
+Gitea sollte jetzt verwendbar sein -- zumindest die GUI.
 
-### Einrichten
-Im Prinzip ist Gitea bereits voll funktionsfähig. Wenn die 
-Schüler **nur** über den Browser mit dem System arbeiten, 
-sind auch keine weiteren Einstellungen nötig. Wird aber 
-vollwertiger Zugriff (clone/pull/push) benötigt, so müssen
-die Benutzer noch ihren ssh-Schlüssel im System hinterlegen.
+### Wie geht es weiter?
 
-### Schlüssel erstellen
-**Auf Linux und MacOS**  
+Trage in deinem Benutzer-Profil in \gitea deinen öffentlichen ssh-Schlüssel ein.
 
-```bash
-ssh-keygen -t rsa -b 4096 
-```
+Lege in \gitea ein Repository mit dem Namen *Labor* an.
+Dieser Name ist nötig, da er im weiteren Verlauf an verschiedenen
+Stellen (auch in Dateien) auftritt. Verwende das Plus-Symbol rechts oben.
 
-Im weiteren Verlauf wird nach einer Keyphrase gefragt -- leer lassen --
-und ein Name für den Schlüssel abgefragt -- gitea passt gut.
 
-Diesen Schlüssel lässt man sich ausgeben:
+Dieses Repository kannst du dir nun auf deinen Rechner Clonen:
 
 ```bash
-cat ~/.ssh/gitea.pub
+git clone ssh://git@<SERVER-IP>:222/benutzer/Labor.git
 ```
+(Rückfrage mit yes quittieren)
 
-In den Benutzereinstellungen auf Gitea kann nun ein neuer 
-Schlüssel hinzugefügt werden.
+Für unser Buch-Projekt kopierst du den Inhalt aus dem Materialordner
+\ordner{gitea\_buch/buchvorlage} in das Repository.
 
-TODO: Eventuell Screenshot
-
-**Auf Windows**  
-... ach ja ... Windows ...
-
-### Clonen
-Das Clonen eines öffentlichen Repositories über Https sollte auch ohne
-Schlüssel funktionieren. Für einen vollwertigen Zugriff verwendet 
-man aber lieber *ssh* und zwar mit folgendem Befehl:
+Zusätzlich legst du eine Ordnerstuktur an:
 
 ```bash
-git clone ssh://git@mein_server:222/BENUTZER/REPO.git
+mkdir -p .gitea/workflows/
 ```
 
-Die Angabe von 222 ist nötig, da wir nicht Port 22 verwenden -- 
-man muss also die Adresse, die man in Gitea über dem Repository sieht,
-noch entsprechend anpassen.
+In diesen Workflow-Ordner kopierst du die Datei \datei{convert.yaml}
+aus dem Materialordner.
 
-TODO: Screenshot
+Wenn du diesen aktuellen Stand nun committest und einen Push ausführst, 
+dann sollte auf \gitea der Build-Prozess gestartet werden. 
 
+In der Kopfzeile der Weboberfläche des Repositories gibt es einen 
+Punkt *Action* in dem du den Prozess verfolgen kannst.
+
+Sobald er erfolgreich beendet wurde -- was wir hoffen -- kannst du 
+das fertige Dokument auf dem Webserver abrufen:
+
+```bash
+http://<SERVER-IP>:4001/book.pdf
+```
+
+\samplestart
+**Hinweis**  
+Die Kooperation mit dem Webserver funktioniert über einen 
+gemeinsamen Ordner der beiden Container. Quarto erstellt 
+das Dokument in einem Ordner *giteatransfer*, der gleichzeitig 
+das Documentroot des Webservers im anderen Container ist.
+\sampleend
+
+<!-- https://blog.schallbert.de/en/gitea-act-runner-dind/ -->

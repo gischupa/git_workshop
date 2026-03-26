@@ -1,0 +1,392 @@
+# Serverinstallation II
+
+Dieser Anschnitt schließt an die Installation von Ubuntu auf dem Proxmox an, gilt aber ebenso für einen Server im Internet.
+
+Der Betrieb eines Servers ist auch immer mit Verantwortung und Aufwand 
+verbunden. Wer hier keine Kenntnisse besitzt, schreckt schnell davor 
+zurück, obwohl die Grundlagen eigentlich relativ schnell gelernt sind.
+Anleitungen und Checklisten aus dem Internet erleichtern hier auch 
+den Einstieg.  
+
+Generell muss man sich natürlich über den Einsatzzweck des Servers 
+Gedanken machen. Was für Dienste soll er bereitstellen? Müssen 
+Benutzer verwaltet werden, was sollen diese Benutzer dürfen. Es liegt 
+in der Natur der Sache, dass dich das Anwendungsspektrum im Lauf der 
+Zeit vergrößert und damit wächst zwangsläufig auch das Wissen.
+
+Eine besondere Hürde stellt der Betrieb von mehreren Webangeboten 
+auf dem gleichen Server dar, die über verschiedene Namen angesprochen 
+werden sollen (homepage.schule.de, gitlab.schule.de, versuche.schule.de, ...).
+Die Lösung hierfür ist ein *reverse Proxy*, allerdings sprengt das 
+den Rahmen dieses Workshops.
+
+## Anmelden auf dem Server
+
+Damit du dich auf deinem Server anmelden kannst, benötigst du 
+folgende Informationen:
+
+* IP-Adresse des Servers
+* Benutzername
+* Kennwort
+
+Diese Daten hast du vorher festgelegt oder vom Provider erhalten.
+
+Die Anmeldung auf dem Server erfolgt über das Protokoll *ssh*.  
+Seit einer der letzten Versionen von Windows ist auch hier bereits
+ein ssh-Client eingebaut. Bei Linux und MacOS gehört er seit Jahrzehnten zum 
+Standard. Ich selbst bevorzuge auf Windows allerdings eher das (kostenlose)
+Programm *Putty* und die gerade vorher installierte \gitbash.
+
+Putty kann unter [https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) 
+als einzelne Datei heruntergeladen werden und erlaubt die Erstellung von 
+Verbindungsprofilen. Ich gehe davon aus, dass du mit diesem Tool selbst klar kommst.
+
+In jedem Fall musst du zunächst ein Terminal (Kommandofenster) öffnen um 
+den nachfolgenden Befehl eingeben zu können:
+
+
+```bash
+ssh benutzer@<SERVER-IP> 
+```
+
+Du erhältst eine Sicherheitsabfrage um zukünftige Man-in-the-middle Angriffe 
+erkennen zu können, die du mit *yes* beantwortest. Bei der nachfolgenden 
+Kennworteingabe kann es (je nach System) sein, dass die Tastendrücke nicht 
+angezeigt werden!
+
+\bxlarge
+```bash
+The authenticity of host 'try.example.com (38.243.220.195)' can't be established.
+ED25519 key fingerprint is SHA256:DSeSsfXDL2PkSlLYCt64krg9xa2vNr3og5SBJzZ/WNk.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+```
+\exlarge
+
+Wenn alles geklappt hat, so wirst du vom Eingabeprompt des Terminals 
+auf dem Server begrüßt:
+
+```bash
+benutzer@gitbox1:~$
+```
+
+\samplestart
+**Hintergrund**  
+Der Rechner merkt sich den Fingerabruck des Servers, zu dem die Verbindung
+aufgebaut wurde. Sollte später ein anderer Server diese IP-Adresse übernehmen
+(z.B. Man in the middle), so stimmt der Fingerabdruck nicht und es gibt eine
+Warnung.
+\sampleend
+
+Wenn wir mit unseren Arbeiten fertig sind müssen wir uns wieder abmelden.
+Der brutale Weg ist das Schließen des Fensters, besser ist aber \cmd{exit},
+\cmd{logout} oder \strg{d}.
+
+## Installieren von Git
+\git ist in vielen Fällen bereits vorinstalliert. Ich beschreibe den Ablauf
+dennoch, weil allgemeine Prinzipien vorkommen.  
+
+Vor jeder Installation muss die Softwaredatenbank aktualisiert werden,
+damit keine veralteten Dateien installiert werden. Als normaler Benutzer 
+darfst du das aber nicht und musst zuerst zum Administrator (=root) werden:
+
+```bash
+sudo -i
+```
+
+Es wird wieder dein Kennwort abgefragt und der Eingabeprompt ändert sich.
+Nun kannst du administrative Arbeiten erledigen.
+
+```bash
+apt update
+```
+
+In regelmäßigen Abständen sollte auch ein Komplett-Upgrade des Systems laufen, um 
+zum Beispiel Sicherheitslücken zu schließen und *alle* Programme zu aktualisieren^[vgl. Windows ... hier muss jedes 
+Programm einzeln aktualisiert werden!].
+Da auf deinem Server eine komplett neue Installation von DVD ist, kann einiges 
+veraltet sein -- also führst du aus:
+
+```bash
+apt upgrade -y
+```
+
+Das kann nun einige Zeit dauern. Hättest du eine weitere Verbindung geöffnet, so 
+könntest du parallel weiterarbeiten, aktuell warten wir aber ab.
+
+Nun zur eigentlichen Installation von \git:
+
+```bash
+apt install git -y 
+```
+
+Damit ist die Installation von \git bereits beendet, solange keine besondere
+Zusatzsoftware benötigt wird, die auf dem Server ohnehin unüblich ist.
+
+### Absicherung des Servers
+
+Gleich an dieser Stelle ein Wort zur Sicherheit.
+Wenn dein Server im Internet steht, dann bietet er natürlich eine 
+große Angriffsfläche. Es ist deshalb sinnvoll, wenn du zumindest 
+die Firewall aktivierst und ein sicheres Kennwort einstellst.
+Das hat im Prinzip nichts mit \git zu tun, ist aber dennoch wichtig.
+
+#### Kennwort {.unnumbered}
+
+Das geht relativ schnell. Gib einfach im Terminal den Befehl \cmd{passwd}
+ein und drücke \key{Enter}. Du wirst zweimal nach einem neuen Kennwort
+gefragt und damit ist bereits alles erledigt.
+
+#### Firewall{.unnumbered}
+
+In Ubuntu ist eine sehr pflegeleichte Firewall integriert (UFW = Uncomplicated Firewall).  
+Du gehst nun in 2 Schritten vor:
+
+* Definieren des/der offenen Ports (bei uns 22 für SSH)
+* Aktivieren der Firewall
+
+```bash
+ufw status verbose
+# sollte *inactive* liefern
+
+# Die Firewall darf hier noch nicht aktiv sein !!!!!!!
+ufw default deny incoming
+ufw default allow outgoing
+
+# ssh erlauben
+ufw allow 22/tcp
+
+# Firewall einschalten
+ufw enable
+ufw status verbose
+```
+
+\samplestart
+**Hinweise**  
+An Stelle von *allow* könnte auch *limit* stehen.
+Allerdings blockert *limit* den Zugang für eine bestimmte Zeit, wenn zu 
+viele (gescheiterte) Anmeldeversuche in kurzer Zeit vorliegen. Das kann bei 
+uns schon mal passieren!
+\sampleend
+
+#### Probleme mit Ports{.unnumbered}
+
+Wir werden im weiteren Verlauf ein Problem mit Port 22 bekommen. 
+Die Software \gitlab, die wir später installieren werden, beansprucht 
+den Port 22 (sinnvoller Weise) für sich und das führt zu einer 
+Kollision mit dem SSH-Dienst des Servers. Wir werden ihn zu gegebener 
+Zeit auf Port 23 umlegen. 
+
+### Wer darf was?
+
+Das ist nun eine Grundsatzdiskussion. Wenn du in dieser Konfiguration 
+mit den Schülern \git verwenden willst, müssen die Schüler auch Zugriff 
+auf den Server haben. Es ist zwar generell möglich, Daten anonym vom Server 
+abzuholen (=clone, pull), aber ein Speichern ist dann nicht möglich (push).
+Aus diesem Grund muss für die Schüler eine Zugriffsmöglichkeit geschaffen 
+werden^[Wenn wir später mit GitLab arbeiten, dann ist das komplett anders!].
+
+Der einfachste -- aber für alle Beteiligten unkomfortabelste -- Weg ist 
+das Anlegen von vollwertigen Benutzeraccounts mit 
+Kennwort^[Das ist durchaus sinnvoll, wenn mit den Schülern auch andere 
+Techniken als \git geübt werden sollen!].  
+
+
+#### Ein einziger Benutzer git
+
+Wir werden das System so einrichten, dass alle Benutzer mit dem gleichen
+Login arbeiten. Das klingt auf den ersten Blick gefährlich oder fahrlässig, 
+aber wir sichern das natürlich ab!
+
+An dieser Stelle trifft für die Schüler Theorie (Thema Codierung und Verschlüsselung) auf Praxis. Damit die Schüler einen 
+Zugriff auf den Server bekommen (eigentlich nur auf \git) ohne das 
+Kennwort des gemeinsamen Benutzers kennen zu müssen, verwenden wir 
+RSA, d.h. jeder Schlüssel braucht einen privaten und einen öffentlichen 
+Schlüssel. Die öffentlichen Schlüssel der Schüler werden vom Lehrer 
+als berechtigt eingetragen.
+
+##### Schlüssel erzeugen {.unnumbered}
+
+Das dürfte in dem gesamten Prozess die Schlüsselstelle sein, da hier die 
+Schüler eigenständig tätig werden müssen. Ein zusätzliches Problem ist, 
+dass die Schüler an unterschiedlichen Geräten arbeiten -- zuhause, 
+vielleicht je nach Stundenplan in unterschiedlichen Computerräumen, ...
+und auf jedem Computer muss die Schlüssel-Infrastruktur eingerichtet sein.
+
+Ich würde hier gerne auf GitLab vertrösten, aber um dieses Problem 
+kommen wir nicht herum. Auch in GitLab muss der Public-Key hinterlegt 
+werden und der private Schlüssel auf dem Client vorhanden sein.
+Die einzige Abhilfe ist eine konsequente Verwendung der Weboberfläche als
+Editor, aber das ist eben keine Java-IDE. Ein Weg -- wenn auch unsicher --
+ist das Mitführen des Schlüsselpaares auf einem USB-Stick (oder Cloud-Storage).
+Der private Schlüssel muss dann eben am Anfang der Stunde an die richtige Stelle 
+kopiert werden. Noch unsicherer aber einfacher wäre es, wenn alle Schüler einfach
+das gleiche Schlüsselpaar für den Unterricht verwenden. Dass die Idee hinter 
+der asymmetrischen Verschlüsselung damit ad absurdum geführt ist, versteht sich von selbst!
+
+Die Schlüsselerzeugung funktioniert im Prinzip auf allen Betriebssystem gleich (vom Befehl) 
+nur die Kommandozeile muss passend gewählt werden. Auf Windows sollte einfach die 
+\gitbash verwendet werden, auf den anderen Systemen das Terminal.
+
+```bash
+ssh-keygen -t rsa -b 4096
+```
+
+Sollte bereits ein Schlüsselpaar existieren, so bietet sich diese Variante des Befehls
+an, um den anderen Schlüssel nicht zu überschreiben:
+
+```bash
+ssh-keygen -t rsa -b 4096   -C "gitkey_susi_sandmann@schule.de"
+```
+
+Dabei wird nach Speicherort und Name des Schlüssels gefragt. Überlässt man den 
+Schülern die Wahl des Namens, bekommt man meist unbrauchbare Ergebnisse. 
+Wahrscheinlich ist das Austeilen individueller Anleitungen mit Namensvorgabe 
+der beste Weg. Lauter gleiche Dateinamen führen zu mehr Arbeit für den Lehrer beim 
+Einpflegen der Schlüssel!
+
+Als Lehrer musst du dann die öffentlichen Schlüssel *einsammeln* (Mail, Cloud, ...).
+Sie sind an der Endung *.pub* erkennbar. Hier laufen wir in das übliche Windowsproblem,
+dass je nach Konfiguration die Dateiendungen ausgeblendet sein können!  
+
+(Im Explorer: Anzeige - Dateinamenserweiterungen anzeigen)
+
+Im Prinzip genügt in vielen Fällen ein kürzerer Schlüssel, aber einige Plattformen (z.B. Gitea)
+erwarten diese Schlüssellänge von 4096 Bit.  
+Je nach persönlichem Vertrauen kann auch ein Online-Schlüsselgenerator verwendet werden:
+
+[https://cryptotools.net/rsagen](https://cryptotools.net/rsagen)  
+(Die *einige Sekunden* sind durchaus deutlich mehr Sekunden, wenn man eine Schlüssellänge von 4096 Bit wählt!)
+
+Die Inhalte der (öffentlichen) Schlüsseldateien der Schüler müssen dann in einer Datei mit dem Namen \datei{authorized\_keys} 
+gesammelt und im Ordner \ordner{.ssh} des \git-Benutzers abgelegt werden. Die Datei muss dann auch noch die passende Berechtungen erhalten!
+
+##### Benutzer anlegen  {.unnumbered}
+
+```bash
+adduser --system --shell /usr/bin/git-shell --home /home/git \
+        --group --disabled-password git
+```
+
+##### Dateien übertragen {.unnumbered}
+Hier kommt das Protokoll SCP zum Einsatz. Unter Windows ist es sinnvoll, das grafische Programm
+*WinSCP* zu verwenden. Es ist kostenlos und erfordert keine Installation (portable Edition).
+
+`https://winscp.net/download/WinSCP-6.5.4-Portable.zip/download`
+
+Nach dem Entpacken und Starten hat man eine Oberfläche, die an den Explorer erinnert. Die Anmeldung erfolgt im Hintergrund wieder über ssh. Nach der Anmeldung ist die eine Fensterhälfte der lokale Rechner, die andere Fensterhälft der 
+Server. Dateien können über Drag and Drop kopiert werden.
+
+Kopiere die `*pub* Dateien in den Ordner \ordner{/home/benutzer} (wenn das dein Name ist).
+
+##### Dateien zusammenführen {.unnumbered}  
+
+Der einfachste Weg besteht wohl darin, sämtliche Schlüsseldateien nach Einsendeschluss gesammelt auf den Server zu kopieren und sie dann durch ein kleines Script in die \datei{authorized\_keys} zu übertragen.
+
+Gib auf der Kommandozeile des Servers folgende Befehlsfolge ein:
+
+```bash
+cd /home/benutzer 
+ls *.pub   # Nur zur Kontrolle, ob die Dateien da sind.
+
+cat *.pub >> ~/.ssh/authorized_keys
+chmod 644 ~/.ssh/authorized_keys
+```
+
+\samplestart
+**Hinweis**  
+Dieses Script ist **nur** für einen Erstimport geeignet.
+Werden später noch Schlüsseldateien nachgeliefert, so würden in der 
+\datei{authorized\_keys} lauter Duplikate entstehen! Wenn du nach dem 
+Import die Schlüsseldateien löschst (oder archivierst), 
+dann können spätere Dateien aber schon auf diese Weise eingespielt werden! 
+\sampleend
+
+Löschen der Dateien  
+```bash
+rm *.pub 
+```
+
+Archivieren der Dateien
+```bash
+zip -r keys_2026_1.zip *pub 
+rm *.pub 
+```
+
+Ab jetzt steht einer Verwendung von \git über die Kommandozeile nichts mehr im Weg.
+
+#### Individuelle Benutzer erstellen
+
+Das hier verwendete Verfahren erstellt eine andere Art von Benutzer, weil 
+Benutzer-IDs größer 1000 verwendet werden. Der vorher angelegte Benutzer \git 
+war ein System-Benutzer mit einer kleineren ID.
+
+Um einen Benutzer anzulegen, können zwei etwas unterschiedliche Befehle verwendet werden:
+
+* `adduser` -- führt zu einer interaktiven Eingabe von Daten
+* `useradd` -- zur Verwendung von Scripten
+
+**adduser**
+
+\blarge
+```bash
+adduser demouser
+
+# Interaktion
+info: Adding user `demouser' ...
+info: Selecting UID/GID from range 1000 to 59999 ...
+info: Adding new group `demouser' (1002) ...
+info: Adding new user `demouser' (1002) with group `demouser (1002)' ...
+info: Creating home directory `/home/demouser' ...
+info: Copying files from `/etc/skel' ...
+New password: 
+Retype new password: 
+passwd: password updated successfully
+Changing the user information for demouser
+Enter the new value, or press ENTER for the default
+	Full Name []: 
+	Room Number []: 
+	Work Phone []: 
+	Home Phone []: 
+	Other []: 
+Is the information correct? [Y/n] y
+info: Adding new user `demouser' 
+info: to supplemental / extra groups `users' ...
+info: Adding user `demouser' to group `users' ...
+```
+\elarge 
+
+**useradd**
+
+```bash
+useradd -m demouser2 -s /bin/bash 
+
+# danach
+passwd demouser2  # 2x Eingabeaufforderung folgt
+```
+
+Als Script:
+
+```bash
+#!/bin/bash
+
+PASSWORT="gitkurs"
+
+for i in {1..30}; do
+  USER="benutzer_$i"
+  useradd -m "$USER"
+  echo "$USER:$PASSWORT" | chpasswd
+done
+```
+
+In diesem Fall bietet es sich an, dass jeder Benutzer seinen public-Key in 
+seinem eigenen Account auf dem Server hinterlegt:
+
+```bash
+# Auf dem Client:
+ssh-keygen -t rsa -b 4096
+ssh-copy-id -i .ssh/id_rsa.pub benutzer@<IP>
+```
+
+
+

@@ -1,12 +1,16 @@
 # TODOs
 
+# Installations szenario Proxmox in den Anhang
+# Installation Virualbox in den Anhang 
+# Abschnitt über Virtualisierung in den Anhang 
+
 # Vorwort ausformulieren
 
 # Einfacher Git-Server
 * Schlüsselmanagement unter Windows geht noch nicht!
 * Bild "interfaces" ist falsch
 
-# Installation git 
+# Installation git Für die einzelnen Plattformen
 Screenshots erstellen
 
 
@@ -16,3 +20,15 @@ Screenshots erstellen
 * susi_und_max.sh
 
 # Installation Oracle
+
+
+# Blatt mit Shell-Befehlen
+
+
+
+# Geschichte bereitstellen für quarto
+
+# Testen der Gitea-Scripts für autoreg ....
+
+# Minibuch Repo erstellen
+mit verschiedenen Taskfiles!

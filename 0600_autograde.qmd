@@ -18,14 +18,17 @@ testet.
 * Ein Repository für Hausaufgaben oder spezielle Prüfungen erstellen
   und die benötigten Materialien hinein kopieren.
 
-Das Script aus den Kursmaterialien führt dann für alle Teammitglieder nachfolgende Schritte aus
+TODO: SCript entwickeln
+
+Das Script aus den Kursmaterialien führt dann für alle Teammitglieder nachfolgende Schritte aus  
+
 * Das Repository für den Schüler *forken*, d.h. eine vollwertige Kopie
   erstellen
 * Die Berechtigungen so setzen, dass kein Schüler den Fork eines Mitschülers sehen kann
 
 
 ## Workflow Schüler
-Das hängt nun von der genauen Aubeitsweise ab. Im Prinzip muss der Schüler 
+Das hängt nun von der genauen Arbeitsweise ab. Im Prinzip muss der Schüler 
 die Aufgabenstellung in der Aufgabendatei erledigen, die im Original-Repository
 erstellt wurde. Nach dem Erstellen der Lösung wird die Arbeit committet und 
 auf den Server gepusht. Dort greifen dann die nachfolgende Automatismen.

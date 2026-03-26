@@ -1,0 +1,7 @@
+
+stages:  
+  - build  
+
+ausgabe_1:  
+  stage: build  
+  script: echo "Ich bin die erste Ausgabe" 

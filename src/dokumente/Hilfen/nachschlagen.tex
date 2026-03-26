@@ -1,0 +1,111 @@
+\documentclass[oneside]{scrreprt}
+\usepackage{arbeitsblatt}
+\usepackage[bottom=2cm]{geometry}
+\title{Wichtige Befehle}
+
+\ihead{Gitkurs}
+\ohead{}
+
+\begin{document}
+\section*{Unter der Haube}
+
+\verb+git ls-files+ \\
+Listet alle Dateien auf, die im Stage liegen. \\
+Das schließt auch Dateien ein, die bereits committet sind. \\ 
+Liefert Infos der Art\\
+\verb+    100644 78981922613b2afb6025042ff6bd878ac1994e85 0	a.txt+
+~\\ 
+ 
+ 
+\verb+git cat-file -t <hash>+\\
+Typ des Objekts wird geliefert (tree, blob, commit)
+~\\
+
+\verb+git cat-file -p <hash>+\\
+Liefert den Inhalt des Objekts. Bei \emph{blob} ist es der Inhalt, bei \emph{tree} sind die Dateien im Tree.
+Bei einem Commit erhält man die Message, Parent, ... und auch den Hash des trees! 
+
+ 
+\verb+git rm --cached <datei>+\\
+Löscht die Datei aus dem Stage. Sinnvoll, wenn die Datei in
+zukünftigen Commits nicht mehr auftauchen soll. Sie muss dafür 
+in die \verb+.gitignore+ aufgenommen werden.
+~\\
+
+\section*{Reparatur}
+\subsection*{Reset}
+\verb+git reset+\\
+HEAD Entfernt eine Datei aus dem Stage, als wäre kein \verb+.add+ erfolgt. Ist quasi „einen Schritt zurück“.
+Änderungen nach dem \verb+.add+, die an anderen Dateien erfolgt sind, bleiben erhalten!
+~\\
+
+\verb+git reset --hard <hash>+\\
+Alles zurück auf den Stand nach dem entsprechenden Commit.
+~\\
+
+\verb+git reset --soft <hash>+\\
+Der HEAD wird auf <hash> gesetzt, die Dateien in workdir und stage bleiben erhalten.
+~\\
+
+\verb+git reset --mixed <hash>+\\
+Ist Standard, auch ohne mixed\\
+Der HEAD wird auf <hash> gesetzt, Stage wird verworfen, workdir bleibt erhalten.
+~\\
+
+
+
+\subsection*{Restore}
+
+\verb+git restore <datei>+\\
+Holt die Version aus dem Stage und überschreibt die 
+Version im Workindir.
+~\\
+
+\verb+git restore <datei> --staged+\\
+Wenn im Workingdir und im Stage verschiedene Versionen
+existieren, wird die aus dem Stage einfach gelöscht.\\
+
+Existiert aktuell keine Version mehr im Workingdir, 
+so wird die Datei im Stage nicht gelöscht, sondern nur
+ins Workingdir verschoben.
+~\\
+
+
+\verb+git restore --source=<HASH> <datei>+\\
+Der Befehl holt eine Datei aus einem bestimmten Commit.
+Früher war das\\
+ \texttt{git checkout <HASH> -\,- <datei>}\\
+ Man kann hier auch noch andere Quellen angeben!
+
+
+\section*{Werkzeuge}
+
+\subsection*{Diff}
+
+\begin{tabular}{ll}
+    \verb+git diff+ & work $\leftrightarrow$ stage\\
+    \verb+git diff --staged+ & stage $\leftrightarrow$ commit\\
+    \verb+git diff branch1 branch2+ & branch1 $\leftrightarrow$ branch2\\
+    \verb+git diff branch1...branch2+ & branch2 $\leftrightarrow$ Merge-base von branch1 und branch2\\
+\end{tabular}
+~\\
+
+\subsection*{Show}
+\verb+git show <HASH>+\\
+Zeigt den Inhalt des Commits
+
+\verb+git show <HASH>:datei.txt+\\
+Zeigt den Inhalt der Datei zum damaligen Zeitpunkt an.
+
+\subsection*{Log}
+\verb+git log branch_1 branch_2+\\
+Alle Commits in beiden Branches
+
+\verb+git log branch_1..branch_2+\\
+Alle Commits die in branch\_2, aber nicht in branch\_1 sind.
+
+\verb+git log branch_1...branch_2+\\
+Alle Commits die in genau einem Branch sind.
+
+
+\end{document}

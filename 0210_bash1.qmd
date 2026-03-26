@@ -1,256 +1,49 @@
 # Hands On I
-Bevor wir beginnen, müssen einmalig einige Konfigurationen vorgenommen 
-werden -- einige davon betreffen auch bereits den späteren Einsatz im 
-Netz, wo klar sein muss, welcher Benutzer Änderungen an den Dateien 
-vorgenommen hat^[Wir sprechen hier NICHT von einer Absicherung gegen 
-Dummheit oder Bosheit. Sobald Änderungen von papst@vatikan.va auftauchen, 
-wäre ich skeptisch!].
+## Übung
+Besonders bei komplexen Systemen wie \git gilt: *use it or lose it*!   
+In diesem Sinne kommt hier nun ein *winziger Projektauftrag*:
 
-\samplestart
-**TIPP**  
-Im Terminal kann mit der *Pfeil hoch* Taste
-durch die letzten Befehle geblättert werden -- damit gehen 
-manche Dinge sehr schnell!
-\sampleend
-
-\samplestart
-**Hinweis**  
-Ab dieser Stelle wechsle ich vom neutralen *man* 
-auf das kollegiale *Du*, weil manche Formulierungen
-sonst unnötig klobig werden!
-\sampleend
-
-## Konfigurieren von git
-
-Öffne die \git-Bash^[bzw. das Terminal deines Systems. 
-Das setze ich in Zukunft stillschweigend voraus]. Da es sich um
-globale Einstellungen handelt, muss das nicht unbedingt im 
-Projektordner sein!^[Sollte dir 
-die Schrift im Fenter zu klein sein,
-kannst du sie mit \strg{+} vergrößern.].
-
-**Aktuelle Einstellungen ansehen**  
-```bash
-# Eingabe
-git config --list
-
-# Ausgabe
-user.email=
-user.name=
-     ...
-```
-
-**Einstellungen anpassen**  
-```bash
-# eigene Phantasiedaten verwenden
-git config --global user.name="Susi Sandmann" 
-git config --global user.email="susi@sandmann.de"
-```
-
-## Erste Schritt
-
-Lege nun einen Arbeitsordner für dieses *Hands on* an:
-
-```bash
-git init hands_on_1 
-cd hands_on_1
-```
-
-Alternativ kann man das auch mit mehreren Schritten erledigen:
-
-```bash
-mkdir hands_on_1 
-cd hands_on_1 
-git init 
-```
-
-Es erscheint eine Meldung, die je nach System etwas anders aussehen kann:
-
-```bash
-Hinweis: Als Name für den initialen Branch wurde 'master' benutzt. Dieser
-Hinweis: Standard-Branchname kann sich ändern. Um den Namen des initialen Branches
-Hinweis: zu konfigurieren, der in allen neuen Repositories verwendet werden soll und
-Hinweis: um diese Warnung zu unterdrücken, führen Sie aus:
-Hinweis: 
-Hinweis: 	git config --global init.defaultBranch <Name>
-Hinweis: 
-Hinweis: Häufig gewählte Namen statt 'master' sind 'main', 'trunk' und
-Hinweis: 'development'. Der gerade erstellte Branch kann mit diesem Befehl
-Hinweis: umbenannt werden:
-Hinweis: 
-Hinweis: 	git branch -m <Name>
-Leeres Git-Repository in /tmp/hands_on_1/.git/ initialisiert
-```
-
-Es hat sich eingebürgert^[Bedingt durch gesellschaftspolitische 
-Strömungen, die *Master* mit Sklaverei gleichsetzen, aber Eine 
-Master-Arbeit hier nicht als Problem sehen.], den 
-Arbeitszweig von *master* auf *main* umzubenennen:
-
-```bash
-git branch -m main 
-```
-
-Den Erfolg kann man schnell mit 
-
-```bash
-git status
-```
-
-Es sollte folgender Text (eventuell englisch) erscheinen:
-
-```bash
-Auf Branch main
-
-Noch keine Commits
-
-nichts zu committen (erstellen/kopieren Sie Dateien und benutzen
-Sie "git add" zum Versionieren)
-```
-
-\samplestart 
-**Hinweis**  
-Man kann \git auch so konfigurieren, dass der Branch eines 
-neu angelegten Repositories automatisch *main* genannt wird.
-```bash 
-git config --global init.defaultBranch main
-```
-\sampleend
-
-Erstelle nun eine erste Datei mit dem Namen \datei{datei1.txt}.  
-Wenn du das nicht über die \git-Bash machen willst, 
-dann achte darauf, dass du eine reine Textdatei 
-erstellst -- also nicht mit Word o.ä. sondern mit 
-einem reinen Editor wie *notepad*, *notepad++* 
-oder einer Entwicklungsumgebung.  
-
-Schneller geht das aber mit \git-Bash^[Das Zeichen `>` überschreibt 
-alle Inhalte einer Datei, `>>` hängt die Daten hinten an.].
-
-```bash
-echo "Version 1" > datei1.txt 
-```
-
-Diese Datei nimmst du dann in die Versionsverwaltung
-auf
-
-```bash
-git add datei1.txt 
-``` 
-
-und erstellst einen Commit
-
-```bash
-git commit -m "Erste Datei erstellt"
-```
-
-Durch die Kombination aus *add* und *commit* hast 
-du einen *Meilenstein* in der Projekthistorie erstellt.
-Damit kennst bereits einen typischen Ablauf von \git:
-
-Du sammelst Dateien mit *add*, in denen du Änderungen 
-vorgenommen hat und schreibst diese Änderungen mit 
-*commit* in die Projekthistorie. Wie oft, mit wie vielen
-Dateien in welchen Zeitabständen ... das ist ziemlich 
-alleine Deine Entscheidung.
-
-Generell gilt allerdings: „Lieber mehr Commits, als zu wenige!“  
-
-\samplestart
-**Hinweis**  
-Ein Commit ist ein Projektstand, an den du 
-zurückkehren kannst, wenn etwas grob missglückt ist.
-Vergeht zu viel Zeit (=viel Code) zwischen zwei 
-Commits, so entstehen eventuell größere Verluste bei einem
-Rücksprung zum alten Stand.  
-Später im Workshop lernst du auch, wie du 
-Commits nachträglich zusammenfassen kannst (=squash) 
-um deine Entwicklungsschritte übersichtlich zu halten.
-\sampleend 
-
-Ändere deine Datei nun ab, indem du eine 
-Zeile ergänzt:
-
-```bash
-echo "Version 2" >> datei1.txt 
-git add datei1.txt 
-git commit -m "Erläuterung"
-```
-
-Die Historie besitzt nun zwei Punkte, an die du zurückgekehren
-könntest -- wie das geht, lernst du noch. 
-
-Natürlich ist das *adden* nicht auf eine einzige 
-Datei beschränkt. Liegen mehrere geänderte Dateien 
-vor, so müssen sie nicht einzeln hinzugefügt werden.
-Es gibt dafür einen *Sammelbefehl*, der den gesamten 
-Ordner mit allen Unterordnern hinzufügt:
-
-```bash
-git add . 
-```
-
-Das *adden* ist generell unabhängig vom *commit*.
-Es ist sogar üblich, immer erst einige Dateien
-anzusammeln, bevor du einen Commit machst.  
-Es ist auch völlig unproblematisch eine Datei 
-zwischen zwei Commits mehrfach in der aktuellen 
-Version mit *add* für den Commit zu registrieren.  
-
-Es kann ab und zu passieren, dass du Änderungen 
-an Dateien vornimmst, die zu verschiedenen Problemen 
-gehören. Es wäre dann etwas unübersichtlich, wenn sich 
-diese Dateien dann im gleichen Commit festgeschrieben 
-werden. In einem solchen Fall solltest du bei *add*
-genau die Dateinamen angeben.
-
-Zusätzlich kann es natürlich auch sein, dass du 
-bestimmte Dateien überhaupt nicht in die Versionsverwaltung
-aufnehmen willst. Das ist zum Beispiel dann der Fall, falls 
-sich Kennwörter und Zugangsdaten in eine Datei befinden.
-Wenn du die Namen dieser Datei(en) in eine Datei mit 
-dem Namen `.gitignore` einträgst, werden sie beim *add* ignoriert.
-
-```bash
-# Format der Datei
-*.log 
-*.tmp 
-zugangsdaten.txt
-```
-
-Mit diesen Befehlen ist bereits ein einfacher 
-lokaler Entwicklungsprozess abbildbar. Allerdings
-gibt es noch viele weitere Feinheiten und Varianten,
-von denen wir noch etliche in diesem Workshop ansprechen werden.
-
-\samplestart
-**Hinweis**  
-Es gibt sogar die Möglichkeit, dass man nur Teile 
-der Änderungen in einer Datei in einen Commit und die restlichen
-Änderungen in einen anderen Commit übernimmt. Das sind aber sehr 
-spezielle Varianten, die uns hier nicht interessieren! 
-\sampleend
-
+> Erstelle in einem Repository ein Mini-Projekt in deiner 
+> üblichen Programmiersprache. Idealer Weise besteht es aus 
+> mehreren Dateien. Für jede Änderung am Code soll ein 
+> Commit erstellt werden.
+> Verschaffe dir im Anschluss einen Überblick über die 
+> Commit-History.
 
 ## Ein genauerer Blick auf Git
 
+\samplestart
+**Hinweis**  
+Um die nachfolgenden Erläuterungen praktisch vollziehen zu können,
+verwendest du     
+wieder das Repository \ordner{versuch\_1}.
+\sampleend
+
 Steht ein Ordner unter der Verwaltung von \git, so kann 
-man von drei *logischen* Bereiche sprechen:
+man von drei *logischen* Bereichen sprechen:
 
-* Working-Directory (Arbeitsordner)
-* Stage (auch Index oder Cache genannt)
-* Repository^[Je nach Quelle und Kontext etwas inkonsistent verwendet]
+* \work (Arbeitsordner)
+* *Stage* (auch Index oder Cache genannt)
+* *Repository*^[Je nach Quelle und Kontext wird der Begriff etwas inkonsistent verwendet]
 
-Das Working-Directory enthält die Dateien an denen gearbeitet 
-wird. Er entspricht auf den ersten Blick genau einem normalen 
-Ordner für die Projektentwicklung. Erst durch die Initialisierung 
-durch \git entsteht ein weiterer, versteckter Ordner mit dem Namen *.git*.
-Dieser Ordner bildet den *Stage* und das *Repository* gleichzeitig^[Hier sieht man den 
+Das \work enthält die Dateien an denen gearbeitet 
+wird. Es entspricht auf den ersten Blick genau einem normalen 
+Ordner für die Projektentwicklung. Erst die Initialisierung 
+durch \git erzeugt dann einen weiteren, versteckten Ordner mit dem Namen *.git*.
+Dieser Ordner bildet gleichzeitig den *Stage* und das *Repository*^[Hier siehst du den 
 inkonsistenten Gebrauch von „Repository“. Einerseits wird der gesamte Projektorder 
 als Repository bezeichnet, sobald er von \git verwaltet wird, andererseits
 befindet sich das eigentliche Repository im Ordner *.git*.]. 
-*Logisch* bedeutet in diesem Zusammenhang, dass diese beiden 
-Bereiche von \git verwaltet werden und vom unbedarften 
+
+\samplestart
+**Hinweis**  
+Es kann sein, dass in deinem Betriebssystem Ordner 
+mit einem führenden Punkt nicht angezeigt werden. 
+Dies ist aber im Dateimanager konfigurierbar.
+\sampleend
+
+*Logische Bereiche* bedeutet in diesem Zusammenhang, dass sie 
+von \git verwaltet werden und vom unbedarften 
 Benutzer nicht einfach unterschieden werden können.
 In einem späteren Abschnitt werden wir einen genaueren 
 Blick in diesen Ordner werfen.
@@ -259,15 +52,33 @@ Betrachten wir zunächst einen Entwicklungszyklus im Detail. Dabei
 wirst du im Wesentlichen die gleichen Befehle wie vorher verwenden, 
 allerdings untersuchen wir einige Varianten, die für das Verständnis 
 wichtig sind.
-Dafür arbeitest einfach im aktuellen Ordner weiter. Er sollte akutell 
-eine Datei und zwei Commits enthalten.  
-Das kannst du mit folgendem Befehl überprüfen:
+
+Du bist immer noch im aktuellen Ordner \ordner{versuch\_1}. 
+Er sollte aktuell eine Datei und zwei Commits enthalten.  
+Das kannst du mit folgenden Befehlen überprüfen:
 
 ```bash
+ls 
 git log
 ```
 
-Ob noch Änderungen offen sind,zeigt dir:
+Neben dem Dateinamen liefert das folgende Ausgabe (andere Hashes!):
+
+```bash
+commit 6db4f3383512a7f3aaaf3b050334d7fd2c474688 (HEAD -> main)
+Author: Wolfgang <lehrer@t-online.de>
+Date:   Thu Nov 13 10:46:50 2025 +0100
+
+    Erläuterung
+
+commit 430149c83906005ae2c53c8eaf9ce230e3456ad0
+Author: Wolfgang <lehrer@t-online.de>
+Date:   Thu Nov 13 10:46:50 2025 +0100
+
+    Erste Datei erstellt
+```
+
+Ob noch Änderungen offen sind, zeigt dir:
 
 ```bash
 # Eingabe
@@ -280,16 +91,18 @@ Arbeitsverzeichnis unverändert
 ```
 
 Das bedeutet, dass du aktuell einen *sauberen* Zustand 
-deines Arbeitsordners ohne Änderungen vorliegen hast.
+deines Arbeitsordners ohne Änderungen an Dateien vorliegen hast.
 
-Erstelle eine neue \datei{datei2.txt} und füge 
-die Zeile *Version 1* ein. In der Datei \datei{datei1.txt}
-kommt die Zeile *Version 3* dazu:
+Erstelle nun eine neue Datei \datei{datei2.txt} und füge 
+die Zeile „*Version 1*“ ein.  
+In der Datei \datei{datei1.txt} kommt die Zeile „*Version 3*“ dazu:
 
 ```bash
 # Eingabe (Lasse ich zukünftig weg)
 echo "Version 3" >> datei1.txt
 echo "Version 1" >> datei2.txt
+
+# Status anzeigen lassen 
 git status 
 
 # Ausgabe
@@ -314,27 +127,26 @@ keine Änderungen zum Commit vorgemerkt
 ```
 
 Es wird dir angezeigt, dass Änderungen im \work vorliegen.  
-Du siehst auch, dass \git die \datei{datei1.txt} bereits kennt 
-(=geändert) und  dass \datei{datei2.txt} noch nicht in die  
-Versionsverwaltung aufgenommen wurde (=Unversioniert).
+Du siehst auch, dass \git die Datei \datei{datei1.txt} bereits kennt 
+(=geändert) und dass   
+\datei{datei2.txt} noch nicht in die Versionsverwaltung aufgenommen 
+wurde (=unversioniert).
 
 \samplestart
-**Hinweis**  
-In Bezug auf *add* muss man zwei Dinge im Hinterkopf behalten.
-1. Die Abkürzung \cmd{git commit -a} führt zwar im Hintergrund 
-ein *add* aus, aber nur für bereits versionierte 
-Dateien -- \datei{datei2.txt} würde also ignoeriert.  
-2. Der Befehl \cmd{git add .} findet nur Dateien im aktuellen
-Ordner und den Unterordnern. Sollen auch Dateien in 
-übergeordneten oder *parallelen* Ordnern berücksichtigt 
-werden, so brauchst du \cmd{git add --all}.
+**Vorsicht**  
+Es gibt den Befehl \cmd{git commit -am "bemerkung"}.  
+Hier musst du wissen, dass nur bereits versionierte 
+Dateien in geänderter Form in den Commit übernommen 
+werden -- \datei{datei2.txt} würde also ignoriert.  
 \sampleend
 
-Nun werden die aktuelle Stände *auf den Stage*/*in den Stage* 
-übertragen:
+Übertrage nun die Änderungen beider Dateien *auf den Stage*/*in den Stage*:
 
 ```bash
-git add . 
+# Dateien aufnehmen
+git add .
+
+# Status anzeigen
 git status 
 
 # Ausgabe  
@@ -347,26 +159,24 @@ Zum Commit vorgemerkte Änderungen:
 	neue Datei:     datei2.txt
 ```
 
-Diese Dateien sind nun zum Commit vorgemerkt, also zum festen 
-Eintrag in die Projekthistorie. Der Befehl \cmd{git status} 
-zeigt dir wieder den aktuellen Zustand des *Stage* an.
+Diese Dateien sind nun zum Commit vorgemerkt, also zum festen Eintrag in die Projekthistorie -- Das führst du jetzt aber **noch nicht aus**!
 
-Als Demonstration fügen wir beiden Dateien eine weitere 
-Zeile hinzu und fragen wieder den Status ab:
+Als Demonstration fügst du beiden Dateien eine weitere 
+Zeile hinzu und fragst wieder den Status ab:
 
 ```bash
 echo "Weitere Zeile" >> datei1.txt  
 echo "Weitere Zeile" >> datei2.txt 
 git status 
 
-# Ausgabe ( ---- Anmerkung ----)
+# Ausgabe ( "----"" sind Anmerkungen )
 Auf Branch main
 Zum Commit vorgemerkte Änderungen:
   (benutzen Sie "git restore --staged <Datei>..."  
    zum Entfernen aus der Staging-Area)
 	
     geändert:       datei1.txt
-	  neue Datei:     datei2.txt
+    neue Datei:     datei2.txt
 
 --------------- Ende Stage ------------
 --------------- Anfang Workdir --------
@@ -378,38 +188,71 @@ Zum Commit vorgemerkte Änderungen:
   (benutzen Sie "git restore <Datei>...", 
    um die Änderungen im Arbeitsverzeichnis zu verwerfen)
 
-	geändert:       datei1.txt
-	geändert:       datei2.txt
+  geändert:       datei1.txt
+  geändert:       datei2.txt
 ```
 
-Beide Dateien liegen also in verschiedenen Versionen im Stage
-und im \work vor.  
-Ein Commit transferiert die Dateien aus dem Stage ins 
-Repository, also in die Projekthistorie. Das führt dann zu folgender 
-Situation:
+Beide Dateien liegen also in verschiedenen Versionen im Stage und im \work vor.  
+Ein *Commit* transferiert **nur** die Versionen der Dateien*aus dem Stage* ins 
+Repository, also in die Projekthistorie. Das führt dann zu folgender Situation:
 
-```
+```bash
 git commit -m "nur Stage"
 ```
 
-Ein \cmd{git status} zeigt dir, dass die oberen beiden Dateiversionen 
-aus dem Stage verschwunden sind (sind jetzt Teil des Commits) und die 
-aktuellen Änderungen nach wie vor im Arbeitsverzeichnis vorhanden 
+```bash
+git Status
+
+# Ausgabe 
+Auf Branch main
+Änderungen, die nicht zum Commit vorgemerkt sind:
+  (benutzen Sie "git add <Datei>...", um die Änderungen zum Commit 
+  vorzumerken)
+  (benutzen Sie "git restore <Datei>...", um die Änderungen im 
+  Arbeitsverzeichnis zu verwerfen)
+	geändert:       datei1.txt
+	geändert:       datei2.txt
+
+keine Änderungen zum Commit vorgemerkt (benutzen Sie "git add" 
+und/oder "git commit -a")
+```
+
+
+Die oberen beiden Dateiversionen sind aus dem Stage verschwunden sind (sind jetzt Teil des Commits) und die 
+aktuellen Änderungen sind nach wie vor im Arbeitsverzeichnis vorhanden 
 sind, weil für sie noch kein *add* stattgefunden hat.
+
+```bash
+# Zum Stage hinzufügen
+git add . 
+
+git status
+
+# Ausgabe
+
+Auf Branch main
+Zum Commit vorgemerkte Änderungen:
+  (benutzen Sie "git restore --staged <Datei>..." zum Entfernen aus 
+  der Staging-Area)
+	geändert:       datei1.txt
+	geändert:       datei2.txt
+```
 
 
 \samplestart
 **Hinweis**  
 Wenn ich hier von *transferieren* spreche, so führt das
 zu einer falschen Vorstellung. In Wirklichkeit werden
-im *.git*-Ordner nur einige Verweise geändert -- wobei 
+im *.git*-Ordner nur einige Verweise (Links, Zeiger) geändert -- wobei 
 das auch wieder nicht die ganze Wahrheit ist!
 \sampleend
 
 ### Etwas mehr Wahrheit
 Dieser Abschnitt ist nur als Einblick für Interessierte gedacht!
+Bitte installiere dir in \gitbash das Programm *tree*, um den 
+Ausführungen folgen zu können. Die Anleitung befindet sich im Anhang.
 
-Ganz am Anfang muss man wissen, dass es 4 Git-Objekte gibt:
+Ganz am Anfang musst du wissen, dass es 4 Git-Objekte gibt:
 
 1. blob
 2. tree 
@@ -421,20 +264,22 @@ Ganz am Anfang muss man wissen, dass es 4 Git-Objekte gibt:
 oder Metadaten.
 
 **tree**  
-Ein Tree ist ein (namentliches) Abbild des Arbeitsverzeichnisses. 
-Er enthält aber nur die Namen, Typ und Hash der Dateien, Unterordner, 
-also der Blobs und trees, die an anderer Stelle gespeichert sind.
-Ein Tree ist klein, da er keine Dateiinhalte enthält.
+Ein *Tree* ist ein Abbild des Arbeitsverzeichnisses. 
+Er enthält aber nur die Namen, Typen und Hashes der Dateien, Ordner und Unterordner.
+Die eigentlichen Dateiinhalte (=Blobs) sind an anderer Stelle abgelegt.
+Ein Tree ist deshalb klein und stellt keine großen Ansprüche an den Speicherplatz
+im Versions-System.
 
 **commit**  
-Zeigt auf den Tree, der zum Zeitpunkt des Commits aktuell war.
+Ein *Commit* ist ein *Zeiger* auf den *Tree*, der zum Zeitpunkt des Commits aktuell war.
 Er enthält noch weitere Metadaten.
 
 **tag**  
-Zusatznamen für ausgewählte Commits (Releases)
+Er ist ein Zusatzname für ausgewählte Commits (z.B. Releases),
+um ohne Kenntnis des Hashs darauf zugreifen zu können.
 
 
-**Sehen wir uns das genauer an**  
+### Eigene Experimente  
 
 Erstelle dir ein neues Repository in einem anderen Ordner
 
@@ -449,62 +294,24 @@ Wenn du nun die Verzeichnisstruktur des Ordners *.git*
 genauer untersuchst, wirst du in etwa dies hier sehen,
 weil noch keine Dateien im \work sind:
 
-```bash
-.git/
-├── branches
-├── config
-├── description
-├── HEAD
-├── hooks
-│   ├── applypatch-msg.sample
-│   ├── commit-msg.sample
-│   ├── fsmonitor-watchman.sample
-│   ├── post-update.sample
-│   ├── pre-applypatch.sample
-│   ├── pre-commit.sample
-│   ├── pre-merge-commit.sample
-│   ├── prepare-commit-msg.sample
-│   ├── pre-push.sample
-│   ├── pre-rebase.sample
-│   ├── pre-receive.sample
-│   └── update.sample
-├── info
-│   └── exclude
-├── objects
-│   ├── info
-│   └── pack
-└── refs
-    ├── heads
-    └── tags
-```
+![](bilder/git_internals/base.png)
 
-Lege nun im leeren \work eine Datei an^[Ich habe absichtlich 
-nicht index.html verwendet, weil „index“ aktuell anders belegt ist.] 
+Lege nun im leeren \work eine Datei \datei{homepage.html} an^[Ich habe absichtlich 
+nicht index.html verwendet, weil „index“ aktuell anders belegt ist.]. 
 
 ```bash
 echo "Etwas HTML" >> homepage.html
 git add homepage.html 
 ```
 
-Du siehst erste Änderungen im *.git*-Ordner.
-Ich gebe nur die relevante Stelle an -- der Hashe 
-lautet bei dir eventuell anders!
+Über ein erneutes `tree .git` siehst du erste Änderungen im *.git*-Ordner.
+Im Bild ist aus Platzgründen nur der
+relevante Ausschnitt angezeigt. Bei dir kann der Hash
+einen anderen Wert besitzen!
 
-```bash
-.
-.
-.
-├── index            <<< neu 
-├── info
-│   └── exclude
-├── objects
-│   ├── ce          <<< neu, bei dir evtl anders! 
-│   │   └── 1332fcf1795166c3c5cd0216b5e7dc2dce7998
-│   ├── info
-│   └── pack
-```
+![](bilder/git_internals/1_neue_datei.png)
 
-Die Datei *index* stellt den Stage dar. Diese Datei kannst du nicht 
+Die Datei \datei{index} stellt den *Stage* dar. Diese Datei kannst du nicht 
 direkt lesen. Das geht nur mit
 
 ```bash
@@ -521,12 +328,12 @@ findet du oben in der Ordnerstruktur wieder.
 
 Allerdings wird mit den ersten beiden Zeichen (ce) ein Ordner erstellt und 
 in diesem Ordner eine Datei, deren Name aus den restlichen Zeichen besteht. 
-Zusätzlich findet man den Dateityp (100644), den Status (Das ist komplexer! 
+Zusätzlich findest du den Dateityp (100644), den Status (Das ist komplexer! 
 Hier 0) und den Dateinamen.
 
-Den Hash kannst du dir übrigens auch so anzeigen lassen:
+Den Hash der Datei kannst du dir übrigens auch so anzeigen lassen:
 ```bash
-git hash-object homepage.htm 
+git hash-object homepage.html 
 ```
 
 Aber gehen wir einen Schritt weiter und committen die Datei:
@@ -537,37 +344,8 @@ git commit -m "homepage.html added"
 Nun sieht die Ordnerstruktur verändert aus -- die Hooks habe ich in der
 Darstellung aus Platzgründen entfernt!
 
-```bash
-.git/
-├── branches
-├── COMMIT_EDITMSG
-├── config
-├── description
-├── HEAD
-├── hooks
-    ....
-├── index
-├── info
-│   └── exclude
-├── logs
-│   ├── HEAD
-│   └── refs
-│       └── heads
-│           └── main
-├── objects
-│   ├── 3b  
-│   │   └── 028e4d0230fb8f3553f0f7579e68e6c4e27d3f
-│   ├── 94
-│   │   └── eed25c4ef6cfa1384df66f28308c09dc9bf28d
-│   ├── ce
-│   │   └── 1332fcf1795166c3c5cd0216b5e7dc2dce7998
-│   ├── info
-│   └── pack
-└── refs
-    ├── heads
-    │   └── main
-    └── tags
-```
+![](bilder/git_internals/2_commit.png)
+
 
 Ab hier bekommst du sicher andere, eigene Hash-Werte! Du 
 musst in den nachfolgenden Befehlen also deine eigenen 
@@ -575,12 +353,12 @@ Werte verwenden.
 
 Wir konzentrieren uns auf die *objects* und das *log*.
 
-Mit `git log` erfährst du etwas über den erfolgten
+Mit \cmd{git log} erfährst du etwas über den erfolgten
 Commit -- zum Beispiel seinen Hash:
 
 ```bash
-commit 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f (HEAD -> main)
-Author: wolfgang <hoeferwolf@t-online.de>
+commit b7510dd34252cb3e42bfc82f043d9f42aa00b2f5 (HEAD -> main)
+Author: wolfgang <lehrer@t-online.de>
 Date:   Sun Jan 26 20:20:10 2025 +0100
 
     homepage.html added
@@ -588,8 +366,13 @@ Date:   Sun Jan 26 20:20:10 2025 +0100
 
 Etwas kompakter wird die Darstellung mit \cmd{git log --oneline}.
 
-Der Hash 3b02... scheint also ein Commit zu sein. Das kannst 
-du mit \cmd{git cat-file -t 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f} 
+```bash
+b7510dd  (HEAD -> main)  homepage.html added
+```
+
+Der Hash b751... scheint also ein Commit zu sein. Das kannst 
+du mit   
+\cmd{git cat-file -t b7510dd34252cb3e42bfc82f043d9f42aa00b2f5}   
 auch noch einmal überprüfen -- steht aber bereits in \cmd{git log}. 
 
 Änderst du den Parameter von *-t* auf *-p* (=pretty print), so 
@@ -597,27 +380,27 @@ bekommst du weitere Details:
 
 ```bash
 # Eingabe 
-git cat-file -p 3b028e4d0230fb8f3553f0f7579e68e6c4e27d3f
+git cat-file -p b7510dd34252cb3e42bfc82f043d9f42aa00b2f5
 
 # Ausgabe
 tree 94eed25c4ef6cfa1384df66f28308c09dc9bf28d   << wichtig!
-author wolfgang <hoeferwolf@t-online.de> 1737919210 +0100
-committer wolfgang <hoeferwolf@t-online.de> 1737919210 +0100
+author wolfgang <lehrer@t-online.de> 1737919210 +0100
+committer wolfgang <lehrer@t-online.de> 1737919210 +0100
 
 homepage.html added
 ```
 
-Am Commit verweist also auf den *tree* mit dem Hash 94ee...   
+Der Commit verweist also auf den *tree* mit dem Hash 94ee...   
 Da wir aktuell nur eine Datei haben, ist die Ausgabe des 
-nächsten Befehls sehr kurz, der den tree ausliest:
+nächsten Befehls sehr kurz, der den Tree ausliest:
 
 
 ```bash
 # Eingabe
 git cat-file -p 94eed25c4ef6cfa1384df66f28308c09dc9bf28d
 
-# Ausgabe - normal deutlich länger!
-100644 blob ce1332fcf1795166c3c5cd0216b5e7dc2dce7998	homepage.html
+# Ausgabe - normal deutlich mehr Einträge
+100644 blob ce1332fcf1795166c3c5cd0216b5e7dc2dce7998 homepage.html
 ```
 
 Abschließend sehen wir uns den Inhalt des Blob an
@@ -649,8 +432,8 @@ Hier nochmal die Zusammenfassung der Funktionsweise:
 Git verwendet das, um von verschiedenen Stellen aus auf die
 gleichen Rohdaten verweisen zu können, ohne Speicher zu verbrauchen. 
 Ändern sich Dateien zwischen 
-zwei Commits nicht (Hash bleibt gleich), so werden sie nicht neu gespeichert. 
-Der neue Commit zeigt auf einen neuen Tree in dem wieder 
+zwei Commits *nicht* (Hash bleibt gleich), so werden sie nicht neu gespeichert. 
+Der *neue* Commit zeigt auf einen *neuen* Tree in dem wieder 
 die gleichen Hashes mit den gleichen Dateinamen stehen.
 
 Tiefer will ich an dieser Stelle in dieses Thema nicht einsteigen!

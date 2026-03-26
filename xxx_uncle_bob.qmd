@@ -1,0 +1,21 @@
+# Regeln von Uncle Bob
+
+* Nie mehr als 3 Paraeter beim Funktionsaufruf
+* Nie Bool als Parameter => if Statement ...
+* Switch kann Abhängigkeiten zu anderen Modulen erzeugen
+  und dann muss allen neu depoyed werden ...
+
+* Keine Side-effects erzeugen, d.h. Funktionen, die 
+  den Systemzustand ändern. "open" braucht ein "close",
+  damit der Zustand wieder gleich ist. Allocate /release
+ -> Reihenfolge der Calls wichtig! Das kann sich auch in 
+  tieferen Ebenen verstecken!
+
+* Command and Query separation
+  
+* Funktionen mit Rückgabewert dürfen das System nicht ändern
+  (SideEffect)
+
+* Exeptions sind besser als ErrorCodes
+* Im Try-Block steht NUR eine Funktion
+* DRY

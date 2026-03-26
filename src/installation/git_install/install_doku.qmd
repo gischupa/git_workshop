@@ -1,0 +1,20 @@
+---
+title: "Installation Git-Bash"
+author: "Wolfgang Höfer"
+format:
+  typst:
+    papersize: a4
+    margin:
+      left: 2cm
+---
+
+
+# Bilderstrecke Git-Installation
+
+```{typst}
+columns(2) [
+  figure(image("git_install_001.png", width: 6cm), caption: "Ja wählen")
+  figure(image("git_install_002.png", width: 6cm), caption: "Ja wählen")
+  # ... restliche Bilder
+]
+

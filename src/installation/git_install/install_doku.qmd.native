@@ -1,0 +1,41 @@
+---
+title: "Installation Git-Bash"
+author: "Wolfgang Höfer"
+date: "`r Sys.Date()`"
+format: pdf
+geometry: margin=2cm
+fontsize: 11pt
+documentclass: scrartcl
+lang: de
+toc: true           # optionales Inhaltsverzeichnis
+lof: false          # optional: Abbildungsverzeichnis
+lot: false          # optional: Tabellenverzeichnis
+header-includes:    # optional für zusätzliche LaTeX-Pakete
+  - \usepackage{my_quarto_tools}
+---
+
+### Bilderstrecke Git-Installation
+
+![Ja wählen](git_install_001.png){width=50%}
+![Ja wählen](git_install_002.png){width=50%}
+
+![Next wählen](git_install_003.png){width=50%}
+![Next wählen](git_install_004.png){width=50%}
+
+![Haken setzen](git_install_005.png){width=50%}
+![Editor einstellen, Next wählen](git_install_007.png){width=50%}
+
+![Klären wir später, Next wählen](git_install_008.png){width=50%}
+![Next wählen](git_install_009.png){width=50%}
+
+![Next wählen](git_install_010.png){width=50%}
+![Next wählen](git_install_011.png){width=50%}
+
+![Next wählen](git_install_012.png){width=50%}
+![Next wählen](git_install_013.png){width=50%}
+
+![Next wählen](git_install_014.png){width=50%}
+![Next wählen](git_install_015.png){width=50%}
+
+![Next wählen](git_install_016.png){width=50%}
+![Next wählen](git_install_017.png){width=50%}

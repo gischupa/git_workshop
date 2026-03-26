@@ -1,0 +1,177 @@
+# Docker in Beispielen
+In diesem Abschnitt soll an einfachen Beispielen 
+der Aufbau von Dockerfiles und docker-compose.yml
+Dateien besprochen werden. Dieser Setup deckt wohlgemerkt nicht 
+alle Sicherheitsaspekte ab, die in diesem Umfeld möglich sind.
+
+In der Vorbereitung hast du die benötigten Dateien bereits in 
+den Ordner \ordner{images} kopiert. In den eigentlichen 
+Kursmaterialien findest du die jeweils benötigten Dateien
+(Dockerfiles, docker-compose.yml, Konfig-Dateien, ...).
+Die Beschreibung hier im Handout bezieht sich immer auf 
+den Ablauf mit *diesen* Dateien. Der erzwungene *Workaround* 
+in der Schulungsumgebung ist separat dokumentiert.
+
+## MariaDB (MySQL)
+Weil Datenbanken im Unterricht auch oft eine Rolle spielen, erstellen wir einen Datenbankserver mit *MySQL* bzw. *MariaDB*. Du findest die 
+Docker-Dateien im Ordner \ordner{material/maria\_db}. Führe dort aus:
+
+\begin{tcolorbox}[title=WARNUNG]
+Im Workshop führst du vorher unbedingt \textbf{vorher}
+diesen Befehl aus:  \newline 
+\lstinline{docker load -i ~/images/images_mariadb/mariadb_12_2.tar}
+\end{tcolorbox}
+
+```bash
+docker compose up 
+```
+
+Mit nachfolgenden Befehlen gelangst du an das Commandline Interface von 
+MariaDB, falls du auf deinem Gerät keinen Client installiert hast:
+
+```bash
+docker exec -it mariadb_1 bash
+mariadb -h localhost -u root -p 
+# Kennwort ist rootpassword 
+```
+
+
+### Die Dateien
+Für MariaDB gibt es ein komplett vorkonfiguriertes Image,
+so dass ein Dockerfile unnötig ist. Die Umgebungsvariablen setzen
+wir direkt über *docker-compose.yml*.
+
+Docker-Compose ist gewissermaßen das Managementsystem für den 
+Containerstart, wenn komplexere Szenarien abgebildet werden sollen.
+Die unsicheren Kennwörter müssen in dieser Datei angepasst werden! 
+
+
+```{.bash include="src/21_docker/maria_db/docker-compose.yml"}
+```
+
+Die Datei ist weitgehend selbsterklärend -- bis auf ein paar Stellen:
+
+**Ports**  
+Wenn auf einem Server mehrere Container mit einem Webserver 
+oder einer Datenbank laufen, dann kann der Port 80 oder 443 oder 3306 
+nur einmal verwendet werden. Aus diesem Grund kann man eine Art 
+von Port-Forwarding in den Container definieren. Durch 3307:3306 kann 
+von außen über Port 3307 auf den Port 3306 im Container zugegriffen werden.
+
+**Volumes**  
+Container sind flüchtig, die Nutzdaten sollten das aber nicht sein.
+Aus diesem Grund können Ordner des Servers in einen Container 
+eingebunden werden. Das sind die Volumes. Wird ein Container gelöscht,
+so bleiben dieses Volumes erhalten und überleben damit z.B. Updates.
+Bei Volumes gibt es verschiedene Varianten, die den Umfang dieser 
+Kurzdarstellung überschreiten.  
+Wichtig ist aber, dass auch verschiedene Container das gleiche 
+Volume verwenden können (geteilte Daten). In diesem Fall muss 
+das Volume in der Datei \datei{docker-compose.yml} global angegeben werden.
+Das wird in diesem Szenario zwar nicht benötigt -- stört aber auch nicht.
+
+```bash
+# unten in der Datei 
+volumes:
+  mariadb_data:
+```
+
+In den einzelnen Containern wird dann auf dieses zentrale Volume verwiesen.
+
+**Networks**  
+Immer wenn *docker compse* einen Container (oder mehrere) startet, wird
+für diese ein eigenes Netzwerk erstellt. Es kann einen automatisch 
+generierten Namen bekommen oder eben den aus dem *docker-compose.yml*.
+
+**Bonus**  
+Beim Erstellen des Maria-DB Containers kann auch automatisch der Inhalt der 
+Datei \datei{init.sql} in die Datenbank eingespielt werden. In den Materialien ist 
+das so konfiguriert, dass bereits eine Filmdatenbank angelegt wird.  
+
+Sollte bei einem Neustart automatisch eine andere Datenbasis eingespielt werden,
+so muss beim Beenden des Containers auch das Volume gelöscht werden: 
+
+```bash
+docker compose down -v 
+```
+
+### PHP-MyAdmin
+
+In den Materialien befindet sich eine zweite Datei \datei{docker-compose-php.yml} 
+die auch noch Php-MyAdmin als eigenen Container zur Verfügung stellt. 
+Der Zugriff auf diesen Container ist aktuell über Port 8080 konfiguriert. 
+Falls parallel weitere Container laufen, muss geprüft werden, ob dieser 
+Port verfügbar ist!
+
+
+\begin{tcolorbox}[title=WARNUNG]
+Im Workshop führst du vorher unbedingt \textbf{vorher}
+diese Befehle aus:  \newline 
+\lstinline{docker load -i ~/images/images_mariadb_php/mariadb_12_2.tar}\newline
+\lstinline{docker load -i ~/images/images_mariadb_php/phpadmin_5_2_3.tar}
+\end{tcolorbox}
+
+
+Die `docker-compose.yml` um PHPMyAdmin erweitert nun `docker-compose-php.yml`:
+
+**docker-compose-php.yml**  
+```{.bash include="src/21_docker/maria_db/docker-compose-php.yml"} 
+```
+
+Um diesen Container zu starten und zu beenden, muss explizit die passende   
+`docker-compose-php.yml` angegeben werden!
+
+```bash
+docker compose -f docker-compose-php.yml up -d
+docker compose -f docker-compose-php.yml down 
+```
+
+Der Container ist über Port 8080 im Browser erreichbar.  
+Das Kennwort für den *root*-Benutzer lautet aktuell *rootpassword*.
+
+## Lighttpd
+### Simple
+
+Manchmal benötigt man im Unterricht einen Webserver, der über die 
+schnelle Variante
+
+```bash
+python3 -m http.server --bind 0.0.0.0 1234
+```
+
+hinaus geht. Hier bietet sich wieder ein kleiner Docker-Container an.
+
+**Dockerfile**  
+```{.bash include="src/21_docker/lighttpd/simple/Dockerfile"}
+```
+Eine minimale \datei{docker-compose.yml} steuert dann 
+den Container:
+
+```{.bash include="src/21_docker/lighttpd/simple/docker-compose.yml"}
+```
+
+Zum Starten (und nach Änderungen der Konfiguration) verwendet man:
+
+```bash
+docker compose build   # nach Änderungen 
+docker compose up -d   # starten
+docker compose down    # beenden
+```
+
+Die Konfigurationstatei für lighttpd und eine minimale index.html werden automatisch in den Container kopiert.
+
+### Komplexer
+Im Material findest du auch eine Variante, wo du eine eigene Website direkt 
+in Lighttpd kopieren kannst, die du vorher mit dem Namen *website.zip* 
+im gleichen Ordner bereit stellst. Hier musst du 
+den Zip-Befehl im Dockerfile entsprechend anpassen.
+
+```{.bash include="src/21_docker/lighttpd/komplexer/Dockerfile"}
+```
+
+Auch hier verwendest du die gleiche \datei{docker-compose.yml}
+
+
+```{.bash include="src/21_docker/lighttpd/simple/docker-compose.yml"}
+```
+

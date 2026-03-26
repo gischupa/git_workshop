@@ -1,0 +1,57 @@
+# Einzelbefehle
+# Diese Befehlssammlung ist nicht als Komplett-Script gedacht!
+
+
+# Schlüsselpaar erstellen
+ssh-keygen -t rsa -b 4096
+ssh-keygen -t rsa -b 4096 -C "gitkey_susi_sandmann@schule.de"
+
+# eventuell selbst übertragen
+ssh-copy-id -i .ssh/id_rsa.pub benutzer@<IP>
+
+
+##################################
+# Git - User
+##################################
+
+# Git - User anlegen
+# Der User besitzt kein Kennwort 
+adduser --system --shell /usr/bin/git-shell --home /home/git --group --disabled-password git
+
+
+##############################################
+# Die Schüler liefern die Schüler - wie auch immer -ab und 
+# der Lehrer spielt sie ins System ein
+#############################################
+
+# Sammeln von Pub-Keys
+cat *.pub >> ~/.ssh/authorized_keys
+chmod 644 ~/.ssh/authorized_keys
+# rm *.pub  
+
+# oder archivieren der Keys
+zip -r keys_2026_1.zip *pub
+rm *.pub
+
+
+#################################################
+# Benutzer - Management
+#################################################
+
+# Benutzer anlegen
+useradd -m demouser2 -s /bin/bash
+passwd demouser2
+
+# Mehr User als Script
+
+#!/bin/bash
+PASSWORT="gitkurs"
+for i in {1..30}; do
+USER="benutzer_$i"
+useradd -m "$USER"
+echo "$USER:$PASSWORT" | chpasswd
+done
+
+
+
+

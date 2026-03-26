@@ -1,0 +1,71 @@
+# Anhang 
+## CI/CD mit Java
+
+Im Prinzip folgst du wieder den üblichen Schritten:
+
+* Online ein Repository mit README erstellen
+* Clonen des Repository auf den eigenen Rechner kopieren
+* Maven-Assistenten im lokalen Repository das Projekt erstellen lassen
+* \datei{pom.xml} anpassen
+* Probehalber mit \cmd{mvn package} das Projekt erstellen
+* Initialen Commit 
+* Push
+
+Nun kommt es darauf an, wie du weiter machst. Arbeiten alleine, 
+entwicken im Team, ... Ich gehe aktuell von der Rolle als 
+Solo-developer aus, um keine Aspekte der Teamarbeit (Gitflow, ...)
+behandeln zu müssen.
+
+Damit CI/CD im Prinzip funktionsfähig ist, musst du nun 
+nur noch die Datei \datei{.gitlab-ci.yml} erstellen und 
+passend füllen. Bei der nachfolgenden Version werden Build-Produkte 
+zwischen Läufen gespeichert, bestimmte Schritte im *Batch-Mode* 
+ausgeführt, ... Du kannst aber mit den bisherigen Kenntnissen 
+aber sicher auch eine einfachere Datei erstellen, die im Wesentlichen
+\cmd{mvn package} oder auch nur \cmd{mvn test} ausführt.
+Das verwendete Docker-Image kannst du im Prinzip natürlich auch 
+durch ein eigenes Image ersetzen:
+
+```bash
+image: maven:3.9.6-eclipse-temurin-21
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  key: "$CI_JOB_NAME"
+  paths:
+    - .m2/repository
+
+build:
+  stage: build
+  script:
+    - mvn -B -DskipTests clean package
+  artifacts:
+    paths:
+      - target/*.jar
+    expire_in: 1 week
+
+test:
+  stage: test
+  script:
+    - mvn -B test
+  artifacts:
+    when: always
+    reports:
+      junit: target/surefire-reports/*.xml
+
+deploy:
+  stage: deploy
+  only:
+    - main
+  script:
+    - echo "Hier könntest du mvn deploy ausführen"
+
+```
+

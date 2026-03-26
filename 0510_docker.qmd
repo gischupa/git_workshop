@@ -1,19 +1,22 @@
 # Docker
 
 Docker ist eine besonders effiziente Art der Virtualisierung. Es ist
-möglich, auf einem physikalischen Server viele virtuelle Server zu erstellen, diese miteinander kommunizieren und daten austauschen zu lassen und sie auch über das Internet zugänglich zu machen. Es ist also kein
+möglich, auf einem physikalischen Server viele virtuelle Server zu erstellen^[Das können andere Systeme wie VirtualBox, ... auch. Allerdings mus hier immer ein komplettes Betriebssystem virtualisiert werden und das kostet Ressourcen!]. 
+Diese Server können dann miteinander kommunizieren und Daten austauschen, du kannst sie 
+aber auch über das Internet zugänglich machen. Es ist auf diese Weise also kein
 Problem, mehrere eigenständige Datenbankserver parallel zu betreiben
 und damit Übungssystem für Schüler bereit zu stellen. Wie groß
-der Server dimensioniert sein muss, hängt dann wieder von den 
+der Server dimensioniert sein muss, hängt von den 
 speziellen Anforderungen ab (mit 6 Cores und 16 GB RAM geht schon einiges, 
-aber sicher nicht alles!)
+aber sicher nicht alles!).
 
 ## Idee
 
 Nachdem Docker auf dem Server installiert ist (s.u.), kann man sich
-einfach ein Betriebssystem-Image aus dem Netz herunterladen und als
+einfach die gewünschte Software als eine Art von Betriebssystem-Image 
+aus dem Netz herunterladen und als
 Container starten. Natürlich ist es eine Vertrauensfrage, welche
-Images man verwendet. Es gibt allerdings *offizielle* Images von 
+Images man verwenden möchte, aber es gibt *offizielle* Images von 
 Firmen und Organisationen, denen man vertrauen kann:
 
 ```bash
@@ -29,80 +32,76 @@ gitlab/gitlab-runner-helper                     50
 gitlab/gitlab-ee                 GitLab ...     549   
 ```
 
-In dieser gekürzten Ausgabe ist also anscheinend kein *offizielles* Image dabei.
-`gitlab/gitlab-ce` ist aber trotzdem offiziell. Dafür recherchiert man kurz auf 
+In dieser gekürzten Ausgabe ist also anscheinend kein *offizielles* Image dabei. Bei *gitlab/gitlab-ce* handelt es sich aber trotzdem um 
+eine offizielle Variante -- dafür recherchiert man kurz auf 
 [dockerhub](https://dockerhub.com) und dort ist [gitlab](https://hub.docker.com/r/gitlab/gitlab-ce)
-verlinkt, wo die Informationen stehen.
+verlinkt, wo die entsprechenden Informationen stehen.
 
-Wir werden übrigens nicht *gitlab* sondern *gitea* verwenden!
+Ich habe in diesem Dokument sowohl Anleitungen für \gitlab, als auch für \gitea
+aufgenommen. Generell ist \gitea schlanker, erfordert bei CI/CD aber einige 
+Workarounds im Vergleich zu \gitlab.
 
-Von einem Image kann man dann beliebig viele Instanzen erzeugen, die auch fast ohne 
-Zeitverlust startbar sind. Der längste Teil ist der Download des Image.
+Von einem Image kann man dann beliebig viele Instanzen der Software 
+erstellen, die auch fast ohne Zeitverlust startbar sind. 
+Der zeitraubendste Teil ist der anfängliche Download des Images.
 
 **Hintergrund**  
-Images sind in Schichten konstruiert, die nacheinander heruntergeladen werden.
-Diese Schichtenstruktur ist wichtig, wenn man eigene Images erstellen möchte.
-Der Erstellungsprozess macht nämlich immer auf der Schicht weiter, ab der Änderungen
-am Image vorgenommen wurden (weitere Software, Dateiänderungen, ...). Auf diese 
-Weise wird viel weniger Zeit benötigt, als bei einer komplett neuen Erstellung!
+Images sind in Schichten organisiert, die nacheinander heruntergeladen werden. Dabei wird jeweils geprüft, welche Differenzen zum aktuellen 
+System benötigt werden, um arbeiten zu können.  
+Diese Schichtstruktur ist wichtig, wenn man eigene Images erstellen möchte. Der Erstellungsprozess macht nämlich immer auf der Schicht weiter, ab der Änderungen am Image vorgenommen wurden (weitere Software, 
+Dateiänderungen, ...). Auf diese Weise wird viel weniger Zeit benötigt,
+als bei einer komplett neuen Erstellung!
 
-## Installation
+## Installation von Docker
 
-Die Befehle befinden sich auch bei den Kursmaterialien!
-
-TODO - Docker install Script
-
-```bash
-sudo -i
-apt update
-apt install apt-transport-https curl -y 
-
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg  \ 
-     | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-
-echo "deb [arch=$(dpkg --print-architecture) \ 
-      signed-by=/etc/apt/keyrings/docker.gpg] \ 
-      https://download.docker.com/linux/ubuntu \ 
-      $(. /etc/os-release && echo "$VERSION_CODENAME") \ 
-      stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-apt update
-
-apt install docker-ce docker-ce-cli \ 
-    containerd.io docker-buildx-plugin \ 
-    docker-compose-plugin -y
-
-
-compose_url="https://github.com/docker/compose/releases/download"
-curl -L  $compose_url/1.28.5/docker-compose-`uname \ 
-     -s`-`uname -m` -o /usr/local/bin/docker-compose
-
-chmod +x /usr/local/bin/docker-compose
+\bxlarge
+```{.bash include="src/21_docker/docker_install_schmal.txt"}
 ```
+\exlarge 
+
+Die Befehle befinden sich als Script bei den Kursmaterialien!
+Wegen des Layouts sind hier Zeilenumbrüche enthalten, die das Script 
+in der abgedruckten Form scheitern lassen!
 
 Aktuell läuft Docker jetzt als Benutzer *root* (=Administrator),
-was man im professionellen Firmenumfeld lieber vermeidet. Es gibt 
-Anleitung, wie man das ändert -- ich selbst verwende es aber auch so.
+was man im professionellen Firmenumfeld lieber vermeidet. 
+Im Prinzip muss nur ein weiterer Benutzer angelegt und der 
+richtigen Gruppe zugeordnet werden.
+
+```bash
+usermod -aG docker benutzer
+```
+
+(Der Benutzer muss sich danach einmal ab- und wieder anmelden.)
 
 Teste die Installation durch folgende Befehle:
 
 ```bash
 docker --version
-docker-compose --version
+docker compose version
 ```
 
 ## Kurzeinführung
 Es gibt sehr viele verschiedene Szenarien, wie Docker verwendet werden kann und entsprechend
 sind auch die Befehle zahlreich und unterschiedlich kompliziert.
 
-Nachfolgend ein kleines *Work-along*, wo einige Befehle verwendet und erklärt werden.
-Tipp einfach mal folgenden Befehl:
+\samplestart
+**Hinweis**  
+Da nun Zugriffe auf verschiedene Ports des Servers erfolgen, die 
+aktuell durch die Firewall blockert sind, sollten wir diese 
+deaktivieren:
+
+\cmd{ufw disable}
+\sampleend
+
+Nachfolgend ein kleines *Work-along*, wo einige Befehle verwendet und erklärt werden. Gib folgenden Befehl im Terminal ein:
 
 ```bash
 docker run -d -p 8090:80 --name it-tools corentinth/it-tools
 ```
 
 Die Ausgabe (außer die Hashes) sollte dann so aussehen:
+
 ```bash
 Unable to find image 'corentinth/it-tools:latest' locally
 latest: Pulling from corentinth/it-tools
@@ -116,7 +115,7 @@ d3b17590914c: Pull complete
 f4cab7bcfad1: Pull complete 
 65e7766bfa53: Pull complete 
 c5f5268086b8: Pull complete 
-Digest: sha256:8b8128748339583ca951af03dfe02a9a4d7363f61a216226fc28030731a5a61f
+Digest: sha256:8b8128748339583ca9...f61a216226fc28030731a5a61f
 Status: Downloaded newer image for corentinth/it-tools:latest
 bd072e349cab6408a3b5f2d7040d586a9149107d68031089f846d0526c028f45
 ```
@@ -124,8 +123,8 @@ bd072e349cab6408a3b5f2d7040d586a9149107d68031089f846d0526c028f45
 Sieht nicht spktakulär aus, bis man `http://SERVERADRESSE:8090` aufruft.
 Du hast hier einen kompletten Server voll mit digitalem Spielzeug erstellt - in no time!
 
-Natürlich kannst du den Container einfach weiter laufen lassen -- wir wollen uns aber einige Dinge
-ansehen:
+Natürlich kannst du den Container einfach weiter laufen lassen -- wir 
+wollen uns aber einige Dinge ansehen:
 
 |Befehl|Wirkung|
 |------|-------|
@@ -143,24 +142,27 @@ docker image ls
 
 Zeigt uns das heruntergeladene Image:
 
+\blarge
 ```bash
 REPOSITORY             TAG       IMAGE ID       CREATED        SIZE
 corentinth/it-tools    latest    bb7ba9626731   2 months ago   56.2MB
 ```
+\elarge
 
 Mit nachfolgendem Befehl überprüft man den Status des Containers:
 
+\blarge
 ```bash
 docker ps 
-```
 
-Ausgabe (gekürzt)
-```bash
-CONTAINER ID   IMAGE                 COMMAND                  gekürzt ... NAMES 
-bd072e349cab   corentinth/it-tools   "/docker-entrypoint.…"   gekürzt ... it-tools
+# Ausgabe (gekürzt, am Ende steht der Name des Containers!)
+CONTAINER ID  IMAGE               COMMAND                gekürzt  
+bd072e349cab  corentinth/it-tools "/docker-entrypoint.…" gekürzt 
 ```
-
+\elarge
+\newpage
 **Weitere Befehle**  
+
 |Befehl|Wirkung|
 |------|-------|
 |docker stop it-tools| Container stoppen|
@@ -170,19 +172,68 @@ bd072e349cab   corentinth/it-tools   "/docker-entrypoint.…"   gekürzt ... it-
 |docker rm it-tools|Container entfernen -- Image bleibt!|
 |docker rmi "corentinth/it-tools"|Entfernt auch das Image|
 
-Damit ein Container gelöscht werden kann, muss er beendet sein,
-damit ein Image gelöscht werden kann, muss der Container gelöscht sein.
+Damit ein Container gelöscht werden kann, muss er beendet sein.  
+Damit ein Image gelöscht werden kann, muss der Container gelöscht sein.
+
+## WICHTIGER HINWEIS
+
+Das Pullen von Images von der Plattform Dockerhub ist 
+in gewissen Grenzen kostenlos. Aktuell sind 100 Pulls in 
+6 Stunden ohne Anmeldung auf Dockerhub möglich (Stand März 2026). 
+Mit einem Account steigt die Anzahl auf 200 Pulls pro 6 Stunden. Leider bezieht sich die Anzahl auf die IP-Adresse, von der der Pull erfolgt. 
+In einem Schulungszentrum ist die Anzahl möglicher Pulls 
+deshalb sehr schnell aufgebraucht. Bei dir zuhause oder 
+in der Schule reicht diese Anzahl für Experimente aber 
+durchaus.  
+Hier im Workshop müssen wir also einen alternativen 
+Weg gehen, um die Images ins System zu bekommen. Das 
+geht in Form von Tar-Files (eine Form von zip). Die 
+Beschreibung im Handout bezieht sich aber durchgehend
+auf die reguläre Arbeitsweise von Docker. Eine kleine 
+Anleitung für das Arbeiten mit den Tar-Dateien befindet sich im Anhang.
+
+
+Einen Teil der benötigten Materialien hst du bereits aus 
+dem Kurs-Repository geclont. Die nun benötigten vorbereiteten 
+Docker-Images sind dafür aber zu groß und 
+liegen deshalb auf dem USB-Stick vor. Folgende Schritte sind nun 
+nötig:
+
+* Stick im Proxmox an die VM durchreichen
+* Einbinden des Sticks in die VM (mounten)
+* Kopieren der Images in die VM
+
+Für das Durchreichen fügst du der VM in der Weboberfläche 
+eine neue Hardware (USB) hinzu.
+
+Im Terminal sollte der Stick über \cmd{lsblk} als 
+`sdb` mit den Partitionen `sdb1` und `sdb2` erscheinen.
+Auf `sdb1` befindet sich *Proxmox*, auf `sdb2` liegen 
+die benötigten Docker-Images. 
+
+Binde sie (als Root) ins System ein und kopiere die 
+Docker-Images:
+
+```bash
+sudo -i 
+cd /mnt 
+mkdir part2 
+mount /dev/sdb2 part2 
+cp -r part2/images /home/benutzer/ 
+chown -R benutzer:benutzer /home/benutzer/images 
+umount part2 
+```
 
 ## Detaillierter
 
 Für komplexere Szenarien wird der *docker run* Befehl aber etwas unübersichtlich.
-Man kann nun in zwei Stufen die Komplexität erhöhen:
+Du kannst nun in zwei Stufen die Komplexität erhöhen:
 
 * Anlegen einer Datei *Dockerfile*, in der die Parameter für *docker run* stehen
 * Verwenden von *docker-compose* mit einer zusätzlichen Datei *docker-compose.yml*
-  um z.B. mehrere Server im Verbund zu managen. Dieses Verfahren werden wir bei
-  der abschließenden, vollständigen Installation von Gitea verwenden.
+  um z.B. mehrere *Container* im Verbund zu managen. Dieses Verfahren werden wir bei
+  der Installation von \gitea und \gitlab verwenden.
 
 Da sowohl Syntax als auch Varianten von beiden Stufen für eine schnelle
-Behandlung zu komplex sind, verweise ich auf entsprechende Tutorial auf youtube
-oder eines der vielen Bücher zum Thema -- z.B. von Michale Kofler. 
+Behandlung zu komplex sind, verweise ich auf entsprechende Tutorials auf youtube
+oder eines der vielen Bücher zum Thema -- z.B. von Michael Kofler. 

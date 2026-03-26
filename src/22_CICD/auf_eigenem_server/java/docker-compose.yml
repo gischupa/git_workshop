@@ -1,0 +1,15 @@
+version: '3'
+services:
+ quarto:
+   build:
+     context: .
+   image: java-git:1.0
+   volumes:
+     - ./ergebnis:/ergebnis
+   networks:
+      - gitlab_default
+
+networks:
+  nginx_default:
+    external: true
+

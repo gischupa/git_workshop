@@ -1,0 +1,300 @@
+# Gitea ohne Docker
+Falls dir Docker unheimlich ist, kannst du \gitea auch 
+direkt auf dem Server installieren. Ich halte das zwar für
+ungünstig, will dir diese Variante aber nicht vorenthalten.
+Da es sich um einen abgeschlossenen Abschnitt handelt, gibt es 
+an einigen Stellen Wiederholungen!  
+
+Die Installation von \gitea ist relativ einfach und kann über 
+Kopieren und Einfügen erledigt werden. In den Kursmaterialien 
+befinden sich auch die folgenden Scripte :
+
+* \script{setup\_gitea.sh} - führt die Basisinstallation durch
+* \script{selfreg.sh}     - Selbstregistrierung ein/aus
+* \script{tune.sh}        - Feineinstellungen direkt nach der Installation
+
+
+## Setup-Script
+In den folgenden Abschnitten sind die relevanten Passagen der Scripte dokumentiert. 
+Die Befehle müssen nicht per Hand eingegeben werden, dafür sind die Scripte \script{setup\_gitea.sh} 
+und \script{tune.sh} im Material. Sie müssen als *root* bzw. über *sudo* ausgeführt werden.
+
+**setup\_gitea.sh**  
+```{.bash include=src/21_docker/gitea_ohne_docker/setup_gitea.sh}
+```
+
+## Nacharbeiten
+
+Im Nachgang sollten einige Schreibberechtigungen
+entzogen werden, damit nur noch *root* Änderungen vornehmen
+darf:
+
+```bash
+chmod 750 /etc/gitea
+chmod 640 /etc/gitea/app.ini
+```
+
+Dieses Script deaktiviert Anmeldungen über OpenID
+und setzt neue Sicherheitsschlüssel.
+
+\newpage
+**tune.sh**  
+```bash
+# OpenID deaktivieren
+INI="/etc/gitea/app.ini"
+KEY1="ENABLE_OPENID_SIGNIN = "
+KEY2="ENABLE_OPENID_SIGNUP = "
+sed -i "s/${KEY1}true/${KEY1}false/g" $INI 
+sed -i "s/${KEY2}true/${KEY2}false/g" $INI 
+
+# Sicherheit
+
+for KEY in INTERNAL_TOKEN SECRET_KEY JWT_SECRET LFS_JWT_SECRET
+do 
+  VAL=$(gitea generate secret ${KEY})
+  sed -i "s/^$KEY[[:space:]]*=.*/$KEY = $VAL/" $INI
+done
+
+systemctl restart gitea
+```
+
+In der Datei \datei{/etc/gitea/app.ini} kann das wieder 
+rückgängig gemacht werden, indem der Abschnitt *[openid]*
+so abgeändert wird:
+
+```bash
+[openid]
+ENABLE_OPENID_SIGNIN = true
+ENABLE_OPENID_SIGNUP = true
+```
+
+**Selbstregistrierung an/aus** 
+
+Standardmäßig können sich die Benutzer selbst auf \gitea registrieren.
+Das vereinfacht die Arbeit für den Lehrer enorm, ist aber bei einer
+öffentlich zugänglichen Instanz problematisch. Es ist also sinnvoll,
+diese Einstellung nach dem Erfassen der Benutzer zu deaktivieren (kann
+jederzeit wieder aktiviert werden). 
+
+Per Hand müsste in der Datei \datei{/etc/gitea/app.ini} die folgende Zeile 
+im Abschnitt *[service]* angepasst werden:
+
+```bash
+ORIGINAL:  DISABLE_REGISTRATION = false
+ANGEPASST: DISABLE_REGISTRATION = true
+```
+
+Dies kann über \cmd{nano /etc/gitea/app.ini} gemacht werden 
+(Speichern: \key{strg + o}, Beenden \key{strg + x} ).
+
+Danach muss \gitea neu gestartet werden:
+
+```bash
+systemctl restart gitea
+```
+
+Das Setup-Script des Kurses kopiert das Script \script{selfreg.sh} nach 
+\datei{/usr/local/bin}, so dass die Registrierung einfach aktiviert und 
+deaktiviert werden kann:
+
+```bash
+selfreg.sh on
+selfreg.sh off
+```
+
+## SSH
+
+Für den Client muss der ssh-Zugriff möglich sein (clone, push, pull).
+Es kommt hier der normale ssh-Server auf Port 22 zum Einsatz^[Gitea
+würde über einen eigenen ssh-Server verfügen, den man in einigen
+speziellen Fällen verwenden könnte.], weil wir nicht durch die Abschottung 
+von Docker müssen.
+
+Den Ablauf mit den SSH-Schlüsseln des Benutzers habe ich ja bereits oben erklärt -- daran ändert sich nichts.
+
+
+## HTTPS
+Aktuell ist die Instanz nur über *http* und *IP-Adresse* 
+zugänglich. Es ist möglich, Gitea auch für *HTTPS* zu konfigurieren.
+Hierfür gibt es verschiedenen Lösungen, von denen aber eigentlich
+nur der Einsatz eines Reverse-Proxy mit einem entsprechenden 
+Domain-Name sinnvoll ist. Eine derartige Konfiguration würde 
+den Rahmen dieses Workshops aber sprengen! Zur Erinnerung: Es ging um 
+eine möglichst einfache Installation eines funktionsfähigen Systems.
+
+## API
+Oft ist es effizienter, wenn Dinge über die Kommandozeile erledigt werden --
+zum Beispiel wenn 50 Benutzerkonten erstellt und mit Passwort abgesichert werden sollen,
+weil die Selbstregistrierung nicht gewünscht ist. In diesem Fall verwendest
+die die API von \gitea. Dies kann von jedem Rechner aus erfolgen, der auf \gitea zugreifen
+kann. Dafür braucht es aber noch zwei Anpassungen an der \datei{/etc/gitea/app.ini}:
+
+1. Ergänze am Ende der Datei:
+
+```bash
+[api]
+ENABLE_ADMIN = true
+```
+2. Erweitere den Abschnitt *security* falls du die 
+   Accounts mit sehr einfachen Kennwörtern vorbelegen willst:
+
+```bash
+[security]
+... bisheriger Inhalt ...
+PASSWORD_COMPLEXITY = off
+MIN_PASSWORD_LENGTH = 6
+```
+
+Melde dich als Administrator in \gitea an und rufe das 
+Menu *Einstellungen* des Benutzers auf.
+Unter *Anwendungen* können *Admin-Token* erzeugt werden, die einen 
+kennwortlosen Zugriff auf das 
+System erlauben. Stelle im aufklappbaren Detail-Abschnitt ein, 
+welche Berechtigungen erforderlich sind:
+
+* Admin - Lesen und Schreiben
+* Organisation
+* Repository
+* User
+
+Kopiere die lange Zahl (=Token) dann weg -- sie wird nur einmal angezeigt!
+
+Auf der Konsole (Linux / MacOS) kann dann z.B. folgender Befehl abgeschickt werden,
+der die Benutzerin Susi anlegt:
+
+```bash
+curl -X POST "http://<ip-adresse>:3000/api/v1/admin/users" \
+-H "Authorization: token <kopiertes Token>" \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "susi",
+  "email": "susi@sandmann.com",
+  "password": "lalelu",
+  "send_notify": false,
+  "must_change_password": true
+}'
+```
+
+Verfeinert wird dieser Befehl in ein Script verpackt -- z.B. 
+\script{gitea\_user\_anlegen.sh}.
+Es verwendet eine csv-Datei als Parameter, 
+in der folgende Spalten auftreten:
+
+```bash
+# login,kennwort,email  <- Diese Zeile entfernen
+susi,lalelu,susi@sandmann.de
+max,foobla,max@mustermann.de
+...
+```
+
+## Sinnvolle Szenarien
+
+### Organisationen
+Hier bin ich mir nicht sicher, ob das kein Overkill ist. Eine Arbeit über Teams^[NEIN -- 
+nicht DAS Teams!] 
+erscheint mir bei der Größe unserer Szenarien deutlich geeigneter. Das Problem 
+ist nämlich, dass man über die API einen Benutzer nur löschen kann, wenn er in keiner
+Organistation mehr ist! 
+
+Es könnte sinnvoll sein, wenn sich die einzelnen Kollegen als *Organisationen*
+sehen. Dann müssen Schüler aber mehrfach ins System eingetragen werden und das
+bereitet bereits bei den eMail-Adressen Probleme, die dann doppelt wären.
+
+Sinnvoller erscheint mir eine Namenskonvention beim Erstellen von Teams!
+
+**Organisation erstellen**
+\blarge 
+```bash
+token=1234
+name=G10a
+curl -X POST "http://192.168.3.190:3000/api/v1/admin/organizations" \
+-H "Authorization: token ${token}" \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "${name}",
+  "full_name": "${name}",
+  "description": "Organisation für die Schüler der Klasse ${name}",
+  "visibility": "private"
+}'
+```
+\elarge
+
+**Benutzer hinzufügen**  
+(Die Variable *url* wurde nur wegen der begrenzten Zeilenlänge hier im 
+Dokument eingeführt.)
+
+```bash
+token=1234
+name=G10a
+user=susi
+url="${name}$/members/${user}"
+curl -X PUT \
+"http://192.168.3.190:3000/api/v1/orgs/"$url \
+-H "Authorization: token ${token}"
+```
+
+**Benutzer löschen**  
+
+\blarge 
+```bash
+token=1234
+user="susi"
+# In welchen Organistaionen ist der User
+curl -X GET "http://192.168.3.190:3000/api/v1/users/${user}/orgs" \
+    -H "Authorization: token ${token}"
+
+# Einzeln austragen, sonst ist er nicht löschbar
+orga=organization1
+curl -X DELETE  \
+"http://192.168.3.190:3000/api/v1/orgs/${orga}/members/${user}" \
+-H "Authorization: token ${token}"
+
+# Benutzer löschen 
+curl -X DELETE \
+"http://192.168.3.190:3000/api/v1/admin/users/${user}" \
+-H "Authorization: token ${token}"
+```
+\elarge
+
+## Teams
+
+Auch ein Team erfordert eine Organisation -- hier würde ich einfach die 
+Schule anlegen.
+
+**Team erstellen**  
+
+\blarge 
+```bash
+schule="GGP"
+token=1234
+team=G10a
+curl -X POST "http://192.168.3.190:3000/api/v1/orgs/${schule}/teams" \
+-H "Authorization: token ${token}" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "${team}",
+  "description": "Team für das erste Projekt",
+  "permission": "write"
+}'
+```
+\elarge
+
+**Benutzer hinzufügen**
+
+\blarge
+```bash
+schule=GGP
+token=1234
+team=G10a
+user=susi
+curl -X PUT \
+"http://192.168.3.190:3000/api/v1/orgs/${schule}/teams/${team}/members/${user}" \
+-H "Authorization: token YOUR_ADMIN_TOKEN"
+ ```
+\elarge
+
+\samplestart
+**Hinweis**  
+Bei der Recherche bin ich swohl über Team\_id als auch Team\_name
+gestolpert. Einfach ausprobieren, was bei dir stimmt!
+\sampleend

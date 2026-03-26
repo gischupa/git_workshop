@@ -1,0 +1,42 @@
+log:
+  level: info
+
+runner:
+  file: .runner
+  capacity: 1
+  envs:
+    A_TEST_ENV_NAME_1: a_test_env_value_1
+    A_TEST_ENV_NAME_2: a_test_env_value_2
+  env_file: .env
+  timeout: 3h
+  shutdown_timeout: 0s
+  insecure: false
+  fetch_timeout: 5s
+  fetch_interval: 2s
+  labels:
+    - "ubuntu-latest:docker://gitea/runner-images:ubuntu-latest"
+    - "ubuntu-22.04:docker://gitea/runner-images:ubuntu-22.04-slim"
+    - "ubuntu-20.04:docker://gitea/runner-images:ubuntu-20.04"
+    - "debian-latest:docker://docker.io/debian:latest"
+    - "quarto:docker://quarto-quarto:latest"
+
+cache:
+  enabled: true
+  dir: ""
+  host: ""
+  port: 0
+  external_server: ""
+
+container:
+  network: "gitea"
+  privileged: true
+  options: "--rm -v SSH_LOCATION:/root/.ssh"
+  workdir_parent:
+  valid_volumes:
+    - "**"
+  docker_host: "unix:///var/run/docker.sock"
+  force_pull: false
+  force_rebuild: false
+
+host:
+  workdir_parent:

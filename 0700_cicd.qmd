@@ -1,0 +1,67 @@
+# CI/CD  – Vom Commit bis zum laufenden System
+
+Stell Dir vor, ein Entwicklerteam arbeitet gemeinsam an einer Anwendung. 
+Mehrmals täglich werden neue Funktionen hinzugefügt, Fehler behoben oder 
+kleine Anpassungen vorgenommen. Damit all diese Änderungen zuverlässig 
+und ohne Chaos zusammengeführt werden können, braucht es mehr als nur 
+gutes Teamwork -- es braucht klare Prozesse und Automatisierung. 
+Genau hier kommt CI/CD ins Spiel.
+
+CI/CD steht für Continuous Integration und Continuous Delivery 
+(oder Deployment) -- also für die kontinuierliche Integration 
+und Auslieferung von Software. Ziel ist es, dass Codeänderungen 
+schnell, sicher und nachvollziehbar vom Entwicklerrechner in die 
+fertige Anwendung überführt werden können.
+
+Im ersten Schritt, der Continuous Integration (CI), werden alle 
+Änderungen regelmäßig in ein gemeinsames Git-Repository eingespielt. 
+Anstatt große, unübersichtliche Updates zu veröffentlichen, integrieren 
+Entwickler kleine, überschaubare Änderungen. Diese werden automatisch 
+gebaut, getestet und überprüft -- so fällt sofort auf, wenn etwas nicht 
+funktioniert. \Git spielt hier eine zentrale Rolle, weil es die Grundlage 
+für Versionskontrolle, Branches und das Zusammenführen von Code bildet.
+
+Der zweite Schritt, die Continuous Delivery (CD), sorgt dafür, dass die 
+geprüfte Software jederzeit bereit ist, ausgeliefert zu werden -- zum 
+Beispiel auf einem Testsystem oder sogar direkt in die Produktion. 
+Automatisierte Prozesse übernehmen das Bauen, Testen und Bereitstellen 
+der Anwendung. So wird vermieden, dass manuelle Schritte zu Fehlern führen 
+oder wertvolle Zeit kosten.
+
+CI/CD ist also weit mehr als nur ein technisches Konzept -- es ist eine 
+Arbeitsweise. Entwicklerinnen und Entwickler gewinnen durch Automatisierung 
+Sicherheit und Freiraum: Sie können sich stärker auf den Inhalt ihrer Arbeit 
+konzentrieren, statt auf das „Wie“ des Deployments. Teams werden dadurch 
+effizienter, und Software kann in kleineren, stabileren Schritten wachsen.
+
+Im Zusammenspiel mit \git entsteht so ein durchgängiger Entwicklungsfluss: 
+Vom Commit über die automatische Prüfung bis hin zur bereitgestellten 
+Anwendung. CI/CD bildet damit das Rückgrat moderner Entwicklungsprozesse -- 
+und ist ein Schlüsselkonzept, das jeder fortgeschrittene \git-Nutzer 
+verstehen sollte.
+
+\samplestart
+**Hinweis**  
+Das Thema CI/CD ist eng mit sogenannten *runner*-Programmen verbunden,
+die für die Ausführung von CI/CD verantwortlich sind. Leider erfordert 
+die Registrierung eines solchen Runners in \gitlab eine funktionierende 
+Zertifikat-Infrastruktur, da das über https erfolgt. Das ist in unserem 
+Umfeld aber sehr aufwändig. Besser wäre es, sich einen Account auf gitlab.com 
+anzulegen!
+\sampleend
+
+
+**Dennoch**  
+Ja -- man kann es auch seiner Spielumgebung machen, allerdings nicht so einfach.
+
+* root werden
+* `nano config/gitlab.rb` 
+* suchen nach `#external_url="EXTERNAL_URL"`
+* ersetzen durch `external_url="http://192.168.3.190"`  (meine IP)
+* Im Docker-Container eine Reconfiguration triggern:  
+`docker exec -it gitlab gitlab-ctl reconfigure` 
+
+Jetzt sollte ein Zugriff über http möglich sein. Wichtig ist allerdings, dass 
+im Browser wirklich alle Cookies dieser Seite gelöscht werden, da sonst Fehler 
+auftreten.
+

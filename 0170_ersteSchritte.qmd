@@ -1,79 +1,100 @@
 # Lokale Arbeit
+## Geplante Inhalte
+Bevor du wirklich mit dem Server arbeiten wirst, steht die lokale Anwendung 
+von \git im Vordergrund. Du arbeitest also auf deinem Laptop, Arbeitsplatz, ...  
 
-Da \git als Serveranwendung bekannt ist, stellt sich die Frage, 
-warum man auf seinem eigenen Rechner ein Versions-Kontroll-System beim Erstellen von Projekten einsetzen sollte.  
-Neben dem Aspekt, dass bestimmte Probleme beim Backup so gelöst werden^[Natürlich ist ein Backup auf dem gleichen Rechner relativ sinnlos. Es spricht aber nichts dagegen, mit \git auf einer externen Festplatte zu arbeiten!], hat man den Vorteil, ungefährdet mit verschiedenen Versionen seines Projekts zu experimentieren, ohne einen Totalverlust befürchten zu müssen. Im Vorgriff sei gesagt, dass \git im Prinzip nur einen eigenen Ordner für das Projet benötigt und hier ist es relativ egal, wo sich dieser Ordner befindet!
+Du kannst diese Methode verwenden, um alleine Software zu entwickeln, aber auch 
+für die Verwaltung von verschiedenen Versionen deiner Unterrichtsvorbereitung.
 
-## Installation
+Nachfolgend besprechen wir folgende Punkte
 
-Beginnen wir mit Linux, weil dort der Aufwand am geringsten ist.
-Hier genügt es bei einer Debian-basierenden Version, wenn man im 
-Terminal den Befehl eingibt:
+* Grundkonfiguration (einmalig)
+* Erstellen eines Repositories
+* Versionierung von Dateien
+* Einfache Fehlerbehebung
 
+
+Die hier angegebene Liste an Befehlen ist keineswegs vollständig,
+aber mit den markierten Befehlen sind fast alle Aspekte der 
+täglichen Arbeit abgedeckt. Wir werden sie nachfolgend behandeln,
+wenn auch nicht in genau dieser Reihenfolge.
+
+| Befehl  | Befehl |
+|---|---|
+| \markcmd{git status} | `git clean`|
+| \markcmd{git init}| \markcmd{git push}|
+| \markcmd{git log}| \markcmd{git pull}|
+| \markcmd{git add}| \markcmd{git diff}|
+| \markcmd{git commit}| `git mergetool`|
+| `git stash`| \markcmd{git show}|
+| \markcmd{git checkout}| \markcmd{git fetch}|
+| \markcmd{git merge}| \markcmd{git clone}|
+| \markcmd{git branch}|\markcmd{git remote}|
+| \markcmd{git switch}| |
+
+Darüber hinaus gibt es noch fortgeschrittenere Befehle,
+die meist der Fehlerbehebung dienen. Auf sie 
+werden wir auch einen Blick werfen, aber nicht zu sehr 
+in die Tiefe gehen.
+
+| Befehl  | Befehl |
+|---|---|
+| `git reset` | `git revert`|
+| `git cherry-pick`| `git restore`|
+| `git rebase` ||
+
+
+## Konfigurieren von git
+
+Öffne die \gitbash^[bzw. das Terminal deines Systems. 
+Das setze ich in Zukunft stillschweigend voraus]. Da es sich um
+globale Einstellungen handelt, muss das nicht unbedingt im 
+Projektordner sein!^[Sollte dir 
+die Schrift im Fenster zu klein sein,
+kannst du sie mit \strg{+} vergrößern.].
+
+**Aktuelle Einstellungen ansehen**  
 ```bash
-apt update 
-apt install git -y
+# Eingabe
+git config --list
+
+# Ausgabe
+user.email=
+user.name=
+     ...
 ```
 
-MacOS ist minimal schwieriger, weil es etwas darauf ankommt, wie der 
-Rechner konfiguriert ist. Auf meiner Installation genügt ein
-
+**Einstellungen anpassen**  
 ```bash
-brew install git 
+# eigene Phantasiedaten verwenden
+git config --global user.name "Susi Sandmann" 
+git config --global user.email "susi@sandmann.de"
 ```
 
-auf anderen Rechner kann es bereits installiert sein, falls Xcode installiert ist. Im Zweifelsfall gibt es aber auch einen Installer 
-unter 
+## Erstellen eines Repositories 
+Die Voraussetzung für die Arbeit mit \git ist ein  Projektordner, in dem die relevanten Dateien liegen sollen. 
+In diesem Ordner wirst du dein erstes (lokales) Repository erstellen.   
+
+### Ordner anlegen
+Ich gehe davon aus, dass das Erstellen eines Ordners 
+mit den üblichen Werkzeugen kein Problem darstellt und
+zeige es hier mit Hilfe des Terminals bzw. der \gitbash.
 
 ```bash
-https://git-scm.com/download/mac
-```
-
-Auch für Windows ist auf dieser Seite ein Installer verfügbar, 
-oder man verwendet den Appstore^[Da ich mit Software-Versionen 
-aus dem App-Store schon öfter auf die Nase gefallen bin, bevorzuge 
-ich den anderen Weg!]. Ein detaillierter Ablauf einer Installation 
-befindet sich im Anhang. Leider ist es mir nicht möglich, minimal Änderungen an den Screenshots ständig aktuell zu halten.
-
-TODO: Installationsanleitung GIT auf Windows in den Anhang schieben.
-
-## Erster Kontakt
-
-Wir verzichten am Anfang konsequent auf den Einsatz grafischer
-Hilfsprogramme. Auf diese Weise haben wir auf allen drei Betriebssystemen weitgehend die gleichen Vorgehensweisen und 
-wird lernen wirklich die Grundlagen.  
-
-Im ersten Schritt muss hierzu ein Terminal geöffent werden.
-Auf Linux und MacOS ist das auch wirklich unter diesem Namen zu 
-finden, bei Windows nennt sich das Programm \git-Bash.
-Natürlich brauchen wir auch einen Projektordner für unsere 
-sämtlichen Experimente. Ich setze voraus, dass jeder für sein 
-System in der Lage ist, einen Ordner mit dem Namen *git_projekte* 
-zu erstellen. Ziel wäre es im Anschluss, dass wir uns im 
-Terminal in diesem Ordner befinden.  
-
-Bei Linux und MacOS erreichen wir das direkt im Terminal mit 
-folgenden Befehlen (jweils mit \key{enter} abschließen):
-
-```bash
-mkdir git_projekte 
-cd git_projekte 
+mkdir versuch_1  
+cd versuch_1
 ```
 
 Um den Ordner auch später einfach wiederfinden zu können,
-sollten wir den Pfad zum Ordner identifizieren und eventuell 
-notieren:
+solltest du den Pfad zum Ordner identifizieren und eventuell notieren:
 
 ```bash
 pwd 
 ```
 
-Bei Windows kann man die \git-Bash aus dem Explorer heraus über die 
-rechte Maustaste direkt im gewünschten Ordner (z.B. Projektordner) 
-öffnen.
-
-Da auch die \git-Bash eine Form von abgespecktem Linux darstellt, 
-gelten die nachfolgenden Befehle auf allen drei Systemen in gleicher Weise. Es sinnvoll, sich diese Liste bereit zu legen, oder die Befehle zu verinnerlichen!
+Da auch die \gitbash eine Form von abgespecktem Linux darstellt, 
+gelten die nachfolgenden Befehle auf allen drei Systemen in gleicher Weise. 
+Es ist sinnvoll, wenn du dir diese Liste bereit legst (oder die Befehle lernst).
 
 **Wichtige Befehle**  
 
@@ -90,16 +111,211 @@ gelten die nachfolgenden Befehle auf allen drei Systemen in gleicher Weise. Es s
 |`cat <datei>`|Inhalt der Datei komplett ausgeben|
 |`less <datei>`|Langsame Ausgabe, Ende mit `q`|
 
-TODO: Übungsblatt Shell-Befehle erstellen
 
-Für viele Beispiele benötigen wir schnell eine Datei
-mit minimalem Inhalt, da es ja nur 
-um Beispiele geht. Das geh im Prinzip 
-mit dem Editor von Windows, 
-schneller ist es aber direkt im Terminal 
+\samplestart
+**TIPP**  
+Im Terminal kannst du mit der *Pfeil hoch* Taste
+durch die letzten Befehle blättern -- damit gehen 
+manche Dinge sehr schnell!
+\sampleend
+
+
+### Anlegen des Repositories
+
+Im Projektordner gibst du folgenden Befehl ein^[Er ist in obiger Tabelle 
+nicht markiert, weil man ihn nicht ständig braucht. Wichtig ist er aber trotzdem!]:
 
 ```bash
-echo "Probetext" > demodatei.txt 
+git init
 ```
 
+Es erscheint eine Meldung, die je nach System etwas anders aussehen kann:
 
+```bash
+Hinweis: Als Name für den initialen Branch wurde 'master' benutzt. 
+Hinweis: Dieser Standard-Branchname kann sich ändern. Um den 
+Hinweis: Namen des initialen Branches zu konfigurieren, der in 
+Hinweis: allen neuen Repositories verwendet werden soll und
+Hinweis: um diese Warnung zu unterdrücken, führen Sie aus:
+Hinweis: 
+Hinweis: 	git config --global init.defaultBranch <Name>
+Hinweis: 
+Hinweis: Häufig gewählte Namen statt 'master' sind 'main', 'trunk'
+Hinweis:  und 'development'. Der gerade erstellte Branch kann
+Hinweis:  mit diesem Befehl umbenannt werden:
+Hinweis: 
+Hinweis: 	git branch -m <Name>
+Leeres Git-Repository in /tmp/versuch_1/.git/ initialisiert
+```
+
+Es hat sich eingebürgert^[Bedingt durch gesellschaftspolitische 
+Strömungen, die *Master* mit Sklaverei gleichsetzen, aber eine 
+Master-Arbeit hier nicht als Problem sehen.], den 
+Arbeitszweig von *master* auf *main* umzubenennen:
+
+```bash
+git branch -m main 
+```
+
+Den Erfolg kannst du schnell überprüfen:
+
+```bash
+git status
+```
+Es sollte folgender Text (eventuell englisch) erscheinen:
+
+```bash
+Auf Branch main
+
+Noch keine Commits
+
+nichts zu committen (erstellen/kopieren Sie Dateien und benutzen
+Sie "git add" zum Versionieren)
+```
+
+\samplestart 
+**Hinweis**  
+Man kann \git auch so konfigurieren, dass der Branch eines 
+neu angelegten Repositories automatisch *main* genannt wird.
+```bash 
+git config --global init.defaultBranch main
+```
+\sampleend
+
+## Einfacher Workflow
+### Daten erstellen
+Generell ist es (natürlich) möglich, jeden Typ von 
+Datei mit \git zu versionieren. Eine der Stärken von 
+\git ist allerdings der Vergleich von Versionsständen
+auf Zeichenebene und deshalb sind Binärformate wie 
+Musik, Bilder, aber auch Dokumente der gängigen Office-Produkte nur bedingt geeignet. 
+Auch sehr große Dateien sind möglich -- aber nicht sinnvoll. Hier kann auf \git-LFS 
+(Large File Storage) ausgewichen werden, was in diesem Workshop aber nicht Thema ist!
+
+
+Erstelle nun mit Hilfe eines 
+Editors (notepad, notepad++, Programmierumgebung, ...) eine einfache Datei 
+mit dem Namen \datei{datei1.txt}, die als Inhalt nur „*Version 1*“ enthält.
+
+Auch hier wieder Version mit dem Terminal:
+
+```bash
+echo "Version 1" > datei1.txt
+```
+
+\samplestart
+**Hinweis**  
+
+Das Symbol `>` überschreibt den Inhalt der Datei ohne Warnung, 
+mit `>>` wird der Text an das Ende der Datei angehängt.
+\sampleend
+
+### Versionieren 
+
+Einfaches Versionieren geht sehr schnell und einfach.
+
+Nimm die Datei in die Versionierung auf
+
+```bash
+git add datei1.txt 
+``` 
+
+und schreibe einen Eintrag in die Projekt-History
+
+```bash
+git commit -m "Erste Datei erstellt"
+```
+
+\samplestart
+**Hinweis**  
+Ein Commit ist ein Projektstand, an den du 
+zurückkehren kannst, wenn etwas grob missglückt ist.
+Vergeht zu viel Zeit (=viel Code) zwischen zwei 
+Commits, so entstehen eventuell größere Verluste bei einem
+Rücksprung zum alten Stand.  
+Später im Workshop lernst du auch, wie du 
+Commits nachträglich zusammenfassen kannst (=squash) 
+um deine Entwicklungsschritte übersichtlich zu halten.
+\sampleend 
+
+
+
+Damit ist der Versionierungsablauf eigentlich schon definiert:
+
+* Dateien, in denen du Änderungen vorgenommen hast, 
+  sammelst du mit *add*
+* Haben sich genug Daten angesammelt -- mit Sinnzusammenhang -- dann erstellst du einen *Commit* 
+mit einer aussagekräftigen Beschreibung.
+
+\samplestart
+**Hinweise**  
+Wenn du die Beschreibung lieber mit dem Editor machen möchtest, rufst du   
+*nur* \cmd{git commit} auf (also ohne `-m`).  
+
+In welchen Zeitabständen oder Sinnzusammenhängen du
+Commits erstellst, ist alleine *deine* Entscheidung.
+Du solltest aber bedenken, dass ein Rücksprung zu einem 
+älteren Commit von *allen* Dateien die Vorgängerversion restauriert. Wenn du also zu viele 
+Änderungen am Code vorgenommen hast, die behalten willst, dann wirst du einiges an Handarbeit haben. Deshalb lieber mehr Commits in kürzeren Abständen! Fehlerbehebung ist aber ein komplett
+anderes Thema -- auf einem deutlich anderen Niveau!
+\sampleend
+
+Ändere deine Datei nun ab, indem du eine 
+Zeile ergänzt:
+
+```bash
+echo "Version 2" >> datei1.txt 
+git add datei1.txt 
+git commit -m "Erläuterung"
+```
+
+Die Historie besitzt nun zwei Punkte:
+
+```bash
+git log --oneline 
+
+# Ausgabe
+eaa6289 (HEAD -> main) Erläuterung
+afbc9c5 Erste Datei erstellt
+```
+
+Die Hash-Werte sind bei dir in der Regel anders! 
+
+**Hinweis**  
+Du kannst natürlich auch mehrere Dateien 
+in einem Rutsch hinzufügen!
+
+```bash
+git add .  # Alle Dateien im aktuellen Ordner 
+           # und den Unterordnern
+
+git add --all  # (oder -A) fügt alle Dateien 
+               # ab der obersten Ebene des 
+               # Projekts hinzu  
+```
+
+Wir werden später sehen, was genau beim *add* 
+passiert, z.B. wenn man die gleiche Datei zwischen 
+zwei Commits mehrfach ändert und *addet*.
+
+Zusätzlich kann es natürlich auch sein, dass du 
+bestimmte Dateien überhaupt nicht in die Versionsverwaltung
+aufnehmen willst. Das ist zum Beispiel dann der Fall, wenn 
+sich Kennwörter und Zugangsdaten in einer Datei befinden.
+Sobald du die Namen dieser Datei(en) in eine Datei mit 
+dem Namen `.gitignore` einträgst, werden sie beim *add* ignoriert.
+
+```bash
+# Format der Datei
+*.log 
+*.tmp 
+zugangsdaten.txt
+```
+
+\samplestart
+**Hinweis**  
+\git versioniert keine leeren Ordner, weil es in 
+ihnen keine Dateien gibt -- \git arbeitet dateibasiert! 
+Soll ein leerer Ordner versioniert werden, so musst 
+du eine Datei \datei{.gitkeep} im Ordner erstellen.
+\sampleend
