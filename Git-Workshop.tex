@@ -119,15 +119,17 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
 % Set default figure placement to htbp
-\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 
@@ -365,7 +367,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, enhanced, breakable, colback={codebgcolor}, frame hidden, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[enhanced, sharp corners, frame hidden, breakable, colback={codebgcolor}, boxrule=0pt]}{\end{tcolorbox}}\fi
 \makeatother
 \makeatletter
 \@ifpackageloaded{tikz}{}{\usepackage{tikz}}
@@ -384,7 +386,7 @@
 \let\LanguageShortHands\languageshorthands
 \def\languageshorthands#1{}
 \ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
+  \usepackage[german]{selnolig} % disable illegal ligatures
 \fi
 \usepackage{bookmark}
 
@@ -522,29 +524,29 @@ Version vom November 2025. Beachte, dass dieses Handout für die digitale
 Verwendung gedacht ist -- aus diesem Grund füge ich die Bilderstrecke
 hier ein. Für einen Ausdruck wäre das Verschwendung!
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_001.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_002.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_001.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_002.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_003.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_004.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_003.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_004.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_005.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_007.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_005.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_007.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_008.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_009.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_008.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_009.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_010.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_011.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_010.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_011.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_012.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_013.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_012.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_013.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_014.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_015.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_014.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_015.png}
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_016.png}
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/inst/git/git_install_017.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_016.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/inst/git/git_install_017.png}
 
 \subsection{Linux}\label{linux}
 
@@ -1309,7 +1311,7 @@ Wenn du nun die Verzeichnisstruktur des Ordners \emph{.git} genauer
 untersuchst, wirst du in etwa dies hier sehen, weil noch keine Dateien
 im \work sind:
 
-\includegraphics{bilder/git_internals/base.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/base.png}}
 
 Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
   habe absichtlich nicht index.html verwendet, weil „index`` aktuell
@@ -1326,7 +1328,7 @@ Lege nun im leeren \work eine Datei \datei{homepage.html} an\footnote{Ich
 \emph{.git}-Ordner. Im Bild ist aus Platzgründen nur der relevante
 Ausschnitt angezeigt. Bei dir kann der Hash einen anderen Wert besitzen!
 
-\includegraphics{bilder/git_internals/1_neue_datei.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/1_neue_datei.png}}
 
 Die Datei \datei{index} stellt den \emph{Stage} dar. Diese Datei kannst
 du nicht direkt lesen. Das geht nur mit
@@ -1371,7 +1373,7 @@ Aber gehen wir einen Schritt weiter und committen die Datei:
 Nun sieht die Ordnerstruktur verändert aus -- die Hooks habe ich in der
 Darstellung aus Platzgründen entfernt!
 
-\includegraphics{bilder/git_internals/2_commit.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/git_internals/2_commit.png}}
 
 Ab hier bekommst du sicher andere, eigene Hash-Werte! Du musst in den
 nachfolgenden Befehlen also deine eigenen Werte verwenden.
@@ -1564,7 +1566,7 @@ besteht, den wir in der Ausgabe des Log sehen.
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight]{bilder/branch_lab/mainbranch.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/branch_lab/mainbranch.png}
 \ecenter
 
 \begin{Shaded}
@@ -1612,7 +1614,8 @@ In der Datei steht nun:
 
 \bcenter
 
-\includegraphics{bilder/branch/head_main.png} \ecenter
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/branch/head_main.png}}
+\ecenter
 
 Der Pointer \emph{main} wird also von Commit zu Commit geschoben und der
 Pointer \emph{HEAD} zeigt ständig auf \emph{main}.
@@ -1686,8 +1689,8 @@ Pointer passend umgeschrieben werden.
 
 \bcenter
 
-\includegraphics[width=0.45\textwidth,height=\textheight]{bilder/branch/spielplatz.png}
-\includegraphics[width=0.45\textwidth,height=\textheight]{bilder/branch/spielplatz1.png}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz.png}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz1.png}
 \ecenter
 
 Eine typische Fehlvorstellung ist es, dass \emph{Branching} sofort eine
@@ -1697,8 +1700,8 @@ Commit zeigt.
 
 \bcenter
 
-\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/branch/spielplatz_start_1.png}
-\includegraphics[width=0.3\textwidth,height=\textheight]{bilder/branch/spielplatz_start_2.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_1.png}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{bilder/branch/spielplatz_start_2.png}
 \ecenter
 
 Der Befehl zur Zusammenführung wird vom Zielbranch aus gegeben. Du holst
@@ -2902,7 +2905,7 @@ Das nachfolgende Diagramm zeigt den Ablauf der Operationen zwischen den
 beiden Zweigen (Idee 2 wurde ausgeblendet, weil du mit ihr bisher nichts
 mehr gemacht hast).
 
-\includegraphics[width=10cm,height=\textheight]{bilder/bash/buch_2.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/bash/buch_2.png}
 
 Gut -- das war ein langer Weg mit vielen Abzweigungen. Es ist normal,
 diesen Abschnitt mehrfach lesen zu müssen!
@@ -2978,7 +2981,7 @@ den letzten Commit des Entwicklungs-Branch geschoben. In dieser
 Situation wird der Branch im Diagramm nicht einmal als visuelle
 Abzweigung dargestellt:
 
-\includegraphics[width=16cm,height=\textheight]{bilder/bash/fast_forward.png}
+\includegraphics[width=16cm,height=\textheight,keepaspectratio]{bilder/bash/fast_forward.png}
 
 Erkennbar sind die grünen Rechtecke, die die Enden der Branches
 kennzeichnen. Im Bild links sind die Branches getrennt, im Bild rechts
@@ -2990,7 +2993,7 @@ siehst, hat sich beim Merge die Anzahl Commits nicht verändert.
 Wenn sich der \emph{main}-Branch parallel zum Entwicklungsbranch
 weiterentwickelt, sieht die Sitation ganz anders aus!
 
-\includegraphics{bilder/bash/drei_wege.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/bash/drei_wege.png}}
 
 Du siehst, dass sich der \emph{main}-Branch noch \emph{Schritt 3} zu
 \emph{Schritt 7} weiterentwickelt hat (neuer Commit). Denk immer daran,
@@ -4749,8 +4752,8 @@ Konfiguration erfolgen.
 
 \bcenter
 
-\includegraphics[width=3cm,height=\textheight]{bilder/inst/proxmox/left1.png}
-\includegraphics[width=10cm,height=\textheight]{bilder/inst/proxmox/mid1.png}
+\includegraphics[width=3cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/left1.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/inst/proxmox/mid1.png}
 \ecenter
 
 Am linken Rand sind 2 Speicherbereiche zu erkennen:
@@ -4815,7 +4818,7 @@ vorbelegt ist:
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf1.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf1.png}}
 
 }
 
@@ -4824,7 +4827,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf2.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf2.png}}
 
 }
 
@@ -4833,7 +4836,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf3.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf3.png}}
 
 }
 
@@ -4842,7 +4845,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf4.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf4.png}}
 
 }
 
@@ -4851,7 +4854,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf5.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf5.png}}
 
 }
 
@@ -4860,7 +4863,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf6.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf6.png}}
 
 }
 
@@ -4869,7 +4872,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf7.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf7.png}}
 
 }
 
@@ -4878,7 +4881,7 @@ vorbelegt ist:
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/ubuprox_conf8.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/ubuprox_conf8.png}}
 
 }
 
@@ -4903,11 +4906,11 @@ Auf der Console siehst du für 30 Sekunden den Startbidschirm von Ubuntu,
 bevor es weiter zur Installation geht. Bitte Beachte, dass
 \emph{Console} hier nicht (aber auch) für das Terminal einer virtuellen
 Maschine steht. Hier kann das auch eine GUI sein!.
-\includegraphics{bilder/inst/proxmox/inst_1.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_1.png}}
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_2.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_2.png}}
 
 }
 
@@ -4916,7 +4919,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_3.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_3.png}}
 
 }
 
@@ -4925,7 +4928,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_4.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_4.png}}
 
 }
 
@@ -4934,7 +4937,7 @@ Maschine steht. Hier kann das auch eine GUI sein!.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_5.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_5.png}}
 
 }
 
@@ -4949,7 +4952,7 @@ Voreinstellungen.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_6.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_6.png}}
 
 }
 
@@ -4958,7 +4961,7 @@ Voreinstellungen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_7.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_7.png}}
 
 }
 
@@ -4967,7 +4970,7 @@ Voreinstellungen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_8.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_8.png}}
 
 }
 
@@ -4980,7 +4983,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_9.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_9.png}}
 
 }
 
@@ -4989,7 +4992,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_10.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_10.png}}
 
 }
 
@@ -4998,7 +5001,7 @@ Grund hier evtl. mit TAB und LEER den Haken entfernen.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_11.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_11.png}}
 
 }
 
@@ -5011,7 +5014,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_12.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_12.png}}
 
 }
 
@@ -5020,7 +5023,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_13.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_13.png}}
 
 }
 
@@ -5029,7 +5032,7 @@ Die weiteren Anleitungen gehen von einem Benutzer mit Namen
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_14.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_14.png}}
 
 }
 
@@ -5041,7 +5044,7 @@ Keys haben wir aktuell keine zum Importieren.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_15.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_15.png}}
 
 }
 
@@ -5050,7 +5053,7 @@ Keys haben wir aktuell keine zum Importieren.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_16.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_16.png}}
 
 }
 
@@ -5059,7 +5062,7 @@ Keys haben wir aktuell keine zum Importieren.
 \end{figure}%%
 \begin{figure}[H]
 
-{\centering \includegraphics{bilder/inst/proxmox/inst_17.png}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{bilder/inst/proxmox/inst_17.png}}
 
 }
 
@@ -8071,13 +8074,13 @@ Bild.
 Nach der Registrierung ist allerdings noch keine Anmeldung am System
 möglich -- sie muss erst von \emph{root} freigeschaltet werden.
 
-\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_1.png}
-\includegraphics[width=3cm,height=\textheight]{bilder/gitlab/approve_2.png}
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_1.png}
+\includegraphics[width=3cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_2.png}
 
-\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_3.png}
-\includegraphics[width=7cm,height=\textheight]{bilder/gitlab/approve_4.png}
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_3.png}
+\includegraphics[width=7cm,height=\textheight,keepaspectratio]{bilder/gitlab/approve_4.png}
 
-\includegraphics{bilder/gitlab/approve_5.png}
+\pandocbounded{\includegraphics[keepaspectratio]{bilder/gitlab/approve_5.png}}
 
 Danach ist für den Benutzer die Anmeldung möglich und er kann eigene
 Projekte erstellen. Am Startbildschirm erscheint auch ein Hinweis (mit
@@ -9058,7 +9061,7 @@ Hilfs-Scripts!)
 
 \bcenter
 
-\includegraphics[width=0.5\textwidth,height=\textheight]{bilder/tdd/full_tree.png}
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{bilder/tdd/full_tree.png}
 \ecenter
 
 Direkt nach dem Erstellen des Projektes existieren noch nicht alle
@@ -9145,7 +9148,7 @@ Das liefert folgende Struktur:
 
 \bcenter
 
-\includegraphics[width=10cm,height=\textheight]{bilder/tdd/tree_init.png}
+\includegraphics[width=10cm,height=\textheight,keepaspectratio]{bilder/tdd/tree_init.png}
 \ecenter
 
 Dieses Projekt kann bereits (fast) compiliert werden. Zuerst müssen wir

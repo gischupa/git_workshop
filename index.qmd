@@ -12,22 +12,12 @@ Dieses Werk ist lizenziert unter der Creative Commons Lizenz BY-SA 4.0
 Git ist das aktuell wohl gängigste Versionskontrollsystem auf dem Markt.
 Allerdings gibt es im Zusammenhang mit \git so viele verschiedene Aspekte
 zu betrachten, dass eine stringente Einführung in das Thema relativ 
-schwierig ist. In diesem Workshop kümmern wir uns schwerpunktmäßig um folgende 
-Punkte:
+schwierig ist. Dieses Dokument behandelt im Wesentlichen die normale 
+Handhabung von \git als Solo-Developer und im Team. Ein weiteres Dokument 
+kümmert sich dann um fortgeschrittene Themen im Umfeld Git-Server.  
 
-* Installation (lokal und auf dem Server)
-* Arbeiten als Single-Developer
-* Arbeiten im Team (Grundlagen)
-* Durchspielen von Anwendungsszenarien
-* CI/CD und TDD auf ganz einfachem Niveau
-
-Für den reinen Client-Aspekt ist die Verwendung von \git auf Windows problemlos. 
-Sobald es aber um einen \git-Server geht, sind bessere Systeme wie Linux oder 
-MacOS sinnvoller^[Ich habe bisher noch keinen Server im 
-Internet getroffen, auf dem MacOS als System verwendet wird. Das kann 
-sich aber natürlich jederzeit ändern!]
-Wir werden uns also mit beiden Welten (Windows und Linux) beschäftigen müssen.
-Wer hier noch keine Erfahrung hat, wird viel profitieren!
+Da \git im Hintergrund auf Linux basiert, werden wir uns auch 
+oberflächlich mit der Arbeit im Terminal beschäftigen müssen.
 
  {{< include 0050_installation_1.qmd >}}
  
