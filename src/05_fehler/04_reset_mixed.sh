@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Repository löschen falls vorhanden
+cd 
 rm -rf demo_mix
 git init demo_mix
 cd demo_mix

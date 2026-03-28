@@ -5,12 +5,12 @@ zu protokollieren. Aus diesem Grund müssen bestimmte
 *Fehler* oder *dokumentierte Probleme* in der History 
 erhalten bleiben, auch wenn sie später behoben wurden.
 
-Allerdings treten auch bei der Verwendung von \git 
-Fehler auf -- im Sinne von Bedienfehlern, zu frühem Committen, ...  
+Allerdings treten auch bei der Bedienung von \git 
+Fehler auf -- im Sinne von frühem Adden oder Committen, ...  
 Derartige Fehler müssen möglichst auf dem eigenen Rechner repariert 
-werden, bevor die Dateien dem Team zur Verfügung gestellt werden. 
+werden, *bevor* die Dateien dem Team zur Verfügung gestellt werden. 
 Nachfolgend besprechen wir einige Szenarien mit kleinen Beispielen. 
-Aktuell ist das Arbeiten mit verschiedenen Entwicklungszweigen noch nicht 
+Aktuell ist das Arbeiten mit verschiedenen Branches noch nicht 
 Thema und auch Teamarbeit lassen wir außen vor. Wenn wir die aktuellen
 Beispiele behandelt haben, ist der Schritt zur Teamarbeit nur sehr kurz.
 
@@ -22,74 +22,39 @@ Im Netz findet man statt \cmd{restore} oft noch die Variante mit
 
 
 
-## Kleiner Fehler 1 
+## Kleine Fehler 1 
 
-Beim Programmieren entsteht ein Fehler, bei dem eine manuelle Behebung zu 
+Dieser Fall liegt vor, wenn beim Programmieren in einer Datei ein Fehler entsteht, dessen manuelle Behebung zu 
 aufwändig ist. Die einfachere Lösung ist die Wiederherstellung der betroffenen 
 Datei in der letzten lauffähigen Version. Solange kein *add* erfolgt ist, kannst 
-du die Datei aus dem Stage wieder in das \work kopieren (siehe Hinweis unter dem Code!). 
+du die Datei aus dem Stage (=Stand vom letzten Add bzw. Commit) wieder in das \work kopieren (siehe Hinweis unter dem Code!). 
 
-<!-- src/klein_1.sh -->
-```bash
-  git init beispiel_1
-  cd beispiel_1
-  git branch -m main
-
-  # alles funktioniert
-  echo "Alles gut" > datei.txt
-  git add .
-  git commit -m "alles gut"
-
-  # Hier kommt der Fehler
-  echo "Mist gebaut" >> datei.txt
-
-  ###### Alte Version vom Stage wieder herstellen
-  git restore datei.txt  
+```{.bash include="src/05_fehler/01_klein_1.sh"}
 ```
 
 \samplestart
 **Hinweis**  
 Vorher habe ich geschrieben, dass bei einem Commit die Dateien
-aus dem Stage in die Projekthistorie übertragen und aus 
-dem Stage entfernt werden. Intern funktioniert das allerdings 
+aus dem Stage in die Projekt-Historie übertragen und aus 
+dem \stage entfernt werden. Intern funktioniert das allerdings 
 etwas anders. Die Datei *index* enthält die Namen und Hashes des 
 aktuellen Commits (tree). Mit einem *add* werden Dateinamen ergänzt.
 Beim Commit wird die Datei nicht geleert, die Hashes bleiben also verfügbar.
-Dass `git status` diese Dateien nicht mehr anzeigt, liegt einfach daran, dass 
+Dass \cmd{git status} diese Dateien nicht mehr anzeigt, liegt einfach daran, dass 
 der Befehl eigentlich nur ein *diff* zwischen *index* und aktuellem *tree* 
 ausführt. 
 \sampleend
 
 ## Kleiner Fehler 2
 
-Der Fehler wurde bereits ge-add-et. Damit gibt es im 
-Stage keine Version zum Rückkopieren. Du musst also einen 
-weiteren Schritt rückwärts gehen.
+In diesem Fall hast du durch ein voreiliges \cmd{git add} den Fehler bereits
+in den \stage geschoben. Ein \cmd{git restore} wie oben geht nun nicht mehr!
+Du musst also einen weiteren Schritt rückwärts gehen.
 
-<!-- src/klein_2.sh -->
-```bash
-########### IRRWEG !!!!!!!!! #########
-git init beispiel_2
-cd beispiel_2
-git branch -m main
-
-# alles funktioniert
-echo "Alles gut" > datei.txt
-git add .
-git commit -m "alles gut"
-
-# Hier kommt der Fehler
-echo "Mist gebaut" >> datei.txt
-git add .   # DAS ist anders!
-
-#####################
-###### Das geht jetzt nicht, weil der 
-###### Stage die falsche Version enthält.
-#####################
-git restore datei.txt  
+```{.bash include="src/05_fehler/02_klein_2.sh"}
 ```
 
-Du musst mit \cmd{git log} den Hash vom letzten 
+Du musst also mit \cmd{git log} den Hash vom letzten 
 Commit ermitteln und dann geht
 
 ```bash
@@ -98,8 +63,9 @@ git restore --source=<HASH> datei.txt
 
 Falls du die Datei schon längere Zeit bearbeitet hast und die 
 Änderungen immer mit \cmd{add} auf den Stage geschrieben 
-hast, wirst du natürlich Verluste haben! Hättest du kleinschrittig
-committet, so wären die Verluste geringer.
+hast -- ohne Commits -- dann wirst du natürlich Verluste haben! 
+Hättest du kleinschrittig committet, so könntest du auf verschieden
+Stände zurücksetzen.
 
 \samplestart
 **Zusatz**  
@@ -114,7 +80,7 @@ dieses Problem sieht so aus:
 git show <HASH>:datei.txt > datei_alt.txt
 ```
 
-## Größerer Fehler
+## Größere Fehler
 
 Du hast nach dem letzten Commit viele Fehler in einer Vielzahl 
 von Dateien erzeugt und willst deshalb den aktuellen Stand verwerfen. 
@@ -124,31 +90,71 @@ Hier hilft \cmd{reset}. Diesen Befehl gibt es in 3 Versionen
 * mixed
 * soft
 
-<!-- src/reset.sh -->
+Im Material sind für diese Szenarien passende Scripts hinterlegt, damit du 
+nicht so viel tippen musst.
+
 ### Hard
+```{.bash include="src/05_feher/03_reset_hard.sh"}
+```
+
+**Analyse**  
+Die Dateien \datei{datei1.txt} und \datei{datei2.txt} haben folgende Hashes 
+
 ```bash
-git init beispiel_3
-cd beispiel_3
-git branch -m main
+git hash-object datei1.txt datei2.txt
+7b67032c95794ec14b091904cfb2a011e39cc073
+ee6ebcee0a9dc07e6e7e9b9e4e5d0a044d79e413
+```
 
-# alles funktioniert
-echo "Alles gut datei1" > datei1.txt
-echo "Alles gut datei2" > datei2.txt
-# ... viele Dateien
-git add .
-git commit -m "alles gut"
+und enthalten beide zwei Zeilen:
 
-# Hier kommen DIE Fehler
-echo "Mist gebaut" >> datei1.txt
-echo "Mist gebaut" >> datei2.txt
-# ... viele Fehler in vielen Dateien
+```bash
+cat cat datei1.txt datei2.txt 
 
-# Rücksetzen des kompletten Projekts auf den letzten Commit 
+# Ausgabe 
+Alles gut datei1
+Mist gebaut
+Alles gut datei2
+Mist gebaut
+```
+
+Im Stage befinden sich die Versionen mit den folgenden Hashes:
+
+```bash
+git ls-files --stage
+100644 bdea69f7adae8e49efd5e830f280d0fb8369ece7 0	datei1.txt
+100644 aca0aa026a74a22559b5a4710e17a3f111da9588 0	datei2.txt
+```
+
+Sie enhalten jeweils nur eine einzige Zeile:
+
+```bash
+git cat-file -p bdea69f7adae8e49efd5e830f280d0fb8369ece7
+# Ausgabe: Alles gut datei1
+
+git cat-file -p aca0aa026a74a22559b5a4710e17a3f111da9588
+#Ausgabe: Alles gut datei2
+```
+
+Nun führen wir einen *Hard* Reset aus:
+
+```bash
 git reset --hard HEAD 
 ```
 
-Hiermit ist alles gelöscht, was du nach diesem Commit 
-produziert hast -- unwiederruflich weg!
+Betrachten wir nun die Hashes in \stage und work:
+
+```bash
+git ls-files --stage
+# 100644 bdea69f7adae8e49efd5e830f280d0fb8369ece7 0	datei1.txt
+# 100644 aca0aa026a74a22559b5a4710e17a3f111da9588 0	datei2.txt
+
+git hash-object datei1.txt datei2.txt
+# bdea69f7adae8e49efd5e830f280d0fb8369ece7
+#aca0aa026a74a22559b5a4710e17a3f111da9588
+```
+Die Hashes sind identisch. Hiermit ist also alles gelöscht, 
+was du nach diesem Commit produziert hast -- unwiederruflich weg!
 
 \samplestart
 **Hinweis**  
@@ -159,84 +165,127 @@ oder auch nur mit Serverabgleich wird das extrem problematisch!
 \sampleend
 
 ### Mixed
-Das ist so ziemlich die gebräuchlichste Variante.
+Das ist so ziemlich die gebräuchlichste Variante. Auch hierzu gibt es ein 
+Script im Material:
+
+```{.bash include="src/05_feher/04_reset_mixed.sh"}
+```
+
+Das Script erzeugt eine Datei mit 10 Zeilen:
+
+```bash
+Zeile 1
+Zeile 2
+...
+Zeile 10
+```
+
+Sammeln wir die Hashes:
+
+```bash
+# stage
+100644 30bbed864cbbe610d59273c86c1ae398acdb9799 0	datei.txt
+
+# workdir 
+git hash-object datei.txt
+# 30bbed864cbbe610d59273c86c1ae398acdb9799
+```
+
+Nun machen wir einen Reset auf Commit 4 und sehen uns den Stand 
+genau an:
+
+```bash
+git reset --mixed commit_4
+
+# Ausgabe
+Nicht zum Commit vorgemerkte Änderungen nach Zurücksetzung:
+M	     datei.txt
+```
+
+Was sagen die Hashes?
+
+```bash
+# stage
+git ls-files --stage
+# 100644 01cfd9be0ee0c14e4547ef3182205466edb327cd 0	datei.txt
+
+# workdir 
+git hash-object datei.txt
+# 30bbed864cbbe610d59273c86c1ae398acdb9799
+```
+
+Das sind verschiedene Dateien -- welche enthält was?  
+Sehen wir uns die Datei auf dem \stage an:
+
+```bash
+git show 01cfd9be0ee0c14e4547ef3182205466edb327cd
+
+# Ausgabe
+Zeile 1
+Zeile 2
+Zeile 3
+Zeile 4
+```
+
+Das passt zu Commit 4 -- so weit so gut. Was ist mit der Datei
+im \work?
+
+```bash
+cat datei.txt 
+
+# Ausgabe
+Zeile 1
+Zeile 2
+...
+Zeile 9
+Zeile 10
+```
+
+Der letzte Stand des \work vor dem Reset wurde also nicht verändert, 
+die Zwischen-Commits 5-10 wurden aber gelöscht! Du kannst nun auf dem 
+letzten Stand weiterarbeiten und neue Commits erstellen. 
+Auch hier ist natürlich wichtig, dass die Commits vorher deinen Rechner
+noch nicht verlassen hatten!
+
+\samplestart
+**Hinweis**  
+Immer wenn *gelöscht* verwendet wird, bedeutet das zunächst *ausgeblendet*.
+Wirklich verschwinden werden deratige Löschungen erst nach 90 Tagen.
+Mit \cmd{git reflog} kannst du deine Aktionen nachvollziehen und gezielt
+wieder auf einen der gelisteten Commits zurücksetzen - z.B. mit \cmd{git reset}.
+\sampleend
 
 ```bash
 git reset --mixed <HASH>
-git reset <HASH>
-```
-
-Die Commits werden gelöscht, alle Änderungen liegen aber immer 
-noch in den Dateien des \work vor. Du kannst also Korrekturen 
-vornehmen und danach neue Commits erstellen. 
-Auch hier ist natürlich wichtig, dass die Commits deinen Rechner
-vorher noch nicht verlassen hatten!
-
-**Demo**  
-
-```bash
-rm -rf demo_mix 
-git init demo_mix
-cd demo_mix
-git branch -m main 
-
-
-for i in {1..10}; do 
-  echo "Zeile $i" >> datei.txt 
-  git add . && git commit -m "Zeile $i eingefügt"
-  git tag commit_$i
-done 
-
-cat datei.txt # liefert 10 Zeilen 
-
-git reset --mixed commit_4
-
-cat datei.txt # liefert immer noch 10 Zeilen
-
-git log --oneline # liefert 4 Zeilen
-
-git status # zeigt eine geänderte, versionierte Datei 
+# gleichwertig:  git reset <HASH>
 ```
 
 ### Soft
 
-Wenn du in obigem Script das \cmd{--mixed} durch \cmd{--soft}
-ersetzt, dann passiert auf den ersten Blick nichts anderes als bei \cmd{--mixed}. Beim \cmd{status} erscheint die Datei mit den 10 Zeile 
-aber nun bereits im Stage und könnte sofort committet werden.
+Verwende wieder das gleiche Script wie eben, ersetze aber \cmd{--mixed} durch \cmd{--soft}.
+Auf den ersten Blick nichts anderes als bei \cmd{--mixed}. Die Datei \datei{datei.txt} 
+enthält wieder alle 10 Zeilen -- das \workdir hat sich also wieder nicht verändert. 
+Damit muss also im \stage etaw anderes passiert sein. Ein Vergleich der 
+Hashes zeigt uns:
 
-
-## Da war doch mal was
-Manchmal -- gerade bei Dokumentationen oder anderen Texten -- hätte man gerne 
-die Version zurück, die man vor einigen Tagen gelöscht hat. Bei \git hast du 
-Zugriff auf alle alten Versionen! Allerdings ist oft die Frage, in welchem Commit 
-sich die Version versteckt. Hier wird es nötig, sich rückwärts durch die entsprechenden
-Commits zu arbeiten. Dabei gibt es allerdings eine Besonderheit, die du kennen musst.
-Nachfolgendes Script erzeugt das passende Szenario:
-
-<!-- src/suche.sh -->
 ```bash
-git init suche
-cd suche
-git branch -m main
-
-for i in {1..5};do 
- echo "Version $i" > datei.txt 
- git add .
- git commit -m "Version $i"
-done 
-
-echo "gewünschte Version" > datei.txt 
-git add .
-git commit -m "Version 6"
-
-for i in {7..10};do 
- echo "Version $i" > datei.txt 
- git add .
- git commit -m "Version $i"
-done 
+git ls-files --stage
+# 100644 30bbed864cbbe610d59273c86c1ae398acdb9799 0	datei.txt
+git hash-object datei.txt
+# 30bbed864cbbe610d59273c86c1ae398acdb9799
 ```
 
-Du weißt aus dem Script, dass Version 6 die Datei in der gewünschten Form enthält.
+\stage und \work sind also auf dem gleichen Stand.
+
+## Checkout
+Willst du auf einen früheren Commit wechseln um einen früheren Stand des 
+Projekts zu untersuchen, dann ist ein *reset* nicht geeignet. Hier verwendest du 
+einen \cmd{checkout}.
+
+```{.bash include="src/05_fehler/05_suche.sh"}
+```
+
+Du erkennst aus dem Script, dass Version 6 die Datei in der gewünschten Form enthält.
 Im Ernstfall weißt du das wahrscheinlich nicht. 
 Du beginnst also mit der Suche^[Natürlich gibt es auch Ansätze mit \cmd{git show}]:
 
@@ -245,22 +294,20 @@ git log --oneline
 
 # Ausgabe
 b55b329 (HEAD -> main) Version 10
-0149855 Version 9
-a4bc57f Version 8
-95a37c9 Version 7
-d370ffb Version 6
-25fd886 Version 5
-c745eda Version 4
-4a64eef Version 3
-68a4d14 Version 2
-461eee6 Version 1
+0a20f73 (HEAD -> main, tag: V10) Version 10
+287e4e9 (tag: V9) Version 9
+9c818b5 (tag: V8) Version 8
+71b84f5 (tag: V7) Version 7
+e7a5510 (tag: V6) Version 6
+d796ed3 (tag: V5) Version 5
+2fd4ee2 (tag: V4) Version 4
+4c5881c (tag: V3) Version 3
+8cc1a7c (tag: V2) Version 2
+df10857 (tag: V1) Version 1
 ```
 
-Am Besten kopierst du dir die Ausgabe in eine Datei, damit du immer Zugriff auf die Hashwerte 
-der Commits hast. Nimm nun als Beispiel einen Sprung zu Version 7.
-
 ```bash
-git checkout 95a37c9
+git checkout V6
 ```
 
 Nun kommt eine große Warnung, die dich darüber informiert, dass du gerade 
@@ -271,7 +318,7 @@ Branches arbeitest, solltest du aktuell keinerlei
 (in einen anderen ordner) um sie später weiterverwenden zu können.
 
 ```bash
-Hinweis: Wechsle zu '95a3'.
+Hinweis: Wechsle zu 'V6'.
 
 Sie befinden sich im Zustand eines 'losgelösten HEAD'. 
 Sie können sich umschauen, experimentelle Änderungen 
@@ -280,9 +327,10 @@ Commits, die Sie in diesem Zustand machen, ohne Auswirkungen
 auf irgendeinen Branch verwerfen, indem Sie zu einem
 anderen Branch wechseln.
 
-Wenn Sie einen neuen Branch erstellen möchten, um Ihre erstellten 
-Commits zu behalten, können Sie das (jetzt oder später) durch 
-Nutzung von 'switch' mit der Option -c tun. Beispiel:
+Wenn Sie einen neuen Branch erstellen möchten, um Ihre 
+erstellten Commits zu behalten, können Sie das (jetzt 
+oder später) durch Nutzung von 'switch' mit der Option -c 
+tun. Beispiel:
 
   git switch -c <neuer-Branchname>
 
@@ -290,9 +338,11 @@ Oder um diese Operation rückgängig zu machen:
   git switch -
 
 Sie können diesen Hinweis ausschalten, indem Sie die 
-Konfigurationsvariable 'advice.detachedHead' auf 'false' setzen.
+Konfigurationsvariable 'advice.detachedHead' auf 'false' 
+setzen.
 
-HEAD ist jetzt bei 95a37c9 Version 7
+HEAD ist jetzt bei e7a5510 Version 6
+
 ```
 
 Hast du die relevanten Zeilen kopiert, so kannst du mit folgendem
@@ -301,7 +351,7 @@ Befehl wieder in die Versionsverwaltung einsteigen:
 ```bash
 git checkout main 
 ```
-
+## Sonstiges
 Die Fehlerbehebung kann auch das Löschen ganzer 
 Entwicklungs- oder Testzweige (Branches) bedeuten,
 was wir später noch besprechen.

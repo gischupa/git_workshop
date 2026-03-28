@@ -58,6 +58,7 @@ format:
           rounded corners=3pt] (X) {\texttt{#1}};\xspace}
         \newcommand{\Git}{\textit{Git}\xspace}
         \newcommand{\git}{\textit{git}\xspace}
+        \newcommand{\stage}{\textit{Stage}\xspace}
         \newcommand{\gitserver}{\textit{git}-Server\xspace}
         \newcommand{\gitservers}{\textit{git}-Servers\xspace}
         \newcommand{\Gitlab}{\textit{GitLab}\xspace}

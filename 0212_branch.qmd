@@ -1,8 +1,14 @@
 # Branches
 
-Einen *Branch* kannst du dir als *Entwicklungszweig* übersetzt vorstellen.
-Das beschreibt allerdings nur einen Teil seiner Funktion. Für mich selbst 
-sind Branches ganz wichtig, wenn ich Dinge ausprobieren will -- gerade 
+Am Anfang ist es sinnvoll, wnn du das Bild eines Baumes im Kopf hat, bei dem 
+sich der Stamm (=main Branch) an verschiedenen Stellen in Äste verzweigt.
+Was in einem solchen Ast passiert, hat keinen Bezug zum Stamm und man kann Äste 
+abschneiden (biologisch nur begrenzt richtig) ohne dass der Stamm Schaden nimmt.
+
+Software-Projekte besitzen immer einen *main*-Branch und (mindestens) einen parallel 
+dazu verlaufenden Entwichlungsbranch.
+
+Für mich selbst sind Branches ganz wichtig, wenn ich Dinge ausprobieren will -- gerade 
 bei Themen, wo ich nicht so fit bin. Dann nehme ich ein vorhandenes 
 Projekt (dann muss ich weniger Boilerplate erzeugen) und erstelle 
 beim aktuellen Stand eine Abzweigung mit dem Namen *Labor* oder *Spielplatz*
@@ -27,10 +33,11 @@ git switch -c <branch_name>
 ```
 
 Es ist wichtig zu verstehen, was ein Branch ist und vor allem was er *nicht* ist!
-Dafür machen wir einige kleine Codebeispiele, die unabhängig von vorhergehenden 
-Experimenten sind. Wie üblich richten wir uns zunächst ein Repository ein:
+Dafür machen wir einige kleine Codebeispiele, die unabhängig von den bisherigen
+Experimenten sind. Wie üblich richtest du dir zunächst ein Repository ein:
 
 ```bash
+cd        # auf Start zurück
 git init branch_lab
 cd branch_lab 
 git branch -m main 
@@ -44,7 +51,7 @@ git add .
 git commit -m "Datei 1 erstellt"
 ```
 
-Das Log zeigt uns:
+Das Log zeigt dann:
 
 ```bash
 git log
@@ -59,16 +66,28 @@ Date:   Fri Jan 23 12:57:41 2026 +0100
 
 In der ersten Zeile sehen wir, dass es um den Branch \branch{main} geht 
 und dass es einen `HEAD` gibt, der auf `main` zeigt. Das ist wichtig,
-denn *zeigen* ist genau das benötigte Verb. Bei `HEAD` handelt es 
-sich um einen Zeiger (Pointer), der auf `main` zeigt. Das hast du 
-im Prinzip bereits bei unserem Blick hinter die Kulissen gesehen.
-Im Ordner \ordner{.git} gibt es eine Datei mit Namen \datei{HEAD},
-deren Inhalt (über eine Ecke) aus dem Hash besteht, den wir in der Ausgabe des Log sehen. 
+denn *zeigen* ist genau das benötigte Verb. Technisch ist das eine zweistufige
+Verlinkung:
+
+* In der Datei \datei{HEAD} steht \date{defs/heads/main}
+* In der Datei \date{defs/heads/main} steht der Hash das aktuellen Commit.
+
 
 \bcenter
 ![](bilder/branch_lab/mainbranch.png){width=10cm}
 \ecenter
 
+Kurze Überprüfung direkt mit den Dateien:
+
+Inhalt von \datei{HEAD}
+```bash
+cat .git/HEAD 
+
+# Ausgabe
+refs/heads/main
+```
+
+Inhalt von \datei{defs/heads/main}
 ```bash
 cat .git/refs/heads/main 
 
@@ -76,9 +95,7 @@ cat .git/refs/heads/main
 70eaef36a87aeb8a1e2eba93577a01329aff34d8
 ```
 
-Wir haben also eine *doppelte Verlinkung*. Der Inhalt von \datei{.git/HEAD} 
-zeigt auf eine Datei \datei{.git/refs/heads/main}, die den aktuell Hash 
-enthält. Kommen weitere Commits hinzu, so ändert sich der Inhalt von `HEAD` nicht,
+Kommen weitere Commits hinzu, so ändert sich der Inhalt von `HEAD` nicht,
 aber der Inhalt der \datei{.git/refs/heads/main} wird aktualisiert.
 
 ```bash
@@ -118,20 +135,18 @@ auch in den Dateien nachverfolgen:
 
 ```bash
 git switch -c spielplatz 
-
 git log
 
 # Ausgabe 
 Zu neuem Branch 'spielplatz' gewechselt
-commit 7c5a585...b99195e33b97ee5353ab0 (HEAD -> spielplatz, main)
+commit 7c5a585...gekürzt (HEAD -> spielplatz, main)
 Author: Wolfgang <lehrer@t-online.de>
 Date:   Fri Jan 23 13:38:07 2026 +0100
 ```
 
 Die erste Zeile gibt an, dass es zwei Branches gibt, die auf gleichem 
-Stand sind.  
-Allerdings steht nun in der Datei \datei{Head} nicht mehr 
-*ref: refs/heads/main* , sondern 
+Stand sind (spielplatz und main). HEAD zeigt auf spielplatz, d.h. 
+in der Datei \datei{Head} steht nicht mehr *ref: refs/heads/main*, sondern 
 
 ```bash
 cat .git/HEAD
@@ -141,7 +156,7 @@ ref: refs/heads/spielplatz
 ```
 
 Da *spielplatz* und *main* aber auf gleichem Stand -- dem aktuellen 
-Commit -- sind, erhalten wir:
+Commit -- sind, erhalten wir als Inhalt der Dateien den gleichen Hash:
 
 ```bash
 cat .git/refs/heads/spielplatz
@@ -177,8 +192,8 @@ eigentlich gar nichts passiert, außer dass die Pointer passend umgeschrieben we
 \ecenter
 
 
-Eine typische Fehlvorstellung ist es, dass *Branching* sofort eine Abzweigung
-erzeugt. Korrekt ist aber, dass einfach nur ein Zeiger (also eine Datei,
+Eine typische Fehlvorstellung ist es, dass beim *Branching* sofort eine Abzweigung
+erzeugt wird. Korrekt ist aber, dass einfach nur ein Zeiger (also eine Datei,
 die einen Hash enthält) erzeugt wird, der auf den aktuellen Commit zeigt.
 
 
@@ -187,7 +202,7 @@ die einen Hash enthält) erzeugt wird, der auf den aktuellen Commit zeigt.
 ![](bilder/branch/spielplatz_start_2.png){width=30%}
 \ecenter
 
-Der Befehl zur Zusammenführung wird vom Zielbranch aus gegeben. Du holst dir also einen Branch an deinen aktuellen Ort:
+Der Befehl zur Zusammenführung wird vom Zielbranch aus gegeben. Du **holst** dir also einen Branch an deinen aktuellen Ort:
 
 ```bash
 git switch main 

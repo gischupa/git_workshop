@@ -7,19 +7,21 @@ ausdrucken wirst, ist die minimal erhöhte Seitenzahl auch kein Problem.
 Dieses Szenario ist etwas komplexer, da wir mit mehreren Dateien
 arbeiten und auch   
 parallele Ideen verfolgen wollen (branching).   
-Da richtiges Programmieren zu lange dauert, erstellen wir in diesem 
-Projekt ein kleines Buch mit Kurzgeschichten.
+Da richtiges Programmieren zu lange dauert, simulieren wir die 
+Arbeit eines Autors, der an mehreren Kurzgeschichten arbeitet.
 Die Geschichten wurden von einer KI generiert um den Arbeitsaufwand 
 zu minimieren. 
 
-Die Einzelteile der Geschichten befinden sich in einem \git-Repository
-und müssen zunächst auf den lokalen Computer geclont werden. 
-Das ist ein notwendiger Vorgriff auf den Abschnitt der Teamarbeit,
-den du hier einfach unhinterfragt ausführst.
-Es handelt sich um ein öffentliches Repository, auf das auch ohne 
-Benutzerkennung zugegriffen werden darf -- aber eben nur lesend. 
-Aus diesem Grund wird zum Clonen auch *https* und nicht *ssh* verwendet.
-Öffne die \gitbash (oder ein Terminal) und gib ein:
+Um diese Übung nachvollziehen kannst musst du:
+
+* Vorlage auf deinen Computer *clonen*.  
+  Das ist ein notwendiger Vorgriff auf den Abschnitt der Teamarbeit,
+  den du hier einfach unhinterfragt ausführst.
+* Anlegen eines eigenen Repositories
+* Öffnen von 2 Fenstern der \gitbash. Eines für den Vorlagenordner 
+  uns eines für den Buch-Ordner. Du musst ständig zwischen ihnen
+  hin und her wechseln. Wenn dein Bildschirm groß genug ist, solltest
+  du die Fenster nebeneinander legen.
 
 \blarge
 ```bash
@@ -32,69 +34,33 @@ git clone https://github.com/gischupa/dillingen_storyvorlage.git vorlage
 Es entsteht ein Ordner *vorlage*, in dem die 
 verschiedenen Stände des Projektes enthalten sind.
 
-\samplestart
-**Hinweis**  
-Als Alternative zum Clonen kann der aktuelle Stand des Repositories 
-auch als zip-Datei heruntergeladen und entpackt werden. Das bietet 
-sich auch für die Bereitstellung von Material an, wenn auf den 
-Computern **kein** \git installiert ist.
-\sampleend
-
-## Labor
-Es dürfte am einfachsten sein, wenn du zwei Terminals öffnest: 
-
-* Eines für das Repository des *Vorlagenordners*
-* Eines für das Repository des *Arbeitsordners*
-
-Du wirst ständig zwischen diesen Terminals/Repositories wechseln müssen
-und dafür sind einzelne Fenster optimal (Wechsel z.B. mit \alt{tab}).
-
-\samplestart
-**Hinweis**  
-Um der Erklärungen besser folgen zu können, wäre es sinnvoll,
-wenn bei jedem Teilnehmer exakt die gleichen Hashwerte wie hier 
-in der Anleitung entstehen würden. Leider ist das aber nicht möglich,
-weil die Hashwerte nicht reproduzierbar sind -- zumindest auf 
-meinem Rechner! Aus diesem Grund wurden im Vorlagenordner
-die Commits *getagged*, so dass du über ihre Namen auf sie zugreifen
-kannst -- wie das geht, siehst du gleich!
-\sampleend
-
-**Erstellen eines Repositories**  
- 
-Öffne im Fortbildungsordner eine \gitbash und erstelle
-ein Repository für das Buch.
+Lege nun dein Repository an:
 
 ```bash
 # Eingaben
-git init buch 
+mkdir buch 
 cd buch 
-# oder mkdir buch; cd buch; git init
-```   
-
-Falls du nicht die globalen Einstellungen geändert hast:
-
-```bash
+git init
 git branch -m main 
 ```
 
-Im Ordner *fortbildungen* sollten nun also die Repositories *vorlage* 
-und *buch* vorliegen.
+## Labor
 
-**Erste Datei anlegen**  
-Wechsle in das Fenster mit dem Vorlagenordner und Checke *Step\_1* aus.
-*Auschecken* wird später noch genauer erklärt!
+Im Ordner \ordner{fortbildungen sollten nun die Repositories \ordner{vorlage*}
+und \ordner{buch} vorliegen.
+
+### Teil eins von Story 1  
+Wechsle in das Fenster mit dem **Vorlagenordner** und Checke *Step\_1* aus.
 
 ```bash
 git checkout Step_1
 ```
 
-Kopiere die Datei \datei{story1.md} in den Ordner *buch*.   
+Kopiere die Datei \datei{story1.md} in den Ordner \ordner{buch}.   
 
-Sie enthält (absichtlich) nur einen Teil der Geschichte! Das Kopieren kann auch 
-gerne mit der Maus im Explorer stattfinden. Wer allerdings nicht ständig
-zwischen Tastatur und Maus wechseln möchte, der kann auch folgenden
-Befehl verwenden:
+Diese Datei enthält (absichtlich) nur einen Teil der Geschichte! 
+Das Kopieren kannst du auch gerne mit der Maus im Explorer machen,
+ich beschreibe aber den schnelleren Weg über das Terminal:
   
 ```bash
 # aktueller Ort ist der vorlagen-Ordner
@@ -103,7 +69,6 @@ cp story1.md  ../buch/
 
 Wechsle in das Buch-Fenster
 ```bash
-# Eingabe
 git status
 
 # Ausgabe
@@ -114,7 +79,7 @@ Noch keine Commits
 Unversionierte Dateien:
   (benutzen Sie "git add <Datei>...", 
    um die Änderungen zum Commit vorzumerken)
-	story1.md # <2>
+	   story1.md # <2>
 
 nichts zum Commit vorgemerkt, aber es gibt unversionierte Dateien
 (benutzen Sie "git add" zum Versionieren) # <3>
@@ -139,7 +104,8 @@ Noch keine Commits
 Zum Commit vorgemerkte Änderungen: # <1>
   (benutzen Sie "git rm --cached <Datei>..." 
    zum Entfernen aus der Staging-Area)
-	neue Datei:     story1.md # <2>
+	neue Datei:     
+      story1.md # <2>
 ```
 1. Die Dateien für den nächsten Commit
 2. Hier nur diese eine Datei.
@@ -148,11 +114,11 @@ Der Hinweis \cmd{git rm --cached <Datei>} bewirkt nicht
 das Löschen der Datei aus dem Arbeitsverzeichnis, 
 sondern nur aus dem Stage!
 
-### Labor
 
+### Teil zwei von Story 1
 Der erste Teil von \datei{story1.md} ist nun in die 
 Versionierung aufgenommen, es wurde aber noch kein 
-protokollierter Punkt in der Projektgeschichte 
+protokollierter Punkt in der Projekt-History 
 (=commit) erstellt.
 
 Du „schreibst“ an deiner Geschichte weiter und damit ändert sich der 
@@ -214,7 +180,7 @@ der Datei erkennen:
 git diff story1.md
 ```
 
-### Analyse der Differenz
+#### Analyse der Differenz
 
 ```bash
 diff --git a/story1.md b/story1.md # <1>
@@ -246,7 +212,6 @@ und in der ursprünglichen Version lagen 12 Zeilen vor, in der neuen
 Version sind es jetzt 14. Die Änderungen im Detail folgen 
 in den nächsten Zeilen.
 
-### Weiter beim Buch
 Nun wird die Datei wieder zum Stage hinzugefügt und dann committet:
 
 *Eingabe*  
@@ -261,10 +226,12 @@ git commit -m 'Guter Ansatz'
 ```
 
 Dieser Arbeitszyklus von *add, status, diff, commit* stellt 
-den Kern der Arbeit mit \git dar, zumindest wenn man alleine arbeitet.
-Allerdings gibt es noch weitere, sehr wichtige Techniken, 
-die auch später bei der Arbeit im Team eine große Rolle spielen werden.
+den Kern der Arbeit mit \git dar, zumindest wenn du alleine arbeitest.
+Allerdings gibt es noch weitere, sehr wichtige Techniken (push, fetch, pull), 
+die später bei der Arbeit im Team eine große Rolle spielen werden.
 
+
+## Beginn von Story 2
 Du hast nun die Datei \datei{story1.md} so weit fertig gestellt und möchtest an
 anderen Kurzgeschichten arbeiten. Du beschließt, dass fertige 
 Geschichten und Arbeitsversionen an unterschiedlichen 
@@ -282,7 +249,7 @@ und einen *Auslieferungszweig*.
 git switch -c entwicklung_story_2
 ```
 
-*Git* teilt dir mit, dass du dich nun in diesem *Zweig* (=Branch) 
+\Git teilt dir mit, dass du dich nun in diesem *Zweig* (=Branch) 
 befindest. Du siehst hier immer noch deine aktuelle *Story 1*!
 Sie ist ebenfalls in dem neu erstellten Branch enthalten, du hast aber nicht vor,
 an ihr zu arbeiten. Das wäre zwar möglich, würde aber mein Szenario
@@ -341,7 +308,6 @@ verwenden willst, arbeitest auch Idee 2 aus.
 * \cmd{git add story2.md}
 * \cmd{git commit -m "Inhalt nach Idee 2 fortgeführt"}
 
-
 Nun hast du das *Problem*, dass drei Versionen von \datei{story2.md} existieren:
 
 1. Version 1 im Entwicklungszweig.  
@@ -396,7 +362,7 @@ kurz miteinander:
 git diff
 ```
 
-Das ist ein Vergleich von \work mit Stage. Du siehst 
+Das ist ein Vergleich von \work mit dem \stage. Du siehst 
 
 ```bash
 diff --git a/story2.md b/story2.md
@@ -413,11 +379,12 @@ index 1e193c3..bb2c446 100644
  Art bekannt, aber sie konnte auch sehr mutig sein,
  wenn es darauf ankam.
 ```
+
 Die Änderung ist also sichtbar. Der nachfolgende 
 Befehl zeigt dir nichts, weil Commits verglichen werden!
 
 ```bash
-git diff --color-words entwicklung_story_2..story2_idee_1
+git diff --color-words entwicklung_story_2 story2_idee_1
 ```
 
 Mit den folgenden Befehlen übernimmst du die Änderung.
@@ -430,7 +397,7 @@ git commit -m "weiße - weise"
 Nun zeigt dir der Befehl
 
 ```bash
-git diff --color-words entwicklung_story_2..story2_idee_1
+git diff --color-words entwicklung_story_2 story2_idee_1
 ```
 
 dass ein Austausch der Wörter vorgenommen wird (kenntlich gemacht):
@@ -484,7 +451,7 @@ Ideen-Zweig ändern!
 Routinemäßig machst du vorher einen *diff*.
 
 ```bash
-git diff --color-words entwicklung_story_2..story2_idee_1
+git diff --color-words entwicklung_story_2 story2_idee_1
 ```
 
 Beachte, dass du aktuell die Dateiversionen vergleichst,
@@ -508,7 +475,7 @@ Zur Kontrolle machst du den Diff erneut:
 
 ```bash
 # Vergleich der Banches - also das was in den letzen Commits steht
-git diff --color-words entwicklung_story_2..story2_idee_1
+git diff --color-words entwicklung_story_2 story2_idee_1
 ```
 
 Seltsam ... du siehst die *Riesen*schildkröte nicht im Diff!  
@@ -628,7 +595,7 @@ Du machst einen erneuten Vergleich der Branches mit Diff
 
 ```bash
 # Wieder Branch-Vergleich 
-git diff --color-words entwicklung_story_2..story2_idee_1
+git diff --color-words entwicklung_story_2 story2_idee_1
 ```
 
 Da du den Schreibfehler ja nur im Entwicklungszweig verbessert hast,
@@ -694,7 +661,9 @@ sein muss, auch wenn du weiter an deinem Experiment arbeitest.
 Die Vergleiche mit *diff* sind definitiv 
 gewöhnungsbedürftig. Machst du häufige Commits 
 auch schon bei kleinen Änderungen, so bekommst
-du auch übersichtliche *diffs*.
+du auch übersichtliche *diffs*. Wenn du nicht 
+alle Dateien vergleichen willst, kannst du das 
+auch einschränken:
 
 ```bash
 git diff <commit>..<commit> <datei>

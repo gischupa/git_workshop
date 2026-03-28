@@ -1,22 +1,23 @@
 # Hands On I
 ## Übung
 Besonders bei komplexen Systemen wie \git gilt: *use it or lose it*!   
-In diesem Sinne kommt hier nun ein *winziger Projektauftrag*:
+Du solltest deshalb zur Übung einige Repositories anlegen, um den 
+Ablauf zu verinnerlichen. Beginne jeweils mit 
 
-> Erstelle in einem Repository ein Mini-Projekt in deiner 
-> üblichen Programmiersprache. Idealer Weise besteht es aus 
-> mehreren Dateien. Für jede Änderung am Code soll ein 
-> Commit erstellt werden.
-> Verschaffe dir im Anschluss einen Überblick über die 
-> Commit-History.
+```bash
+cd 
+```
+
+Auf diese Weise verhinderst du, dass du versehentlich in einem 
+Repository ein   *Unter*-Repository erstellst.
 
 ## Ein genauerer Blick auf Git
 
 \samplestart
 **Hinweis**  
-Um die nachfolgenden Erläuterungen praktisch vollziehen zu können,
-verwendest du     
-wieder das Repository \ordner{versuch\_1}.
+Um die nachfolgenden Erläuterungen praktisch nachvollziehen zu können,
+verwendest du wieder das Repository \ordner{versuch\_1},
+mit dem wir begonnen haben. 
 \sampleend
 
 Steht ein Ordner unter der Verwaltung von \git, so kann 
@@ -30,21 +31,21 @@ Das \work enthält die Dateien an denen gearbeitet
 wird. Es entspricht auf den ersten Blick genau einem normalen 
 Ordner für die Projektentwicklung. Erst die Initialisierung 
 durch \git erzeugt dann einen weiteren, versteckten Ordner mit dem Namen *.git*.
-Dieser Ordner bildet gleichzeitig den *Stage* und das *Repository*^[Hier siehst du den 
+Dieser Ordner bildet **gleichzeitig** den *Stage* und das *Repository*^[Hier siehst du den 
 inkonsistenten Gebrauch von „Repository“. Einerseits wird der gesamte Projektorder 
 als Repository bezeichnet, sobald er von \git verwaltet wird, andererseits
 befindet sich das eigentliche Repository im Ordner *.git*.]. 
 
 \samplestart
 **Hinweis**  
-Es kann sein, dass in deinem Betriebssystem Ordner 
+Es kann sein, dass in deinem Betriebssystem Ordner und Dateien 
 mit einem führenden Punkt nicht angezeigt werden. 
 Dies ist aber im Dateimanager konfigurierbar.
 \sampleend
 
-*Logische Bereiche* bedeutet in diesem Zusammenhang, dass sie 
-von \git verwaltet werden und vom unbedarften 
-Benutzer nicht einfach unterschieden werden können.
+*Logische Bereiche* bedeutet in diesem Zusammenhang, dass 
+die Bereiche von \git verwaltet werden und vom unbedarften 
+Benutzer nicht einfach zu unterschieden sind.
 In einem späteren Abschnitt werden wir einen genaueren 
 Blick in diesen Ordner werfen.
 
@@ -54,12 +55,12 @@ allerdings untersuchen wir einige Varianten, die für das Verständnis
 wichtig sind.
 
 Du bist immer noch im aktuellen Ordner \ordner{versuch\_1}. 
-Er sollte aktuell eine Datei und zwei Commits enthalten.  
+Er sollte aktuell *eine Datei* und *zwei Commits* enthalten.  
 Das kannst du mit folgenden Befehlen überprüfen:
 
 ```bash
-ls 
-git log
+ls        # Anzeige der Dateien 
+git log   # Was hat git gemacht
 ```
 
 Neben dem Dateinamen liefert das folgende Ausgabe (andere Hashes!):
@@ -93,7 +94,7 @@ Arbeitsverzeichnis unverändert
 Das bedeutet, dass du aktuell einen *sauberen* Zustand 
 deines Arbeitsordners ohne Änderungen an Dateien vorliegen hast.
 
-Erstelle nun eine neue Datei \datei{datei2.txt} und füge 
+Erstelle nun eine *neue Datei* \datei{datei2.txt} und füge 
 die Zeile „*Version 1*“ ein.  
 In der Datei \datei{datei1.txt} kommt die Zeile „*Version 3*“ dazu:
 
@@ -114,17 +115,19 @@ Auf Branch main
   (benutzen Sie "git restore <Datei>...",  
    um die Änderungen im Arbeitsverzeichnis zu verwerfen)  
 
-	geändert:       datei1.txt
+	geändert:       datei1.txt    #<1>
 
 Unversionierte Dateien:
   (benutzen Sie "git add <Datei>...", 
    um die Änderungen zum Commit vorzumerken)
 
-	datei2.txt
+	datei2.txt    #<2>
 
 keine Änderungen zum Commit vorgemerkt 
 (benutzen Sie "git add" und/oder "git commit -a")
 ```
+1. Bereits versioniert aber geändert
+2. Noch nicht in \git registriert!
 
 Es wird dir angezeigt, dass Änderungen im \work vorliegen.  
 Du siehst auch, dass \git die Datei \datei{datei1.txt} bereits kennt 
@@ -134,8 +137,8 @@ wurde (=unversioniert).
 
 \samplestart
 **Vorsicht**  
-Es gibt den Befehl \cmd{git commit -am "bemerkung"}.  
-Hier musst du wissen, dass nur bereits versionierte 
+Du findest im Internet oft den Befehl \cmd{git commit -am "bemerkung"}.  
+Hier musst du wissen, dass bei `-am` nur bereits versionierte 
 Dateien in geänderter Form in den Commit übernommen 
 werden -- \datei{datei2.txt} würde also ignoriert.  
 \sampleend
@@ -159,7 +162,7 @@ Zum Commit vorgemerkte Änderungen:
 	neue Datei:     datei2.txt
 ```
 
-Diese Dateien sind nun zum Commit vorgemerkt, also zum festen Eintrag in die Projekthistorie -- Das führst du jetzt aber **noch nicht aus**!
+Nun sind beide Dateien zum Commit vorgemerkt, also zum festen Eintrag in die Projekt-Historie -- Das führst du jetzt aber **noch nicht aus**!
 
 Als Demonstration fügst du beiden Dateien eine weitere 
 Zeile hinzu und fragst wieder den Status ab:
@@ -192,9 +195,18 @@ Zum Commit vorgemerkte Änderungen:
   geändert:       datei2.txt
 ```
 
-Beide Dateien liegen also in verschiedenen Versionen im Stage und im \work vor.  
-Ein *Commit* transferiert **nur** die Versionen der Dateien*aus dem Stage* ins 
-Repository, also in die Projekthistorie. Das führt dann zu folgender Situation:
+Von \datei{datei1.txt} gibt es nun 3 verschiedene Versionen:
+
+* Version 1 in der Historie (durch den Commit)
+* Version 2 im Stage (durch add)
+* Version 3 im \work (durch echo)
+
+Bei Datei \datei{datei2.txt} sind es nur nur zwei Versionen 
+und keine davon ist in die Historie aufgenommen.
+
+Der nächste *Commit* transferiert jetzt **nur** die Versionen der 
+Dateien *aus dem Stage* ins Repository, also in die Projekt-Historie. 
+Das führt dann zu folgender Situation:
 
 ```bash
 git commit -m "nur Stage"
@@ -219,8 +231,8 @@ und/oder "git commit -a")
 
 
 Die oberen beiden Dateiversionen sind aus dem Stage verschwunden sind (sind jetzt Teil des Commits) und die 
-aktuellen Änderungen sind nach wie vor im Arbeitsverzeichnis vorhanden 
-sind, weil für sie noch kein *add* stattgefunden hat.
+aktuellen Änderungen sind nach wie vor im Arbeitsverzeichnis vorhanden, 
+weil für sie noch kein *add* stattgefunden hat.
 
 ```bash
 # Zum Stage hinzufügen
@@ -249,10 +261,11 @@ das auch wieder nicht die ganze Wahrheit ist!
 
 ### Etwas mehr Wahrheit
 Dieser Abschnitt ist nur als Einblick für Interessierte gedacht!
-Bitte installiere dir in \gitbash das Programm *tree*, um den 
+Bitte installiere dir in der \gitbash das Programm *tree*, um den 
 Ausführungen folgen zu können. Die Anleitung befindet sich im Anhang.
 
-Ganz am Anfang musst du wissen, dass es 4 Git-Objekte gibt:
+Ganz am Anfang musst du wissen, dass es 4 Git-Objekte gibt  
+(Keine Angst das machen gleich noch etwas genauer!)
 
 1. blob
 2. tree 
@@ -260,23 +273,32 @@ Ganz am Anfang musst du wissen, dass es 4 Git-Objekte gibt:
 4. tag 
 
 **blob**  
-„Binary large Objects“ sind reine Dateiinhalte *ohne* Dateiname 
-oder Metadaten.
+„Binary large Objects“ sind reine Datei**inhalte**, die *ohne* ihren 
+wirklichen Dateiname oder Metadaten gespeichert sind.
 
 **tree**  
 Ein *Tree* ist ein Abbild des Arbeitsverzeichnisses. 
 Er enthält aber nur die Namen, Typen und Hashes der Dateien, Ordner und Unterordner.
-Die eigentlichen Dateiinhalte (=Blobs) sind an anderer Stelle abgelegt.
+Die eigentlichen Dateiinhalte (=Blobs) sind getrennt davon gespeichert.
 Ein Tree ist deshalb klein und stellt keine großen Ansprüche an den Speicherplatz
 im Versions-System.
 
 **commit**  
-Ein *Commit* ist ein *Zeiger* auf den *Tree*, der zum Zeitpunkt des Commits aktuell war.
-Er enthält noch weitere Metadaten.
+Ein *Commit* ist ein *Zeiger* auf den *Tree*, der zu einem bestimmten Zeitpunkt 
+aktuell war. Er enthält noch weitere Metadaten. 
 
 **tag**  
 Er ist ein Zusatzname für ausgewählte Commits (z.B. Releases),
 um ohne Kenntnis des Hashs darauf zugreifen zu können.
+
+\newpage
+\samplestart
+**Hinweis**  
+Erwarte nicht von dir, dass du dir die nachfolgenden Befehle 
+merken kannst -- sie sind nicht kompliziert, aber ungewohnt 
+und das ist wie das Lernen von Vokabeln, die man eigentlich 
+nicht braucht. Für das Verständnis sind sie aber wichtig!
+\sampleend
 
 
 ### Eigene Experimente  
@@ -284,7 +306,7 @@ um ohne Kenntnis des Hashs darauf zugreifen zu können.
 Erstelle dir ein neues Repository in einem anderen Ordner
 
 ```bash
-cd ..  # Eine Ebene höher, raus aus dem Arbeitsordner
+cd      # Zurück auf Start ...
 git init demo 
 cd demo
 git branch -m main
@@ -292,9 +314,15 @@ git branch -m main
 
 Wenn du nun die Verzeichnisstruktur des Ordners *.git* 
 genauer untersuchst, wirst du in etwa dies hier sehen,
-weil noch keine Dateien im \work sind:
+weil noch keine Dateien im \work sind. Dafür verwendest du den 
+Befehl 
 
-![](bilder/git_internals/base.png)
+```bash
+tree .git
+```
+\bcenter
+![](bilder/git_internals/base.png){width=5cm}
+\ecenter
 
 Lege nun im leeren \work eine Datei \datei{homepage.html} an^[Ich habe absichtlich 
 nicht index.html verwendet, weil „index“ aktuell anders belegt ist.]. 
@@ -304,30 +332,37 @@ echo "Etwas HTML" >> homepage.html
 git add homepage.html 
 ```
 
-Über ein erneutes `tree .git` siehst du erste Änderungen im *.git*-Ordner.
+Über ein erneutes \cmd{tree .git} siehst du erste Änderungen im *.git*-Ordner.
 Im Bild ist aus Platzgründen nur der
 relevante Ausschnitt angezeigt. Bei dir kann der Hash
 einen anderen Wert besitzen!
 
-![](bilder/git_internals/1_neue_datei.png)
+\bcenter
+![](bilder/git_internals/1_neue_datei.png){width=7cm}
+\ecenter
 
 Die Datei \datei{index} stellt den *Stage* dar. Diese Datei kannst du nicht 
 direkt lesen. Das geht nur mit
 
 ```bash
+# Lesen der Datei "index"
 git ls-files --stage 
-```
 
-Den Hash aus dieser Ausgabe^[In einem richtigen großen Repository
-erscheint hier eine sehr umfangreiche Liste aller Dateien!] 
-findet du oben in der Ordnerstruktur wieder.
-
-```bash
+# Ausgabe 
 100644 ce1332fcf1795166c3c5cd0216b5e7dc2dce7998 0	homepage.htm
 ```
 
+Diese Zeile stellt die Verbindung zwischen Dateiname (homepage.html)
+und dem Datei-Inhalt her, der (s.u.) an anderer Stelle gepeichert ist.
+
+Den Hash aus obiger Ausgabe^[In einem richtigen großen Repository
+erscheint hier eine sehr umfangreiche Liste aller Dateien!] 
+findet du oben in der Ordnerstruktur wieder.
+
+
 Allerdings wird mit den ersten beiden Zeichen (ce) ein Ordner erstellt und 
 in diesem Ordner eine Datei, deren Name aus den restlichen Zeichen besteht. 
+*Diese* Datei enthält den Inhalt Daite \datei{homepage.html}.
 Zusätzlich findest du den Dateityp (100644), den Status (Das ist komplexer! 
 Hier 0) und den Dateinamen.
 
@@ -341,8 +376,8 @@ Aber gehen wir einen Schritt weiter und committen die Datei:
 git commit -m "homepage.html added"
 ```
 
-Nun sieht die Ordnerstruktur verändert aus -- die Hooks habe ich in der
-Darstellung aus Platzgründen entfernt!
+Nun sieht die Ordnerstruktur in `.git` verändert aus -- die Hooks 
+habe ich in der Darstellung aus Platzgründen entfernt!
 
 ![](bilder/git_internals/2_commit.png)
 
@@ -370,12 +405,21 @@ Etwas kompakter wird die Darstellung mit \cmd{git log --oneline}.
 b7510dd  (HEAD -> main)  homepage.html added
 ```
 
-Der Hash b751... scheint also ein Commit zu sein. Das kannst 
-du mit   
-\cmd{git cat-file -t b7510dd34252cb3e42bfc82f043d9f42aa00b2f5}   
-auch noch einmal überprüfen -- steht aber bereits in \cmd{git log}. 
+Mit dem Hash `b751...` des Commits wurde wieder ein Ordner 
+`b7` und eine Datei `510dd34...` erstellt.
 
-Änderst du den Parameter von *-t* auf *-p* (=pretty print), so 
+Du kannst auch (hier unnötig) aus dem Hash ermitteln, welchen Typ 
+von Objekt er darstellt:
+
+```bash
+git cat-file -t b7510dd34252cb3e42bfc82f043d9f42aa00b2f5
+
+# Ausgabe 
+commit 
+``` 
+
+
+Änderst du den Parameter von *-t* (=Typ) auf *-p* (=pretty print = Inhalt), so 
 bekommst du weitere Details: 
 
 ```bash
@@ -390,9 +434,9 @@ committer wolfgang <lehrer@t-online.de> 1737919210 +0100
 homepage.html added
 ```
 
-Der Commit verweist also auf den *tree* mit dem Hash 94ee...   
-Da wir aktuell nur eine Datei haben, ist die Ausgabe des 
-nächsten Befehls sehr kurz, der den Tree ausliest:
+Der Commit verweist also auf den *tree* mit dem Hash `94ee...`  
+Der nächste Befehl liest den Tree aus.
+Da wir aktuell nur eine einzige Datei haben, ist die Ausgabe sehr kurz,:
 
 
 ```bash
@@ -402,6 +446,9 @@ git cat-file -p 94eed25c4ef6cfa1384df66f28308c09dc9bf28d
 # Ausgabe - normal deutlich mehr Einträge
 100644 blob ce1332fcf1795166c3c5cd0216b5e7dc2dce7998 homepage.html
 ```
+
+Der Eintrag im Tree zeigt uns die Verbindung zwischen 
+Dateiname und eigentlichem Dateiinhalt (ähnlich wie im Index!).
 
 Abschließend sehen wir uns den Inhalt des Blob an
 ```bash
@@ -417,9 +464,10 @@ Eine kleine Stufe haben wir aber ausgelassen:
 
 ```bash
 git cat-file -t ce1332fcf1795166c3c5cd0216b5e7dc2dce7998
-```
 
-liefert die Information `blob` (Binary large object).
+# Ausgabe
+blob
+```
 
 Hier nochmal die Zusammenfassung der Funktionsweise:  
 
@@ -429,10 +477,11 @@ Hier nochmal die Zusammenfassung der Funktionsweise:
 * Der Hash gehört zu einem *blob* (oder tree),  
   also den reinen *Roh*daten der Datei **ohne** Dateinamen
 
-Git verwendet das, um von verschiedenen Stellen aus auf die
-gleichen Rohdaten verweisen zu können, ohne Speicher zu verbrauchen. 
+\Git verwendet die Trennung von Dateiname und Inhalt, 
+um von verschiedenen Stellen aus auf die gleichen Rohdaten verweisen 
+zu können, ohne weiteren Speicher zu verbrauchen. 
 Ändern sich Dateien zwischen 
-zwei Commits *nicht* (Hash bleibt gleich), so werden sie nicht neu gespeichert. 
+zwei Commits *nicht* (Hash bleibt gleich), so werden sie nicht erneut gespeichert. 
 Der *neue* Commit zeigt auf einen *neuen* Tree in dem wieder 
 die gleichen Hashes mit den gleichen Dateinamen stehen.
 

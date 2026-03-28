@@ -88,9 +88,9 @@ im Terminal beschränken.
 ```bash
 cd       #<1> 
 mkdir versuch_1  #<2>  
-cd versuch_1
+cd versuch_1    #<3>
 ```
-1. Bei Windows landest du damit im Ordner \ordner{c:\users\<DEIN-NAME>}  
+1. Bei Windows landest du damit im Ordner \ordner{c:\\users\\<DEIN-NAME>}, 
    bei Linux und MacOS bist du in \ordner{/home/<DEIN-NAME}
 2. Den Ordner erstellen (`mkdir = make directory = erstelle Ordner`)
 3. Wechsle in den Ordner (`cd = change directory`)
@@ -131,7 +131,7 @@ manche Dinge sehr schnell!
 
 ### Anlegen des Repositories
 
-Im Ordner \ordner{versuch_1} gibst du nun folgenden Befehl 
+Im Ordner \ordner{versuch\_1} gibst du nun folgenden Befehl 
 ein^[Er ist in obiger Tabelle nicht markiert, weil man ihn 
 nicht ständig braucht. Wichtig ist er aber trotzdem!]:
 
