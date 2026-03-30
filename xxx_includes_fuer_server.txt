@@ -1,0 +1,28 @@
+{{< include 0360_proxmox.qmd >}}
+ {{< include 0370_installation_2.qmd >}}
+
+ 
+ 
+ {{< include 0510_docker.qmd >}}
+
+   {{< include 0515_docker_bsp.qmd >}}
+
+ {{< include 0520_giteadocker.qmd >}}
+ {{< include 0540_gitea_ohne_docker.qmd >}}
+
+   {{< include 0560_gitlab.qmd >}}
+
+ {{< include 0700_cicd.qmd >}}
+ 
+ {{< include 0710_basis_ci.qmd >}}
+
+ {{< include 0820_tdd.qmd >}}
+ {{< include 0830_maven.qmd >}}
+ {{< include 0840_java_komplexer.qmd >}}
+ 
+ {{< include 0900_anhang_java.qmd >}}
+ {{< include 0905_git_start.qmd >}}
+ {{< include 0910_install_tree.qmd >}}
+ {{< include 0920_tar.qmd >}}
+  {{< include 0940_nat.qmd >}}
+ {{< include 0950_video.qmd >}}

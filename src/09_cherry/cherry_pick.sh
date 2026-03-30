@@ -3,7 +3,7 @@
 # Zwei Branches, unterschiedliche Dateien
 
 # Putzen
-cd /tmp
+cd 
 rm -rf cherry_labor
 
 # Lokales Repo erstellen

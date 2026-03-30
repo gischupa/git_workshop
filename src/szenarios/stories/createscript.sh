@@ -4,7 +4,7 @@ git init vorlage
 cd vorlage
 git branch -m main
 
-head -n 29 ../story1.md > story1.md
+head -n 27 ../story1.md > story1.md
 
 git add .
 git commit -m "Story_1 Teil1"

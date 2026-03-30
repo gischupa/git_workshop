@@ -1,3 +1,6 @@
+cd 
+rm -rf beispiel_2
+
 git init beispiel_2
 cd beispiel_2
 git branch -m main
