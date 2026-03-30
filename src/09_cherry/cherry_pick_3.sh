@@ -10,10 +10,10 @@
 set -e
 set -x
 
-cd /tmp
+cd 
 rm -rf cherry_labor
 
-## Lokale Repo erstellen
+## Lokales Repo erstellen
 mkdir cherry_labor
 cd cherry_labor
 git init

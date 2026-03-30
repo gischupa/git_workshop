@@ -1,14 +1,6 @@
 
 # Vorbemerkung{.unnumbered}
 
-\samplestart
-**Hinweis**
-Dieses Werk ist lizenziert unter der Creative Commons Lizenz BY-SA 4.0  
-\href{https://creativecommons.org/licenses/by-sa/4.0/}{%
-    \includegraphics[height=0.8cm]{bilder/cc-by-sa.png}
-}
-\sampleend
-
 Git ist das aktuell wohl gängigste Versionskontrollsystem auf dem Markt.
 Allerdings gibt es im Zusammenhang mit \git so viele verschiedene Aspekte
 zu betrachten, dass eine stringente Einführung in das Thema relativ 
@@ -29,33 +21,6 @@ oberflächlich mit der Arbeit im Terminal beschäftigen müssen.
  {{< include 0300_rebase.qmd >}}
    {{< include 0310_cherry.qmd >}}
  {{< include 0350_team.qmd >}}
- {{< include 0360_proxmox.qmd >}}
- {{< include 0370_installation_2.qmd >}}
-
- 
- 
- {{< include 0510_docker.qmd >}}
-
-   {{< include 0515_docker_bsp.qmd >}}
-
- {{< include 0520_giteadocker.qmd >}}
- {{< include 0540_gitea_ohne_docker.qmd >}}
-
-   {{< include 0560_gitlab.qmd >}}
-
- {{< include 0700_cicd.qmd >}}
- 
- {{< include 0710_basis_ci.qmd >}}
-
- {{< include 0820_tdd.qmd >}}
- {{< include 0830_maven.qmd >}}
- {{< include 0840_java_komplexer.qmd >}}
- 
- {{< include 0900_anhang_java.qmd >}}
- {{< include 0905_git_start.qmd >}}
  {{< include 0910_install_tree.qmd >}}
- {{< include 0920_tar.qmd >}}
-  {{< include 0940_nat.qmd >}}
- {{< include 0950_video.qmd >}}
 
 

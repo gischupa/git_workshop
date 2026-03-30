@@ -5,7 +5,7 @@ zu anderen Techniken relativ leicht zu verstehen. Kurz gesagt
 ermöglicht es Cherry-Pick, sich Commits aus anderen Branches 
 in den eigenen Branch zu kopieren, d.h. die vorgenommenen Änderungen 
 auf den eigenen anzuwenden. Das ist Hilfreich, wenn 
-z.B. in einem Branch ein Bug behoben wird, der auch im eigenen 
+zum Beispiel in einem Branch ein Bug behoben wird, der auch im eigenen 
 Branch benötigt wird.
 
 \begin{tikzpicture}
@@ -46,8 +46,8 @@ git cherry-pick 534875
 Als Ergebnis entsteht dadurch am Ende ein komplett neuer Commit 
 mit neuem Hash im aktuellen Branch. 
 
-Das Script \script{cherry\_pick.sh} liefert genau dieses problemlose 
-Szenario. *Problemlos* deshalb, weil in beiden Branches komplett andere 
+Das Script \script{material/09\_cherry/cherry\_pick.sh} liefert genau dieses problemlose 
+Szenario. *Problemlos* deshalb, weil in beiden Branches komplett unterschiedliche 
 Dateien bearbeitet werden. Damit können die Änderungen einfach übernommen werden:
 
 ```{.bash include="src/09_cherry/cherry_pick.sh"}
@@ -64,7 +64,7 @@ Dateien bearbeitet werden. Damit können die Änderungen einfach übernommen wer
 * 57085c3 initial
 ```
 
-Der benötigte Hash  lautet e103d4b und damit geht ganz einfach
+Der benötigte Hash lautet e103d4b und damit geht ganz einfach
 
 ```bash
 git cherry-pick e103d4b
@@ -100,7 +100,7 @@ den wir auf ganz spezielle Weise auflösen müssen.
 
 Für den Überblick: Das nachfolgende Script nimmt Änderungen
 an der gleichen Datei in zwei Branches vor. Hier der ist der 
-Inhalt von Script \script{cherry\_pick\_2.sh}:
+Inhalt von Script \script{material/09\_cherry/cherry\_pick\_2.sh}:
 
 ```{.bash include="src/09_cherry/cherry_pick_2.sh"}
 ```
@@ -196,7 +196,7 @@ abspeichern. Nun erst ist der Vorgang abgeschlossen.
 
 \samplestart
 **Hinweis**  
-Beachte, dass in obigem Beispiel beie Branches komplett committet waren. Es gab also
+Beachte, dass in obigem Beispiel beide Branches komplett committet waren. Es gab also
 keine aktuell abgeänderten Dateien, was den Ablauf noch komplexer machen würde!
 \sampleend 
 
@@ -218,11 +218,17 @@ cherry-picken. Im Tree sieht das so aus:
 * 09a1330 z1 d1
 ```
 
-Erzeugen können wir die Situation mit dem Script \script{cherry\_pick\_3.sh}:
+Erzeugen können wir die Situation mit dem Script \script{material/09\_cherry/cherry\_pick\_3.sh}:
 
 ```{.bash include="src/09_cherry/cherry_pick_3.sh"}
 ```
 
+\samplestart
+**Hinweis**  
+Wichtig ist hier nun, dass \cmd{cherry-pick} eigentlich *nur* bedeutet:  
+„Führe den genannten Commit an der aktuellen Stelle aus.“  
+Das ist auch die Erklärung für die nachfolgende Meldung!
+\sampleend
 
 Der Befehl \cmd{git cherry-pick d46d7bb} liefert diese,
 etwas seltsame Meldung:
@@ -242,33 +248,34 @@ Hinweis: "git cherry-pick" zu gelangen, führen Sie
 Hinweis:  "git cherry-pick --abort" aus.
 ```
 
-In der betroffenen Datei \datei{datei\_2.html} ist aber kein Konflikt zu erkennen:
+Im betroffenen Commit (nur relevante Zeilen) steht:
 
 ```bash
-Zeile 1
-Zeile 2
+git show b67e3e2
+
+# Ausgabe
+commit d46d7bb... 
+Author: wolfgang <lehrer@t-online.de>
+Date:   Sun Mar 29 14:13:55 2026 +0200
+
+    z2 d2
+
+diff --git a/datei_2.html b/datei_2.html
+....
+--- a/datei_2.html
++++ b/datei_2.html
+@@ -1 +1,2 @@
+ Zeile 1
++Zeile 2
 ```
 
-Ein \cmd{git status} zeigt eine gelöschte Datei (die aber vorhanden ist):
-
-```bash
-Auf Branch main
-Sie führen gerade "cherry-pick" von Commit d46d7bb aus.
-  (beheben Sie die Konflikte und führen Sie dann 
-  "git cherry-pick --continue" aus)
-  (benutzen Sie "git cherry-pick --skip", um diesen Patch 
-  auszulassen)
-  (benutzen Sie "git cherry-pick --abort", um die Cherry-Pick-
-  Operation abzubrechen)
-
-Nicht zusammengeführte Pfade:
-  (benutzen Sie "git add/rm <Datei>...", um die Auflösung 
-  entsprechend zu markieren)
-	von uns gelöscht:       datei_2.html
-
-keine Änderungen zum Commit vorgemerkt (benutzen Sie 
-"git add" und/oder "git commit -a")
-```
+Der Datei \datei{datei\_2.html} soll eine weitere Zeile hinzugefügt werden.
+Aktuell sind wir aber auf dem Branch \branch{main} und dort gibt es die Datei
+\datei{datei\_2.html} aber gar nicht -- also kann git auch keine Zeile hinzufügen.
+Als Notlösung wird die Datei \datei{datei\_2.html} mit dem Zustand vom betroffenen 
+Commit in \work von \branch{main} kopiert.  
+DAS ist die Aussage der der ersten Zeilen -- und auch, dass \git dieses Problem 
+nicht lösen kann. 
 
 Durch \cmd{git add datei\_2.html} bekommen wir dann
 
@@ -310,13 +317,14 @@ mit
 * 09a1330 z1d1
 ```
 
-Der Grund ist einfach, dass im betroffenen Commit *nur steht*:
-
-„Füge Zeile 2 in Datei 2 ein.“
-
-Diese Datei gibt es aber im \branch{main}-Branch aktuell gar nicht!
-Damit hat \git ein Problem, was mit den Inhalten passieren soll,
-die in früheren Commits in dieser Datei angelegt wurden.
+\samplestart
+**Wichtig**  
+Auch wenn im \work zum Zeitpunkt von Commit d46d7bb 
+die Datei \datei{index\_3.html} vorhanden ist,
+so wird sie nicht in den Branch \branch{main} übernommen!
+Das liegt einfach daran, dass sie im Commit -- also im `diff` 
+gar nicht erwähnt wird.
+\sampleend.
 
 Du siehst also, dass das Picken durchaus seine komplexen Seiten 
 hat, weshalb ein Einsatz im Unterricht wohl auch nur sehr bedingt

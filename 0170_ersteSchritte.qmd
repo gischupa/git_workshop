@@ -1,7 +1,5 @@
 # Lokale Arbeit
 
-TODO: CRLF / LF
-
 ## Geplante Inhalte
 
 Das Ziel ist bei der lokalen Arbeit, dass du problemlos verschiedene Versionen 

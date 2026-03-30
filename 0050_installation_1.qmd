@@ -46,6 +46,16 @@ Lade das Programm notepad++ von [notepad-plus-plus.org](https://notepad-plus-plu
 
 Lade von die Installationsdatei von der Seite [gitforwindows.org](https://gitforwindows.org) herunter.
 
+\samplestart
+**Hinweis**  
+Bei der Installation wirst du gefragt, wie du mit Zeilenumbrüchen 
+verfahren willst. Der Hintergrund ist, dass Windows eine Zeichenkombination „CRLF“ (Zeilenanfang + neue Zeile) wie bei der 
+Schreibmaschine verwendet, wären MacOS und Linux nur *ein einziges* 
+Zeichen „LF“ verwenden. Da \git im Hintergrund Linux verwendet, muss 
+hier immer umgewandelt werden. \Git macht das für dich, gibt aber 
+ab und zu eine Warnung aus.
+\sampleend
+
 Starte nun die Installation von \git durch Doppelklick auf die 
 Installationsdatei. Die nachfolgenden Bilder zeigen den Ablauf
 in der Version vom November 2025. Beachte, dass dieses Handout 

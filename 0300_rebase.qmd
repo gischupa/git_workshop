@@ -2,7 +2,7 @@
 
 Im letzten Abschnitt hast du einfaches Arbeiten 
 mit Branches gelernt und wie man sie mit Hilfe eines *Merge* 
-zusammengeführt. Das wollen wir uns jetzt genauer ansehen.
+zusammengeführt. Das wollen wir uns jetzt noch genauer ansehen.
 Offen geblieben sind folgende Fragen:
 
 * Details zu Merges
@@ -56,7 +56,7 @@ Du erkennst auch, dass im Diagramm
 die grünen Spitzen der Branches nicht
 am gleichen Commit sitzen!
 
-Durch \cmd{git log --oneline --decorate --graph} 
+Durch \cmd{git log --decorate --oneline --graph} 
 (merken als „git log dog“) wird diese Sitation
 auch im Terminal passend dargestellt:
 
@@ -95,7 +95,9 @@ git branch -d <name>
 ```
 
 Er scheitert aber, wenn \git den Branch noch nicht 
-als abgeschlossen betrachtet.
+als abgeschlossen betrachtet. Das ist der Fall, wenn die 
+Ergebnisse des Branchs noch nicht durch einen Merge *in Sicherheit*
+gebracht wurden. Hier hilft `-D` an Stelle von `-d`. 
 
 Probieren wir das beim letzten Szenario aus. 
 Sieh dir die Abbildung oben noch einmal an und
@@ -134,13 +136,26 @@ das mit allen Commits, die nicht nicht mehr *erreichbar* sind.
 
 **Beispiel**
 
+Das Script \cmd{material/git\_core/07\_merge/branch\_delete.sh} 
+erzeugt dir diese Situation:
+
 ```bash
 A - B - C - D  <-- main 
       \ E - F - G  <-- feature
 ```
 
-Wird der Branch *feature* gelöscht, dann wird der Pointer auf G 
-entfernt:
+Willst du den Branch *feature* löschen, bekommst du eine Warnung.
+
+```bash
+git branch -d feature 
+
+# Ausgabe
+error: the branch 'feature' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D feature'
+```
+
+Löschst du ihn dann dennoch \cmd{git branch -D feature}, so
+wird der Pointer auf G entfernt:
 
 ```bash
 A - B - C - D  <-- main 
@@ -149,6 +164,46 @@ A - B - C - D  <-- main
 
 Da jeder Commit nur seinen Vorgänger kennt, kommst du zwar 
 von D nach A, aber nicht *rückwärts* nach E, F oder G.
+
+### „Fun“-Fact
+Wenn du nun meinst, du hättest das verstanden ... warum sollte es
+dir besser gehen als mir an dieser Stelle? Spielen wir das 
+Szenario erneut durch:
+
+* Script laufen lassen 
+  \cmd{material/git\_core/07\_merge/branch\_delete.sh}
+* Branches anzeigen \cmd{git log --oneline --graph --all --decorate}
+* Feature-Branch löschen \cmd{branch -D feature}
+* Branch anzeigen \cmd{git log --oneline --graph --all --decorate}
+
+... der Branch ist noch sichtbar? WARUM?  
+
+Das Flag "`--all`" sorgt dafür, dass alle Commits angezeigt werden, auf die
+es noch in irgendeiner Weise Referenzen im System gibt. Ich hatte an dieser 
+Stelle gedacht, sie seien alle weg. Sicherheitshalber löste ich noch eine 
+manuelle Bereinigung des Systems aus (war bei uns nicht Thema):
+
+```bash
+git reflog expire --expire=now --all
+git gc --prune=now
+```
+
+Aber der Branch war immer noch sichtbar ... Was nun?  
+Die Lösung war, dass wirklich noch Referenzen auf die Commits exisierten!
+Schuld war ich selbst, weil ich es besonders gut gemeint hatte und den Commits 
+jeweils *Tags* zugeordnet hatte. In einem früheren Kapitel hatte ich explizit *Tags* 
+als einen der 4 Objekttypen von \git angegeben und diese Tags sind auch wirklich
+Referenzen auf die Commits. Nach der Löschung der Tags:
+
+```bash
+git tag -d E F G
+```
+
+war auch wirklich der Branch verschwunden! Willst du sicher sein, dass auch wirklich **alle** 
+Altlasten entfernt wurden, kannst du erneut eine manuelle Bereinigung des
+Systems ausführen. Das würde ich aber nicht empfehlt, weil es von \git egentlich so nicht gedacht ist.
+
+
 
 ## Rebase
 
@@ -165,8 +220,8 @@ sich die Hashwerte von Commits ändern können und wenn
 sich ein anderer Mitarbeiter den früheren Stand auf den 
 eigenen Rechner geholt hat, dann passt nichts mehr zusammen.
 
-https://www.youtube.com/watch?v=CtyLg10aHN0
-https://www.youtube.com/watch?v=1TNK-OkaelI
+[https://www.youtube.com/watch?v=CtyLg10aHN0](https://www.youtube.com/watch?v=CtyLg10aHN0)  
+[https://www.youtube.com/watch?v=1TNK-OkaelI](https://www.youtube.com/watch?v=1TNK-OkaelI)
 
 
 Bei einem Rebase wird der entsprechende Branch 
@@ -175,10 +230,13 @@ und an anderer Stelle wieder *angedockt*.
 Bei diesem Vorgang werden die Hashwerte aller 
 Commits im Branch geändert.
 
-Betrachte nachfolgendes Script. 
+Betrachte das nachfolgendes Script (\datei{material/git\_core/08\_rebase/rebase.sh}). 
 Nach dem ersten Commit wird ein Branch *arbeit* mit mehreren Commits
 erstellt und im Anschluss ein Commit wieder im *main*-Branch, 
 **der eine andere Datei betrifft**.
+
+```{.bash include="src/08_rebase/rebase.sh"}
+```
 
 ```bash 
 cd /tmp
@@ -201,11 +259,9 @@ done
 # Branch-Wechsel
 git switch main 
 
-
 echo "Zwischenstopp" >> datei2.txt
 git add . && git commit -m "Zwischenstopp"
 ```
-
 
 Ziel ist nun ein *rebase* von *arbeit* auf *main*.  
 
@@ -245,7 +301,7 @@ git log --oneline --decorate --graph --all
 * cdba6cf Inhalt 4
 * d059b1b Inhalt 3
 * d1b3718 Inhalt 2
-* c591dc2 Inhalt 1
+* c591dc2 Inhalt 1   << NEUE HASHES
 * 1af4a22 (main) Zwischenstopp << Hash unverändert 
 * af7e60c Start                << Hash unverändert 
 ``` 
@@ -319,12 +375,29 @@ Das lief so reibungslos, weil der Commit *Zwischenstop* eine andere
 Datei betroffen hat (\datei{datei2.txt}). Hätten Änderungen an \datei{datei.txt}
 stattgefunden, so hätten wir einen Konflikt bekommen, den wir hätten lösen müssen.
 
+\samplestart
+**Hinweis**  
+Oft wird gefragt, warum man einen *Rebase* machen sollte, wenn danach 
+immer noch ein *Merge* nötig ist. Im Prinzip wird das der Graph des 
+Repository *schlanker* und damit übersichtlicher. Der *Merge* ist auch 
+nicht unbedingt nötig, da es ja ein ff-Merge ist und damit ginge 
+auch ein einfaches \cmd{git switch main \&\& git reset --hard HEAD}.
+\sampleend
 
-Führe das Script \datei{rebase\_mit\_konflikt.sh} aus und versuche 
-dann einen Rebase:
+**Was machen ich bei einem Konflikt?**
 
+Führe das Script \datei{rebase\_mit\_konflikt.sh} aus 
+
+```{.bash include="src/08_rebase/rebase_mit_konflikt.sh"}
+```
+
+Versuche nun einen Rebase:
+
+\bxlarge
 ```bash
 git rebase main 
+
+# Ausgabe
 automatischer Merge von datei.txt
 KONFLIKT (Inhalt): Merge-Konflikt in datei.txt
 error: Konnte 2f5968f... (Inhalt 1) nicht anwenden
@@ -336,6 +409,7 @@ Hinweis: To abort and get back to the state before "git rebase",
 Hinweis: run "git rebase --abort".
 Konnte 2f5968f... (Inhalt 1) nicht anwenden
 ```
+\exlarge
 
 Die Hinweiszeilen beschreiben eigentlich sehr genau, was zu tun ist:
 
@@ -366,16 +440,17 @@ Squash ist kein eigenständiger Befehl, sondern ein Parameter von
 *rebase*. Angenommen, du hast eine ganze Liste von filigranen
 Commits erzeugt, die du im Nachhinein zu einem einzigen Commit 
 zusammenfassen willst. In diesem Fall führst du einen 
-*interaktiven Squash* durch:
+*interaktiven Squash* durch, möglich wären:
 
 ```bash
 git rebase -i HEAD~3 # 3 Commits, rückwärts von HEAD
 git rebase -i <hash> # der älteste Commit zum Squashen
+...
 ```
 
 Als Reaktion wird dein Editor gestartet, der dir in den 
 ersten Zeile die zum Squash verfügbaren Commits anzeigt.
-Angenommen, es geht um 3 Commits, dann ersetzt du beim 
+Angenommen, es geht um 3 Commits, dann ersetzt du bei 
 allen **bis auf den neuesten** Commits das *pick* durch
 ein *s* (für Squash).  
 Mit dem Speichern der Datei wird dies durchgeführt und du

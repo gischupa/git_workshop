@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /tmp
+cd 
 rm -rf rebase_lab
 git init rebase_lab
 cd rebase_lab

@@ -94,7 +94,7 @@ Im Material sind für diese Szenarien passende Scripts hinterlegt, damit du
 nicht so viel tippen musst.
 
 ### Hard
-```{.bash include="src/05_feher/03_reset_hard.sh"}
+```{.bash include="src/05_fehler/03_reset_hard.sh"}
 ```
 
 **Analyse**  
@@ -168,7 +168,7 @@ oder auch nur mit Serverabgleich wird das extrem problematisch!
 Das ist so ziemlich die gebräuchlichste Variante. Auch hierzu gibt es ein 
 Script im Material:
 
-```{.bash include="src/05_feher/04_reset_mixed.sh"}
+```{.bash include="src/05_fehler/04_reset_mixed.sh"}
 ```
 
 Das Script erzeugt eine Datei mit 10 Zeilen:
@@ -264,7 +264,7 @@ git reset --mixed <HASH>
 
 Verwende wieder das gleiche Script wie eben, ersetze aber \cmd{--mixed} durch \cmd{--soft}.
 Auf den ersten Blick nichts anderes als bei \cmd{--mixed}. Die Datei \datei{datei.txt} 
-enthält wieder alle 10 Zeilen -- das \workdir hat sich also wieder nicht verändert. 
+enthält wieder alle 10 Zeilen -- das workdir hat sich also wieder nicht verändert. 
 Damit muss also im \stage etaw anderes passiert sein. Ein Vergleich der 
 Hashes zeigt uns:
 

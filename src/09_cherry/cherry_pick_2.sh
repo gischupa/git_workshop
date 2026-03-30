@@ -1,22 +1,24 @@
 #!/bin/bash
 
 # In beiden Branches wird die gleiche Datei 
-# ständig ergänzt. Das erzeugt demnach eine Lücke
+# bei jedem Commit um eine Zeile ergänzt.
+# "dev" hat 5 commits, main nur 3
 #
-#  zeile 1
-#  zeile 2
-#           zeile 3
-#           zeile 4
+#  dev             main
+#  zeile 1         zeile 1
+#  zeile 2         zeile 2
+#  zeile 3         zeile 5
+#  zeile 4         
 #  zeile 5
 #
-# Pickt man Zeile 3, so liegt die in der Datei 
-# dann nicht in der richtigen Zeile!
+# Pickt man Zeile 3 (commit 3) von dev, so liegt  
+# die Zeile in der Datei nicht in der richtigen Zeile!
 
 set -e
 set -x
 
 # putzen
-cd /tmp
+cd 
 rm -rf cherry_labor
 
 # Repo erstellen
